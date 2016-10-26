@@ -11,10 +11,10 @@ routeApp.config(['$routeProvider',
         // Système de routage
         $routeProvider
         .when('/home', {
-            templateUrl: 'app/components/home/home.html',
+            templateUrl: 'app/components/home/homeView.html',
         })
         .when('/connexion', {
-            templateUrl: 'app/components/connexion/connexion.html',
+            templateUrl: 'app/components/connexion/connexionView.html',
         })
         .otherwise({
             redirectTo: '/home'
@@ -27,7 +27,7 @@ var appCCNT = angular.module('myApp', ['ngMaterial']);
 appCCNT.directive('ngMenu', function() {
 	return {
 		restrict : 'E',
-		templateUrl : 'app/shared/menu/menu-principale.html'
+		templateUrl : 'app/shared/menu/menu-principaleView.html'
 	};
 });
 

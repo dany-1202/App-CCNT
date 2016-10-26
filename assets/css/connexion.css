@@ -1,0 +1,50 @@
+/*
+Auteur : Vincent Jalley;
+Date : 25.10.2016;
+Description : Feuille de style pour la page connexion.html;
+*/
+
+/*     padding: 24px!important    */
+body{
+
+}
+
+.conteneurConnexion {
+
+}
+
+.titreFormulaire {
+	background-color: #61ADF0;
+	min-width: 275px;
+	width: 20%;
+	padding: 20px 0px 20px 0px;
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 0px;
+	display: block;
+}
+
+.formulaireConnexion {
+	min-width: 275px;
+	width: 20%;
+}
+
+.connexionBouton {
+	display: block;
+	margin: auto;
+	margin-top : -20px;
+}
+
+.connexionInput {
+	display: block;
+	margin: auto;
+
+}
+.connexionInput input {
+	width: 240px;
+	text-align: center;
+}
+
+.conteneurInput {
+	margin-top : -30px!important;
+}
