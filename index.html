@@ -6,32 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/sb-admin.css" rel="stylesheet">
-    <!-- Custom Fonts -->
-    <link href="librairies/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Custom CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/sb-admin.css" rel="stylesheet">
+    
+    <!-- Custom Fonts -->
+    <link href="assets/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
 
-    <script type="text/javascript" src="librairies/angular/angular.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/modules/dialog.js"></script>
+    <!-- Script Angular -->
+    <script type="text/javascript" src="assets/angular/angular.min.js"></script>
+    <script type="text/javascript" src="assets/angular/angular-route.min.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/dialog.js"></script>
 
-    <script src="librairies/jquery.js"></script>
-    <script src="librairies/bootstrap.min.js"></script>
+    <script src="assets/libs/jquery.js"></script>
+    <script src="assets/libs/bootstrap.min.js"></script>
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
-          <!-- Angular Material Library -->
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
 
-    
 </head>
-<body ng-app="myApp">
+<body ng-app="routeApp">
+    <div ng-view></div>
+
     <ng-menu></ng-menu> <!-- Affiche le menu -->
 
-    
 </body>
 </html> 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+	<link href="../css/connexion.css" rel="stylesheet" media="all" type="text/css"> 
+</head>
+<body ng-app="BlankApp" ng-cloak>
+	<!--
+	Your HTML content here
+	-->
+	
+		<h1 class="titreFormulaire">Connexion d'un utilisateur</h1><div class="conteneurConnexion">
+		<div class="formulaireConnexion">
+			<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+				<div class="connexionInput">
+				  <md-input-container>
+				    <label>Adresse email</label>
+				    <input ng-model="user.login" type="email">
+				  </md-input-container>
+				</div>
+			</md-content>
+			<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding class="conteneurInput">
+				<div class="connexionInput">
+				  <md-input-container>
+					<label>Mot de passe</label>
+					<input ng-model="user.password" type="password">
+				  </md-input-container>
+				</div>
+			</md-content>
+			<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+				<div class="connexionBouton">
+					<md-button class="md-raised md-primary">Connexion</md-button>
+				</div>
+			</md-content>
+	  	</div>
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+	<!-- Angular Material Library -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+
+	<script type="text/javascript">   
+		/* JS pour les inputs*/ 
+	    angular.module('BlankApp', ['ngMaterial'])
+
+	   .controller('DemoCtrl', function($scope) {
+	    $scope.user = {
+	      login: 'Developer',
+	      password: 'ipsum@lorem.com',
+	    };
+	  })
+	  .config(function($mdThemingProvider) {
+
+	    // Configure a dark theme with primary foreground blue
+
+	    $mdThemingProvider.theme('docs-dark', 'default')
+	      .primaryPalette('blue')
+	      .dark();
+
+	  });
+	</script>
+	
+	<script>
+
+	</script>
+</body>
+</html>
