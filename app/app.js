@@ -17,7 +17,7 @@ routeApp.config(['$routeProvider',
             templateUrl: 'app/components/connexion/connexion.html',
         })
         .otherwise({
-            redirectTo: '/home'
+            redirectTo: '/connexion'
         });
     }
 ]);
