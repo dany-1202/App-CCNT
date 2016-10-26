@@ -14,7 +14,7 @@
 				<div class="connexionInput">
 				  <md-input-container>
 				    <label>Adresse email</label>
-				    <input ng-model="user.login" type="email">
+				    <input ng-model="user.email" type="email">
 				  </md-input-container>
 				</div>
 			</md-content>
@@ -47,7 +47,7 @@
 
 	   .controller('DemoCtrl', function($scope) {
 	    $scope.user = {
-	      login: 'Developer',
+	      email: 'Developer',
 	      password: 'ipsum@lorem.com',
 	    };
 	  })
