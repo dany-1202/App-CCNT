@@ -12,7 +12,6 @@ require_once("MySQLManager.php");
  * @access public
  */
 class UserAuthentication {
-
 	/**
 	 * Start a secured session
 	 *
@@ -37,24 +36,22 @@ class UserAuthentication {
 		session_start();
 		//session_regenerate_id(true);
 	}
-	
-
 
 	/**
 	 * Validates the login attempt of an employee.
 	 *
 	 * @access public
 	 * @static
-	 * @param string $logon The employees personal username
+	 * @param string $login The employees personal username
 	 * @param string $password The employees personal login password
 	 * @return boolean true if the employee's authentification is successful, false otherwise
 	 */
-	public static function validateUserLogin($logon, $password) {
+	public static function validateUserLogin($login, $password) {
 		$db = MySQLManager::get();
 
 		if ($stmt = $db->prepare("SELECT per_id, per_nom, per_prenom, per_mdp, per_mail, per_admin "
 			."FROM ccn_personne WHERE per_mail = ? LIMIT 1")) {
-			$stmt->bind_param('s', $logon);
+			$stmt->bind_param('s', $login);
 			$stmt->execute();
 			$stmt->store_result();
 			

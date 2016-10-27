@@ -2,7 +2,7 @@
 /**
  * Déclaration de l'application ctrlCCNT
  */
-var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial']);
+var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'ui-notification']);
 /**
  * Configuration du module principal : ctrlCCNT
  */
