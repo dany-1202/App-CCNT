@@ -1,6 +1,6 @@
 var dialog= angular.module('ctrlCCNT');
 
-dialog.controller('DeconnexionCtrl',function($scope, $mdDialog) {
+dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, Notification) {
   $scope.status = '  ';
   $scope.customFullscreen = false;
 
@@ -14,6 +14,7 @@ dialog.controller('DeconnexionCtrl',function($scope, $mdDialog) {
           .cancel('Non');
 
     $mdDialog.show(confirm).then(function() {
+      Notification.info('Déconnexion réussi');
       window.location.href = '#/connexion';
     }, function() {});
   };
