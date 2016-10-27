@@ -6,6 +6,7 @@ var routeApp = angular.module('routeApp', ['ngRoute','myApp']);
 /**
  * Configuration du module principal : routeApp
  */
+
 routeApp.config(['$routeProvider',
     function($routeProvider) { 
         // Système de routage
