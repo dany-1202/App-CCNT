@@ -20,8 +20,9 @@
     <!-- Script Angular -->
     <script type="text/javascript" src="assets/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/angular/angular-route.min.js"></script>
-    <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/dialog.js"></script>
+    <script type="text/javascript" src="app/app.route.js"></script>
+    <script type="text/javascript" src="app/shared/menu/menu-principaleDirective.js"></script>
+    <script type="text/javascript" src="app/shared/dialog/dialogController.js"></script>
 
     <script src="assets/libs/jquery.js"></script>
     <script src="assets/libs/bootstrap.min.js"></script>
@@ -32,9 +33,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
 
 </head>
-<body ng-app="routeApp">
-    <div id="wrapper">
-        <div ng-app="myApp"><ng-menu></ng-menu></div>
+<body ng-app="ctrlCCNT">
         <div ng-view></div>
     </div>
 </body>
