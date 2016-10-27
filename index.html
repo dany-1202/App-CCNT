@@ -10,6 +10,8 @@
     <!-- Custom CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/dialog.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/connexion.css">
     
     <!-- Custom Fonts -->
     <link href="assets/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -31,9 +33,9 @@
 
 </head>
 <body ng-app="routeApp">
-    <div ng-view></div>
-
-    <ng-menu></ng-menu> <!-- Affiche le menu -->
-
+    <div id="wrapper">
+        <div ng-app="myApp"><ng-menu></ng-menu></div>
+        <div ng-view></div>
+    </div>
 </body>
 </html> 

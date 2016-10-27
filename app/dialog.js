@@ -1,6 +1,6 @@
 var dialog= angular.module('myApp');
 
-dialog.controller('DeconnexionCtrl', function($scope, $mdDialog) {
+dialog.controller('DeconnexionCtrl',function($scope, $mdDialog) {
   $scope.status = '  ';
   $scope.customFullscreen = false;
 
@@ -14,9 +14,7 @@ dialog.controller('DeconnexionCtrl', function($scope, $mdDialog) {
           .cancel('Non');
 
     $mdDialog.show(confirm).then(function() {
-      
-    }, function() {
-      $scope.status = 'You decided to keep your debt.';
-    });
+      window.location.href = '#/connexion';
+    }, function() {});
   };
 });
