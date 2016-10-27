@@ -4,6 +4,7 @@
 
 
 	$authData = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
+	UserAuthentication::secureSessionStart(); // Lance une session sécurisé
 	
 	$res = UserAuthentication::validateUserLogin($authData['logon'], $authData['password']); // Récupère le résulat obtenu
 
