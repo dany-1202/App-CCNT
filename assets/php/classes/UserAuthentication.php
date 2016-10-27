@@ -4,9 +4,7 @@
  * of users.
  *
  */
-
 require_once("MySQLManager.php");
-
 /**
  * UserAuthentication allows for secure session handling and user
  * authentication
@@ -14,6 +12,34 @@ require_once("MySQLManager.php");
  * @access public
  */
 class UserAuthentication {
+
+	/**
+	 * Start a secured session
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function secureSessionStart() {
+		$sessionName = 'ctrlCCNT';
+		$secure = false;
+		$httponly = true;
+		
+		ini_set('session.use_only_cookies', 1);
+		
+		$cookieParams = session_get_cookie_params();
+		session_set_cookie_params(
+			$cookieParams["lifetime"],
+			$cookieParams["path"],
+			$cookieParams["domain"],
+			$secure,
+			$httponly);
+		session_name($sessionName);
+		session_start();
+		//session_regenerate_id(true);
+	}
+	
+
+
 	/**
 	 * Validates the login attempt of an employee.
 	 *
@@ -54,25 +80,6 @@ class UserAuthentication {
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Logout the user and destroy the session
-	 *
-	 * @access public
-	 * @static
-	 */
-	public static function logout() {
-		session_unset();
-		$params = session_get_cookie_params();
-		setcookie(
-			session_name(),
-			'', time()-42000,
-			$params['path'],
-			$params['domain'],
-			$params['secure'],
-			$params['httponly']);
-		session_destroy();
 	}
 	
 	/**
