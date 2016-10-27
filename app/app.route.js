@@ -15,6 +15,7 @@ ctrlCCNT.config(['$routeProvider',
         })
         .when('/connexion', {
             templateUrl: 'app/components/connexion/connexionView.html',
+            controller: 'connexionController'
         })
         .otherwise({
             redirectTo: '/connexion'

@@ -1,18 +1,19 @@
 /* JS pour les inputs*/ 
-angular.module('connexion', ['ngMaterial'])
+var ctrlCCNT = angular.module('ctrlCCNT');
 
-.controller('DemoCtrl', function($scope) {
-$scope.user = {
-  email: 'Developer',
-  password: 'ipsum@lorem.com',
-};
+ctrlCCNT.controller('connexionController', function($scope, ConnexionService, $http) {
+	$scope.user = {
+	  logon: 'jpb@gprh.ch',
+	  password: 'gprh',
+	};
+  $scope.connexion = function() {
+      var data = $scope.user;
+      ConnexionService.login(data, $scope);
+  }
 })
-.config(function($mdThemingProvider) {
 
-// Configure a dark theme with primary foreground blue
-
-$mdThemingProvider.theme('docs-dark', 'default')
-  .primaryPalette('blue')
-  .dark();
-
+ctrlCCNT.config(function($mdThemingProvider) {
+	// Configure a dark theme with primary foreground blue
+	$mdThemingProvider.theme('docs-white', 'default')
+	  .primaryPalette('blue')
 });
