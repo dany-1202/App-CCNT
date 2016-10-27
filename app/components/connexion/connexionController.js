@@ -14,6 +14,6 @@ ctrlCCNT.controller('connexionController', function($scope, ConnexionService, $h
 
 ctrlCCNT.config(function($mdThemingProvider) {
 	// Configure a dark theme with primary foreground blue
-	$mdThemingProvider.theme('docs-white', 'default')
+	$mdThemingProvider.theme('docs-dark', 'default')
 	  .primaryPalette('blue')
 });
