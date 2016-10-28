@@ -27,7 +27,7 @@ CREATE TABLE `ccn_personne` (
   `per_nom` varchar(50) NOT NULL,
   `per_prenom` varchar(50) NOT NULL,
   `per_mail` varchar(80) NOT NULL,
-  `per_mdp` varchar(128) NOT NULL,
+  `per_mdp` varchar(50) NOT NULL,
   `per_dateNaissance` date NOT NULL,
   `per_adresse` varchar(50) NOT NULL,
   `per_codePostal` int(11) NOT NULL,
