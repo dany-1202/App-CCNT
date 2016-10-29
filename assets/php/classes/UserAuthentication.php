@@ -38,6 +38,25 @@ class UserAuthentication {
 	}
 
 	/**
+	 * Logout the user and destroy the session
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function logout() {
+		session_unset();
+		$params = session_get_cookie_params();
+		setcookie(
+			session_name(),
+			'', time()-42000,
+			$params['path'],
+			$params['domain'],
+			$params['secure'],
+			$params['httponly']);
+		session_destroy();
+	}
+
+	/**
 	 * Validates the login attempt of an employee.
 	 *
 	 * @access public
@@ -48,34 +67,34 @@ class UserAuthentication {
 	 */
 	public static function validateUserLogin($login, $password) {
 		$db = MySQLManager::get();
-
 		$passwordCrypt = hash('sha512', $password);
-		$_SESSION['password'] = $passwordCrypt;
-		$query -> "SELECT per_id, per_nom, per_prenom, per_mdp, per_mail, per_admin FROM ccn_personne WHERE per_mail = $login and per_mdp = $passwordCrypt LIMIT 1";
-		$_SESSION['query'] = $query;
-		return true;
-
-		
-		if ($stmt = $db->prepare($query)) {
+		if ($stmt = $db->prepare("SELECT per_id, per_nom, per_prenom, per_mdp, per_mail, per_admin FROM ccn_personne WHERE per_mail = ? and per_mdp = ?")) {
+			$stmt->bind_param("ss", $login, $passwordCrypt);
 			$stmt->execute();
 			$stmt->store_result();
-			
-			
 			$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_mdp, $per_logon, $per_admin);
 			$stmt->fetch();
 			if ($stmt->num_rows == 1) {
 					$_SESSION['user_id'] = $per_id;
 					$_SESSION['user_nom'] = $per_nom;
 					$_SESSION['user_prenom'] = $per_prenom;
-
           if ($per_admin == 1) {
           	$_SESSION['user_type'] = 'admin'; 
         	} else {
         		$_SESSION['user_type'] = 'noadmin'; 
         	}
-					return true;
+        	$token = $per_nom . " | " . uniqid() . uniqid() . uniqid();
+        	if ($stmtUp = $db->prepare("UPDATE ccn_personne SET per_token = ? WHERE per_mail = ? AND per_mdp = ?")) {
+        		$stmtUp->bind_param('sss',$token, $login, $passwordCrypt);
+	        	$stmtUp->execute();
+	        	$_SESSION['user_token'] = $token;
+	        	MySQLManager::close();
+	        	
+        	}
+        	return true;
 			}
 		}
+		MySQLManager::close();
 		return false;
 	}
 	
@@ -86,18 +105,39 @@ class UserAuthentication {
 	 * @static
 	 * @return boolean true if the user is considered logged in, false otherwise
 	 */
-	public static function checkLogin($user_id, $key_encrypted) {
+	public static function checkLogin($user_id, $token) {
 		// get a database handle
 		$db = MySQLManager::get();
-		
-		$query = "SELECT per_mdp FROM ccn_personne WHERE per_id = 1 LIMIT 1";
+		$query = "SELECT per_token FROM ccn_personne WHERE per_id = ?";
 		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param("i", $user_id);
 			$stmt->execute();
 			$stmt->store_result();
 			if ($stmt->num_rows == 1) {
-				$stmt->bind_result($per_mdp);
+				$stmt->bind_result($per_token);
 				$stmt->fetch();
-				return $per_mdp == $key_encrypted;
+				return $per_token == $token;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Disconnect the user removing the token that was distributed
+	 *
+	 * @access public
+	 * @static
+	 * @return boolean true if the user is considered logged in, false otherwise
+	 */
+	public static function disconnect($user_id) {
+		// get a database handle
+		$db = MySQLManager::get();
+		if ($stmt = $db->prepare("DELETE FROM ccn_personne WHERE per_id=?")) {
+			$stmt->bind_param("i", $user_id);
+			$stmt->execute();
+			$stmt->store_result();
+			if ($stmt->num_rows == 1) {
+				return true;
 			}
 		}
 		return false;

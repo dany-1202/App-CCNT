@@ -13,7 +13,7 @@ dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, Notification, $l
           .ok('Oui')
           .cancel('Non');
 
-    $mdDialog.show(confirm).then(function() {
+    $mdDialog.show(confirm).then(function() {    
       AuthenticationService.logout();
       Notification.info('Déconnexion réussi');
     }, function() {});
