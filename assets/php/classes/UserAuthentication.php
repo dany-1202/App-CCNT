@@ -116,9 +116,11 @@ class UserAuthentication {
 			if ($stmt->num_rows == 1) {
 				$stmt->bind_result($per_token);
 				$stmt->fetch();
+				MySQLManager::close();
 				return $per_token == $token;
 			}
 		}
+		MySQLManager::close();
 		return false;
 	}
 
@@ -132,14 +134,16 @@ class UserAuthentication {
 	public static function disconnect($user_id) {
 		// get a database handle
 		$db = MySQLManager::get();
-		if ($stmt = $db->prepare("DELETE FROM ccn_personne WHERE per_id=?")) {
+		if ($stmt = $db->prepare("UPDATE ccn_personne SET per_token = NULL WHERE per_id = ?")) {
 			$stmt->bind_param("i", $user_id);
 			$stmt->execute();
 			$stmt->store_result();
 			if ($stmt->num_rows == 1) {
+				MySQLManager::close();
 				return true;
 			}
 		}
+		MySQLManager::close();
 		return false;
 	}
 }

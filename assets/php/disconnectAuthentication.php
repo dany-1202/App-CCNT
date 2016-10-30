@@ -4,5 +4,5 @@
 	
 	$authData = Sanitizer::getSanitizedJSInput(); 
 	UserAuthentication::disconnect($authData['id']);
-	//UserAuthentication::logout();
+	echo(json_encode($authData['id']));
 ?>
