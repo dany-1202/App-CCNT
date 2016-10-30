@@ -1,0 +1,14 @@
+/*
+Auteur : Joel Marques;
+Date : 3010.2016;
+Description : Feuille de style pour la page homeView.html
+*/
+
+/*     padding: 24px!important    */
+
+.carddemoBasicUsage .card-media {
+  background-color: #999999; }
+
+.grand{
+	font-size: 60px !important;
+}
