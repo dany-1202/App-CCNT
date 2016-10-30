@@ -6,7 +6,6 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, Notificati
 			var $promise = $http.post("assets/php/launchAuthentication.php", data);
 			$promise.then(function (message) {
 				var authenData = message.data;
-				console.log(message);
         if (typeof authenData === 'string' && authenData.indexOf("Impossible de se connecter") != -1) {
         	console.log("Problème de connexion avec la base de données");
         	Notification.warning({message: "La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur", title: 'Problème Connexion Base de données'});
@@ -39,8 +38,5 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, Notificati
 				$rootScope.$broadcast("connectionStateChanged");
 			});
 		},
-		isConnected : function() {
-			
-		}
 	}
 });
