@@ -8,7 +8,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, Notificati
 				var authenData = message.data;
         if (typeof authenData === 'string' && authenData.indexOf("Impossible de se connecter") != -1) {
         	console.log("Problème de connexion avec la base de données");
-        	Notification.warning({message: "La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur", title: 'Problème Connexion Base de données'});
+        	Notification.warning({message: "La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur", title: 'Problème Connexion Base de données', replaceMessage: true});
         } else {
         	if (authenData.user_nom === undefined) {
         		Notification.error({message: 'Connexion échoué !', delay: 1500, title: 'Statut Connexion', replaceMessage: true});
