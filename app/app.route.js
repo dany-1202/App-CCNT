@@ -1,4 +1,5 @@
 (function(){
+'use strict';
 /**
  * Déclaration de l'application ctrlCCNT
  */
@@ -22,5 +23,17 @@ ctrlCCNT.config(['$routeProvider',
         });
     }
 ]);
+
+ctrlCCNT.config(function ($httpProvider) {
+    $httpProvider.interceptors.push(function ($location) {
+        return {
+            'responseError': function (rejection) {
+                if (rejection.status === 401) {
+                    $location.url('/connexion?returnUrl=' + $location.path());
+                }
+            }
+        };
+    });
+});
 
 })();

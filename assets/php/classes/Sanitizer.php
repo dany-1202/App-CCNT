@@ -1,8 +1,7 @@
 <?php
 /**
- * sanitizer.inc.php
+ * Sanitizer.php
  */
-
 class Sanitizer {
     /**
      * Sanitizes the get and post input arrays.
@@ -20,21 +19,6 @@ class Sanitizer {
         $data = filter_var_array($data, FILTER_SANITIZE_STRING);
 
         return $data;
-    }
-
-    /**
-	 * Checks if an input string represents a valid email address.
-	 *
-	 * @access public
-	 * @static
-	 * @param $input String The input string that will be checked
-	 * @return True if $input is a valid e-mail address, false otherwise
-	 */
-    public static function checkValidEmail($input) {
-        if (!filter_var($input, FILTER_VALIDATE_EMAIL) === false) {
-            return true;
-        } 
-        return false;
     }
 }
 ?>

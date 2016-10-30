@@ -30,6 +30,7 @@ class MySQLManager {
 		if (self::$dbhandle == NULL) {
 			self::$dbhandle = new mysqli(SERVER, USER, PASS, DATABASE);
 			if (self::$dbhandle->connect_error) {
+				die("Impossible de se connecter à la base");
 				self::$dbhandle = NULL;
 			}
 		}

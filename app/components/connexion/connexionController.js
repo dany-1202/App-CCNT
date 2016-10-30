@@ -1,15 +1,15 @@
 /* JS pour les inputs*/ 
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('connexionController', function($scope, ConnexionService, $http) {
+ctrlCCNT.controller('connexionController', function($scope, AuthenticationService, $http) {
 	$scope.user = {
 	  login: null,
 	  password: null,
 	};
   $scope.connexion = function() {
       var data = $scope.user;
-      if ($scope.user.login != null && $scope.user.password != null) {
-      	ConnexionService.login(data, $scope);
+      if (!($scope.user.login === "undefined" && $scope.user.password === "undefined")) {
+      	AuthenticationService.login(data, $scope);
       }
   };
   $scope.verificationChamps = function() {
@@ -20,7 +20,7 @@ ctrlCCNT.controller('connexionController', function($scope, ConnexionService, $h
 });
 
 ctrlCCNT.config(function($mdThemingProvider) {
-	// Configure a dark theme with primary foreground blue
-	$mdThemingProvider.theme('docs-dark', 'default')
-	  .primaryPalette('brown')
+  // Configure a dark theme with primary foreground blue
+  $mdThemingProvider.theme('docs-dark', 'default')
+    .primaryPalette('brown')
 });
