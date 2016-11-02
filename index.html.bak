@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-<!-- jflaksjfklajlkjfkal -->
+
     <!-- Custom CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/sb-admin.css" rel="stylesheet">
@@ -32,7 +32,7 @@
     <script type="text/javascript" src="app/components/connexion/connexionController.js"></script>
     <script type="text/javascript" src="app/shared/menu/menu-principaleDirective.js"></script>
     <script type="text/javascript" src="app/shared/dialog/dialogController.js"></script>
-    
+
     <script src="assets/libs/jquery.js"></script>
     <script src="assets/libs/bootstrap.min.js"></script>
 
