@@ -41,7 +41,7 @@ Description : Feuille de style pour la page connexion.html;
 }
 
 .connexionInput{
-	line-height: 50px!important; /* centrage vertical */
+	line-height: 25px!important; /* centrage vertical */
 	margin: 0 auto!important;
   text-align: center!important;
   font-size: 17px!important;
@@ -63,7 +63,6 @@ Description : Feuille de style pour la page connexion.html;
 	font-size: 40px;
 	text-align: center;
 	display: block;
-	font-family: 'Gloria Hallelujah', cursive!important;
 	color: #3E2723!important;
 	height: 100px!important;
 	margin-left: 0px!important;
@@ -77,7 +76,6 @@ Description : Feuille de style pour la page connexion.html;
 	display: block;
 	color: #f2f2f2!important;
 }
-
 
 .errorConnexion {
 	margin-top: 5px!important;
@@ -116,7 +114,6 @@ Description : Feuille de style pour la page connexion.html;
 		padding: 0px 0px 50px 50px!important;
 		font-size: 60px;
 		display: block;
-		font-family: 'Gloria Hallelujah', cursive!important;
 		color: #3E2723!important;
 		height: 100px!important;
 	}
