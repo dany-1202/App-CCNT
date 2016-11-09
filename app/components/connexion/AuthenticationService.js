@@ -18,12 +18,11 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, Notificati
 				var authenData = message.data;
         if (typeof authenData === 'string' && authenData.indexOf("Impossible de se connecter") != -1) {
         	console.log("Problème de connexion avec la base de données");
-
         	/* Affiche un message d'erreur */
-        	Notification.warning({message: "La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur", title: 'Problème Connexion Base de données', replaceMessage: true});
+        	Notification.warning({message: "<p class='notifTexte'> La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur </p>", title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> Connexion Base de données</h3>'});
         } else {
         	if (authenData.user_nom === undefined) { // Connexion refusé
-        		Notification.error({message: 'Connexion échoué !', delay: 1500, title: 'Statut Connexion', replaceMessage: true});
+        		Notification.error({message: "<p class='notifTexte'> Connexion échoué ! </p>", delay: 1500, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> Statut Connexion</h3>'});
 	        } else {
 	        	/* Stocke les données dans la session grâce à la méthode set du SessionService */
 	        	SessionService.set('user_id', authenData.user_id);
@@ -31,9 +30,8 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, Notificati
 	        	SessionService.set('user_prenom', authenData.user_prenom);
 	        	SessionService.set('user_type', authenData.user_type);
 	        	SessionService.set('user_token', authenData.user_token);
-
 	        	/* Connexion réussi*/
-	        	Notification.success({message: 'Connexion réussi !', delay: 3000, title: 'Statut Connexion', replaceMessage: true});
+	        	Notification.success({message: "<p class='notifTexte'>Connexion réussi !</p>", delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> Statut Connexion</h3>'});
 	        	$location.path('/home');
 	        	$rootScope.$broadcast("connectionStateChanged");
 	        }

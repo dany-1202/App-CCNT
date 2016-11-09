@@ -36,4 +36,18 @@ ctrlCCNT.config(function ($httpProvider) {
     });
 });
 
+ctrlCCNT.config(function(NotificationProvider) {
+    NotificationProvider.setOptions({
+        delay: 10000,
+        startTop: 300,
+        startRight: 200,
+        verticalSpacing: 50,
+        horizontalSpacing: 40,
+        maxCount: 1,
+        positionX: 'center',
+        positionY: 'top'
+    });
+});
+
+
 })();
