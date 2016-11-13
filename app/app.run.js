@@ -2,7 +2,7 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, Notification){
 	var routeSansLogin = ['/connexion'];
-	var routeAvecLogin = ['/home'];
+	var routeAvecLogin = ['/home', '/config-init'];
 
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		if (SessionService.get('user_token') == null) {

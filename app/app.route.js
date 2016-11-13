@@ -13,10 +13,15 @@ ctrlCCNT.config(['$routeProvider',
         $routeProvider
         .when('/home', {
             templateUrl: 'app/components/home/homeView.html',
+            controller: 'homeController'
         })
         .when('/connexion', {
             templateUrl: 'app/components/connexion/connexionView.html',
             controller: 'connexionController'
+        })
+        .when('/config-init', { /* Chemin de la configuration initial */
+            templateUrl: 'app/components/configuration-initial/config-init.html',
+            controller: 'configController' /* Controller pour la configuration */
         })
         .otherwise({
             redirectTo: '/connexion'
