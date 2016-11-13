@@ -12,10 +12,9 @@ dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, Notification, $l
           .targetEvent(ev)
           .ok('Oui')
           .cancel('Non');
-
     $mdDialog.show(confirm).then(function() {    
       AuthenticationService.logout();
-      Notification.info('Déconnexion réussi');
+      Notification.success({message: "<p class='notifTexte'>Déconnexion réussi !</p>", delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> Statut Connexion</h3>'});
     }, function() {});
   };
 });
