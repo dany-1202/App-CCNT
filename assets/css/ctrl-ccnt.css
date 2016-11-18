@@ -34,3 +34,13 @@ Description : Feuille de style pour l'ensemble de l'application
 .centrer{
 	text-align: center!important;
 }
+
+.showTooltip {
+		display: none !important;
+}
+
+@media (max-width: 400px) {
+	.showTooltip {
+		display: block!important;
+	}
+}
