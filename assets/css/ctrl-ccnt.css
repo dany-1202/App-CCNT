@@ -35,12 +35,28 @@ Description : Feuille de style pour l'ensemble de l'application
 	text-align: center!important;
 }
 
-.showTooltip {
-		display: none !important;
+.showTooltip-1 {
+		display: block!important;
+		font-size: 14px!important;
 }
 
-@media (max-width: 400px) {
-	.showTooltip {
+.showTooltip-2 {
+	display: none!important;
+}
+
+.showTooltip-3 {
+	display: none!important;
+}
+
+@media (max-width: 351px) {
+	.showTooltip-3 {
 		display: block!important;
+		font-size: 14px!important;
+	}
+}
+@media (max-width: 480px) {
+	.showTooltip-2 {
+		display: block!important;
+		font-size: 14px!important;
 	}
 }
