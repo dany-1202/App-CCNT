@@ -1,104 +1,106 @@
-<div ng-controller="homeController" id="wrapper">
-    <ng-menu>
-    </ng-menu>
-    <div id="page-wrapper" style="padding-top:25px" >
-        <div class="container-fluid">
-          <!-- Page Heading -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">
-                        Home
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li class="active">
-                            <i class="fa fa-home"></i> Home
-                        </li>
-                        <li>
-                            <i class="fa fa-dashboard"></i> <a href="#/home">Tableau de bord</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                  <div class="jumbotron centrer">
-                    <h1>Configuration Initial</h1>
-                    <p>Vous n'avez pas encore configuré votre établissement</p>
-                    <md-button ng-click="lancerConfig()" class="bouton-grand centrer">Commencer</md-button>
+<body class="conteneur">
+  <div ng-controller="homeController" id="wrapper conteneur">
+      <ng-menu>
+      </ng-menu>
+      <div id="page-wrapper" style="padding-top:25px" >
+          <div class="container-fluid">
+            <!-- Page Heading -->
+              <div class="row">
+                  <div class="col-lg-12">
+                      <h1 class="page-header">
+                          Home
+                      </h1>
+                      <ol class="breadcrumb">
+                          <li class="active">
+                              <i class="fa fa-home"></i> Home
+                          </li>
+                          <li>
+                              <i class="fa fa-dashboard"></i> <a href="#/home">Tableau de bord</a>
+                          </li>
+                      </ol>
                   </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div  ng-cloak >
-                      <md-content class="md-padding" layout-xs="column" layout="row">
-                        <div flex-xs flex-gt-xs="100" layout="column">
-                          <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-                            <md-card-title>
-                              <md-card-title-text>
-                                <span class="md-headline">Création d'un planning</span>
-                                <span class="md-subhead">Créer vos planning de deux manières</span>
-                              </md-card-title-text>
-                              <md-card-title-media>
-                                <div class="md-media-xl card-media"><i class="grand fa fa-clock-o" aria-hidden="true"></i></div>
-                              </md-card-title-media>
-                            </md-card-title>
-                            <md-card-actions layout="row" layout-align="end center">
-                              <md-button class="bouton"> Manuel </md-button>
-                              <md-button class="bouton"> Automatique </md-button>
-                            </md-card-actions>
-                          </md-card>
-                          </div>
-                        </md-content>
+              </div>
+              <div class="row">
+                  <div class="col-lg-12">
+                    <div class="jumbotron centrer">
+                      <h1>Configuration Initial</h1>
+                      <p>Vous n'avez pas encore configuré votre établissement</p>
+                      <md-button ng-click="lancerConfig()" class="bouton-grand centrer">Commencer</md-button>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div  ng-cloak >
-                      <md-content class="md-padding" layout-xs="column" layout="row">
-                        <div flex-xs flex-gt-xs="100" layout="column">
-                          <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-                            <md-card-title>
-                              <md-card-title-text>
-                                <span class="md-headline">Consulter l'historique</span>
-                                <span class="md-subhead">Consulter tous les évenements passés</span>
-                              </md-card-title-text>
-                              <md-card-title-media>
-                                <div class="md-media-xl card-media"><i class="grand fa fa-history" aria-hidden="true"></i></div>
-                              </md-card-title-media>
-                            </md-card-title>
-                            <md-card-actions layout="row" layout-align="end center">
-                              <md-button class="bouton">Aller</md-button>
-                            </md-card-actions>
-                          </md-card>
-                          </div>
-                        </md-content>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div  ng-cloak >
-                      <md-content class="md-padding" layout-xs="column" layout="row">
-                        <div flex-xs flex-gt-xs="100" layout="column">
-                          <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-                            <md-card-title>
-                              <md-card-title-text>
-                                <span class="md-headline">Mon restaurant</span>
-                                <span class="md-subhead">Gestion du profil de votre restaurant</span>
-                              </md-card-title-text>
-                              <md-card-title-media>
-                                <div class="md-media-xl card-media"><i class="grand fa fa-cutlery"></i></div>
-                              </md-card-title-media>
-                            </md-card-title>
-                            <md-card-actions layout="row" layout-align="end center">
-                              <md-button class="bouton">Gérer</md-button>
-                            </md-card-actions>
-                          </md-card>
-                          </div>
-                        </md-content>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-lg-4">
+                      <div  ng-cloak >
+                        <md-content class="md-padding" layout-xs="column" layout="row">
+                          <div flex-xs flex-gt-xs="100" layout="column">
+                            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                              <md-card-title>
+                                <md-card-title-text>
+                                  <span class="md-headline">Création d'un planning</span>
+                                  <span class="md-subhead">Créer vos planning de deux manières</span>
+                                </md-card-title-text>
+                                <md-card-title-media>
+                                  <div class="md-media-xl card-media"><i class="grand fa fa-clock-o" aria-hidden="true"></i></div>
+                                </md-card-title-media>
+                              </md-card-title>
+                              <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="bouton"> Manuel </md-button>
+                                <md-button class="bouton"> Automatique </md-button>
+                              </md-card-actions>
+                            </md-card>
+                            </div>
+                          </md-content>
+                      </div>
+                  </div>
+                  <div class="col-lg-4">
+                      <div  ng-cloak >
+                        <md-content class="md-padding" layout-xs="column" layout="row">
+                          <div flex-xs flex-gt-xs="100" layout="column">
+                            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                              <md-card-title>
+                                <md-card-title-text>
+                                  <span class="md-headline">Consulter l'historique</span>
+                                  <span class="md-subhead">Consulter tous les évenements passés</span>
+                                </md-card-title-text>
+                                <md-card-title-media>
+                                  <div class="md-media-xl card-media"><i class="grand fa fa-history" aria-hidden="true"></i></div>
+                                </md-card-title-media>
+                              </md-card-title>
+                              <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="bouton">Aller</md-button>
+                              </md-card-actions>
+                            </md-card>
+                            </div>
+                          </md-content>
+                      </div>
+                  </div>
+                  <div class="col-lg-4">
+                      <div  ng-cloak >
+                        <md-content class="md-padding" layout-xs="column" layout="row">
+                          <div flex-xs flex-gt-xs="100" layout="column">
+                            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                              <md-card-title>
+                                <md-card-title-text>
+                                  <span class="md-headline">Mon restaurant</span>
+                                  <span class="md-subhead">Gestion du profil de votre restaurant</span>
+                                </md-card-title-text>
+                                <md-card-title-media>
+                                  <div class="md-media-xl card-media"><i class="grand fa fa-cutlery"></i></div>
+                                </md-card-title-media>
+                              </md-card-title>
+                              <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="bouton">Gérer</md-button>
+                              </md-card-actions>
+                            </md-card>
+                            </div>
+                          </md-content>
+                      </div>
+                  </div>
+              </div>
+              
+          </div>
+    </div>
+    <!-- /#page-wrapper -->
   </div>
-  <!-- /#page-wrapper -->
-</div>
+</body>
