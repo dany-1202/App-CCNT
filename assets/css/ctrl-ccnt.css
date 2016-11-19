@@ -60,3 +60,57 @@ Description : Feuille de style pour l'ensemble de l'application
 		font-size: 14px!important;
 	}
 }
+
+.center {
+	margin: auto 0 !important;
+	float: center!important;
+	text-align: center !important;
+}
+
+.right {
+	float:right!important;
+}
+
+.left {
+	float:left!important;
+}
+
+.padding-top-12 {
+	margin-top: -2px!important;
+}
+
+.padding-top-50 {
+	padding-top: 50px!important;
+}
+
+@media(max-width: 767px) {
+	.padding-top-50{
+		padding-top: 100px!important;
+	}
+}
+
+.bouton-l {
+	width: 125px!important;
+}
+
+.md-button.btnS {
+	line-height: 0!important;
+	padding-left: 10px!important;
+	padding-right: 10px!important;
+	font-size: 18px!important;
+	text-transform: none!important;
+	margin-left: 0!important;
+	width: 325px!important;
+}
+
+.espace-avant {
+	padding-left: 25px!important;
+}
+
+.padding-bottom {
+	padding-bottom : 25px!important;
+}
+
+.padding-top-16 {
+	margin-top: 10px!important;
+}

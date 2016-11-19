@@ -1,19 +1,70 @@
 <!-- Page qui affiche la parti de la configuration initial -->
-<div ng-controller="configController" id="wrapper">
-    <ng-menu></ng-menu> <!-- Afficher le menu -->
-    <div id="page-wrapper" style="padding-top:50px" >
+<div ng-controller="configController as ctrl" class="back-app" id="wrapper">
+   <ng-menu></ng-menu> <!-- Afficher le menu -->
+    <div id="page-wrapper" class="padding-top-50">
         <div class="container-fluid">
         	<div class="row">
-            <div class="col-lg-12">
-            	<h1>Configuration Initial</h1>
-            	<h3>Étape :</h3>		        	
-        		<div class="progress">
-				  	<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"> 1/4
-				  	</div>
-				</div>
-			</div>
+                <div class="col-lg-12">
+                	<h1>Configuration Initial</h1>	        	
+            		<div class="progress">
+    				  	<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"> 1/4
+    				  	</div>
+    				</div>
+    			</div>
+            </div>
+            <hr>
             <!-- Ajouter le code html ici -->
-
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6 padding-bottom">
+                    <div class="left">
+                        <h3>Nombre d'heures/semaine : </h3>
+                    </div>
+                    <div class="right padding-top-16"> 
+                        <h4><input class="centrer" type="text"></input></h4>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6 padding-bottom">
+                    <div class="left">
+                        <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
+                            Choisir horaires d' <strong>Ouverture</strong>
+                            <i class="espace-avant fa fa-clock-o"></i>
+                        </md-button>
+                    </div>
+                    <div class="right padding-top-12"> 
+                        <h4>
+                            <input class="centrer" type="text" value="{{ currentTime | date:'HH:mm' }}"></input>
+                        </h4>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6 padding-bottom">
+                    <div class="left">
+                        <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker2($event)" aria-label="show picker">
+                            Choisir horaires de <strong>Fermeture</strong>
+                            <i class="espace-avant fa fa-clock-o"></i>
+                        </md-button>
+                    </div>
+                    <div class="right padding-top-12"> 
+                        <h4>
+                            <input class="centrer" type="text" value="{{ currentTime2 | date:'HH:mm' }}"></input>
+                        </h4>
+                    </div> 
+                </div>
+            </div>
+            <div class="row"><div class="col-lg-12"></div></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="centrer">
+                        <md-button class="bouton bouton-l">Suivant</md-button>
+                    </div>
+                </div>
+            </div>    
         </div>
     </div> 
 </div>
