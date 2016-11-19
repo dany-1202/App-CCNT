@@ -92,3 +92,25 @@ Description : Feuille de style pour l'ensemble de l'application
 .bouton-l {
 	width: 125px!important;
 }
+
+.md-button.btnS {
+	line-height: 0!important;
+	padding-left: 10px!important;
+	padding-right: 10px!important;
+	font-size: 18px!important;
+	text-transform: none!important;
+	margin-left: 0!important;
+	width: 325px!important;
+}
+
+.espace-avant {
+	padding-left: 25px!important;
+}
+
+.padding-bottom {
+	padding-bottom : 25px!important;
+}
+
+.padding-top-16 {
+	margin-top: 10px!important;
+}

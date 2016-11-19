@@ -6,6 +6,11 @@ Description : Feuille de style pour la page homeView.html
 
 /*     padding: 24px!important    */
 
+.back-app {
+	min-height: 100vh!important;
+	background-color: white!important;
+}
+
 .carddemoBasicUsage .card-media {
   background-color: #999999; 
 }
@@ -55,4 +60,3 @@ Description : Feuille de style pour la page homeView.html
 		text-align: center!important;
 	}
 }
-
