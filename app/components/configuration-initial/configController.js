@@ -5,7 +5,22 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($scope, $http, $location) {
+ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker) {
   /* à mettre ce qu'on veut */
-  
+  $scope.currentDate = new Date();
+
+	this.showTimePicker = function(ev) {
+    	$mdpTimePicker($scope.currentTime, {
+        targetEvent: ev
+      }).then(function(selectedDate) {
+        $scope.currentTime = selectedDate;
+      });;
+   }
+   this.showTimePicker2 = function(ev) {
+    	$mdpTimePicker($scope.currentTime2, {
+        targetEvent: ev
+      }).then(function(selectedDate) {
+        $scope.currentTime2 = selectedDate;
+      });;
+   } 
 });
