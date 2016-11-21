@@ -1,8 +1,13 @@
+/**
+* Module qui gérer les fenêtre dialog pour la déconnexion de l'utilisateur
+* Ce module devra être généralisé afin qu'il gère toutes sortes de fenêtres modales
+* 
+**/
 var dialog= angular.module('ctrlCCNT');
 
-dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, Notification, $location, AuthenticationService) {
+dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, NotifService, $location, AuthenticationService) {
   $scope.status = '  ';
-  $scope.customFullscreen = false;
+  $scope.customFullscreen = false; // Prend tout l'écran : non
 
   $scope.showConfirm = function(ev) {
     // Appending dialog to document.body to cover sidenav in docs app
@@ -10,12 +15,11 @@ dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, Notification, $l
           .title('Voulez-vous vraiment vous déconnecter ?')
           .ariaLabel('Déconnexion')
           .targetEvent(ev)
-          .ok('Oui')
-          .cancel('Non');
-
-    $mdDialog.show(confirm).then(function() {    
+          .ok('Oui') // Bouton Oui - veut se déconnecter
+          .cancel('Non'); // Bouton Non - annulation
+    $mdDialog.show(confirm).then(function() { // Si l'utilisateur clic sur Oui 
       AuthenticationService.logout();
-      Notification.info('Déconnexion réussi');
+      NotifService.success("Statut Connexion", "Déconnexion réussi !");
     }, function() {});
   };
 });
