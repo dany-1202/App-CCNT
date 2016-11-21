@@ -106,8 +106,8 @@ class UserAuthentication {
 	 * @return boolean true if the user is considered logged in, false otherwise
 	 */
 	public static function checkLogin($user_id, $token) {
-		// get a database handle
-		$db = MySQLManager::get();
+		// get a database handle-- 
+		$db = MySQLManager::get(); 
 		$query = "SELECT per_token FROM ccn_personne WHERE per_id = ?";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param("i", $user_id);
