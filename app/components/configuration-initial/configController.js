@@ -9,6 +9,7 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
 
+  /* Affiche le timePicker pour ouverture */
 	this.showTimePicker = function(ev) {
     	$mdpTimePicker($scope.currentTime, {
         targetEvent: ev
@@ -16,6 +17,8 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
         $scope.currentTime = selectedDate;
       });;
    }
+
+   /* Affiche le timePicker pour fermeture */
    this.showTimePicker2 = function(ev) {
     	$mdpTimePicker($scope.currentTime2, {
         targetEvent: ev
