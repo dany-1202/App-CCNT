@@ -13,7 +13,34 @@
     			</div>
             </div>
             <hr>
-            <!-- Ajouter le code html ici -->
+            <!-- Choisir les départements -->
+            <div ng-repeat="item in depart">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="centrer">
+                            <span class="span-size-font">Nom du Département : </span><input class="centrer" value="{{item.name}}" type="text"></input>
+                            <md-button class="bouton bouton-s"><span class="glyphicon glyphicon-trash"></span></md-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="centrer">
+                        <md-button class="bouton bouton-xl">Ajouter Departement</md-button>
+                    </div>
+                </div>
+            </div>
+            <div class="row"><div class="col-lg-12"></div></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="centrer">
+                        <md-button class="bouton bouton-l">Suivant</md-button>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajouter le code html ici 
             <div class="row">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6 padding-bottom">
@@ -64,7 +91,7 @@
                         <md-button class="bouton bouton-l">Suivant</md-button>
                     </div>
                 </div>
-            </div>    
+            </div>  -->  
         </div>
     </div> 
 </div>

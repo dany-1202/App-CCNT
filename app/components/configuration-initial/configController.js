@@ -6,8 +6,13 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker) {
+  var self = this;
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
+
+  //Tableau contenant les departement
+  $scope.depart = [{name:'Cuisine'},{name:'Salle'},{name:'Bar'}];
+
 
 	this.showTimePicker = function(ev) {
     	$mdpTimePicker($scope.currentTime, {
