@@ -7,10 +7,11 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker) {
   var self = this;
-  var idDep = 4;
+  
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
 
+  var idDep = 4;
   //Tableau contenant les departement
   $scope.depart = [{id:1,name:'Cuisine'},{id:2,name:'Salle'},{id:3,name:'Bar'}];
 
