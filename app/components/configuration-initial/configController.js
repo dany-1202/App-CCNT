@@ -39,20 +39,21 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   }
 
   this.test = function() {
-    var dataDepartement = {'nom': "Cuisine du chateau", 'noEta': "1"};
-    var $res = $http.post("assets/php/insertDepartement.php", dataDepartement);
-/* test de la modification d'un département
-    var dataDepartement = {'nom': "Cuisine du chateau2", 'depNo': "1"};
-    var $res = $http.post("assets/php/insertDepartement.php", dataDepartement);
+    //test de l'ajout d'un département
+    /*var dataDepartement = {'nom': "Cuisine du chateau", 'noEta': "1"};
+    var $res = $http.post("assets/php/insertDepartement.php", dataDepartement); */   
+/*
+ //test de la modification d'un département
+    var dataDepartement2 = {'depNom': "Cuisine du chateau2", 'etaId': "1"};
+    var $res = $http.post("assets/php/setDepartement.php", dataDepartement2);
 */
 /*
     var dataEtablissement = {'nom': "Chateau du fromage", 'adresse': "fromage land", 'telReservation': "0222222222", 'telDirection': "2222222222", 'email': "fromage@gmail.com", 'siteWeb': "fromage.ch", 'adresseInfo': "+ de gout", 'codePostal': "1225", 'localite': "léaksdjfélk", 'nbHeure': "99"};
     var $res = $http.post("assets/php/insertDepartement.php", dataEtablissement);
 */
-/*
-    var dataPersonne = {'nom': "Joel", 'prenom': "DaSilva", 'mail': "joel@gmail.com", 'mdp': "d8afab9d9d21a8906b16cb6eec67643602f7ecff38bc8dba1921d01a7c852b607df225ba1a0274f79b5d1b92ee2c45b4363d8f1fc84ebfba9bd245cdbb13ad98", 'token': "", 'dateNaissance': "1992-05-31", 'adresse': "thonex whsh", 'infoSuppAdresse': "fr", 'codePostal': "1221", 'ville': "thonex", 'admin': "1", 'telFixe': "026591651", 'telMobile': "419841", 'depId': "1"};
-    var $res = $http.post("assets/php/insertDepartement.php", dataDepartement);
-*/
+    var dataPersonne = {'nom': "da Silva", 'prenom': "Joel", 'mail': "joel@gmail.com", 'mdp': "d8afab9d9d21a8906b16cb6eec67643602f7ecff38bc8dba1921d01a7c852b607df225ba1a0274f79b5d1b92ee2c45b4363d8f1fc84ebfba9bd245cdbb13ad98", 'token': "", 'dateNaissance': "1992-05-31", 'adresse': "thonex whsh", 'infoSuppAdresse': "fr", 'codePostal': "1221", 'ville': "thonex", 'admin': "1", 'telFixe': "026591651", 'telMobile': "419841", 'depId': "1", 'perGenre': "M"};
+    var $res = $http.post("assets/php/insertPersonne.php", dataPersonne);
+
     $res.then(function (message) {
       console.log(message);
     });

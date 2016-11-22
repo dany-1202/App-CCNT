@@ -4,10 +4,9 @@
 	require_once("classes/EtatInitial.php");
 
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = InitialState::insertDepartement($data);
+	$res = InitialState::insertPersonne($data);
 
 	if ($res) {
-		//si erreur :
 		//echo(json_encode($res));
 		echo(json_encode($data));
 	}else {
