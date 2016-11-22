@@ -21,7 +21,9 @@ ctrlCCNT.service('NotifService', function(Notification) {
 		warningCon : function () {
 			Notification.warning({message: "<p class='notifTexte'> La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur </p>", title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> Connexion Base de données</h3>'});
 		},
-
+		infoCon : function(nom) {
+			Notification.info({message: "<p class='notifTexte'> Vous-êtes déjà connecté M." + nom + " !</p>", delay: 1500, title: '<h3 class="notifTitre"><i class="fa fa-info"></i> Statut Connexion</h3>'});
+		},
 		/* Fonction qui reçoivent en paramètre les messages et titres à afficher selon le type de notification */
 		success : function (titre, message) {
 			Notification.success({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> ' + titre + '</h3>'});
