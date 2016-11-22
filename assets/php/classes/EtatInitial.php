@@ -23,10 +23,15 @@ class InitialState {
 		$db = MySQLManager::get();
 		$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_eta_id`) VALUES (?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmtUp->bind_param('si', $data['nom'], $data['noEta']);
-		    $stmtUp->execute();
+			$stmt->bind_param('si', $data['nom'], $data['noEta']);
+		  $stmt->execute();
+		  if ($stmt->num_rows == 1) {
+		  	MySQLManager::close();
+		  	return true;
+		  }
 		}
 		MySQLManager::close();
+		return false;
 	}
 
 	/*Permet de modifier le nom d'un Departement de la table ccn_departement
@@ -39,8 +44,8 @@ class InitialState {
 		$db = MySQLManager::get();
 		$query = "UPDATE ccn_departement SET dep_nom = ? WHERE dep_id = ?";
 		if ($stmt = $db->prepare($query)) {
-			$stmtUp->bind_param('si', $d::getNom(), $d::getEtaId());
-		    $stmtUp->execute();
+			$stmt->bind_param('si', $d::getNom(), $d::getEtaId());
+		    $stmt->execute();
 		}
 	    MySQLManager::close();
 	}
@@ -55,8 +60,8 @@ class InitialState {
 		$query = "INSERT INTO ccn_etablissement (`dep_nom`, `dep_adresse`, `dep_telReservation`, `dep_telDirection`, `dep_email`, `dep_siteWeb`, `dep_adresseInfo`, `dep_codePostal`, `dep_localite`, `dep_nbHeure`) 
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmtUp->bind_param('sssssssisi', $e::getNom(), $e::getAdresse(), $e::getTelReservation(), $e::getTelDirection(), $e::getEmail(), $e::getSiteWeb(), $e::getAdresseInfo(), $e::getCodePostal(), $e::getLocalite(), $e::getNbHeure());
-		    $stmtUp->execute();
+			$stmt->bind_param('sssssssisi', $e::getNom(), $e::getAdresse(), $e::getTelReservation(), $e::getTelDirection(), $e::getEmail(), $e::getSiteWeb(), $e::getAdresseInfo(), $e::getCodePostal(), $e::getLocalite(), $e::getNbHeure());
+		    $stmt->execute();
 		}
 	    MySQLManager::close();
 	}
@@ -67,7 +72,7 @@ class InitialState {
 		$query = "INSERT INTO ccn_personne VALUES (-1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
 			//$stmtUp->bind_param('sssssdssisissi', $e::getNom(), $e::getAdresse(), $e::getTelReservation(), $e::getTelDirection(), $e::getEmail(), $e::getSiteWeb(), $e::getAdresseInfo(), $e::getCodePostal(), $e::getLocalite(), $e::getNbHeure());
-		    $stmtUp->execute();
+		    $stmt->execute();
 		}
 	    MySQLManager::close();
 	}
