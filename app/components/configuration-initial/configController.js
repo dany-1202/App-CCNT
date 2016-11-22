@@ -9,9 +9,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
   $scope.currentView = 1;
-  $scope.departement = [{dep:"nom"}, {dep:"ici"}, {dep:"salut"}, {dep:"lfajkslfa"}];
   $scope.pourcentage = 25;
+  $scope.depart = [{id:1,name:'Cuisine'},{id:2,name:'Salle'},{id:3,name:'Bar'}]; //Tableau contenant les departement
+  
+  var idDep = 4; // Id de départ
 
+  /* Change la vue du switch et met à jour les pourcentage pour l'étape */
   this.change = function(ev, no) {
     $scope.currentView = no;
     $scope.pourcentage += 25;
@@ -54,4 +57,21 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
       console.log(message);
     });
   }
+
+  // Ajouter un departement au tableau 
+   this.ajouterDepartement = function(){
+      if ($scope.depart.length < 8) {
+        $scope.depart.push({id:idDep,name:'Votre département'});
+        idDep++;
+      };
+   }
+
+   // Supression d'un departement qui se trouve dans le tableau
+   this.supprimerDepartement = function(id){
+      for (var i = 0; i < $scope.depart.length; i++) {
+          if ($scope.depart[i].id == id) {
+            $scope.depart.splice(i,1)
+          };
+      };
+   }
 });
