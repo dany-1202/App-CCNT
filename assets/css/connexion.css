@@ -7,46 +7,68 @@ Description : Feuille de style pour la page connexion.html;
 /*     padding: 24px!important    */
 
 .conteneur {
-	width: 100%;
-	background-color: #EFEBE9;
+	width: 100%!important;
+	/*background-color: #EFEBE9;*/
 	font-family: 'Roboto', sans-serif!important;
 	background-image: url('../img/fondecranconnexion.jpg');
-	/*background-image: url('../img/grey-gradient-background.jpg');*/
-	
 }
 
-
-.errorConnexion {
-	margin-top: 5px!important;
-	font-size: 12px!important;
-	color: #D50000;
-}
-
-.conteneurConnexion{
+.conteneurConnexion {
 	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
-	margin-left: auto!important;
-  margin-right: auto!important;
-  width: 50%!important;
+  width: 100%!important;
   padding-top: 50px!important;
   background-color: #795548!important;
+  height: 100%!important;
 }
 
-.conteneurConnexion:hover{
-	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.50),0 17px 50px 0 rgba(0,0,0,0.50)!important;
+.formulaireConnexion {
+	margin-left: auto!important;
+  margin-right: auto!important;
+  padding: 20px 0px 20px 0px;
+  width: 100%!important;
 }
 
+.connexionBouton {
+	line-height: 50px!important; /* centrage vertical */
+	margin: 0 auto!important;
+	text-align: center;
+}
+
+.btnConnexion {
+	font-size: 15px!important;
+	margin-bottom: 50px!important;
+	width: 300px!important;
+}
+
+.connexionInput{
+	line-height: 25px!important; /* centrage vertical */
+	margin: 0 auto!important;
+  text-align: center!important;
+  font-size: 17px!important;
+}
+
+.connexionInput input{
+	width: 300px!important;
+	text-align: center!important;
+}
+
+.padding-top {
+	padding-top: 30px!important;
+}
 
 .titreFormulaire {
   text-align: left;
 	min-width: 275px;
-	padding: 20px 0px 50px 50px!important;
-	font-size: 60px;
+	padding: 0px 0px 0px 0px!important;
+	font-size: 40px;
+	text-align: center;
 	display: block;
-	font-family: 'Gloria Hallelujah', cursive!important;
 	color: #3E2723!important;
+	height: 100px!important;
+	margin-left: 0px!important;
 }
 
-.titreSecondaire{
+.titreSecondaire {
   text-align: left;
 	min-width: 275px;
 	padding: 20px 0px 0px 50px!important;
@@ -55,43 +77,135 @@ Description : Feuille de style pour la page connexion.html;
 	color: #f2f2f2!important;
 }
 
-.formulaireConnexion {
-	margin-left: auto;
-  margin-right: auto;
-  padding: 20px 0px 20px 0px;
-	/*min-width: 275px;
-	width: 20%;*/
+.errorConnexion {
+	margin-top: 5px!important;
+	font-size: 12px!important;
+	color: #D50000;
 }
 
-.connexionBouton {
-	display: block;
-	margin: auto;
-	margin-top : -20px;
-}
-
-.btnConnexion {
-	padding-right: 10px!important;
-	padding-left: 10px!important;
-	font-size: 20!important;
-	width: 300px!important;
+.mdpOublie {
+	margin-top: -30px!important;
 	margin-bottom: 50px!important;
-}
-
-.connexionInput {
-	margin-top: 18px!important;
-	font-size: 18px;
-	display: block;
-	margin: auto;
-	margin-bottom: 18px!important
-}
-
-.connexionInput input {
-	width: 300px!important;
+	margin-left: auto!important;
+	margin-right: auto!important;
+	width: 100%!important;
+	margin-left: 0%!important;
 	text-align: center;
 }
 
-.conteneurInput {
-	margin-bottom: 20!important;
-	font-size: 18px;
-	margin-top : -40px!important;
+@media(max-width: 400px) {
+	.connexionInput input{
+		width: 200px!important;
+		text-align: center!important;
+	}
+	.btnConnexion {
+		font-size: 15px!important;
+		margin-bottom: 50px!important;
+		width: 200px!important;
+	}
 }
+
+
+@media(min-width:480px) {
+	/* Css Pour les titres (GPRH CCNT et LOGIN) */
+	.titreFormulaire {
+	  text-align: left;
+		min-width: 275px;
+		padding: 0px 0px 50px 50px!important;
+		font-size: 60px;
+		display: block;
+		color: #3E2723!important;
+		height: 100px!important;
+	}
+}
+
+@media screen and (min-width: 600px) and (max-width: 978px) {
+	.connexionInput input{
+		width: 400px!important;
+		text-align: center!important;
+	}
+	.btnConnexion {
+		font-size: 15px!important;
+		margin-bottom: 50px!important;
+		width: 400px!important;
+	}
+}
+
+/* Adapter aux smartphones et tablettes */
+@media(min-width:978px) {
+	.formulaireConnexion {
+		margin-left: auto;
+	  margin-right: auto;
+	  padding: 20px 0px 20px 0px;
+	  width: 100%!important;
+	}
+	.conteneurConnexion:hover {
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.50),0 17px 50px 0 rgba(0,0,0,0.50)!important;
+	}
+	.connexionBouton {
+		display: inline-block!important;
+		line-height: 50px!important; /* centrage vertical */
+		vertical-align: middle!important; /* centrage horizontal */
+		text-align: center!important;
+	}
+	.connexionInput {
+		display: inline-block!important;
+		vertical-align: middle!important;
+		text-align: center!important;
+		font-size: 17px!important;
+	}
+	.connexionInput input {
+		margin: 0 auto!important;
+		width: 325px!important;
+		text-align: center!important;	
+	}
+	.btnConnexion {
+		font-size: 15px!important;
+		margin-bottom: 50px!important;
+		width: 325px!important;
+	}
+	.conteneurFormulaire {
+		margin: 0 auto!important;
+		width: 100%!important;
+	}
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+	.conteneurConnexion {
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+		margin-left: auto!important;
+	  margin-right: auto!important;
+	  width: 70%!important;
+	  padding-top: 50px!important;
+	  background-color: #795548!important;
+	  height: 600px;
+	}
+}
+@media(min-width: 1440px) {
+	.conteneurConnexion {
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+		margin-left: auto!important;
+	  margin-right: auto!important;
+	  width: 50%!important;
+	  padding-top: 50px!important;
+	  background-color: #795548!important;
+	  height: 600px;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

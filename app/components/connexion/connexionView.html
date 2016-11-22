@@ -1,31 +1,33 @@
 <body ng-controller="connexionController" class="page conteneur">
 	<div class="conteneurConnexion">
-		<h1 class="titreFormulaire"> GPRH CCNT</h1><hr>
-		<h1 class="titreSecondaire"> Login</h1>
+		<h1 class="titreFormulaire"> CTRL CCNT</h1><hr>
+		<h1 class="titreSecondaire"> LOGIN</h1>
 			<div class="formulaireConnexion">
-				<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-					<div class="connexionInput">
-					  <md-input-container>
-						<label>Email</label>
-						<input type="text" ng-required="true" ng-maxlength="80" ng-model="user.login" ng-change="verificationChamps()"\>
-						<div class="errorConnexion" ng-hide="verificationChamps()"> L'email saisie n'est pas valide </div>
-					  </md-input-container>
-					</div>
-				</md-content>
-
-				<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding class="conteneurInput">
-					<div class="connexionInput">
-					  <md-input-container>
-						<label>Mot de passe</label>
-						<input ng-required="true" ng-minlenght= "4" ng-maxlength="50" ng-model="user.password" type="password">
-					  </md-input-container>
-					</div>
-				</md-content>
-				<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-					<div class="connexionBouton">
-						<md-button class="md-raised md-primary btnConnexion" ng-click="connexion()">Login</md-button>
-					</div>
-				</md-content>
+				<div class="conteneurFormulaire">
+					<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+						<div class="connexionInput padding-top">
+						  <md-input-container>
+							<label>Email</label>
+							<input type="text" class="input" ng-required="true" ng-maxlength="80" ng-model="user.login" ng-change="verificationChamps()"\>
+							<div class="errorConnexion" ng-hide="verificationChamps()"> L'email saisie n'est pas valide </div>
+						  </md-input-container>
+						</div>
+					</md-content>
+					<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+						<div class="connexionInput">
+						  <md-input-container>
+							<label>Mot de passe</label>
+							<input class="input" ng-required="true" ng-minlenght= "4" ng-maxlength="50" ng-model="user.password" type="password">
+						  </md-input-container>
+						</div>
+					</md-content>
+					<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+						<div class="connexionBouton">
+							<md-button class="md-raised md-primary btnConnexion" ng-click="connexion()">Login</md-button>
+							<div class="mdpOublie"><a  href="">Mot de passe oublié ?</a></div>
+						</div>
+					</md-content>
+				</div>
 	  	</div>
 	</div>
 </body>
