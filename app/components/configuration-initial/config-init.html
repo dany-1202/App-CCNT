@@ -20,7 +20,7 @@
                     <div class="col-lg-6">
                         <div class="centrer">
                             <span class="span-size-font">Nom du Département : </span><input class="centrer" value="{{item.name}}" type="text"></input>
-                            <md-button class="bouton bouton-s"><span class="glyphicon glyphicon-trash"></span></md-button>
+                            <md-button ng-click="ctrl.supprimerDepartement(item.id)" class="bouton bouton-s" aria-label="Button"><span class="glyphicon glyphicon-trash"></span></md-button>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="centrer">
-                        <md-button class="bouton bouton-xl">Ajouter Departement</md-button>
+                        <md-button ng-click="ctrl.ajouterDepartement()" class="bouton bouton-xl">Ajouter Departement</md-button>
                     </div>
                 </div>
             </div>

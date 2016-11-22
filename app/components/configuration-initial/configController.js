@@ -7,11 +7,12 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker) {
   var self = this;
+  var idDep = 4;
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
 
   //Tableau contenant les departement
-  $scope.depart = [{name:'Cuisine'},{name:'Salle'},{name:'Bar'}];
+  $scope.depart = [{id:1,name:'Cuisine'},{id:2,name:'Salle'},{id:3,name:'Bar'}];
 
 
 	this.showTimePicker = function(ev) {
@@ -28,4 +29,21 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
         $scope.currentTime2 = selectedDate;
       });;
    } 
+
+   //ajouter un departement au tableau 
+   this.ajouterDepartement = function(){
+      if ($scope.depart.length < 8) {
+        $scope.depart.push({id:idDep,name:'Votre département'});
+        idDep++;
+      };
+   }
+
+   //Supression d'un departement qui se trouve dans le tableau
+   this.supprimerDepartement = function(id){
+      for (var i = 0; i < $scope.depart.length; i++) {
+          if ($scope.depart[i].id == id) {
+            $scope.depart.splice(i,1)
+          };
+      };
+   }
 });
