@@ -39,10 +39,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   }
 
   this.test = function() {
-    var data = {'nom': "lfsdjljkjfsalk", 'noEta': "1"};
+    var data = {'nom': "Dep", 'noEta': "1"};
     var $res = $http.post("assets/php/insertDepartement.php", data);
     $res.then(function (message) {
-      console.log(message);
+      NotifService.success("Configuration-Initial","Tout vos paramètre ont bien été enregistrés");
+      $location.path('/home');
+      
     });
   }
 

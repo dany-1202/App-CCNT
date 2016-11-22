@@ -35,6 +35,10 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 	        	SessionService.set('user_prenom', authenData.user_prenom);
 	        	SessionService.set('user_type', authenData.user_type);
 	        	SessionService.set('user_token', authenData.user_token);
+	        	$rootScope.user = {};
+	        	$rootScope.user.nom = authenData.user_nom;
+	        	$rootScope.user.prenom = authenData.user_prenom;
+	        	$rootScope.user.type = authenData.user_type;
 	        	/* Connexion réussi*/
 	        	NotifService.successCon();
 	        	$location.path('/home');
