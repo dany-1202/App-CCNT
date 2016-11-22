@@ -4,7 +4,11 @@
 	require_once("classes/EtatInitial.php");
 
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = EtatInitial::insertDepartement($data);
-
-	echo(json_encode($res));  
+	$res = InitialState::insertDepartement($data);
+	if ($res) {
+		echo(json_encode($res));
+	}else {
+		echo("Impossible d'insérer le département");
+	}
+	
 ?>

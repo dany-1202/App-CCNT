@@ -25,7 +25,7 @@
                             <div class="col-lg-6">
                                 <div class="centrer">
                                     <span class="span-size-font">Nom du Département : </span><input class="centrer" value="{{item.dep}}" type="text"></input>
-                                    <md-button class="bouton bouton-s"><span class="glyphicon glyphicon-trash"></span></md-button>
+                                    <md-button aria-label="bouton" class="bouton bouton-s"><span class="glyphicon glyphicon-trash"></span></md-button>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                 <div ng-switch-when="4">
                     <!-- Ajouter la prévisualisation -->
                     Prévisualisation
-
+                    <md-button ng-click="ctrl.test()" class="bouton bouton-l">Suivant</md-button>
                 </div>
                 <div ng-switch-default> <!-- Par défaut -->
 
@@ -115,7 +115,6 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
