@@ -33,5 +33,13 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
       }).then(function(selectedDate) {
         $scope.currentTime2 = selectedDate;
       });;
-  } 
+  }
+
+  this.test = function() {
+    var data = {'nom': "lfsdjljkjfsalk", 'noEta': "1"};
+    var $res = $http.post("assets/php/insertDepartement.php", data);
+    $res.then(function (message) {
+      console.log(message);
+    });
+  }
 });
