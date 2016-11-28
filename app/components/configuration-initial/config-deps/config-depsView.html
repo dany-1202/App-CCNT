@@ -1,0 +1,69 @@
+            <!-- Configuration des départements -->
+            <div class="row">
+               <div class="col-lg-12 padding-bottom">
+                  <h2 class="no-margin-left">Départements</h1>
+               </div>
+            </div>
+           <!-- Gestion des départements de l'établissement sous forme de carré -->
+            <div class="row">
+               <div class="col-lg-12">
+                  <div class="centrer">
+                     <div id="grand-carre">
+                        <div id="carre-1" ng-click="ajouterDepartementTab($event)">
+                           <span class="label-carre-100"> {{depart[0].name}} </span>
+                        </div>
+                        <div id="carre-2" ng-click="ajouterDepartementTab($event)">
+                           <span class="label-carre-100">{{depart[1].name}}</span>
+                        </div>
+                        <div id="carre-3" ng-click="ajouterDepartementTab($event)">
+                           <span class="label-carre-50">{{depart[2].name}}</span>
+                        </div>
+                        <div id="carre-4" ng-click="ajouterDepartementTab($event)" class="transparence">
+                           <span class="label-carre-200">{{depart[3].name}}</span>
+                        </div>
+                        <div id="carre-5" ng-click="ajouterDepartementTab($event)" class="transparence">
+                           <span class="label-carre-100">{{depart[4].name}}</span>
+                        </div>
+                        <div id="carre-6" ng-click="ajouterDepartementTab($event)" class="transparence">
+                           <span class="label-carre-50">{{depart[5].name}}</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Gestion des départements de l'établissement sous forme de formulaire -->
+            <div ng-repeat="item in depart">
+               <div class="row">
+                  <div class="col-lg-3"></div>
+                  <div class="col-lg-6">
+                     <div class="centrer">
+                        <span class="span-size-font">Nom du Département : </span>
+                        <input ng-model="depart[$index].name" class="centrer" value="{{item.name}}" type="text" autofocus></input>
+                        <md-button ng-click="supprimerDepartement($event, item.id)" class="bouton bouton-s" aria-label="Button">
+                     <!--<span class="glyphicon glyphicon-trash"></span>-->
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        </md-button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-lg-12">
+                  <div class="centrer">
+                     <md-button ng-click="ajouterDepartement($event)" class="bouton bouton-xl">
+                        Ajouter Departement
+                     </md-button>
+                  </div>
+               </div>
+            </div>
+            <div class="row"><div class="col-lg-12"></div></div>
+               <div class="row">
+                  <div class="col-lg-12">
+                     <div class="centrer">
+                        <md-button ng-click="ctrl.previous($event,2)" class="bouton bouton-l">Précédent</md-button>
+                        <md-button ng-click="ctrl.next($event, 4)" class="bouton bouton-l">Suivant</md-button>
+                     </div>
+                  </div>
+               </div>
+            </div> 
