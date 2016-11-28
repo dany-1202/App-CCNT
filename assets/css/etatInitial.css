@@ -1,0 +1,53 @@
+body {
+	
+}
+
+.infoEtabMarginBot{
+	margin-bottom: 20px!important;
+}
+
+.infoEtabFormGauche {
+	margin-left: 20%!important;
+}
+
+
+.infoEtabFormDroite{
+	margin-right: 20%!important;
+	
+}
+
+@media(max-width: 767px) {
+	.infoEtabFormGauche {
+		margin-left: 20%!important;
+	}
+
+
+	.infoEtabFormDroite{
+		margin-right: 20%!important;
+		
+	}
+}
+
+@media(max-width: 500px) {
+	.infoEtabFormGauche {
+		margin-left: 10%!important;
+	}
+
+
+	.infoEtabFormDroite{
+		margin-right: 10%!important;
+		
+	}
+}
+
+@media(max-width: 365px) {
+	.infoEtabFormGauche {
+		margin-left: 5%!important;
+	}
+
+
+	.infoEtabFormDroite{
+		margin-right: 5%!important;
+		
+	}
+}

@@ -11,7 +11,7 @@ var ctrlCCNT = angular.module('ctrlCCNT'); // Importe les dépendances du parent
 * Ecoute de tous les changements qui se font dans l'application
 * 
 **/
-ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, Notification){
+ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
 	var routeSansLogin = ['/connexion'];
 
@@ -35,7 +35,7 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 				};
 				if (routeSansLogin.indexOf($location.path()) != -1 && message.data) {
 					$location.path('/home');
-					Notification.info('Vous êtes connecté !' + ' M. ' + SessionService.get('user_nom'));
+					NotifService.infoCon($rootScope.user.nom);
 				}
 			});
 		}

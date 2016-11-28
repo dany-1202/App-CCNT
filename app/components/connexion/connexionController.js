@@ -12,6 +12,7 @@ ctrlCCNT.controller('connexionController', function($scope, AuthenticationServic
 	  login: null,
 	  password: null,
 	};
+
   /* Lance la connexion */
   $scope.connexion = function() {
       if ($scope.user.login == null || $scope.user.password == null) { // Si un des champ est null 

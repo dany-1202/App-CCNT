@@ -6,39 +6,64 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker, NotifService) {
-  /* à mettre ce qu'on veut */
-  $scope.currentDate = new Date();
-  $scope.currentView = 1;
-  $scope.pourcentage = 25;
-  $scope.depart = [{id:1,name:'Cuisine'},{id:2,name:'Salle'},{id:3,name:'Bar'}]; //Tableau contenant les departement
   
+  $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
+  $scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
+  $scope.pourcentage = 20; // Valeur de pourcentage, avancement des étapes
+
+  /* Définition des horaires de la semaine */
+  $scope.hours = [
+                    {day: 'Lundi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Mardi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Mercredi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Jeudi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Vendredi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Samedi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Dimanche', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                  ]
+
+  /* Définition des départements de l'établissement */
+  $scope.depart = [{id:1,name:'Cuisine', carre:'carre-1'},{id:2,name:'Salle', carre:'carre-2'},{id:3,name:'Bar', carre:'carre-3'}]; //Tableau contenant les departement
+  
+  /* Tableau contenant les noms des champs de l'établissement */
+  $scope.infoEtablissement = [  
+                                {id:1,name:'Nom'}, 
+                                {id:2, name:'Adresse'},
+                                {id:3, name:'Adresse Infos +'}, 
+                                {id:4, name:'Tél. Réservation'},
+                                {id:5, name:'Tél. Direction'},
+                                {id:6, name:'Email'},
+                                {id:7, name:'Site Web'},
+                                {id:8, name:'Code Postal'},
+                                {id:9, name:'Localité'},
+                              ]; 
+
   var idDep = 4; // Id de départ
+  var self = this; // Référence sur le contrôleur
 
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */
-  this.change = function(ev, no) {
+  this.next = function(ev, no) {
     $scope.currentView = no;
-    $scope.pourcentage += 25;
+    $scope.pourcentage += 20;
   }
 
-  /* Affiche le timePicker pour ouverture */
-	this.showTimePicker = function(ev) {
-    	$mdpTimePicker($scope.currentTime, {
-        targetEvent: ev
-      }).then(function(selectedDate) {
-        $scope.currentTime = selectedDate;
-      });;
+  this.previous = function(ev, no) {
+    $scope.currentView = no;
+    $scope.pourcentage -= 20;
   }
 
-   /* Affiche le timePicker pour fermeture */
-   this.showTimePicker2 = function(ev) {
-    	$mdpTimePicker($scope.currentTime2, {
-        targetEvent: ev
-      }).then(function(selectedDate) {
-        $scope.currentTime2 = selectedDate;
-      });;
+  this.afficherHeure = function() {
+    for (var i = 0; i < $scope.hours.length; i++) {
+      console.log($scope.hours[i].day);
+      console.log($scope.hours[i].journee.debut);
+      console.log($scope.hours[i].journee.fin);
+      console.log($scope.hours[i].pause.debut);
+      console.log($scope.hours[i].pause.fin);
+    };
   }
 
   this.test = function() {
+<<<<<<< HEAD
     //test de l'ajout d'un département
     /*var dataDepartement = {'nom': "Cuisine du chateau", 'noEta': "1"};
     var $res = $http.post("assets/php/insertDepartement.php", dataDepartement); */   
@@ -54,25 +79,16 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
     var dataPersonne = {'nom': "da Silva", 'prenom': "Joel", 'mail': "joel@gmail.com", 'mdp': "d8afab9d9d21a8906b16cb6eec67643602f7ecff38bc8dba1921d01a7c852b607df225ba1a0274f79b5d1b92ee2c45b4363d8f1fc84ebfba9bd245cdbb13ad98", 'token': "", 'dateNaissance': "1992-05-31", 'adresse': "thonex whsh", 'infoSuppAdresse': "fr", 'codePostal': "1221", 'ville': "thonex", 'admin': "1", 'telFixe': "026591651", 'telMobile': "419841", 'depId': "1", 'perGenre': "M"};
     var $res = $http.post("assets/php/insertPersonne.php", dataPersonne);
 
+=======
+    /*var data = {'nom': "Dep", 'noEta': "1"};
+    var $res = $http.post("assets/php/insertDepartement.php", data);
+>>>>>>> refs/remotes/origin/appCCNT
     $res.then(function (message) {
-      console.log(message);
-    });
-  }
-
-  // Ajouter un departement au tableau 
-   this.ajouterDepartement = function(){
-      if ($scope.depart.length < 8) {
-        $scope.depart.push({id:idDep,name:'Votre département'});
-        idDep++;
-      };
-   }
-
-   // Supression d'un departement qui se trouve dans le tableau
-   this.supprimerDepartement = function(id){
-      for (var i = 0; i < $scope.depart.length; i++) {
-          if ($scope.depart[i].id == id) {
-            $scope.depart.splice(i,1)
-          };
-      };
-   }
+      
+      $location.path('/home');
+      
+    });*/
+    $location.path('/home');
+    NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");
+  }  
 });
