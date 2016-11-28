@@ -9,8 +9,19 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
   $scope.currentView = 1;
-  $scope.pourcentage = 25;
+  $scope.pourcentage = 20;
   $scope.depart = [{id:1,name:'Cuisine', carre:'carre-1'},{id:2,name:'Salle', carre:'carre-2'},{id:3,name:'Bar', carre:'carre-3'}]; //Tableau contenant les departement
+  $scope.infoEtablissement = [	{id:1,name:'Nom'}, 
+								{id:2, name:'Adresse'},
+								{id:3, name:'Adresse plus'}, 
+								{id:4, name:'telReservation'},
+								{id:5, name:'telDirection'},
+								{id:6, name:'email'},
+								{id:7, name:'siteWeb'},
+								{id:8, name:'codePostal'},
+								{id:9, name:'localite'},
+								{id:10, name:'nbHeure'}
+	]; // Tableau contenant les noms des champs de l'établissement
   
   var idDep = 4; // Id de départ
   var self = this; // Référence sur le contrôleur
@@ -19,12 +30,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */
   this.next = function(ev, no) {
     $scope.currentView = no;
-    $scope.pourcentage += 25;
+    $scope.pourcentage += 20;
   }
 
   this.previous = function(ev, no) {
     $scope.currentView = no;
-    $scope.pourcentage -= 25;
+    $scope.pourcentage -= 20;
   }
 
   /* Affiche le timePicker pour ouverture */
