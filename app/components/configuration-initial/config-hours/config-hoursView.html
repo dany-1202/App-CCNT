@@ -1,0 +1,76 @@
+            <!-- Horaires des établissements -->
+            <div class="row">
+               <div class="col-lg-12 padding-bottom">
+                  <h2 class="no-margin-left">Horaires de l'établissement</h1>
+               </div>
+               <div class="row padding-top--50">
+                  <div class="col-lg-3"></div>
+                  <div class="col-lg-6 padding-bottom">
+                     <div class="left">
+                        <h3>Nombre d'heures/semaine : </h3>
+                     </div>
+                     <div class="right padding-top-16"> 
+                        <h4><input class="centrer" style="width:125px" type="text"></input></h4>
+                     </div> 
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-12 padding-top">
+                  <div class="centrer">
+                     <table class="flat-table" style="text-align:center">
+                        <tbody>
+                           <tr>
+                              <th></th>
+                              <th ng-repeat="data in hours">{{data.day}}</th>
+                           </tr>
+                           <tr>
+                              <th rowspan="2">Journée</th>
+                              <td ng-repeat="data in hours">
+                                 <md-button class="btnS md-raised" ng-click="showTimeJourneeDebut($event, $index)" aria-label="show picker">
+                                    <strong>{{ data.journee.debut | date:'HH:mm' }}</strong>
+                                    <i class="espace-avant fa fa-clock-o"></i>
+                                 </md-button>
+                                 <span class="centrer"></span>
+                              </td>
+                           <tr>
+                              <td ng-repeat="data in hours">
+                                 <md-button class="btnS md-raised" ng-click="showTimeJourneeFin($event, $index)" aria-label="show picker">
+                                    <strong>{{ data.journee.fin | date:'HH:mm' }}</strong>
+                                    <i class="espace-avant fa fa-clock-o"></i>
+                                 </md-button>
+                              </td>
+                           </tr>
+
+                           <tr class="ligne">
+                              <th rowspan="2">Pause</th>
+                              <td ng-repeat="data in hours">
+                                 
+                                 <md-button class="btnS md-raised" ng-click="showTimePauseDebut($event, $index)" aria-label="show picker">
+                                    <strong>{{ data.pause.debut | date:'HH:mm' }}</strong>
+                                    <i class="espace-avant fa fa-clock-o"></i>
+                                 </md-button>
+                                 <span class="centrer"></span>
+                              </td>
+                           <tr>
+                              <td ng-repeat="data in hours">
+                                 <md-button class="btnS md-raised" ng-click="showTimePauseFin($event, $index)" aria-label="show picker">
+                                    <strong>{{ data.pause.fin | date:'HH:mm' }}</strong>
+                                    <i class="espace-avant fa fa-clock-o"></i>
+                                 </md-button>
+                              </td>
+                           </tr>   
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="row">
+                     <div class="col-lg-12 padding-top">
+                        <div class="centrer">
+                           <md-button ng-click="ctrl.previous($event,1)" class="bouton bouton-l">Précédent</md-button>
+                           <md-button ng-click="ctrl.next($event, 3)" class="bouton bouton-l">Suivant</md-button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
