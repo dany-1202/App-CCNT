@@ -8,7 +8,7 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker) {
    
    //var date = moment(new Date()).locale('fr').format('LL');
-   var date = moment().locale('fr').format('LL');
+   var = moment().locale('fr').format('LL');
   /* à mettre ce qu'on veut */
   $scope.currentDate = date;
 
