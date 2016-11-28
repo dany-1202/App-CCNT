@@ -5,30 +5,49 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
+<<<<<<< HEAD
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker) {
   var self = this;
   
+=======
+ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker, NotifService) {
+>>>>>>> appCCNT
   /* à mettre ce qu'on veut */
   $scope.currentDate = new Date();
+  $scope.currentView = 1;
+  $scope.departement = [{dep:"nom"}, {dep:"ici"}, {dep:"salut"}, {dep:"lfajkslfa"}];
+  $scope.pourcentage = 25;
 
+<<<<<<< HEAD
   var idDep = 4;
   //Tableau contenant les departement
   $scope.depart = [{id:1,name:'Cuisine'},{id:2,name:'Salle'},{id:3,name:'Bar'}];
 
 
+=======
+  this.change = function(ev, no) {
+    $scope.currentView = no;
+    $scope.pourcentage += 25;
+  }
+
+  /* Affiche le timePicker pour ouverture */
+>>>>>>> appCCNT
 	this.showTimePicker = function(ev) {
     	$mdpTimePicker($scope.currentTime, {
         targetEvent: ev
       }).then(function(selectedDate) {
         $scope.currentTime = selectedDate;
       });;
-   }
+  }
+
+   /* Affiche le timePicker pour fermeture */
    this.showTimePicker2 = function(ev) {
     	$mdpTimePicker($scope.currentTime2, {
         targetEvent: ev
       }).then(function(selectedDate) {
         $scope.currentTime2 = selectedDate;
       });;
+<<<<<<< HEAD
    } 
 
    //ajouter un departement au tableau 
@@ -47,4 +66,15 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
           };
       };
    }
+=======
+  }
+
+  this.test = function() {
+    var data = {'nom': "lfsdjljkjfsalk", 'noEta': "1"};
+    var $res = $http.post("assets/php/insertDepartement.php", data);
+    $res.then(function (message) {
+      console.log(message);
+    });
+  }
+>>>>>>> appCCNT
 });
