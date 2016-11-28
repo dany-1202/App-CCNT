@@ -8,6 +8,7 @@ Description : Feuille de style pour la page homeView.html
 
 .back-app {
 	min-height: 100vh!important;
+	width: 100%!important;
 	background-color: white!important;
 }
 
