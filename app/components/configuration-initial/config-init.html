@@ -111,7 +111,7 @@
                     </div>
                 </div>
 
-                <div ng-switch-default>
+                <div ng-switch-default ng-controller="config-hoursController">
                     <!-- Par défaut -->
                     <div class="row">
                         <div class="col-lg-12 padding-bottom">
@@ -146,7 +146,7 @@
                                         <th>Dimanche</th>
                                     </tr>
                                     <tr>
-                                       <th rowspan="2">Matin</th>
+                                       <th rowspan="2">Journée</th>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker2($event)" aria-label="show picker">
                                              <strong>{{ currentTime2 | date:'HH:mm' }}</strong>
@@ -239,48 +239,48 @@
                                  
                                          
                                     <tr class="ligne">
-                                      <th rowspan="2">Après-midi</th>
+                                      <th rowspan="2">Pause</th>
 
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                          <span class="centrer"></span>
                                        </td>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                        </td>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                        </td>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                        </td>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                        </td>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                        </td>
                                        <td>
                                          <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                         <strong>Ouverture</strong>
+                                         <strong>Début</strong>
                                          <i class="espace-avant fa fa-clock-o"></i>
                                          </md-button>
                                        </td>
@@ -289,43 +289,43 @@
 
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>
                                          <td>
                                            <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                           <strong>Fermeture</strong>
+                                           <strong>Fin</strong>
                                            <i class="espace-avant fa fa-clock-o"></i>
                                            </md-button>
                                          </td>

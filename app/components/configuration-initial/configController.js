@@ -10,6 +10,19 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   $scope.currentDate = new Date();
   $scope.currentView = 1;
   $scope.pourcentage = 25;
+
+  /* Définition des horaires de la semaine */
+  $scope.hours = [
+                    {day: 'lundi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'mardi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'mercredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'jeudi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'vendredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'samedi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'dimanche', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                 ]
+
+  /* Définition des départements de l'établissement */
   $scope.depart = [{id:1,name:'Cuisine', carre:'carre-1'},{id:2,name:'Salle', carre:'carre-2'},{id:3,name:'Bar', carre:'carre-3'}]; //Tableau contenant les departement
   
   var idDep = 4; // Id de départ
