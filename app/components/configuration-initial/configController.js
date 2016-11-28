@@ -13,13 +13,13 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
 
   /* Définition des horaires de la semaine */
   $scope.hours = [
-                    {day: 'lundi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'mardi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'mercredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'jeudi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'vendredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'samedi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'dimanche', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Lundi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Mardi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Mercredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Jeudi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Vendredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Samedi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Dimanche', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
                  ]
 
   /* Définition des départements de l'établissement */
