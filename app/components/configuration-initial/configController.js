@@ -13,19 +13,20 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
 
   /* Définition des horaires de la semaine */
   $scope.hours = [
-                    {day: 'Lundi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'Mardi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'Mercredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'Jeudi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'Vendredi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'Samedi', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
-                    {day: 'Dimanche', journee : {debut: null, fin: null}, pause: {debut: null, fin:null}},
+                    {day: 'Lundi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Mardi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Mercredi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Jeudi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Vendredi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Samedi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
+                    {day: 'Dimanche', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}},
                  ]
 
   /* Définition des départements de l'établissement */
   $scope.depart = [{id:1,name:'Cuisine', carre:'carre-1'},{id:2,name:'Salle', carre:'carre-2'},{id:3,name:'Bar', carre:'carre-3'}]; //Tableau contenant les departement
   
-    $scope.infoEtablissement = [  {id:1,name:'Nom'}, 
+    $scope.infoEtablissement = [  
+                {id:1,name:'Nom'}, 
                 {id:2, name:'Adresse'},
                 {id:3, name:'Adresse plus'}, 
                 {id:4, name:'telReservation'},
@@ -53,8 +54,8 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   }
 
   /* Affiche le timePicker pour ouverture */
-	this.showTimePicker = function(ev) {
-    	$mdpTimePicker($scope.currentTime, {
+  this.showTimePicker = function(ev) {
+      $mdpTimePicker($scope.currentTime, {
         targetEvent: ev
       }).then(function(selectedDate) {
         $scope.currentTime = selectedDate;
@@ -68,6 +69,15 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
       }).then(function(selectedDate) {
         $scope.currentTime2 = selectedDate;
       });;
+  }
+
+  this.afficherHeure = function() {
+    for (var i = 0; i < $scope.hours.length; i++) {
+      console.log($scope.hours[i].journee.debut);
+      console.log($scope.hours[i].journee.fin);
+      console.log($scope.hours[i].pause.debut);
+      console.log($scope.hours[i].pause.fin);
+    };
   }
 
   this.test = function() {
@@ -89,8 +99,8 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
       $(event.target).toggleClass("transparence");
       self.ajouterDepartement();
     } 
-    console.log($scope.depart[0].name);
   }
+
 
   // Ajouter un département au tableau depuis le bouton ajouter département
   this.ajouterDepartement = function(event){

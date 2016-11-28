@@ -15,7 +15,7 @@
       <hr> <!-- Ligne de séparation -->
       <!-- Affichage selon l'étape de la configuration -->
       <div ng-switch on = "currentView">
-         <div ng-switch-when="2">
+         <div ng-switch-when="2" ng-controller="config-hoursController as confHours">
             <!-- Horaires des établissements -->
             <div class="row">
                <div class="col-lg-12 padding-bottom">
@@ -45,24 +45,26 @@
                            <tr>
                               <th rowspan="2">Journée</th>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker2($event)" aria-label="show picker">
-                                    <strong>{{ data.debut | date:'HH:mm' }}</strong>
+                                 <md-button class="btnS md-raised" ng-click="confHours.showTimeJourneeDebut($event, $index)" aria-label="show picker">
+                                    <strong>{{ data.journee.debut | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
                                  <span class="centrer"></span>
                               </td>
                            <tr>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
-                                    <strong>{{ data.fin | date:'HH:mm' }}</strong>
+                                 <md-button class="btnS md-raised" ng-click="confHours.showTimeJourneeFin($event, $index)" aria-label="show picker">
+                                    <strong>{{ data.journee.fin | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
                               </td>
                            </tr>
+
                            <tr class="ligne">
                               <th rowspan="2">Pause</th>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker2($event)" aria-label="show picker">
+                                 
+                                 <md-button class="btnS md-raised" ng-click="confHours.showTimePauseDebut($event, $index)" aria-label="show picker">
                                     <strong>{{ data.pause.debut | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
@@ -70,7 +72,7 @@
                               </td>
                            <tr>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">
+                                 <md-button class="btnS md-raised" ng-click="confHours.showTimePauseFin($event, $index)" aria-label="show picker">
                                     <strong>{{ data.pause.fin | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
