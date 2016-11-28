@@ -47,7 +47,6 @@ ctrlCCNT.config(function ($httpProvider) {
         return {
             'responseError': function (rejection) {
                 if (rejection.status === 401) { // Si le status retourne 401
-
                     /* Redirection sur la page de connexion dès qu'il est connecté le retourne à la page qu'il souhaitait */
                     $location.url('/connexion?returnUrl=' + $location.path()); 
                 }
