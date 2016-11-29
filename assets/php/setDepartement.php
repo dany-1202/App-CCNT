@@ -10,7 +10,7 @@
 		//echo(json_encode($res));
 		echo(json_encode($data));
 	}else {
-		echo("Impossible d'insérer le département");
+		echo("Impossible de modifier le département");
 	}
 	
 ?>
