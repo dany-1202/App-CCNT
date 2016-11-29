@@ -131,6 +131,7 @@ td {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .no-margin-left {
 	left: 0px!important;
@@ -141,6 +142,11 @@ td {
 	left: 0px!important;
 }
 >>>>>>> appCCNT
+=======
+.no-margin-left {
+	left: 0px!important;
+}
+>>>>>>> refs/remotes/origin/Baptiste
 
 .padding-top-12 {
 	margin-top: -2px!important;
@@ -177,12 +183,15 @@ td {
 .espace-avant {
 	padding-left: 5px!important;
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 .padding-bottom-small {
 	padding-bottom : 5px!important;
 =======
 >>>>>>> appCCNT
+=======
+>>>>>>> refs/remotes/origin/Baptiste
 }
 
 .padding-bottom {
@@ -195,11 +204,14 @@ td {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 .span-size-font{
 	font-size: 20px;
 =======
 =======
 >>>>>>> appCCNT
+=======
+>>>>>>> refs/remotes/origin/Baptiste
 div#grand-carre {
 	width: 400px!important;
 	height: 200px!important;
@@ -349,7 +361,60 @@ div#carre-6:hover {
 .closebtn:hover {
     color: black;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> appCCNT
 =======
 >>>>>>> appCCNT
+=======
+}
+
+
+.infoEtabMarginBot{
+	margin-bottom: 20px!important;
+}
+
+.infoEtabFormGauche {
+	margin-left: 20%!important;
+}
+
+.infoEtabFormDroite{
+	margin-right: 20%!important;
+	
+}
+
+@media(max-width: 767px) {
+	.infoEtabFormGauche {
+		margin-left: 20%!important;
+	}
+
+
+	.infoEtabFormDroite{
+		margin-right: 20%!important;
+		
+	}
+}
+
+@media(max-width: 500px) {
+	.infoEtabFormGauche {
+		margin-left: 10%!important;
+	}
+
+
+	.infoEtabFormDroite{
+		margin-right: 10%!important;
+		
+	}
+}
+
+@media(max-width: 365px) {
+	.infoEtabFormGauche {
+		margin-left: 5%!important;
+	}
+
+
+	.infoEtabFormDroite{
+		margin-right: 5%!important;
+		
+	}
+>>>>>>> refs/remotes/origin/Baptiste
 }
