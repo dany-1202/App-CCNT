@@ -18,11 +18,13 @@ ctrlCCNT.directive('configDeps', function() {
 		  }
 		  // Ajouter un département au tableau depuis le bouton ajouter département
 		  scope.ajouterDepartement = function(event){
+		  	var length = scope.$parent.depart.length;
+		  	// Si la taille de depart est < 4 cela veut dire qu'il faut redéfinir idDep
 		    if (scope.$parent.depart.length < 4) {
-		      if (scope.$parent.depart.length == 3) {idDep = 4};
-		      if (scope.$parent.depart.length == 2) {idDep = 3};
-		      if (scope.$parent.depart == 1) {idDep = 2};
-		      if (scope.$parent.depart.length == 0) {idDep = 1};
+		      if (length == 3) {idDep = 4};
+		      if (length == 2) {idDep = 3};
+		      if (length == 1) {idDep = 2};
+		      if (length == 0) {idDep = 1};
 		    }
 		    if (scope.$parent.depart.length < 8) {
 		      scope.$parent.depart.push({id:idDep,name:'Votre département', carre:CARRE + idDep});
@@ -30,7 +32,7 @@ ctrlCCNT.directive('configDeps', function() {
 		      if ($(el).hasClass("transparence")) {
 		        $(el).toggleClass("transparence");
 		      }
-		      idDep++;
+		      
 		    };
 		  }
 		  // Supression d'un departement qui se trouve dans le tableau
@@ -42,9 +44,11 @@ ctrlCCNT.directive('configDeps', function() {
 		        };
 		    };
 		    var el = document.getElementById(CARRE + id);
-		    if (!$(el).hasClass("transparence")) {
+		    console.log(el);
+		    /*if (!$(el).hasClass("transparence")) {
 		      $(el).toggleClass('transparence');
-		    }
+		      idDep--;
+		    }*/
 		  }
     },
 	};
