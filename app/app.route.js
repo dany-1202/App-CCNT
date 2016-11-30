@@ -6,7 +6,7 @@
  * var xxx = angular.module('ctrlCCNT'); Ainsi je récupère les dépendances de ctrlCCNT.
 **/
                                           /* On déclare ici toutes les dépendances */
-var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers']);
+var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers']);
 
 /**
  * Configuration du module principal : ctrlCCNT

@@ -9,7 +9,9 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker) {
 			/* à rajouter ici (Fonctionne comme un contrôleur */
 			var date = moment().locale('fr').format('LL');
 			scope.currentDate = date;
+			scope.selectedDate = scope.$parent.selectedDate;
 			scope.showDatePicker = function(ev) {
+
 	    	$mdpDatePicker(scope.currentDate, {
 	        targetEvent: ev
 	      }).then(function(selectedDate) {
