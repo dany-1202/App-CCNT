@@ -36,7 +36,8 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
                                 {id:7, name:'Site Web'},
                                 {id:8, name:'Code Postal'},
                                 {id:9, name:'Localité'},
-                              ]; 
+                              ];
+  $scope.selectedDates = [];
 
   var idDep = 4; // Id de départ
   var self = this; // Référence sur le contrôleur
