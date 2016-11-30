@@ -7,8 +7,11 @@ ctrlCCNT.directive('configCalendar', function() {
         templateUrl : "app/components/configuration-initial/config-holidays/config-calendarView.html",
         link : function(scope, attrs, elements) {
             scope.dayFormat = "d";
-            //moment.lang('fr');
+
+            var date = new Date();
+            scope.year = date.getFullYear();
             scope.selectedDate = scope.$parent.selectedDates;
+            scope.month = date.getMonth();
             /*
             if (scope.selectedDate.length > 0) {
                 for (var i = 0; i < scope.selectedDate.length; i++) {
@@ -22,7 +25,9 @@ ctrlCCNT.directive('configCalendar', function() {
                                 {mois : '12', jour: '25', nom :"Noël"},
                                 {mois : '12', jour: '31', nom :"Réveillon de Nouvel an"}
                             ];
-            scope.firstDayOfWeek = 0; // First day of the week, 0 for Sunday, 1 for Monday, etc.
+            scope.firstDayOfWeek = 1; // First day of the week, 0 for Sunday, 1 for Monday, etc.
+
+
             scope.setDirection = function(direction) {
               scope.direction = direction;
               scope.dayFormat = direction === "vertical" ? "EEEE, MMMM d" : "d";
@@ -47,7 +52,6 @@ ctrlCCNT.directive('configCalendar', function() {
                 for (var i = 0; i < scope.holidays.length; i++) {
                     if (scope.holidays[i].mois == date.getMonth()+1 && scope.holidays[i].jour == date.getDate()){
                         texte = scope.holidays[i].nom;
-                        console.log("oui");
                     }
                 };
 
