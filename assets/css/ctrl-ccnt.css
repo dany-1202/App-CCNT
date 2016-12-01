@@ -26,7 +26,7 @@ Description : Feuille de style pour l'ensemble de l'application
 
 th {
 	/*border:1px solid black;*/
-  background-color: #00695c;
+  background-color: #5D4037!important;
   color: white;
   font-weight: bold;
   letter-spacing: 1px!important;
@@ -70,6 +70,7 @@ td {
 	color: white!important;
 }
 
+<<<<<<< HEAD
 .bouton-xl {
 	background-color: #795548!important;
 	color: white!important;
@@ -79,6 +80,24 @@ td {
 .bouton-xl:hover{
 	background-color: #3E2723!important;
 	color: white!important;
+=======
+.md-button.btnCal {
+	width: 75px!important;
+}
+
+.bouton-l {
+	width: 125px!important;
+}
+
+.md-button.btnS {
+	line-height: 0!important;
+	padding-left: 10px!important;
+	padding-right: 10px!important;
+	font-size: 15px!important;
+	text-transform: none!important;
+	margin-left: 0!important;
+	width: 120px!important;
+>>>>>>> appCCNT
 }
 
 .carte-info {
@@ -155,10 +174,8 @@ td {
 	}
 }
 
-.bouton-l {
-	width: 125px!important;
-}
 
+<<<<<<< HEAD
 .bouton-s {
 	width: 15px!important;
 }
@@ -172,6 +189,8 @@ td {
 	margin-left: 0!important;
 	width: 120px!important;
 }
+=======
+>>>>>>> appCCNT
 
 .espace-avant {
 	padding-left: 5px!important;
@@ -201,9 +220,9 @@ div#grand-carre {
 	border: 2px solid black !important;
 	border-radius: 1%!important;
 	margin-left: auto!important;
-  margin-right: auto!important;
-  margin-bottom: 50px!important;
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	margin-right: auto!important;
+	margin-bottom: 50px!important;
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
 }
 
 div#carre-1 {
@@ -353,9 +372,9 @@ div#carre-8:hover {
 
 .alert {
 	border-left: 5px solid black;
-  padding: 10px;
-  background-color: #0097A7;
-  color: white;
+  	padding: 10px;
+  	background-color: #0097A7;
+  	color: white;
 }
 
 .closebtn {
@@ -371,4 +390,8 @@ div#carre-8:hover {
 
 .closebtn:hover {
     color: black;
+}
+
+.required .control-label:after {
+  content:"*";color:red;
 }

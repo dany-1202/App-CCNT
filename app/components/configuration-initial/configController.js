@@ -27,27 +27,28 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   
   /* Tableau contenant les noms des champs de l'établissement */
   $scope.infoEtablissement = [  
-                                {id:1,name:'Nom'}, 
-                                {id:2, name:'Adresse'},
-                                {id:3, name:'Adresse Infos +'}, 
-                                {id:4, name:'Tél. Réservation'},
-                                {id:5, name:'Tél. Direction'},
-                                {id:6, name:'Email'},
-                                {id:7, name:'Site Web'},
-                                {id:8, name:'Code Postal'},
-                                {id:9, name:'Localité'},
-                              ]; 
+                                {id:1, type: 'text', name:'Nom', value:null}, 
+                                {id:2, type: 'text', name:'Adresse', value:null},
+                                {id:3, type: 'text', name:'Adresse Infos +', value:null}, 
+                                {id:4, type: 'tel', name:'Tél. Réservation', value:null},
+                                {id:5, type: 'tel', name:'Tél. Direction', value:null},
+                                {id:6, type: 'email', name:'Email', value:null},
+                                {id:7, type: 'url', name:'Site Web', value:null},
+                                {id:8, type: 'number', name:'Code Postal', value:null},
+                                {id:9, type: 'text', name:'Localité', value:null},
+                              ];
+  $scope.selectedDates = [];
 
   var idDep = 4; // Id de départ
   var self = this; // Référence sur le contrôleur
 
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */
-  this.next = function(ev, no) {
+  this.next = function(no) {
     $scope.currentView = no;
     $scope.pourcentage += 20;
   }
 
-  this.previous = function(ev, no) {
+  this.previous = function(no) {
     $scope.currentView = no;
     $scope.pourcentage -= 20;
   }
@@ -58,13 +59,50 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
       console.log($scope.hours[i].journee.debut);
       console.log($scope.hours[i].journee.fin);
       console.log($scope.hours[i].pause.debut);
-      console.log($scope.hours[i].pause.fin);
+      console.log($scope.hsours[i].pause.fin);
     };
   }
 
+  /* Description : Fonction de test pour les API php*/
   this.test = function() {
+    //test de l'ajout d'un département
+    /*var dataDepartement = {'nom': "Cuisine du chateau", 'noEta': "1"};
+    var $res = $http.post("assets/php/insertDepartement.php", dataDepartement); */   
+/*
+    //test de la modification d'un département
+    var dataDepartement2 = {'depNom': "Cuisine du chateau2", 'etaId': "1"};
+    var $res = $http.post("assets/php/setDepartement.php", dataDepartement2);
+*/
+
+    //test de l'ajout d'un établissement
+    var dataEtablissement = { 'nom': "Chateau du fromage", 
+                              'adresse': "fromage land", 
+                              'telReservation': "0222222222", 
+                              'telDirection': "2222222222", 
+                              'email': "fromage@gmail.com", 
+                              'siteWeb': "fromage.ch", 
+                              'adresseInfo': "plus de gout", 
+                              'codePostal': "1225", 
+                              'localite': "léaksdjfélk", 
+                              'nbHeure': "99"};
+
+    var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
+
+/*
+    var dataFermetureInfo = {'date': "1992-05-31", 'etaId': "1"};
+    var $res = $http.post("assets/php/insertFermetureInfo.php", dataFermetureInfo);
+*/
+/*
+    var dataInsertOuvertureInfo = {'jour': "lundi", 'debut': "2016-11-09 10:00:00", 'fin': "2016-11-09 12:00:00",'etaId': "1"};
+    var $res = $http.post("assets/php/insertOuvertureInfo.php", dataInsertOuvertureInfo);
+*/
+/* 
+    var dataPersonne = {'nom': "da Silva", 'prenom': "Joel", 'mail': "joel@gmail.com", 'mdp': "d8afab9d9d21a8906b16cb6eec67643602f7ecff38bc8dba1921d01a7c852b607df225ba1a0274f79b5d1b92ee2c45b4363d8f1fc84ebfba9bd245cdbb13ad98", 'token': "", 'dateNaissance': "1992-05-31", 'adresse': "thonex whsh", 'infoSuppAdresse': "fr", 'codePostal': "1221", 'ville': "thonex", 'admin': "1", 'telFixe': "026591651", 'telMobile': "419841", 'depId': "1", 'perGenre': "M"};
+    var $res = $http.post("assets/php/insertPersonne.php", dataPersonne);
+*/  
     /*var data = {'nom': "Dep", 'noEta': "1"};
     var $res = $http.post("assets/php/insertDepartement.php", data);
+>>>>>>> refs/remotes/origin/appCCNT
     $res.then(function (message) {
       
       $location.path('/home');
