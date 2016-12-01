@@ -345,3 +345,7 @@ div#carre-8:hover {
 .closebtn:hover {
     color: black;
 }
+
+.required .control-label:after {
+  content:"*";color:red;
+}
