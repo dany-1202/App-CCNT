@@ -40,15 +40,20 @@
             <!-- Gestion des départements de l'établissement sous forme de formulaire -->
             <div ng-repeat="item in depart">
                <div class="row">
-                  <div class="col-lg-3"></div>
-                  <div class="col-lg-6">
-                     <div class="centrer">
-                        <span class="span-size-font">Nom du Département : </span>
-                        <input ng-model="depart[$index].name" class="centrer" value="{{item.name}}" type="text" autofocus></input>
-                        <md-button ng-click="supprimerDepartement($event, item.id)" class="bouton bouton-s" aria-label="Button">
-                     <!--<span class="glyphicon glyphicon-trash"></span>-->
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                        </md-button>
+                        <div class="col-md-3"> </div>
+                        <div class="col-md-5">
+                        <!--<span class="span-size-font">Nom du Département : </span>-->
+                           <input ng-model="depart[$index].name" placeholder="{{item.name}}" class="form-control centrer" value="{{item.name}}" type="text" autofocus> 
+                           </input>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="left">
+                              <md-button ng-click="supprimerDepartement($event, item.id)" aria-label="Button" class="bouton bouton-s poubelleDep">
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                              </md-button>
+                           </div>
+                           
+                        </div>
                      </div>
                   </div>
                </div>

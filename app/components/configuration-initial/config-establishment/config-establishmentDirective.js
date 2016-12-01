@@ -26,7 +26,7 @@ ctrlCCNT.directive('configEstablishment', function() {
 						cpt++;
 					}
 				};
-				if (cpt == 0) {scope.$parent.ctrl.next(2);} // Je passe à l'étape suivante
+				//if (cpt == 0) {scope.$parent.ctrl.next(2);} // Je passe à l'étape suivante
 			}
     },
 	};
