@@ -27,15 +27,15 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   
   /* Tableau contenant les noms des champs de l'établissement */
   $scope.infoEtablissement = [  
-                                {id:1,name:'Nom'}, 
-                                {id:2, name:'Adresse'},
-                                {id:3, name:'Adresse Infos +'}, 
-                                {id:4, name:'Tél. Réservation'},
-                                {id:5, name:'Tél. Direction'},
-                                {id:6, name:'Email'},
-                                {id:7, name:'Site Web'},
-                                {id:8, name:'Code Postal'},
-                                {id:9, name:'Localité'},
+                                {id:1, type: 'text', name:'Nom', value:null}, 
+                                {id:2, type: 'text', name:'Adresse', value:null},
+                                {id:3, type: 'text', name:'Adresse Infos +', value:null}, 
+                                {id:4, type: 'tel', name:'Tél. Réservation', value:null},
+                                {id:5, type: 'tel', name:'Tél. Direction', value:null},
+                                {id:6, type: 'email', name:'Email', value:null},
+                                {id:7, type: 'url', name:'Site Web', value:null},
+                                {id:8, type: 'number', name:'Code Postal', value:null},
+                                {id:9, type: 'text', name:'Localité', value:null},
                               ];
   $scope.selectedDates = [];
 
@@ -43,12 +43,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   var self = this; // Référence sur le contrôleur
 
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */
-  this.next = function(ev, no) {
+  this.next = function(no) {
     $scope.currentView = no;
     $scope.pourcentage += 20;
   }
 
-  this.previous = function(ev, no) {
+  this.previous = function(no) {
     $scope.currentView = no;
     $scope.pourcentage -= 20;
   }
