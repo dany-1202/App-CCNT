@@ -1,0 +1,32 @@
+<md-dialog aria-label="Configuration de la semaine">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Configuration de la semaine</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h2>Voulez-vous configurer le reste de la semaine en prennant les mêmes horaires ?</h2>
+        <md-checkbox md-indeterminate
+              aria-label="Checkbox Indeterminate" class="md-primary">
+            Tous les jours
+        </md-checkbox>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" ng-click="answer('not useful')">
+        Annuler
+      </md-button>
+      <md-button class="bouton" ng-click="answer('useful')">
+        Enregistrer
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

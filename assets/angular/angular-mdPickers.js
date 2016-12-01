@@ -607,7 +607,7 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 	};
     
     this.cancel = function() {
-        $mdDialog.cancel();
+        $mdDialog.hide('Annuler');
     };
 
     this.confirm = function() {
