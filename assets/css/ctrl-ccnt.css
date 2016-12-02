@@ -438,3 +438,13 @@ div#carre-8:hover {
 .margin-bottom-10 {
 	margin-bottom : -25px!important;
 }
+
+.margin-left {
+	margin-left: 25px !important;
+}
+
+.cent {
+	margin : auto 0 !important;
+	margin-left: 45%!important;
+	margin-right: 45%!important;
+}

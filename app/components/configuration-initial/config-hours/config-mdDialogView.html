@@ -9,22 +9,33 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content class="padding-top">
       <div class="md-dialog-content">
-        <h2>Voulez-vous configurer le reste de la semaine en prennant les mêmes horaires ?</h2>
-        <md-checkbox md-indeterminate
-              aria-label="Checkbox Indeterminate" class="md-primary">
-            Tous les jours
-        </md-checkbox>
+
+        <div class="panel panel-default">
+          <div class="panel-heading centrer" style="background-color: white">
+            <h2>Voulez-vous configurer le reste de la semaine en prennant les mêmes horaires ?</h2>
+          </div>
+          <div class="panel-body">
+                <div class="row" ng-repeat="item in days">
+                  <div class="col-md-5"></div>
+                  <div class="col-md-6">
+                    <md-checkbox ng-model="{{item.chosen}}" aria-label="{{item.day}}" class="md-primary">
+                      {{item.day}}
+                    </md-checkbox>
+                  </div>
+                </div>
+          </div>
+        </div>
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button class="md-raised md-primary" ng-click="answer('not useful')">
+      <md-button class="md-raised" ng-click="cancel()">
         Annuler
       </md-button>
-      <md-button class="bouton" ng-click="answer('useful')">
+      <md-button class="bouton" ng-click="addHoursWeek()">
         Enregistrer
       </md-button>
     </md-dialog-actions>
