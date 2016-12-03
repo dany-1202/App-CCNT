@@ -13,6 +13,7 @@ ctrlCCNT.directive('configDeps', function() {
 		  scope.ajouterDepartementTab = function(event){
 		  	var length = scope.$parent.depart.length;
 		  	scope.ajouterDepartement(event);
+		  	
 		  	/*
 		    if ($(event.target).get(0).nodeName=="SPAN") {return;} // Si je clique sur le span
 		    
