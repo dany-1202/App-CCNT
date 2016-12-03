@@ -607,7 +607,7 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 	};
     
     this.cancel = function() {
-        $mdDialog.cancel();
+        $mdDialog.hide('Annuler');
     };
 
     this.confirm = function() {
@@ -761,7 +761,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
 
 module.provider("$mdpTimePicker", function() {
     var LABEL_OK = "OK",
-        LABEL_CANCEL = "Cancel";
+        LABEL_CANCEL = "Supprimer";
         
     this.setOKButtonLabel = function(label) {
         LABEL_OK = label;
@@ -800,8 +800,8 @@ module.provider("$mdpTimePicker", function() {
                                     
                                     '<md-dialog-actions layout="row">' +
 	                                	'<span flex></span>' +
-                                        '<md-button ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '<md-button class="md-raised" ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
+                                        '<md-button ng-click="timepicker.confirm()" class="md-raised md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
