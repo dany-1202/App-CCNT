@@ -54,6 +54,20 @@ td {
 	padding-right: 15px!important;
 }
 
+.bouton-prec {
+	background-color: #EEEEEE!important;
+	color: black!important;
+	padding-left: 15px!important;
+	padding-right: 15px!important;
+}
+
+.bouton-prec:hover {
+	background-color: #BDBDBD!important;
+	color: black!important;
+	padding-left: 15px!important;
+	padding-right: 15px!important;
+}
+
 .bouton:hover {
 	background-color: #3E2723!important;
 	color: white!important;
@@ -176,8 +190,12 @@ div#grand-carre {
 	margin-left: auto!important;
 	margin-right: auto!important;
 	margin-bottom: 50px!important;
+	word-wrap: break-word!important;
+	hyphens: auto!important;
 	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
 }
+
+
 
 div#carre-1 {
 	float: left;
@@ -185,6 +203,7 @@ div#carre-1 {
 	width: 125px!important;
 	height: 100px!important;
 	background-color: #00695c!important;
+	overflow: hidden!important;
 }
 
 div#carre-1:hover {
@@ -198,6 +217,7 @@ div#carre-2 {
 	width: 185px!important;
 	height: 96px!important;
 	background-color: #388e3c!important;
+	overflow: hidden!important;
 }
 
 div#carre-2:hover {
@@ -211,6 +231,7 @@ div#carre-3 {
 	width: 50px!important;
 	height: 50px!important;
 	background-color: #039be5!important;
+	overflow: hidden!important;
 }
 
 div#carre-3:hover {
@@ -225,6 +246,7 @@ div#carre-4 {
 	height: 197px!important;
 	background-color: #f57c00!important;
 	margin-top: -150px!important;
+	overflow: hidden!important;
 }
 
 div#carre-4:hover {
@@ -239,7 +261,7 @@ div#carre-5 {
 	height: 96px!important;
 	background-color: #6d4c41!important;
 	margin-top: -97px!important;
-
+	overflow: hidden!important;
 }
 
 div#carre-5:hover {
@@ -254,6 +276,7 @@ div#carre-6 {
 	width: 50px!important;
 	height: 46px!important;
 	background-color: #7e57c2!important;
+	overflow: hidden!important;
 }
 
 div#carre-6:hover {
@@ -268,6 +291,7 @@ div#carre-7 {
 	width: 185px!important;
 	height: 50px!important;
 	background-color: #689F38!important;
+	overflow: hidden!important;
 }
 
 div#carre-7:hover {
@@ -282,12 +306,158 @@ div#carre-8 {
 	width: 185px!important;
 	height: 50px!important;
 	background-color: #616161!important;
+	overflow: hidden!important;
 }
 
 div#carre-8:hover {
 	cursor: pointer;
 	background-color:#212121!important;
 	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+}
+
+@media (max-width: 500px) {
+ 	div#grand-carre {
+		width: 300px;
+		height: 300px!important;
+		border: 2px solid black !important;
+		border-radius: 1%!important;
+		margin-left: auto!important;
+		margin-right: auto!important;
+		margin-bottom: 50px!important;
+		word-wrap: break-word!important;
+		hyphens: auto!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+	div#carre-1 {
+		float: left;
+		clear: both;
+		width: 146px!important;
+		height: 100px!important;
+		background-color: #00695c!important;
+		overflow: hidden!important;
+	}
+
+	div#carre-1:hover {
+		cursor: pointer;
+		background-color: #004d40!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+	div#carre-2 {
+		float: right!important;
+		width: 150px!important;
+		height: 100px!important;
+		background-color: #388e3c!important;
+		overflow: hidden!important;
+	}
+
+
+	div#carre-3 {
+		margin-top: 100px!important;
+		width: 146px!important;
+		height: 100px!important;
+		background-color: #039be5!important;
+		overflow: hidden!important;
+	}
+
+	div#carre-4 {
+		float: right!important;
+		margin-top: -100px!important;
+		width: 150px!important;
+		height: 100px!important;
+		background-color: #f57c00!important;
+		overflow: hidden!important;
+	}
+
+	div#carre-4:hover {
+		cursor: pointer;
+		background-color:#e65100!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+	div#carre-5 {
+		width: 146px!important;
+		height: 50px!important;
+		background-color: #6d4c41!important;
+		overflow: hidden!important;
+		margin-top : -0px!important;
+		margin-left : 0px!important;
+	}
+
+	div#carre-5:hover {
+		cursor: pointer;
+		background-color:#3e2723!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+	div#carre-6 {
+		float: right!important;
+		margin-top : -50px!important;
+		width: 150px!important;
+		height: 50px!important;
+		background-color: #7e57c2!important;
+		overflow: hidden!important;
+	}
+
+	div#carre-6:hover {
+		cursor: pointer;
+		background-color:#512da8!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+
+	div#carre-7 {
+		float: left!important;
+		margin-top : 0px!important;
+		width: 146px!important;
+		height: 46px!important;
+		background-color: #689F38!important;
+		overflow: hidden!important;
+	}
+
+	div#carre-7:hover {
+		cursor: pointer;
+		background-color:#33691E!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+	div#carre-8 {
+		float: right!important;
+		margin-top : 0px!important;
+		width: 150px!important;
+		height: 46px!important;
+		background-color: #616161!important;
+		overflow: hidden!important;
+	}
+
+	div#carre-8:hover {
+		cursor: pointer;
+		background-color:#212121!important;
+		box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16),0 17px 50px 0 rgba(0,0,0,0.16)!important;
+	}
+
+	div#carre-3 span.label-carre-50 {
+		text-align: center!important;
+		color: white!important;
+		font-size: 15px;
+		line-height:100px;
+	}
+
+	div#carre-4 span.label-carre-200 {
+		text-align: center!important;
+		color: white!important;
+		font-size: 15px;
+		line-height:100px;
+	}
+
+	div#carre-5 span.label-carre-100 {
+		text-align: center!important;
+		color: white!important;
+		font-size: 15px;
+		line-height:50px;
+	}
+
 }
 
 .label-carre-200{
@@ -359,6 +529,8 @@ div#carre-8:hover {
 .poubelleDep {
 	margin-top: 0px!important;
 }
+
+
 
 
 @media (max-width: 992px) {
@@ -448,3 +620,4 @@ div#carre-8:hover {
 	margin-left: 45%!important;
 	margin-right: 45%!important;
 }
+

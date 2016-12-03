@@ -4,8 +4,6 @@
       <div class="md-toolbar-tools">
         <h2>Configuration de la semaine</h2>
         <span flex></span>
-        <md-button class="md-icon-button" ng-click="cancel()">
-        </md-button>
       </div>
     </md-toolbar>
 
@@ -14,13 +12,14 @@
 
         <div class="panel panel-default">
           <div class="panel-heading centrer" style="background-color: white">
-            <h2>Voulez-vous configurer le reste de la semaine en prennant les mêmes horaires ?</h2>
+            <h2>Veuillez choisir les jours qui reprendront les mêmes horaires :</h2>
           </div>
           <div class="panel-body">
                 <div class="row" ng-repeat="item in days">
                   <div class="col-md-5"></div>
                   <div class="col-md-6">
-                    <md-checkbox ng-model="{{item.chosen}}" aria-label="{{item.day}}" class="md-primary">
+
+                    <md-checkbox aria-label="{{item.day}}" ng-model="item.chosen" class="md-primary">
                       {{item.day}}
                     </md-checkbox>
                   </div>
@@ -32,10 +31,10 @@
 
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button class="md-raised" ng-click="cancel()">
+      <md-button class="md-raised" aria-label="Annuler" ng-click="cancel()">
         Annuler
       </md-button>
-      <md-button class="bouton" ng-click="addHoursWeek()">
+      <md-button class="bouton" aria-label="Enregistrer" ng-click="answer()">
         Enregistrer
       </md-button>
     </md-dialog-actions>
