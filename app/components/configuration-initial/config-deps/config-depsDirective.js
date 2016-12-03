@@ -12,7 +12,12 @@ ctrlCCNT.directive('configDeps', function() {
       // Ajouter un departement au tableau depuis la div visuel des départements
 		  scope.ajouterDepartementTab = function(event){
 		  	var length = scope.$parent.depart.length;
+		  	scope.ajouterDepartement(event);
+		  	
+		  	/*
 		    if ($(event.target).get(0).nodeName=="SPAN") {return;} // Si je clique sur le span
+		    
+
 		    $(event.target).children('span').val('{{depart[1].name}}');
 		    if ($(event.target).hasClass("transparence")) {
 		      $(event.target).toggleClass("transparence");
@@ -26,7 +31,7 @@ ctrlCCNT.directive('configDeps', function() {
 			      
 			    };
 		      
-		    }
+		    }*/
 		  }
 		  // Ajouter un département au tableau depuis le bouton ajouter département
 		  scope.ajouterDepartement = function(event){

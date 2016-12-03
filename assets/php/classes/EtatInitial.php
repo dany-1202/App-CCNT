@@ -55,7 +55,6 @@ class InitialState {
 		return false;
 	}
 
-	//pas testée !!!!!!!
 	/*Permet d'ajouter un Etablissement dans la table ccn_etablissement
 	  En paramètre: un tableau de data[] contenant :
 		le nom, l'adresse, le teléphone de réservation, le téléphone de direction, l'email, 
@@ -67,13 +66,11 @@ class InitialState {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sssssssisi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
 			$stmt->execute();
-			if ($stmt->num_rows == 1) {
-			  	MySQLManager::close();
-			  	return true;
-		  	}
+			MySQLManager::close();
+			return $stmt->insert_id;
 		}
 		MySQLManager::close();
-		return false;
+		return -1;
 	}
 
 	/*Permet d'ajouter les données d'une personne dans la table ccn_personne

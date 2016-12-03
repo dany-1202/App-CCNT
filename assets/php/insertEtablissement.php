@@ -6,9 +6,9 @@
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
 	$res = InitialState::insertEtablissement($data);
 
-	if ($res) {
+	if ($res != -1) {
 		//echo(json_encode($res));
-		echo(json_encode($data));
+		echo(json_encode($res));
 	}else {
 		echo("Impossible d'insérer l'établissement");
 	}
