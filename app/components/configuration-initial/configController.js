@@ -6,10 +6,11 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker, NotifService) {
-  
+  $scope.nbSteps = 4;
+  $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
   $scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
-  $scope.pourcentage = 20; // Valeur de pourcentage, avancement des étapes
+  $scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
 
   $scope.nbHoursChosen = null;
 
@@ -50,12 +51,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */
   this.next = function(no) {
     $scope.currentView = no;
-    $scope.pourcentage += 20;
+    $scope.pourcentage += $scope.nbPercentage;
   }
 
   this.previous = function(no) {
     $scope.currentView = no;
-    $scope.pourcentage -= 20;
+    $scope.pourcentage -= $scope.nbPercentage;
   }
 
   this.afficherHeure = function() {
@@ -68,14 +69,14 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
     };
   }
 
-  this.test = function() {
-    /*var data = {'nom': "Dep", 'noEta': "1"};
-    var $res = $http.post("assets/php/insertDepartement.php", data);
-    $res.then(function (message) {
-      
-      $location.path('/home');
-      
-    });*/
+  this.saveConfiguration = function() {
+    for (var i = 0; i < $scope.infoEtablissement.length; i++) {
+      $scope.infoEtablissement[i]
+      var $res = $http.post("assets/php/insertDepartement.php", data);
+      $res.then(function (message) {
+
+      });
+    };
     $location.path('/home');
     NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");
   }  
