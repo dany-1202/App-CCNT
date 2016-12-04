@@ -2,7 +2,13 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+<<<<<<< HEAD
+--
+-- Base de données :  `ccnt`
+--
+=======
 
+>>>>>>> refs/remotes/origin/Baptiste
 CREATE DATABASE IF NOT EXISTS `ccnt` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `ccnt`;
 
