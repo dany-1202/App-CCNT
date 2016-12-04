@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
   $scope.nbSteps = 4;
   $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -34,15 +34,15 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
   
   /* Tableau contenant les noms des champs de l'établissement */
   $scope.infoEtablissement = [  
-                                {id:1, type: 'text', name:'Nom', value:null}, 
-                                {id:2, type: 'text', name:'Adresse', value:null},
-                                {id:3, type: 'text', name:'Adresse Infos +', value:null}, 
-                                {id:4, type: 'tel', name:'Tél. Réservation', value:null},
-                                {id:5, type: 'tel', name:'Tél. Direction', value:null},
-                                {id:6, type: 'text', name:'Email', value:null},
-                                {id:7, type: 'text', name:'Site Web', value:null},
-                                {id:8, type: 'number', name:'Code Postal', value:null},
-                                {id:9, type: 'text', name:'Localité', value:null},
+                                {id:1, type: 'text', name:'Nom', value:"",min:2, max:40,error:false,message:"Le nom n'est pas correct!"}, 
+                                {id:2, type: 'text', name:'Adresse', value:"",min:2, max:50,error:false,message:"L'adresse ne réponds pas aux critères!"},
+                                {id:3, type: 'text', name:'Adresse Infos +', value:"",min:0, max:100,error:false,message:""}, 
+                                {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
+                                {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
+                                {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"Email incorrect!"},
+                                {id:7, type: 'text', name:'Site Web', value:"",min:4, max:30,error:false,message:"Url incorrect"},
+                                {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Code Postal invalide!"},
+                                {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
                               ];
   $scope.selectedDates = [];
 
@@ -87,6 +87,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
 
       /* Insertion des horaires */
       var idEstablishment = message.data;
+      var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
+      var $res = $http.post("assets/php/updatePersonneEstablishment.php", data);
+      $res.then(function (message) {
+        $rootScope.user.config = true;
+        SessionService.set('user_configured', true);
+      });
       for (var i = 0; i < $scope.hours.length; i++) {
         var obj = $scope.hours[i];
         if (obj.journee.debut != "Ouverture") {
@@ -115,10 +121,9 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
 
         });
       };
-    
-    }); 
-      $location.path('/home');
-      NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
-  };
+    });
+    $location.path('/home');
+    NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
+  }
 
 });
