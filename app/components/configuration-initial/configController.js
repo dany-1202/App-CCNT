@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpDatePicker, $mdpTimePicker, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
   $scope.nbSteps = 4;
   $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -87,6 +87,12 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
 
       /* Insertion des horaires */
       var idEstablishment = message.data;
+      var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
+      var $res = $http.post("assets/php/updatePersonneEstablishment.php", data);
+      $res.then(function (message) {
+        $rootScope.user.config = true;
+        SessionService.set('user_configured', true);
+      });
       for (var i = 0; i < $scope.hours.length; i++) {
         var obj = $scope.hours[i];
         if (obj.journee.debut != "Ouverture") {
@@ -115,10 +121,9 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
 
         });
       };
-    
-    }); 
-      $location.path('/home');
-      NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
-  };
+    });
+    $location.path('/home');
+    NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
+  }
 
 });
