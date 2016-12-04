@@ -138,6 +138,45 @@ class InitialState {
 		return false;
 	}
 
+	public static function insertPersonInEstablishment ($data) {
+		$db = MySQLManager::get();
+		$query = "INSERT INTO ccn_appartient (app_eta_id, app_per_id) VALUES (?, ?)";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('ii', $data['eta_id'], $data['user_id']);
+		  $stmt->execute();
+		  if ($stmt->num_rows == 1) {
+		  	MySQLManager::close();
+		  	return true;
+		  }
+		}
+		MySQLManager::close();
+		return false;
+	}
+
+
+
+
+
+	/*
+		Permet de vérifier si un établissement a déjà été configuré pour cette qui est connecté
+	  
+	*/
+	public static function checkConfiguration ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['user_id']);
+	  	$stmt->execute();
+	  	$stmt->store_result();
+	  	if ($stmt->num_rows == 1) {
+	  		MySQLManager::close();
+	  		return true;
+	  	}
+		}
+		MySQLManager::close();
+		return false; // Il ne trouve rien
+	}
+
 }
 
 ?>
