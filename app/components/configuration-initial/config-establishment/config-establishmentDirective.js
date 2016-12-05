@@ -7,7 +7,6 @@ ctrlCCNT.directive('configEstablishment', function() {
 		transclude : true, // Inclu la vue au template déjà existant
 		link: function(scope, element, attrs) {
 			/* Controleur se gère ici */
-
 			scope.verification = function(id, index){
 				var obj = scope.infoEtablissement[index];
 				obj.error = false;
@@ -45,7 +44,6 @@ ctrlCCNT.directive('configEstablishment', function() {
 			scope.verificationSuivant = function(){
 				var err = false;
 				for (var i = scope.infoEtablissement.length - 1; i >= 0; i--) {
-					console.log(scope.infoEtablissement[i].error);
 					scope.verification(scope.infoEtablissement[i].id,i);
 					if (scope.infoEtablissement[i].error == true){err=true;}
 				};
