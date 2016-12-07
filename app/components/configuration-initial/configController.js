@@ -90,6 +90,8 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
       var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
       var $res = $http.post("assets/php/updatePersonneEstablishment.php", data);
       $res.then(function (message) {
+        console.log("scope dans config controller : ");
+        console.log($rootScope);
         $rootScope.user.config = true;
         SessionService.set('user_configured', true);
       });
