@@ -10,13 +10,13 @@ $http si besoin plus tard afin de faire des promesses avec l'API */
 ctrlCCNT.factory('SessionService', ['$http', function($http) {
 	return {
 		set:function(key, value) { // Modifie la clé avec la valeur reçu
-			return sessionStorage.setItem(key, value);
+			sessionStorage.setItem(key, value);
 		},
 		get:function(key) { // Récupère la donnée stocké dans la clé reçu
 			return sessionStorage.getItem(key);
 		},
 		destroy:function(key) { // Supprime la donnée stocké dans la clé reçu
-			return sessionStorage.removeItem(key);
+			sessionStorage.removeItem(key);
 		},
 		destroyAll:function() {
 			sessionStorage.removeItem('user_id');
