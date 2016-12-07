@@ -4,7 +4,7 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 
 	$scope.user = $rootScope.user == undefined ? {id:SessionService.get('user_id'),nom:SessionService.get('user_nom'),prenom:SessionService.get('user_prenom'),type: SessionService.get('user_type'),token:SessionService.get('user_token'),config:SessionService.get('user_configured')} : angular.copy($rootScope.user);
   
-  console.log($scope.user);
+
   /*
   $scope.validate = function () {
     console.log($scope.user);

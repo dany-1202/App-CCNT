@@ -624,3 +624,11 @@ div#carre-8:hover {
 .errorEtab{
    color: red!important;
 }
+
+.parent {
+  display: flex!important;
+  min-height: 96vh!important;
+}
+.enfant {
+  margin: auto!important;
+}
