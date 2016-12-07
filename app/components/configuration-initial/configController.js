@@ -27,9 +27,9 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
 
   /* Définition des départements de l'établissement */
   $scope.depart = [
-                    {id:1,name:'Cuisine', carre:'carre-1', format: 'label-carre-100'},
-                    {id:2,name:'Salle', carre:'carre-2', format: 'label-carre-100'},
-                    {id:3,name:'Bar', carre:'carre-3',format: 'label-carre-50'}
+                    {id:1,name:'Cuisine', carre:'carre-1', format: 'label-carre-100', error: false},
+                    {id:2,name:'Salle', carre:'carre-2', format: 'label-carre-100', error: false},
+                    {id:3,name:'Bar', carre:'carre-3',format: 'label-carre-50', error: false}
                   ]; //Tableau contenant les departement
   
   /* Tableau contenant les noms des champs de l'établissement */
@@ -84,46 +84,39 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
 
     var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
     $res.then(function (message) {
-
-      /* Insertion des horaires */
+      /* Insertion des horaires */ 
       var idEstablishment = message.data;
       var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
       var $res = $http.post("assets/php/updatePersonneEstablishment.php", data);
-      $res.then(function (message) {
-        console.log("scope dans config controller : ");
-        console.log($rootScope);
-        $rootScope.user.config = true;
-        SessionService.set('user_configured', true);
-      });
+      $res.then(function (message) {});
       for (var i = 0; i < $scope.hours.length; i++) {
         var obj = $scope.hours[i];
         if (obj.journee.debut != "Ouverture") {
           var dataInsertOuvertureInfo = {'jour': obj.day, 'debut': moment(obj.journee.debut).add(1, 'h').toDate(), 'fin': moment(obj.journee.fin).add(1, 'h').toDate(), 'pauseDebut': moment(obj.pause.debut).add(1, 'h').toDate(), 'pauseFin': moment(obj.pause.fin).add(1, 'h').toDate(), 'etaId': idEstablishment};
           var $res = $http.post("assets/php/insertOuvertureInfo.php", dataInsertOuvertureInfo);
-          $res.then(function (message) {
-               
-          });
+          $res.then(function (message) {});
         }
-      }
+      } 
       /* Insertion des départements */
       for (var i = 0; i < $scope.depart.length; i++) {
         var obj = $scope.depart[i];
         var data = {'nom': obj.name, 'noEta': idEstablishment};
         var $res = $http.post("assets/php/insertDepartement.php", data);
-        $res.then(function (message) {
-
-        });
+        $res.then(function (message) {});
       };
 
       /* Insertion des jours fériés et vacances */
       for (var i = 0; i < $scope.selectedDates.length; i++) {
         var dataFermetureInfo = {'date': moment($scope.selectedDates[i] ).add(1, 'h').toDate(), 'etaId': idEstablishment};
         var $res = $http.post("assets/php/insertFermetureInfo.php", dataFermetureInfo);
-        $res.then(function (message) {
-
-        });
+        $res.then(function (message) {});
       };
     });
+    console.log($rootScope);
+    if ($rootScope.user != null) {
+      $rootScope.user.config = true;
+    }
+    SessionService.set('user_configured', true);
     $location.path('/home');
     NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
   }

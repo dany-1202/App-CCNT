@@ -80,8 +80,6 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 		  };
 
 		  function DialogController($scope, $mdDialog) {
-		  	console.log($scope);
-		  	console.log($mdDialog);
 		  	$scope.days = [
 		  									//{day: 'Tous les jours', chosen : false},
 		  									{day: 'Lundi', chosen : false},

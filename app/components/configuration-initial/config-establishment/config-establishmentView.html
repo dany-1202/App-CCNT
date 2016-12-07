@@ -9,8 +9,8 @@
                   <div class="col-lg-3"></div>
                   <div class="col-lg-6">
                      <div class="centrer">
-                        <input id="{{item.id}}" for="" class="infoEtabFormDroite form-control" ng-model="infoEtablissement[$index].value" class="centrer" ng-blur="verification(item.id, $index)" placeholder="{{item.name}}" type="{{item.type}}" autofocus></input>
-                        <span class="errorEtab" ng-show="verificationError(item.id, $index)">{{item.message}}</span>
+                        <input id="{{item.id}}" for="" class="infoEtabFormDroite form-control" ng-model="infoEtablissement[$index].value" class="centrer" ng-change="verification(item.id, $index)" placeholder="{{item.name}}" type="{{item.type}}" autofocus></input>
+                        <span class="errorEtab" ng-show="item.error">{{item.message}}</span>
                      </div>
                   </div>
                </div>

@@ -16,7 +16,6 @@ ctrlCCNT.directive('configDeps', function() {
 		  	
 		  	/*
 		    if ($(event.target).get(0).nodeName=="SPAN") {return;} // Si je clique sur le span
-		    
 
 		    $(event.target).children('span').val('{{depart[1].name}}');
 		    if ($(event.target).hasClass("transparence")) {
@@ -33,6 +32,28 @@ ctrlCCNT.directive('configDeps', function() {
 		      
 		    }*/
 		  }
+
+		  scope.suivant = function () {
+		  	for (var i = scope.$parent.depart.length - 1; i >= 0; i--) {
+		  		var obj = scope.$parent.depart[i];
+		  		if (obj.error == true) { // Dès que je trouve une erreur je ne met pas suivant
+		  			$('#' + obj.id).focus();
+		  			return;
+		  		}
+		  	};
+		  	scope.ctrl.next(4);
+		  }
+
+		  scope.verification = function (index) {
+		  	var obj = scope.$parent.depart[index];
+		  	obj.error = false;
+		  	var len = obj.name.toString().length;
+				if(len < 3 || len > 45){
+					obj.error = true;
+				}
+				return obj.error;
+		  }
+
 		  // Ajouter un département au tableau depuis le bouton ajouter département
 		  scope.ajouterDepartement = function(event){
 		  	var length = scope.$parent.depart.length;
@@ -42,10 +63,9 @@ ctrlCCNT.directive('configDeps', function() {
 		      if ($(el).hasClass("transparence")) {
 		        $(el).toggleClass("transparence");
 		      }
-		      scope.$parent.depart.push({id:posIns,name:'Votre département', carre:CARRE + posIns});
+		      scope.$parent.depart.push({id:posIns,name:'Votre département', carre:CARRE + posIns, error: false});
 		    };
 		  }
-
 
 		  // Supression d'un departement qui se trouve dans le tableau
 		  scope.supprimerDepartement = function(event, id, index){
