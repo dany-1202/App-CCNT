@@ -6,7 +6,7 @@
  * var xxx = angular.module('ctrlCCNT'); Ainsi je récupère les dépendances de ctrlCCNT.
 **/
                                           /* On déclare ici toutes les dépendances */
-var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers']);
+var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers']);
 
 /**
  * Configuration du module principal : ctrlCCNT
@@ -18,7 +18,6 @@ ctrlCCNT.config(['$routeProvider',
         $routeProvider
 
         /* Les changements ou ajouts de route se font ici */
-
         .when('/home', { // Chemin du home
             templateUrl: 'app/components/home/homeView.html',
             controller: 'homeController' // Contrôleur de la page home
@@ -30,6 +29,10 @@ ctrlCCNT.config(['$routeProvider',
         .when('/config-init', { // Chemin de la configuration initial */
             templateUrl: 'app/components/configuration-initial/config-init.html',
             controller: 'configController' // Contrôleur pour la configuration initial
+        })
+        .when('/construction', { // Chemin d'une page en construction
+            templateUrl: 'app/constructionView.html',
+            //controller: 'homeController' // Contrôleur de la page home
         })
         .otherwise({
             redirectTo: '/connexion' // Redirection sur la page de connexion
