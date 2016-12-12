@@ -6,8 +6,12 @@
  * var xxx = angular.module('ctrlCCNT'); Ainsi je récupère les dépendances de ctrlCCNT.
 **/
                                           /* On déclare ici toutes les dépendances */
-var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers']);
+var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers', 'mwl.calendar', 'ui.bootstrap', 'colorpicker.module']);
 
+
+ctrlCCNT.config(['calendarConfig', function(calendarConfig) {
+  calendarConfig.dateFormatter = 'angular'; // use moment to format dates
+}]);
 /**
  * Configuration du module principal : ctrlCCNT
  * La configuration des routes de l'applications est faites dans la procédures suivante.
