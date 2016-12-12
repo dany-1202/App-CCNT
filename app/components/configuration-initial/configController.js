@@ -33,7 +33,7 @@ ctrlCCNT.controller('configController', function($scope, $http, $location, $mdpD
                                 {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
                                 {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
                                 {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"Email incorrect!"},
-                                {id:7, type: 'text', name:'Site Web', value:"",min:4, max:30,error:false,message:"Url incorrect"},
+                                {id:7, type: 'text', name:'Site Web', value:"",min:0, max:30,error:false,message:"Url incorrect"},
                                 {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Code Postal invalide!"},
                                 {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
                               ];

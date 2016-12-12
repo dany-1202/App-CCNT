@@ -20,7 +20,7 @@ ctrlCCNT.directive('configEstablishment', function() {
 					if(Number.isInteger(obj.value) == false && obj.value < 0){
 						obj.error = true;
 					}
-				}else if(obj.type == "email"){
+				}else if(obj.type == "email" && obj.value.toString().length != 0){
 					var patternEmail = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
 					obj.error = !patternEmail.test(obj.value);
 					return;
