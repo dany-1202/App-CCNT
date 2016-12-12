@@ -4,7 +4,7 @@
 	require_once("classes/EtatInitial.php");
 
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = InitialState::insertFermetureInfo($data);
+	$res = EtatInitial::insertFermetureInfo($data);
 
 	if ($res) {
 		//echo(json_encode($res));

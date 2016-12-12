@@ -4,13 +4,13 @@
 	require_once("classes/EtatInitial.php");
 
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = EtatInitial::insertEtablissement($data);
+	$res = EtatInitial::insertEmploye($data);
 
-	if ($res != -1) {
-		//echo(json_encode($res));
-		echo(json_encode($res));
+	if ($res) {
+		//si erreur :
+		echo(json_encode($data));
 	}else {
-		echo("Impossible d'insérer l'établissement");
+		echo("on insére l'employé");
 	}
 	
 ?>

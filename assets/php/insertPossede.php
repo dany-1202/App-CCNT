@@ -4,13 +4,13 @@
 	require_once("classes/EtatInitial.php");
 
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = EtatInitial::insertEtablissement($data);
+	$res = EtatInitial::insertPossede($data);
 
-	if ($res != -1) {
+	if ($res) {
 		//echo(json_encode($res));
-		echo(json_encode($res));
+		echo(json_encode($data));
 	}else {
-		echo("Impossible d'insérer l'établissement");
+		echo("Impossible d'insérer la date / heure de fermeture");
 	}
 	
 ?>
