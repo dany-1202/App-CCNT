@@ -6,6 +6,7 @@ ctrlCCNT.directive('configEstablishment', function() {
 		templateUrl : 'app/components/configuration-initial/config-establishment/config-establishmentView.html', // Template à utiliser lorsque la balise est utilisé
 		transclude : true, // Inclu la vue au template déjà existant
 		link: function(scope, element, attrs) {
+
 			/* Controleur se gère ici */
 			scope.verification = function(id, index){
 				var obj = scope.infoEtablissement[index];
@@ -49,6 +50,15 @@ ctrlCCNT.directive('configEstablishment', function() {
 					if (scope.infoEtablissement[i].error == true){err=true;}
 				};
 				if(err == false){scope.$parent.ctrl.next(2);}
+			}
+
+			scope.changementHeureCcnt = function(index){
+				for (var i = scope.ccntHeure.length -1; i >= 0;i--) {
+					scope.ccntHeure[i].check = "";
+				};
+				scope.ccntHeure[index].check = "checked";
+
+				
 			}
     },
 	};

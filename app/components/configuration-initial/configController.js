@@ -44,6 +44,12 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
                                 {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Code Postal invalide!"},
                                 {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
                               ];
+  $scope.ccntHeure = [
+                        {id:1,name:"42 Heures",value:42,check:""},
+                        {id:2,name:"43.5 Heures",value:43.5,check:""},
+                        {id:3,name:"45 Heures",value:45,check:"checked"}
+                      ];
+
   $scope.selectedDates = [];
 
   var self = this; // Référence sur le contrôleur
