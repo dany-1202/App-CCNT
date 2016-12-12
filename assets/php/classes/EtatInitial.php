@@ -55,7 +55,6 @@ class InitialState {
 		return false;
 	}
 
-	//pas testée !!!!!!!
 	/*Permet d'ajouter un Etablissement dans la table ccn_etablissement
 	  En paramètre: un tableau de data[] contenant :
 		le nom, l'adresse, le teléphone de réservation, le téléphone de direction, l'email, 
@@ -67,13 +66,11 @@ class InitialState {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sssssssisi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
 			$stmt->execute();
-			if ($stmt->num_rows == 1) {
-			  	MySQLManager::close();
-			  	return true;
-		  	}
+			MySQLManager::close();
+			return $stmt->insert_id;
 		}
 		MySQLManager::close();
-		return false;
+		return -1;
 	}
 
 	/*Permet d'ajouter les données d'une personne dans la table ccn_personne
@@ -128,9 +125,9 @@ class InitialState {
 	*/
 	public static function insertOuvertureInfo ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_debut, ouv_fin, ouv_eta_id) VALUES (?, ?, ?, ?)";
+		$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_debut, ouv_fin, ouv_pauseDebut, ouv_pauseFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sssi', $data['jour'], $data['debut'], $data['fin'], $data['etaId']);
+			$stmt->bind_param('sssssi', $data['jour'], $data['debut'], $data['fin'], $data['pauseDebut'], $data['pauseFin'], $data['etaId']);
 		  	$stmt->execute();
 		  	if ($stmt->num_rows == 1) {
 		  		MySQLManager::close();
@@ -139,6 +136,45 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
+	}
+
+	public static function insertPersonInEstablishment ($data) {
+		$db = MySQLManager::get();
+		$query = "INSERT INTO ccn_appartient (app_eta_id, app_per_id) VALUES (?, ?)";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('ii', $data['eta_id'], $data['user_id']);
+		  $stmt->execute();
+		  if ($stmt->num_rows == 1) {
+		  	MySQLManager::close();
+		  	return true;
+		  }
+		}
+		MySQLManager::close();
+		return false;
+	}
+
+
+
+
+
+	/*
+		Permet de vérifier si un établissement a déjà été configuré pour cette qui est connecté
+	  
+	*/
+	public static function checkConfiguration ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['user_id']);
+	  	$stmt->execute();
+	  	$stmt->store_result();
+	  	if ($stmt->num_rows == 1) {
+	  		MySQLManager::close();
+	  		return true;
+	  	}
+		}
+		MySQLManager::close();
+		return false; // Il ne trouve rien
 	}
 
 }

@@ -3,22 +3,28 @@
                <div class="col-lg-12 padding-bottom">
                   <h2 class="no-margin-left">Horaires de l'établissement</h1>
                </div>
-               <div class="row padding-top--50">
-                  <div class="col-lg-3"></div>
-                  <div class="col-lg-6 padding-bottom">
-                     <div class="left">
-                        <h3>Nombre d'heures/semaine : </h3>
-                     </div>
-                     <div class="right padding-top-16"> 
-                        <input class="centrer form-control" style="width:125px" type="text"></input>
-                     </div> 
+            </div>
+            <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                     <div class="panel panel-default">
+                        <div class="panel-heading centrer" style="background-color: white"><h3>Nombre d'heures/Semaine</h3></div>
+                        <div class="panel-body">
+                           <div class="centrer">
+                              <input id="nbHours" class="font-size-25 centrer form-control" ng-maxlength="2" type="number" ng-model="$parent.nbHoursChosen" autofocus></input></div>
+                        </div>
+                      </div>
                   </div>
+               </div>
+            <div class="row">
+               <div class="col-md-12">
+                  <h4 class="margin-bottom-10">Nombre d'heures configurées : <strong>{{nbHours}}</strong></h4>
                </div>
             </div>
             <div class="row">
                <div class="col-lg-12 padding-top">
-                  <div class="centrer">
-                     <table class="flat-table" style="text-align:center">
+                  <div class="centrer table-responsive">
+                     <table class="table flat-table" style="text-align:center">
                         <tbody>
                            <tr>
                               <th></th>
@@ -27,7 +33,7 @@
                            <tr>
                               <th rowspan="2">Journée</th>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="showTimeJourneeDebut($event, $index)" aria-label="show picker">
+                                 <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeJourneeDebut($event, $index)" aria-label="show picker">
                                     <strong>{{ data.journee.debut | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
@@ -35,7 +41,7 @@
                               </td>
                            <tr>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="showTimeJourneeFin($event, $index)" aria-label="show picker">
+                                 <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeJourneeFin($event, $index)" aria-label="show picker">
                                     <strong>{{ data.journee.fin | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
@@ -45,8 +51,12 @@
                            <tr class="ligne">
                               <th rowspan="2">Pause</th>
                               <td ng-repeat="data in hours">
-                                 
-                                 <md-button class="btnS md-raised" ng-click="showTimePauseDebut($event, $index)" aria-label="show picker">
+
+                                 <!-- Bouton ajouter pause
+                                 <md-button ng-show="{{!data.pause.existe}}" id="{{data.id}}pause" class="btnS md-raised" ng-click="addPause($index)" aria-label="show picker">
+                                    <strong>Ajouter Pause</strong>
+                                 </md-button> -->
+                                 <md-button id="{{data.id}}pauseDebut" class="btnS md-raised" ng-click="showTimePauseDebut($event, $index)" aria-label="show picker">
                                     <strong>{{ data.pause.debut | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
@@ -54,7 +64,7 @@
                               </td>
                            <tr>
                               <td ng-repeat="data in hours">
-                                 <md-button class="btnS md-raised" ng-click="showTimePauseFin($event, $index)" aria-label="show picker">
+                                 <md-button id="{{data.id}}pauseFin" class="btnS md-raised" ng-click="showTimePauseFin($event, $index)" aria-label="show picker">
                                     <strong>{{ data.pause.fin | date:'HH:mm' }}</strong>
                                     <i class="espace-avant fa fa-clock-o"></i>
                                  </md-button>
@@ -66,8 +76,8 @@
                   <div class="row">
                      <div class="col-lg-12 padding-top">
                         <div class="centrer">
-                           <md-button ng-click="ctrl.previous(1)" class="bouton bouton-l">Précédent</md-button>
-                           <md-button ng-click="ctrl.next(3)" class="bouton bouton-l">Suivant</md-button>
+                           <md-button ng-click="ctrl.previous(1)" class="bouton-prec bouton-l">Précédent</md-button>
+                           <md-button ng-click="validationHours()" class="bouton bouton-l">Suivant</md-button>
                         </div>
                      </div>
                   </div>

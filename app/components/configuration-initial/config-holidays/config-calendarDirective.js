@@ -55,7 +55,7 @@ ctrlCCNT.directive('configCalendar', function() {
                     }
                 };
 
-                return "<p>" + texte + "</p>";
+                return "<p><strong>" +  texte + "</strong></p>";
 
             };
         },
