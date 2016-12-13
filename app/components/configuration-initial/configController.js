@@ -46,6 +46,14 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
                               ];
   $scope.selectedDates = [];
 
+  $scope.events = [{
+              date: "25/12/2016",
+              title: 'Noël',
+              color: '#5D4037',
+              content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+              class: '',
+          }];
+
   var self = this; // Référence sur le contrôleur
 
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */

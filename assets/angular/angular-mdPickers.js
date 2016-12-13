@@ -157,7 +157,7 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
 
 module.provider("$mdpDatePicker", function() {
     var LABEL_OK = "OK",
-        LABEL_CANCEL = "Cancel",
+        LABEL_CANCEL = "Annuler",
         DISPLAY_FORMAT = "ddd, MMM DD";
         
     this.setDisplayFormat = function(format) {
@@ -224,7 +224,6 @@ module.provider("$mdpDatePicker", function() {
 function CalendarCtrl($scope) {
 	var self = this;
 	this.dow = moment.localeData().firstDayOfWeek();
-	
     this.weekDays = [].concat(
         moment.weekdaysMin().slice(
             this.dow
