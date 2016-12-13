@@ -34,6 +34,14 @@ ctrlCCNT.config(['$routeProvider',
             templateUrl: 'app/constructionView.html',
             //controller: 'homeController' // Contrôleur de la page home
         })
+        .when('/employe', { // Chemin d'une page en construction
+            templateUrl: 'app/components/configuration-employe/employeView.html',
+            //controller: 'homeController' // Contrôleur de la page home
+        })
+        .when('/employe/edition', { // Chemin d'une page en construction
+            templateUrl: 'app/components/configuration-employe/employeFormView.html',
+            //controller: 'homeController' // Contrôleur de la page home
+        })
         .otherwise({
             redirectTo: '/connexion' // Redirection sur la page de connexion
         });
