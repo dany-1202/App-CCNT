@@ -16,7 +16,7 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 	var routeSansLogin = ['/connexion'];
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
-	var routeAvecLogin = ['/home', '/config-init'];
+	var routeAvecLogin = ['/home', '/config-init', '/construction'];
 
 	/* Fonction déclenché quand un changement de route se fait dans le run de l'application */
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
@@ -24,7 +24,7 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 			$location.url('/connexion'); // Redirection sur connexion
 		} else {
 			/* Stocke les données nécessaires : 'token' et 'id' */
-			var data = {'id' : SessionService.get('user_id'), 'token' : SessionService.get('user_token')};$
+			var data = {'id' : SessionService.get('user_id'), 'token' : SessionService.get('user_token')};
 
 			/* Envoi la promesse vers l'API afin de recevoir la réponse si l'utilisateur est authentifié ou pas */
 			var $promise = $http.post("assets/php/checkAuthentication.php", data);

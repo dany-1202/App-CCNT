@@ -4,14 +4,11 @@
 	require_once("classes/EtatInitial.php");
 
 	$data = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = EtatInitial::insertDepartement($data);
-
+	$res = EtatInitial::insertPersonInEstablishment($data);
 	if ($res) {
-		//si erreur :
-		//echo(json_encode($res));
-		echo(json_encode($data));
+		echo(json_encode($res));
 	}else {
-		echo("Impossible d'insérer le département");
+		echo("Impossible de rallier la personne à l'établissement");
 	}
 	
 ?>
