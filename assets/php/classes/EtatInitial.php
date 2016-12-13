@@ -8,10 +8,10 @@ require_once("MySQLManager.php");
  * @access public
  */
 /*
-	Class name : InitialState
+	Class name : EtatInitial
 	Description : Contient les fonctions permettant d'intéragir avec la bdd
 */
-class InitialState {
+class EtatInitial {
 
 	/*Permet d'ajouter un Departement dans la table ccn_departement
 	  En paramètre: un tableau de data[] contenant :
@@ -32,7 +32,7 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
-	}
+	} // insertDepartement
 
 	/*Permet de modifier le nom d'un Departement de la table ccn_departement
 	  En paramètre: un tableau de data[] contenant :
@@ -53,7 +53,7 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
-	}
+	} // setDepartement
 
 	/*Permet d'ajouter un Etablissement dans la table ccn_etablissement
 	  En paramètre: un tableau de data[] contenant :
@@ -71,7 +71,7 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return -1;
-	}
+	} // insertEtablissement
 
 	/*Permet d'ajouter les données d'une personne dans la table ccn_personne
 	  En paramètre: un tableau de data[] contenant :
@@ -83,9 +83,9 @@ class InitialState {
 	*/	
 	public static function insertPersonne ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_dep_id, per_genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssssisissis', $data['nom'], $data['prenom'], $data['mail'], $data['mdp'], $data['token'], $data['dateNaissance'], $data['adresse'], $data['infoSuppAdresse'], $data['codePostal'], $data['ville'], $data['admin'], $data['telFixe'], $data['telMobile'], $data['depId'], $data['perGenre']);
+			$stmt->bind_param('ssssssssisisss', $data['nom'], $data['prenom'], $data['mail'], $data['mdp'], $data['token'], $data['dateNaissance'], $data['adresse'], $data['infoSuppAdresse'], $data['codePostal'], $data['ville'], $data['admin'], $data['telFixe'], $data['telMobile'], $data['perGenre']);
 		  	$stmt->execute();
 		  	if ($stmt->num_rows == 1) {
 		  		MySQLManager::close();
@@ -94,7 +94,24 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
-	}
+	} // insertPersonne
+	
+	/* Permet d'insérer dans la bdd le lien qui relie le département à une personne */
+	//LA FONCTION N'A PAS ENCORE ETE TESTEE
+	public static function insertPossede ($data) {
+		$db = MySQLManager::get();
+		$query = "INSERT INTO ccn_possede (pos_dep_id, pos_per_id) VALUES (?, ?)";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('ii', $data['depId'], $data['perId']);
+		  	$stmt->execute();
+		  	if ($stmt->num_rows == 1) {
+		  		MySQLManager::close();
+		  		return true;
+		  	}
+		}
+		MySQLManager::close();
+		return false;
+	} // insertPossede
 
 	/*Permet d'ajouter une heure de fermeture dans la table ccn_fermetureInfo
 	  En paramètre: un Etablissement Contenant :
@@ -114,7 +131,7 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
-	}
+	} // insertFermetureInfo
 
 	/*Permet d'ajouter une heure d'ouverture dans la table ccn_ouvertureInfo
 	  En paramètre: un Etablissement Contenant :
@@ -136,7 +153,7 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
-	}
+	} // insertOuvertureInfo
 
 	public static function insertPersonInEstablishment ($data) {
 		$db = MySQLManager::get();
@@ -151,15 +168,10 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false;
-	}
-
-
-
-
+	} // insertPersonInEstablishment
 
 	/*
-		Permet de vérifier si un établissement a déjà été configuré pour cette qui est connecté
-	  
+		Permet de vérifier si un établissement a déjà été configuré pour celle qui est connectée
 	*/
 	public static function checkConfiguration ($data) {
 		$db = MySQLManager::get();
@@ -175,8 +187,9 @@ class InitialState {
 		}
 		MySQLManager::close();
 		return false; // Il ne trouve rien
-	}
-
+	} // checkConfiguration
+	
+	
 }
 
 ?>
