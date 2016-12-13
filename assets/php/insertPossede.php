@@ -7,10 +7,10 @@
 	$res = EtatInitial::insertPossede($data);
 
 	if ($res) {
-		//echo(json_encode($res));
+		//si erreur
 		echo(json_encode($data));
 	}else {
-		echo("Impossible d'insérer la date / heure de fermeture");
+		echo("insertPossde($data)");
 	}
 	
 ?>
