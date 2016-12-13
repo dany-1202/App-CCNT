@@ -35,10 +35,13 @@
 
             <div class="row">
               <div class="col-lg-6 centrer">
-                <md-button id="addDay" ng-click="addDay()" class="bouton">Ajouter un jour de fermeture</md-button>
+                <md-button id="addDay" ng-click="showDatePickerJour($event)" class="bouton">Ajouter un jour de fermeture</md-button>
+                <div ng-repeat="item in events">
+                  Jours fériés : {{item.title}} <span> , {{item.date}}</span> 
+                </div>
               </div>
               <div class="col-lg-6 centrer">
-                <md-button ng-click="addPlage()" class="bouton">Ajouter une plage</md-button>
+                <md-button ng-click="addDay()" class="bouton">Ajouter une plage</md-button>
               </div>
             </div>
             <hr>
