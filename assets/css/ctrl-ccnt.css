@@ -624,3 +624,9 @@ div#carre-8:hover {
 .errorEtab{
    color: red!important;
 }
+
+
+.image {
+	width: 125px;
+	height: 60px;
+}

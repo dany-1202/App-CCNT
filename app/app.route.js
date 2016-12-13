@@ -11,6 +11,7 @@ var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCale
 
 ctrlCCNT.config(['calendarConfig', function(calendarConfig) {
   calendarConfig.dateFormatter = 'angular'; // use moment to format dates
+  calendarConfig.allDateFormats.moment.date.hour = 'HH:mm';
 }]);
 /**
  * Configuration du module principal : ctrlCCNT
