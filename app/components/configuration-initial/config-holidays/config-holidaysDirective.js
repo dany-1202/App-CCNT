@@ -9,42 +9,51 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker) {
 
 			var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-        var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
+      var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
 
-        var events = [
-            {
-                date: "25/12/2016",
-                title: 'Noël',
-                link: '',
-                color: '#5D4037',
-                content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
-                class: '',
-            }
-        ];
+      scope.events = [
+          {
+              date: "25/12/2016",
+              title: 'Noël',
+              color: '#5D4037',
+              content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+              class: '',
+          }
+      ];    
 
-        $('#calendari_lateral1').bic_calendar({
-            //list of events in array
-            events: events,
-            //enable select
-            enableSelect: true,
-            //enable multi-select
-            multiSelect: true,
-            //set day names
-            dayNames: dayNames,
-            //set month names
-            monthNames: monthNames,
-            //show dayNames
-            showDays: true,
-            //set ajax call
-            /*reqAjax: {
-                type: 'get',
-                url: 'http://bic.cat/bic_calendar/index.php'
-            }*/
-            //set popover options
-            //popoverOptions: {}
-            //set tooltip options
-            //tooltipOptions: {}
-        });
+/*
+     $('#addDay').popover({
+			    html: true,
+			    title: 'Jour de fermeture',
+			    placement: 'bottom',
+			    content: '<button class="btn btn-default" id="click-me">Click Me!</button>'
+			}).parent().on('click', '#click-me', function() {alert("click!");}); */
+   
+
+
+      $('#calendari_lateral1').bic_calendar({
+          //list of events in array
+          events: scope.events,
+          //enable select
+          enableSelect: false,
+          //enable multi-select
+          multiSelect: false,
+          //set day names
+          dayNames: dayNames,
+          //set month names
+          monthNames: monthNames,
+          //show dayNames
+          showDays: true,
+          //set ajax call
+          /*reqAjax: {
+              type: 'get',
+              url: 'http://bic.cat/bic_calendar/index.php'
+          }*/
+          //set popover options
+          //popoverOptions: {}
+          //set tooltip options
+          //tooltipOptions: {}
+      });
 
 
 			/* à rajouter ici (Fonctionne comme un contrôleur */
