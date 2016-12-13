@@ -4,55 +4,56 @@
              <div class="col-lg-12 padding-bottom">
               <h2 class="no-margin-left">Jours fériés et Vacances</h1>
               </div>
-          </div>
-          <div class="row">
+            </div>
+            <!--  
             <div class="row">
-              <div class="col-md-3">
+              <div class="row">
+                <div class="col-md-3">
+                  <button
+                  class="btn bouton-np margin-left"
+                  mwl-date-modifier
+                  date="viewDate"
+                  decrement="calendarView"
+                  ng-click="cellIsOpen = false">
+                  <
+                </button>
+              </div>
+              <div class="col-md-6">
+                <h2 class="text-center" style="margin:auto">{{ calendarTitle }}</h2>
+              </div>
+              <div class="col-md-3 ">
                 <button
-                class="btn bouton-np margin-left"
+                class="btn bouton-np margin-right"
                 mwl-date-modifier
                 date="viewDate"
-                decrement="calendarView"
-                ng-click="cellIsOpen = false">
-                <
-            </button>
-        </div>
-        <div class="col-md-6">
-          <h2 class="text-center" style="margin:auto">{{ calendarTitle }}</h2>
-      </div>
-      <div class="col-md-3 ">
-          <button
-          class="btn bouton-np margin-right"
-          mwl-date-modifier
-          date="viewDate"
-          increment="calendarView"
-          ng-click="cellIsOpen = false"
-          style="float:right">
-          >
-      </button>
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-        <!--<config-calendar></config-calendar>-->
-        <mwl-calendar
-        events="events"
-        view="calendarView"
-        view-title="calendarTitle"
-        view-date="viewDate"
-        on-event-click="eventClicked(calendarEvent)"
-        on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-        cell-is-open="cellIsOpen"
-        day-view-start="06:00"
-        day-view-end="23:59"
-        day-view-split="30"
-        cell-modifier="modifyCell(calendarCell)"
-        cell-auto-open-disabled="true"
-        on-timespan-click="timespanClicked(calendarDate, calendarCell)">
-    </mwl-calendar>
-</div>
-
-</div>
-<div class="centrer padding-top">
-   <md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
-   <md-button ng-click="ctrl.saveConfiguration()" class="bouton bouton-l">Terminer</md-button>
-</div>
+                increment="calendarView"
+                ng-click="cellIsOpen = false"
+                style="float:right">
+                >
+              </button>
+            </div> -->
+            <div class="row">
+              <div class="col-lg-12">
+                <div id="calendari_lateral1"></div>
+                <!--<config-calendar></config-calendar>-->
+     <!-- Calendrier  <mwl-calendar
+          events="events"
+          view="calendarView"
+          view-title="calendarTitle"
+          view-date="viewDate"
+          on-event-click="eventClicked(calendarEvent)"
+          on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+          cell-is-open="cellIsOpen"
+          day-view-start="06:00"
+          day-view-end="23:59"
+          day-view-split="30"
+          cell-modifier="modifyCell(calendarCell)"
+          cell-auto-open-disabled="true"
+          on-timespan-click="timespanClicked(calendarDate, calendarCell)">
+        </mwl-calendar> -->  
+            </div>
+          </div>
+    <div class="centrer padding-top">
+     <md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
+     <md-button ng-click="ctrl.saveConfiguration()" class="bouton bouton-l">Terminer</md-button>
+   </div>
