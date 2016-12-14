@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
   $scope.nbSteps = 4;
   $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -46,7 +46,10 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
                               ];
   $scope.selectedDates = [];
 
+  $scope.plagesEvents = [];
+  
   $scope.events = [{
+    /* Exemple */
               date: "25/12/2016",
               title: 'Noël',
               color: '#5D4037',
@@ -128,5 +131,4 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
     $location.path('/home');
     NotifService.success("Configuration-Initial","Tous vos paramètres ont bien été enregistrés");  
   }
-
 });
