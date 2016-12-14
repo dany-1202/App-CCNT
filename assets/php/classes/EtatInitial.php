@@ -196,7 +196,7 @@ class EtatInitial {
 			InfoSuppAdresse 	CodePostal
 			Ville	TelephoneFixe
 			TelephoneMobile	Genre
-		Contraine : Il faut impérativement le per_id de la personne !
+		Contrainte : Il faut impérativement le per_id de la personne !
 	*/
 	//LA FONCTION N'A PAS ENCORE ETE TESTEE
 	public static function setPersonne ($data) {

@@ -15,75 +15,91 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
 
 			scope.afficherJour = false;
-			scope.dateDay = new Date();
-			console.log(scope.dateDay);
+			scope.dateDay = {title : '', date: new Date(), dateDebut : '', dateFin : ''};
+			
+			scope.messageAjout = "Ajouter un jour de fermeture";
+			scope.messageEnlever = "Annuler l'insertion";
+
 
 			scope.addDayClose = function () {
 				scope.addDay(scope.dateDay);
 				scope.afficherJour = false;
 			}
 
-			scope.addDay = function (date) {
-				console.log(date);
+			scope.addDay = function (dateDay) {
 				scope.$parent.events.push({
-					date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
-					title: 'Test',
+					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
+					title: dateDay.title,
 					color: '#5D4037',
 					content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
 					class: '',
 				});
-				console.log(scope);
 				$timeout(maj, 10);
+			}
+
+			scope.modifierEvent = function (index) {
+				var obj = scope.$parent.events[index];
+				if (obj.date == null || obj.date == "") {
+
+				} else {
+					scope.afficherJour = true;
+					scope.dateDay.title = obj.title;
+					var objDate = obj.date;
+					var objD = angular.copy(objDate);
+					var objM = angular.copy(objDate);
+					var objY = angular.copy(objDate);
+
+					objD = objD.substring(0, 2);
+					objM = objM.substring(3, 5);
+					objY = objY.substring(6, 10);
+
+					var date = new Date(objM + "/" + objD + "/" + objY);
+					console.log(date);
+					scope.dateDay.date = date;
+				}
+			}
+
+			scope.supprimerEvent = function (index) {
+				scope.$parent.events.splice(index, 1);
 			}
 
 			var maj = function () {
 				$('#calendari_lateral1').empty();
 				$('#calendari_lateral1').bic_calendar({
-	          //list of events in array
-		          events: scope.$parent.events,
-		          //enable select
-		          enableSelect: true,
-		          //enable multi-select
-		          multiSelect: true,
-		          //set day names
-		          dayNames: dayNames,
-		          //set month names
-		          monthNames: monthNames,
-		          //show dayNames
-		          showDays: true,
-		          //set ajax call
-	      		});
+        //list of events in array
+          events: scope.$parent.events,
+          //enable select
+          enableSelect: false,
+          //enable multi-select
+          multiSelect: false,
+          //set day names
+          dayNames: dayNames,
+          //set month names
+          monthNames: monthNames,
+          //show dayNames
+          showDays: true,
+          //set ajax call
+    		});
+    		scope.dateDay.date = new Date();
+    		scope.dateDay.title = "";
 			}
 
 
 			$('#calendari_lateral1').bic_calendar({
-	          //list of events in array
-	          events: scope.$parent.events,
-	          //enable select
-	          enableSelect: true,
-	          //enable multi-select
-	          multiSelect: true,
-	          //set day names
-	          dayNames: dayNames,
-	          //set month names
-	          monthNames: monthNames,
-	          //show dayNames
-	          showDays: true,
-	          //set ajax call
-	      	});
-
-			scope.showDatePickerJour = function(ev) {
-				$mdpDatePicker(scope.currentDate, {
-					targetEvent: ev
-				}).then(function(selectedDate) {
-					scope.currentDate = moment(selectedDate);
-					scope.addDay(selectedDate);
-				});
-			};
-
-
-
-
+        //list of events in array
+        events: scope.$parent.events,
+        //enable select
+        enableSelect: false,
+        //enable multi-select
+        multiSelect: false,
+        //set day names
+        dayNames: dayNames,
+        //set month names
+        monthNames: monthNames,
+        //show dayNames
+        showDays: true,
+        //set ajax call
+    	});
 /*
      $('#addDay').popover({
 			    html: true,
