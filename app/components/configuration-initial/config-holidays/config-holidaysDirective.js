@@ -1,5 +1,8 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
+ctrlCCNT.controller()
+
+
 ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeout) {
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
@@ -9,70 +12,74 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-      var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
+			var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
 
-      scope.afficherJour = false;
-     	scope.currentDate = new Date();
-     	scope.dateSel = false;
-     	console.log(scope);
+			scope.afficherJour = false;
+			scope.dateDay = new Date();
+			console.log(scope.dateDay);
 
-     	scope.addDay = function (date) {
-     		console.log(date);
-		  	scope.$parent.events.push({
-		    		date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
-            title: 'Test',
-            color: '#5D4037',
-            content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
-            class: '',
+			scope.addDayClose = function () {
+				scope.addDay(scope.dateDay);
+				scope.afficherJour = false;
+			}
+
+			scope.addDay = function (date) {
+				console.log(date);
+				scope.$parent.events.push({
+					date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
+					title: 'Test',
+					color: '#5D4037',
+					content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+					class: '',
 				});
 				console.log(scope);
 				$timeout(maj, 10);
-		  }
+			}
 
-     	var maj = function () {
-     		 $('#calendari_lateral1').empty();
-     		 $('#calendari_lateral1').bic_calendar({
-          //list of events in array
-          events: scope.$parent.events,
-          //enable select
-          enableSelect: true,
-          //enable multi-select
-          multiSelect: true,
-          //set day names
-          dayNames: dayNames,
-          //set month names
-          monthNames: monthNames,
-          //show dayNames
-          showDays: true,
-          //set ajax call
-      	});
-     	}
+			var maj = function () {
+				$('#calendari_lateral1').empty();
+				$('#calendari_lateral1').bic_calendar({
+	          //list of events in array
+		          events: scope.$parent.events,
+		          //enable select
+		          enableSelect: true,
+		          //enable multi-select
+		          multiSelect: true,
+		          //set day names
+		          dayNames: dayNames,
+		          //set month names
+		          monthNames: monthNames,
+		          //show dayNames
+		          showDays: true,
+		          //set ajax call
+	      		});
+			}
 
 
 			$('#calendari_lateral1').bic_calendar({
-          //list of events in array
-          events: scope.$parent.events,
-          //enable select
-          enableSelect: true,
-          //enable multi-select
-          multiSelect: true,
-          //set day names
-          dayNames: dayNames,
-          //set month names
-          monthNames: monthNames,
-          //show dayNames
-          showDays: true,
-          //set ajax call
-      	});
+	          //list of events in array
+	          events: scope.$parent.events,
+	          //enable select
+	          enableSelect: true,
+	          //enable multi-select
+	          multiSelect: true,
+	          //set day names
+	          dayNames: dayNames,
+	          //set month names
+	          monthNames: monthNames,
+	          //show dayNames
+	          showDays: true,
+	          //set ajax call
+	      	});
 
 			scope.showDatePickerJour = function(ev) {
-			  	$mdpDatePicker(scope.currentDate, {
-		        targetEvent: ev
-		      }).then(function(selectedDate) {
-		        scope.currentDate = moment(selectedDate);
-		        scope.addDay(selectedDate);
-		      });
-		  };
+				$mdpDatePicker(scope.currentDate, {
+					targetEvent: ev
+				}).then(function(selectedDate) {
+					scope.currentDate = moment(selectedDate);
+					scope.addDay(selectedDate);
+				});
+			};
 
 
 
@@ -84,38 +91,38 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			    placement: 'bottom',
 			    content: '<button class="btn btn-default" id="click-me">Click Me!</button>'
 			}).parent().on('click', '#click-me', function() {alert("click!");}); */
-   
-		
- 				document.addEventListener('bicCalendarSelect', function(e) {
-	        	var confirm = $mdDialog.confirm()
-	          .title('Voulez-vous ajouter une plage ?')
-	          .ariaLabel('Ajout de plage')
-	          .targetEvent(e)
-	          .ok('Oui') // Bouton Oui - veut se déconnecter
-	          .cancel('Non'); // Bouton Non - annulation
 
-				    $mdDialog.show(confirm).then(function() { // Si l'utilisateur clic sur Oui 
-				    	console.log("sauvegarder");
-				    	var dateFirst = new moment(e.detail.dateFirst);
-			        var dateLast = new moment(e.detail.dateLast);
-			        console.log(e.detail.dateLast);
-			        console.log(e.detail.dateFirst);
-				    }, function() {
-				    	scope.$parent.events.push({
-				    		date: e.detail.date,
-	              title: 'Test',
-	              color: '#5D4037',
-	              content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
-	              class: '',
-				    	});
-				    	
-				    });
-	        });
+/*
+			document.addEventListener('bicCalendarSelect', function(e) {
+				var confirm = $mdDialog.confirm()
+				.title('Voulez-vous ajouter une plage ?')
+				.ariaLabel('Ajout de plage')
+				.targetEvent(e)
+				          .ok('Oui') // Bouton Oui - veut se déconnecter
+				          .cancel('Non'); // Bouton Non - annulation
 
-			
-     
+							    $mdDialog.show(confirm).then(function() { // Si l'utilisateur clic sur Oui 
+							    	console.log("sauvegarder");
+							    	var dateFirst = new moment(e.detail.dateFirst);
+							    	var dateLast = new moment(e.detail.dateLast);
+							    	console.log(e.detail.dateLast);
+							    	console.log(e.detail.dateFirst);
+							    }, function() {
+							    	scope.$parent.events.push({
+							    		date: e.detail.date,
+							    		title: 'Test',
+							    		color: '#5D4037',
+							    		content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+							    		class: '',
+							    	});
+							    	
+							    });
+							}); */
 
-			/* à rajouter ici (Fonctionne comme un contrôleur */
+
+
+
+/* à rajouter ici (Fonctionne comme un contrôleur */
 		// 	var date = moment().locale('fr').format('LL');
 		// 	scope.currentDate = date;
 		// 	scope.selectedDate = scope.$parent.selectedDate;
@@ -238,6 +245,6 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					scope.currentDate = moment(selectedDate).format('LL');
 				});
 }; */
-		},
-	}
+},
+}
 });
