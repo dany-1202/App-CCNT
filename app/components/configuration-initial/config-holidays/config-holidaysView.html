@@ -5,37 +5,29 @@
               <h2 class="no-margin-left">Jours fériés et Vacances</h1>
               </div>
             </div>
-            <!--  
-            <div class="row">
-              <div class="row">
-                <div class="col-md-3">
-                  <button
-                  class="btn bouton-np margin-left"
-                  mwl-date-modifier
-                  date="viewDate"
-                  decrement="calendarView"
-                  ng-click="cellIsOpen = false">
-                  <
-                </button>
-              </div>
-              <div class="col-md-6">
-                <h2 class="text-center" style="margin:auto">{{ calendarTitle }}</h2>
-              </div>
-              <div class="col-md-3 ">
-                <button
-                class="btn bouton-np margin-right"
-                mwl-date-modifier
-                date="viewDate"
-                increment="calendarView"
-                ng-click="cellIsOpen = false"
-                style="float:right">
-                >
-              </button>
-            </div> -->
 
             <div class="row">
               <div class="col-lg-6 centrer">
-                <md-button id="addDay" ng-click="showDatePickerJour($event)" class="bouton">Ajouter un jour de fermeture</md-button>
+                <md-button id="addDay" ng-show="!afficherJour" ng-click="afficherJour = !afficherJour" class="bouton">Ajouter un jour de fermeture</md-button>
+                <div class="row">
+                    <md-input-container class="centrer" ng-show="afficherJour">
+                    <label>Entrer une date</label>
+
+                    <md-datepicker ng-model="dateDay" name="dateField" md-min-date="minDate"
+                      md-max-date="maxDate">
+                    </md-datepicker>
+                    <input type="text" class="form-control centrer" placeholder="Titre"> </input>
+
+                    <div ng-messages="myOtherForm.dateField.$error">
+                      <div ng-message="valid">The entered value is not a date!</div>
+                      <div ng-message="required">This date is required!</div>
+                      <div ng-message="mindate">Date is too early!</div>
+                      <div ng-message="maxdate">Date is too late!</div>
+                    </div>
+                    <md-button ng-click="addDayClose()" class="bouton">Valider</md-button>
+                  </md-input-container>
+
+                </div>
                 <div ng-repeat="item in events">
                   Jours fériés : {{item.title}} <span> , {{item.date}}</span> 
                 </div>
@@ -49,21 +41,21 @@
               <div class="col-lg-12">
                 <div id="calendari_lateral1"></div>
                 <!--<config-calendar></config-calendar>-->
-     <!-- Calendrier  <mwl-calendar
-          events="events"
-          view="calendarView"
-          view-title="calendarTitle"
-          view-date="viewDate"
-          on-event-click="eventClicked(calendarEvent)"
-          on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-          cell-is-open="cellIsOpen"
-          day-view-start="06:00"
-          day-view-end="23:59"
-          day-view-split="30"
-          cell-modifier="modifyCell(calendarCell)"
-          cell-auto-open-disabled="true"
-          on-timespan-click="timespanClicked(calendarDate, calendarCell)">
-        </mwl-calendar> -->  
+               <!-- Calendrier  <mwl-calendar
+                    events="events"
+                    view="calendarView"
+                    view-title="calendarTitle"
+                    view-date="viewDate"
+                    on-event-click="eventClicked(calendarEvent)"
+                    on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+                    cell-is-open="cellIsOpen"
+                    day-view-start="06:00"
+                    day-view-end="23:59"
+                    day-view-split="30"
+                    cell-modifier="modifyCell(calendarCell)"
+                    cell-auto-open-disabled="true"
+                    on-timespan-click="timespanClicked(calendarDate, calendarCell)">
+                  </mwl-calendar> -->  
             </div>
           </div>
     <div class="centrer padding-top">
