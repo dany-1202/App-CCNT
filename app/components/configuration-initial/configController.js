@@ -47,15 +47,8 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
   $scope.selectedDates = [];
 
   $scope.plagesEvents = [];
-  
-  $scope.events = [{
-    /* Exemple */
-              date: "25/12/2016",
-              title: 'Noël',
-              color: '#5D4037',
-              content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
-              class: '',
-          }];
+  $scope.events = [];
+  $scope.calEvents = [];
 
   var self = this; // Référence sur le contrôleur
 

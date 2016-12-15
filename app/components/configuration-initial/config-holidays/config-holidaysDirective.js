@@ -15,26 +15,107 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
 
 			scope.afficherJour = false;
+			scope.afficherPlage = false;
 			scope.dateDay = {title : '', date: new Date(), dateDebut : '', dateFin : ''};
 			
 			scope.messageAjout = "Ajouter un jour de fermeture";
 			scope.messageEnlever = "Annuler l'insertion";
 
+			scope.messageAjoutPlage = "Ajouter une plage";
+
+			scope.$watch('dateDay.dateDebut', function(newValue, oldValue) {
+				if (scope.dateDay.dateDebut != '') {
+					scope.dateDay.dateFin = angular.copy(newValue);
+					scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7)
+				}
+			});
 
 			scope.addDayClose = function () {
 				scope.addDay(scope.dateDay);
 				scope.afficherJour = false;
 			}
 
+			scope.addPlageClose = function () {
+				scope.addPlage(scope.dateDay);
+				scope.afficherPlage = false;
+			}
+
 			scope.addDay = function (dateDay) {
 				scope.$parent.events.push({
+					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
+					dateDebut: '',
+					dateFin: '',
+					title: dateDay.title,
+					color: '#5D4037',
+					content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+					class: '',
+				});
+				scope.$parent.calEvents.push({
 					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
 					title: dateDay.title,
 					color: '#5D4037',
 					content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
 					class: '',
 				});
-				$timeout(maj, 10);
+				$timeout(maj, 1);
+			}
+
+			scope.addPlage = function (dateDay) {
+				var nbJours = scope.getNbJours(dateDay.dateDebut, dateDay.dateFin);
+
+				if (nbJours.day != 0) {
+					scope.$parent.plagesEvents.push({
+						date : '',
+						dateDebut: dateDay.dateDebut.getDate() + "/" + (dateDay.dateDebut.getMonth() + 1) + "/" + dateDay.dateDebut.getFullYear(),
+						dateFin: dateDay.dateFin.getDate() + "/" + (dateDay.dateFin.getMonth() + 1) + "/" + dateDay.dateFin.getFullYear(),
+						title: dateDay.title,
+						color: '#5D4037',
+						content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+						class: '',
+					});
+					/* Ajouter dans le tableau d'events */
+					for (var i = 0; i <= nbJours.day; i++) {
+						var date = angular.copy(dateDay.dateDebut);
+						date.setDate(date.getDate() + i);
+						scope.$parent.calEvents.push({
+							date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
+							title: dateDay.title,
+							color: '#5D4037',
+							content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+							class: '',
+						});
+					};
+					$timeout(maj, 1);
+				}
+				
+			}
+
+
+			/* Faudrait externaliser cettre procédure en créant un service afin de pouvoir l'utiliser à volonté */
+			scope.getNbJours = function (date1, date2) {
+				var diff = {}                           // Initialisation du retour
+		    var tmp = date2 - date1;
+		 
+		    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+		    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+		 
+		    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+		    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+		 
+		    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+		    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+		     
+		    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+		    diff.day = tmp;
+		     
+		    return diff;
+			}
+
+			scope.affPlage = function () {
+				scope.dateDay.dateDebut = new Date();
+				scope.dateDay.dateFin = angular.copy(scope.dateDay.dateDebut);
+				scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7);
+				scope.afficherPlage = !scope.afficherPlage;
 			}
 
 			scope.modifierEvent = function (index) {
@@ -59,15 +140,57 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				}
 			}
 
+			scope.modifierPlageEvent = function (index) {
+				var obj = scope.$parent.plagesEvents[index];
+				if (obj.dateDebut == null || obj.dateDebut == "") {
+
+				} else {
+					scope.afficherPlage = true;
+					scope.dateDay.title = obj.title;
+					var objDate = obj.dateDebut;
+					var objD = angular.copy(objDate);
+					var objM = angular.copy(objDate);
+					var objY = angular.copy(objDate);
+
+					objD = objD.substring(0, 2);
+					objM = objM.substring(3, 5);
+					objY = objY.substring(6, 10);
+
+					var date = new Date(objM + "/" + objD + "/" + objY);
+
+					scope.dateDay.dateDebut = date;
+
+					var objDate = obj.dateDebut;
+					var objD = angular.copy(objDate);
+					var objM = angular.copy(objDate);
+					var objY = angular.copy(objDate);
+
+					objD = objD.substring(0, 2);
+					objM = objM.substring(3, 5);
+					objY = objY.substring(6, 10);
+
+					var date = new Date(objM + "/" + objD + "/" + objY);
+					scope.dateDay.dateFin = date;
+				}
+			}
+
+
+			scope.supprimerPlageEvent = function (index) {
+				scope.$parent.plagesEvents.splice(index, 1);
+				/* Supprimer du calendrier */
+			}
+
 			scope.supprimerEvent = function (index) {
 				scope.$parent.events.splice(index, 1);
+				scope.$parent.calEvents.splice(index, 1);
+				$timeout(maj, 1);
 			}
 
 			var maj = function () {
 				$('#calendari_lateral1').empty();
 				$('#calendari_lateral1').bic_calendar({
         //list of events in array
-          events: scope.$parent.events,
+          events: scope.$parent.calEvents,
           //enable select
           enableSelect: false,
           //enable multi-select
@@ -87,7 +210,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			$('#calendari_lateral1').bic_calendar({
         //list of events in array
-        events: scope.$parent.events,
+        events: scope.$parent.calEvents,
         //enable select
         enableSelect: false,
         //enable multi-select

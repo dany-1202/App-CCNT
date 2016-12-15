@@ -11,7 +11,7 @@
               <div class="col-lg-6 centrer">
                 <md-button id="addDay" ng-click="afficherJour = !afficherJour" class="bouton">{{afficherJour == false ? messageAjout: messageEnlever}}</md-button>
                 <div class="row" ng-show="afficherJour">
-                  <form name="myOtherForm" class="well" flex-gt-xs>
+                  <form name="formDay" class="well" flex-gt-xs>
                     <md-input-container class="centrer">
                     <label>Entrer une date</label>
 
@@ -19,7 +19,7 @@
                       md-max-date="maxDate">
                     </md-datepicker>
 
-                    <div ng-messages="myOtherForm.dateField.$error">
+                    <div ng-messages="formDay.dateField.$error">
                       <div ng-message="valid">Date invalide!</div>
                       <div ng-message="required">Ce renseignement est obligatoire!</div>
                       <div ng-message="mindate">Cette date est trop tôt!</div>
@@ -28,14 +28,66 @@
                     
                     </md-input-container>
                     <input type="text" ng-model="dateDay.title" class="form-control centrer" style="width: 200px; margin:auto; margin-top:-22px; margin-bottom:10px" placeholder="Nom"> </input>
-                    <md-button ng-click="addDayClose()" class="bouton">Valider</md-button>
+                    <md-button ng-click="addDayClose()" class="bouton">Ajouter</md-button>
                   </form>
                 </div>
               </div>
 
               <!-- Colonne de droite -->
               <div class="col-lg-6 centrer">
-                <md-button ng-click="addDay()" class="bouton">Ajouter une plage</md-button>
+                <md-button ng-click="affPlage()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
+                <div class="row well" ng-show="afficherPlage">
+                  
+
+                    <!-- Colonne gauche -->
+                    <div class="col-lg-6">
+                      <form name="formPlageDebut" flex-gt-xs>
+                        <md-input-container class="centrer" style="margin-bottom:-4px">
+                        <label>Date de début</label>
+
+                        <md-datepicker ng-model="dateDay.dateDebut" name="dateFieldDebut">
+                        </md-datepicker>
+
+                        <div ng-messages="formPlageDebut.dateFieldDebut.$error">
+                          <div ng-message="valid">Date invalide!</div>
+                          <div ng-message="required">Ce renseignement est obligatoire!</div>
+                          <div ng-message="mindate">Cette date est trop tôt!</div>
+                          <div ng-message="maxdate">Cette date est trop tard!</div>
+                        </div>
+                      </form>
+                    </div>
+
+                    <!-- Colonne droite -->
+                    <div class="col-lg-6">
+                      <form name="formPlageFin" flex-gt-xs>
+                        <md-input-container class="centrer" style="margin-bottom:-4px">
+                          <label>Date de fin</label>
+
+                          <md-datepicker ng-model="dateDay.dateFin" name="dateFieldFin" md-min-date="dateDay.dateDebut">
+                          </md-datepicker>
+
+                          <div ng-messages="formPlageFin.dateFieldFin.$error">
+                            <div ng-message="valid">Date invalide!</div>
+                            <div ng-message="required">Ce renseignement est obligatoire!</div>
+                            <div ng-message="mindate">Cette date est trop tôt!</div>
+                            <div ng-message="maxdate">Cette date est trop tard!</div>
+                          </div>
+                        </md-input-container>
+                      </form>
+                    </div>
+                    <input type="text" ng-model="dateDay.title" class="form-control centrer" style="width: 200px; margin:auto; margin-top: 0px; margin-bottom:10px" placeholder="Nom de la période"> </input>
+                    <md-button ng-click="addPlageClose()" class="bouton">Ajouter</md-button>
+
+                </div>
+              </div>
+              
+                  
+                   
+
+                      
+
+                    
+
               </div>
             </div>
             <hr>
@@ -46,6 +98,7 @@
                   <table class="table table-striped">
                     <thead>
                       <tr>
+                        <th>Type</th>
                         <th>Nom</th>
                         <th>Date</th>
                         <th>Début</th>
@@ -56,6 +109,7 @@
                     </thead>
                     <tbody class="centrer">
                       <tr ng-repeat="item in events">
+                        <td>Jour</td>
                         <td>{{item.title}}</td>
                         <td>{{item.date}}</td>
                         <td>{{item.dateDebut}}</td>
@@ -67,6 +121,23 @@
                         </td>
                         <td>
                           <md-button aria-label="Button" ng-click="supprimerEvent($index)" class="bouton bouton-s poubelleDep">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                          </md-button>
+                        </td>
+                      </tr>
+                      <tr class="ligne" ng-repeat="item in plagesEvents">
+                        <td>Plage</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.date}}</td>
+                        <td>{{item.dateDebut}}</td>
+                        <td>{{item.dateFin}}</td>
+                        <td>
+                          <md-button aria-label="Button" ng-click="modifierPlageEvent($index)" class="bouton bouton-s poubelleDep">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </md-button>
+                        </td>
+                        <td>
+                          <md-button aria-label="Button" ng-click="supprimerPlageEvent($index)" class="bouton bouton-s poubelleDep">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                           </md-button>
                         </td>
