@@ -28,14 +28,14 @@
                     
                     </md-input-container>
                     <input type="text" ng-model="dateDay.title" class="form-control centrer" style="width: 200px; margin:auto; margin-top:-22px; margin-bottom:10px" placeholder="Nom"> </input>
-                    <md-button ng-click="addDayClose()" class="bouton">Ajouter</md-button>
+                    <md-button ng-click="modifJour == false ? addDayClose() : modifierEventClose()" class="bouton">{{modifJour == false ? btnAdd : btnModif}}</md-button>
                   </form>
                 </div>
               </div>
 
               <!-- Colonne de droite -->
               <div class="col-lg-6 centrer">
-                <md-button ng-click="affPlage()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
+                <md-button id="btn" data-container="body" data-toggle="popover" data-placement="right" data-content="Vous pouvez ajouter une plage ici" ng-click="affPlage()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
                 <div class="row well" ng-show="afficherPlage">
                   
 
@@ -76,17 +76,10 @@
                       </form>
                     </div>
                     <input type="text" ng-model="dateDay.title" class="form-control centrer" style="width: 200px; margin:auto; margin-top: 0px; margin-bottom:10px" placeholder="Nom de la période"> </input>
-                    <md-button ng-click="addPlageClose()" class="bouton">Ajouter</md-button>
+                    <md-button ng-click="addPlageClose()" class="bouton">{{modifPlage == false ? btnAdd : btnModif}}</md-button>
 
                 </div>
               </div>
-              
-                  
-                   
-
-                      
-
-                    
 
               </div>
             </div>

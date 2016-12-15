@@ -14,15 +14,26 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
 
-			scope.afficherJour = false;
-			scope.afficherPlage = false;
+			scope.afficherJour = false; // Afficher la div pour ajouter un jour
+			scope.afficherPlage = false; // Afficher la div pour ajouter une plage
+
+			scope.modifJour = false; // Etat modification
+
+			scope.objIndex = -1;
+			scope.modifPlage = false; // Etat modification
+
 			scope.dateDay = {title : '', date: new Date(), dateDebut : '', dateFin : ''};
 			
+			/* Libellé des boutons */
 			scope.messageAjout = "Ajouter un jour de fermeture";
 			scope.messageEnlever = "Annuler l'insertion";
 
 			scope.messageAjoutPlage = "Ajouter une plage";
 
+			scope.btnAdd = "Ajouter";
+			scope.btnModif = "Modifier"; 
+
+			/* Définir un listener qui est appelé quand la date de début dans une plage change */
 			scope.$watch('dateDay.dateDebut', function(newValue, oldValue) {
 				if (scope.dateDay.dateDebut != '') {
 					scope.dateDay.dateFin = angular.copy(newValue);
@@ -30,16 +41,27 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				}
 			});
 
-			scope.addDayClose = function () {
+			var show = function () {
+				$('#btn').popover('show');
+			}
+
+			var hide = function () {
+				$('#btn').popover('hide');
+			}
+			
+			$timeout(show, 1);
+			//$timeout(hide, 5000);
+
+
+			/*******************/
+			/* Gestion du jour */
+
+			scope.addDayClose = function () { // Quand j'ajoute un jour de fermeture
 				scope.addDay(scope.dateDay);
 				scope.afficherJour = false;
 			}
 
-			scope.addPlageClose = function () {
-				scope.addPlage(scope.dateDay);
-				scope.afficherPlage = false;
-			}
-
+			/* Ajouter un jour dans les deux tableaux : events et calEvents (calendrier) */
 			scope.addDay = function (dateDay) {
 				scope.$parent.events.push({
 					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
@@ -58,6 +80,73 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					class: '',
 				});
 				$timeout(maj, 1);
+			}
+
+
+			scope.modifierEvent = function (index) {
+				var obj = scope.$parent.events[index];
+				if (obj.date == null || obj.date == "") {
+
+				} else {
+					var objDate = obj.date;
+					scope.afficherJour = true;
+					scope.dateDay.title = obj.title;
+					scope.dateDay.date = getDateStr(objDate);
+
+					/* Etat modification */
+					scope.objIndex = index;
+					scope.modifJour = true;
+				}
+			}
+
+			scope.supprimerEvent = function (index) {
+				scope.$parent.events.splice(index, 1);
+				scope.$parent.calEvents.splice(index, 1);
+				$timeout(maj, 1);
+			}
+
+			/**********************/
+			/* Gestion des plages */
+
+			scope.affPlage = function () {
+				$timeout(hide, 1);
+				scope.dateDay.dateDebut = new Date();
+				scope.dateDay.dateFin = angular.copy(scope.dateDay.dateDebut);
+				scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7);
+				scope.afficherPlage = !scope.afficherPlage;
+			}
+
+			scope.modifierEventClose = function () {
+				var objModif = scope.$parent.events[scope.objIndex];
+				objModif.date = scope.dateDay.date.getDate() + "/" + (scope.dateDay.date.getMonth() + 1) + "/" + scope.dateDay.date.getFullYear(),
+				objModif.title = scope.dateDay.title; 
+				scope.objIndex = -1;
+				scope.dateDay.title = "";
+				scope.dateDay.date = "";
+				scope.afficherJour = false;
+				scope.modifJour = false;
+				$timeout(maj, 1);
+			}
+
+			scope.modifierPlageEvent = function (index) {
+				var obj = scope.$parent.plagesEvents[index];
+				if (obj.dateDebut == null || obj.dateDebut == "") {
+
+				} else {
+					/* Traitement date début */
+					var objDate = obj.dateDebut;
+					scope.dateDay.dateDebut = getDateStr(objDate);
+
+					/* Traitement date fin */
+					var objDate = obj.dateFin;
+					scope.dateDay.dateFin = getDateStr(objDate);
+
+					scope.afficherPlage = true;
+					scope.dateDay.title = obj.title;
+
+					scope.objIndex = index;
+					scope.modifPlage = true;
+				}
 			}
 
 			scope.addPlage = function (dateDay) {
@@ -87,142 +176,76 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					};
 					$timeout(maj, 1);
 				}
-				
 			}
 
-
-			/* Faudrait externaliser cettre procédure en créant un service afin de pouvoir l'utiliser à volonté */
-			scope.getNbJours = function (date1, date2) {
-				var diff = {}                           // Initialisation du retour
-		    var tmp = date2 - date1;
-		 
-		    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
-		    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
-		 
-		    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
-		    diff.min = tmp % 60;                    // Extraction du nombre de minutes
-		 
-		    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
-		    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
-		     
-		    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
-		    diff.day = tmp;
-		     
-		    return diff;
+			/* Quand j'ajoute une plage de fermeturefa */
+			scope.addPlageClose = function () {
+				scope.addPlage(scope.dateDay);
+				scope.afficherPlage = false;
 			}
-
-			scope.affPlage = function () {
-				scope.dateDay.dateDebut = new Date();
-				scope.dateDay.dateFin = angular.copy(scope.dateDay.dateDebut);
-				scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7);
-				scope.afficherPlage = !scope.afficherPlage;
-			}
-
-			scope.modifierEvent = function (index) {
-				var obj = scope.$parent.events[index];
-				if (obj.date == null || obj.date == "") {
-
-				} else {
-					scope.afficherJour = true;
-					scope.dateDay.title = obj.title;
-					var objDate = obj.date;
-					var objD = angular.copy(objDate);
-					var objM = angular.copy(objDate);
-					var objY = angular.copy(objDate);
-
-					objD = objD.substring(0, 2);
-					objM = objM.substring(3, 5);
-					objY = objY.substring(6, 10);
-
-					var date = new Date(objM + "/" + objD + "/" + objY);
-					console.log(date);
-					scope.dateDay.date = date;
-				}
-			}
-
-			scope.modifierPlageEvent = function (index) {
-				var obj = scope.$parent.plagesEvents[index];
-				if (obj.dateDebut == null || obj.dateDebut == "") {
-
-				} else {
-					scope.afficherPlage = true;
-					scope.dateDay.title = obj.title;
-					var objDate = obj.dateDebut;
-					var objD = angular.copy(objDate);
-					var objM = angular.copy(objDate);
-					var objY = angular.copy(objDate);
-
-					objD = objD.substring(0, 2);
-					objM = objM.substring(3, 5);
-					objY = objY.substring(6, 10);
-
-					var date = new Date(objM + "/" + objD + "/" + objY);
-
-					scope.dateDay.dateDebut = date;
-
-					var objDate = obj.dateDebut;
-					var objD = angular.copy(objDate);
-					var objM = angular.copy(objDate);
-					var objY = angular.copy(objDate);
-
-					objD = objD.substring(0, 2);
-					objM = objM.substring(3, 5);
-					objY = objY.substring(6, 10);
-
-					var date = new Date(objM + "/" + objD + "/" + objY);
-					scope.dateDay.dateFin = date;
-				}
-			}
-
 
 			scope.supprimerPlageEvent = function (index) {
 				scope.$parent.plagesEvents.splice(index, 1);
-				/* Supprimer du calendrier */
+				/* Boucle pour supprimer du calendrier */
+
 			}
 
-			scope.supprimerEvent = function (index) {
-				scope.$parent.events.splice(index, 1);
-				scope.$parent.calEvents.splice(index, 1);
-				$timeout(maj, 1);
+			/*******************/
+			/* Divers méthodes */
+
+			var getDateStr = function (date) {
+				var tabDate = date.split('/');
+				return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
 			}
 
 			var maj = function () {
 				$('#calendari_lateral1').empty();
 				$('#calendari_lateral1').bic_calendar({
-        //list of events in array
-          events: scope.$parent.calEvents,
-          //enable select
-          enableSelect: false,
-          //enable multi-select
-          multiSelect: false,
-          //set day names
-          dayNames: dayNames,
-          //set month names
-          monthNames: monthNames,
-          //show dayNames
-          showDays: true,
-          //set ajax call
-    		});
-    		scope.dateDay.date = new Date();
-    		scope.dateDay.title = "";
+			        events: scope.$parent.calEvents,			          
+			        enableSelect: false,			
+			        multiSelect: false,			          
+			        dayNames: dayNames,
+					monthNames: monthNames,
+			        showDays: true,
+		    	});
+	    		reInitJour();
+			}
+
+			var reInitJour = function () {
+				scope.dateDay.date = new Date();
+	    		scope.dateDay.title = "";
+			}
+
+			$('#calendari_lateral1').bic_calendar({
+		        events: scope.$parent.calEvents,			          
+		        enableSelect: false,			
+		        multiSelect: false,			          
+		        dayNames: dayNames,
+				monthNames: monthNames,
+		        showDays: true,
+		    });
+
+		    /* Faudrait externaliser cettre procédure en créant un service afin de pouvoir l'utiliser à volonté */
+			scope.getNbJours = function (date1, date2) {
+				var diff = {}                           // Initialisation du retour
+			    var tmp = date2 - date1;
+			 
+			    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+			    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+			 
+			    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+			    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+			 
+			    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+			    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+			     
+			    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+			    diff.day = tmp;
+		     
+		        return diff;
 			}
 
 
-			$('#calendari_lateral1').bic_calendar({
-        //list of events in array
-        events: scope.$parent.calEvents,
-        //enable select
-        enableSelect: false,
-        //enable multi-select
-        multiSelect: false,
-        //set day names
-        dayNames: dayNames,
-        //set month names
-        monthNames: monthNames,
-        //show dayNames
-        showDays: true,
-        //set ajax call
-    	});
 /*
      $('#addDay').popover({
 			    html: true,
