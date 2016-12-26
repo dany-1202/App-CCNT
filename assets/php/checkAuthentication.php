@@ -4,6 +4,6 @@
 
 	$authData = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
 	UserAuthentication::secureSessionStart();
-	$res = UserAuthentication::checkLogin($authData['id'], $authData['user_token']); // Récupère le résulat obtenu
+	$res = UserAuthentication::checkAuthentication($authData['id'], $authData['user_token']); // Récupère le résulat obtenu
 	echo(json_encode($res));
 ?>
