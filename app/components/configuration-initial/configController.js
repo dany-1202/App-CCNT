@@ -76,18 +76,22 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
   this.saveConfiguration = function() {
 
     var dataEtablissement = { 'nom': $scope.infoEtablissement[0].value, 
-                            'adresse': $scope.infoEtablissement[1].value, 
-                            'telReservation': $scope.infoEtablissement[3].value, 
-                            'telDirection': $scope.infoEtablissement[4].value, 
-                            'email': $scope.infoEtablissement[5].value, 
-                            'siteWeb': $scope.infoEtablissement[6].value, 
-                            'adresseInfo': $scope.infoEtablissement[2].value, 
-                            'codePostal': $scope.infoEtablissement[7].value, 
-                            'localite': $scope.infoEtablissement[8].value, 
-                            'nbHeure': $scope.nbHoursChosen};
+                              'adresse': $scope.infoEtablissement[1].value, 
+                              'telReservation': $scope.infoEtablissement[3].value, 
+                              'telDirection': $scope.infoEtablissement[4].value, 
+                              'email': $scope.infoEtablissement[5].value, 
+                              'siteWeb': $scope.infoEtablissement[6].value, 
+                              'adresseInfo': $scope.infoEtablissement[2].value, 
+                              'codePostal': $scope.infoEtablissement[7].value, 
+                              'localite': $scope.infoEtablissement[8].value, 
+                              'nbHeure': $scope.nbHoursChosen,
+                              'user_id' : SessionService.get('user_id'),
+                              'user_token' : SessionService.get('user_token')
+                            };
 
     var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
     $res.then(function (message) {
+      console.log(message);
       /* Insertion des horaires */ 
       var idEstablishment = message.data;
       var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
@@ -116,7 +120,6 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
         $res.then(function (message) {});
       };
     });
-    console.log($rootScope);
     if ($rootScope.user != null) {
       $rootScope.user.config = true;
     }

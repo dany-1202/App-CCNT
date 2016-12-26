@@ -33,14 +33,24 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 		  }
 
 		  scope.suivant = function () {
-		  	for (var i = scope.$parent.depart.length - 1; i >= 0; i--) {
-		  		var obj = scope.$parent.depart[i];
-		  		if (obj.error == true) { // Dès que je trouve une erreur je ne met pas suivant
-		  			$('#' + obj.id).focus();
-		  			return;
-		  		}
-		  	};
-		  	scope.ctrl.next(4);
+		  	if (scope.$parent.depart.length == 0) {
+		  		$('#grand-carre').notify(
+					  "Vous n'avez pas de département" , { className: 'error', position:"top center"}
+					);
+		  		$('#btnAjoutDep').notify(
+					  "Vous devez insérer au moins 1 département" , { className: 'error', position:"top center"}
+					).focus();
+					return;
+		  	} else {  		
+			  	for (var i = scope.$parent.depart.length - 1; i >= 0; i--) {
+			  		var obj = scope.$parent.depart[i];
+			  		if (obj.error == true) { // Dès que je trouve une erreur je ne met pas suivant
+			  			$('#' + obj.id).focus();
+			  			return;
+			  		}
+			  	};
+			  	scope.ctrl.next(4);
+		  	}
 		  }
 
 		  scope.verification = function (index) {

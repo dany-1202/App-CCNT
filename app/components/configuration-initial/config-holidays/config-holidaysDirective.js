@@ -13,7 +13,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 			var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
-
+			var photo = "https://image.jimcdn.com/app/cms/image/transf/dimension=300x10000:format=jpg/path/se1a08fc9547ef1da/image/i8097eee300b9501a/version/1337253899/jour-f%C3%A9ri%C3%A9.jpg";
 			scope.afficherJour = false; // Afficher la div pour ajouter un jour
 			scope.afficherPlage = false; // Afficher la div pour ajouter une plage
 
@@ -25,10 +25,10 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			scope.dateDay = {title : '', date: new Date(), dateDebut : '', dateFin : ''};
 			
 			/* Libellé des boutons */
-			scope.messageAjout = "Ajouter un jour de fermeture";
+			scope.messageAjout = "Ajouter un jour férié";
 			scope.messageEnlever = "Annuler l'insertion";
 
-			scope.messageAjoutPlage = "Ajouter une plage";
+			scope.messageAjoutPlage = "Ajouter une période";
 
 			scope.btnAdd = "Ajouter";
 			scope.btnModif = "Modifier"; 
@@ -40,7 +40,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7)
 				}
 			});
-
+/*
 			var show = function () {
 				$('#btn').popover('show');
 			}
@@ -50,7 +50,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			}
 			
 			$timeout(show, 1);
-			//$timeout(hide, 5000);
+			//$timeout(hide, 5000); */
 
 
 			/*******************/
@@ -69,14 +69,14 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					dateFin: '',
 					title: dateDay.title,
 					color: '#5D4037',
-					content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+					content: '<img class="image" src="' + photo +'">',
 					class: '',
 				});
 				scope.$parent.calEvents.push({
 					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
 					title: dateDay.title,
 					color: '#5D4037',
-					content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+					content: '<img class="image" src="' + photo +'">',
 					class: '',
 				});
 				$timeout(maj, 1);
@@ -99,6 +99,21 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				}
 			}
 
+			scope.modifierEventClose = function () {
+				var objModif = scope.$parent.events[scope.objIndex];
+				objModif.date = scope.dateDay.date.getDate() + "/" + (scope.dateDay.date.getMonth() + 1) + "/" + scope.dateDay.date.getFullYear(),
+				objModif.title = scope.dateDay.title;
+				console.log(scope.$parent.events);
+				console.log(scope.$parent.calEvents);
+				$timeout(maj, 1);
+				scope.objIndex = -1;
+				scope.dateDay.title = "";
+				scope.dateDay.date = "";
+				scope.afficherJour = false;
+				scope.modifJour = false;
+
+			}
+
 			scope.supprimerEvent = function (index) {
 				scope.$parent.events.splice(index, 1);
 				scope.$parent.calEvents.splice(index, 1);
@@ -109,23 +124,10 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			/* Gestion des plages */
 
 			scope.affPlage = function () {
-				$timeout(hide, 1);
 				scope.dateDay.dateDebut = new Date();
 				scope.dateDay.dateFin = angular.copy(scope.dateDay.dateDebut);
 				scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7);
 				scope.afficherPlage = !scope.afficherPlage;
-			}
-
-			scope.modifierEventClose = function () {
-				var objModif = scope.$parent.events[scope.objIndex];
-				objModif.date = scope.dateDay.date.getDate() + "/" + (scope.dateDay.date.getMonth() + 1) + "/" + scope.dateDay.date.getFullYear(),
-				objModif.title = scope.dateDay.title; 
-				scope.objIndex = -1;
-				scope.dateDay.title = "";
-				scope.dateDay.date = "";
-				scope.afficherJour = false;
-				scope.modifJour = false;
-				$timeout(maj, 1);
 			}
 
 			scope.modifierPlageEvent = function (index) {
@@ -159,7 +161,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 						dateFin: dateDay.dateFin.getDate() + "/" + (dateDay.dateFin.getMonth() + 1) + "/" + dateDay.dateFin.getFullYear(),
 						title: dateDay.title,
 						color: '#5D4037',
-						content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+						content: '<img class="image" src="' + photo +'">',
 						class: '',
 					});
 					/* Ajouter dans le tableau d'events */
@@ -170,7 +172,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 							date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
 							title: dateDay.title,
 							color: '#5D4037',
-							content: '<img class="image" src="http://a403.idata.over-blog.com/0/42/87/80/Divers/joyeux_noel.jpg">',
+							content: '<img class="image" src="' + photo +'">',
 							class: '',
 						});
 					};
@@ -209,6 +211,12 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			        showDays: true,
 		    	});
 	    		reInitJour();
+			}
+
+			var majCalEvents = function () {
+				var length = scope.$parent.calEvents.length;
+				scope.$parent.calEvents.splice(0, length);
+
 			}
 
 			var reInitJour = function () {

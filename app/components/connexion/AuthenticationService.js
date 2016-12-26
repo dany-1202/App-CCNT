@@ -31,7 +31,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 	        } else {
 	        	/* Stocke les données dans la session grâce à la méthode set du SessionService */
 	        	
-	        	var data = {'id': authenData.user_id, 'user_token': authenData.user_token};
+	        	var data = {'user_id': authenData.user_id, 'user_token': authenData.user_token};
 				    var $res = $http.post("assets/php/checkConfiguration.php", data);
 				    $res.then(function (message) {
 					    SessionService.set('user_id', authenData.user_id);
@@ -63,7 +63,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 			- Il va retirer les données stockées dans la session grâce au Service SessionService et à la méthode destroy
 		*/
 		logout : function () {
-			var data = {'id' : SessionService.get('user_id')}; // Créer la variable data sous forme d'objet, qui va contenir l'id de l'utilisateur
+			var data = {'user_id' : SessionService.get('user_id')}; // Créer la variable data sous forme d'objet, qui va contenir l'id de l'utilisateur
 			var $promise = $http.post("assets/php/disconnectAuthentication.php", data); // Lange la promesse
 			$promise.then(function (message) {
 				SessionService.destroyAll(); //Destruction de toutes les données stockées dans la session

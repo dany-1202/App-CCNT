@@ -11,7 +11,7 @@ Description : Fait le lien entre l'API PHP et le controller de l'application
 
 	$authData = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisées
 
-	$authentified = UserAuthentication::checkAuthentication($authData['id'], $authData['user_token']);
+	$authentified = UserAuthentication::checkAuthentication($authData['user_id'], $authData['user_token']);
 
 	if ($authentified == false) {
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
