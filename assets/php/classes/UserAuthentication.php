@@ -106,7 +106,7 @@ class UserAuthentication {
 	 * @static
 	 * @return boolean true if the user is considered logged in, false otherwise
 	 */
-	public static function checkLogin($user_id, $token) {
+	public static function checkAuthentication($user_id, $token) {
 		// get a database handle-- 
 		$db = MySQLManager::get(); 
 		$query = "SELECT per_token, per_admin FROM ccn_personne WHERE per_id = ?";
@@ -117,7 +117,7 @@ class UserAuthentication {
 			if ($stmt->num_rows == 1) {
 				$stmt->bind_result($per_token, $per_admin);
 				$stmt->fetch();
-				if ($per_admin != 1) {
+				if ($per_admin != 1) { // L'utilisateur n'est pas un employeur (c'est un employé)
 					MySQLManager::close();
 					return false;
 				} else {
