@@ -2,6 +2,12 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService) {
 	
+  if($rootScope.myEmp == null){
+    $scope.myEmp = null;
+  }else{
+    $scope.myEmp = $rootScope.myEmp;
+  };
+
 	$scope.user = {};
   $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
@@ -41,8 +47,7 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
   $scope.nbHeure = 0; // nb d'heure spécifier dans le champs 
 
   $scope.ajouterEmploye = function () {
-    $scope.myEmp = null;
-    $rootScope.test = true;
+    $rootScope.myEmp = null;
     $location.url("/employe/edition");
   }
 
@@ -56,7 +61,7 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
   };
 
   $scope.modEmploye = function(id) {
-    $scope.myEmp = $scope.employe[id];
+    $rootScope.myEmp = $scope.employe[id];
     $location.url("/employe/edition");
   };
 
