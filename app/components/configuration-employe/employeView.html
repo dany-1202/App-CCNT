@@ -27,7 +27,7 @@
                   </tr>
                     <tr ng-repeat="emp in employe">
                       <td align="center">
-                        <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+                        <span ng-click="modEmploye($index)"><a class="btn btn-default"><em class="fa fa-pencil"></em></a></span>
                         <span ng-click="supEmploye($index)" ><a class="btn btn-danger"><em class="fa fa-trash"></em></a></span>
                       </td>
                       <td>{{emp.nom}} {{emp.prenom}}</td>
