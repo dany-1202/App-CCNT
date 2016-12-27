@@ -11,7 +11,6 @@ ctrlCCNT.directive('configEstablishment', function() {
 			scope.verification = function(id, index){
 				var obj = scope.infoEtablissement[index];
 				obj.error = false;
-				console.log();
 
 				if(obj.type == "tel"){
 					var patternTel = new RegExp(/^(?:(?:|0{1,2}|\+{0,2})41(?:|\(0\))|0)([1-9]\d)(\d{3})(\d{2})(\d{2})$/);
