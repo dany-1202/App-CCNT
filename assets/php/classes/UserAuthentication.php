@@ -76,13 +76,14 @@ class UserAuthentication {
 			$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_mdp, $per_logon, $per_admin);
 			$stmt->fetch();
 			if ($stmt->num_rows == 1) {
-					$_SESSION['user_id'] = $per_id;
-					$_SESSION['user_nom'] = $per_nom;
-					$_SESSION['user_prenom'] = $per_prenom;
-          if ($per_admin == 1) {
-          	$_SESSION['user_type'] = 'admin'; 
+				$_SESSION['user_id'] = $per_id;
+				$_SESSION['user_nom'] = $per_nom;
+				$_SESSION['user_prenom'] = $per_prenom;
+	        if ($per_admin == 1) {
+          		$_SESSION['user_type'] = 'admin'; 
         	} else {
-        		$_SESSION['user_type'] = 'noadmin'; 
+        		MySQLManager::close();
+        		return false;
         	}
         	$token = $per_nom . " | " . uniqid() . uniqid() . uniqid();
         	if ($stmtUp = $db->prepare("UPDATE ccn_personne SET per_token = ? WHERE per_mail = ? AND per_mdp = ?")) {

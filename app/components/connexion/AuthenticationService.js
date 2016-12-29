@@ -21,41 +21,41 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 			var $promise = $http.post("assets/php/launchAuthentication.php", data); // Lance la promesse à l'API
 			$promise.then(function (message) {
 				var authenData = message.data;
-        if (typeof authenData === 'string' && authenData.indexOf("Impossible de se connecter") != -1) { // Problème avec la BDD
-        	console.log("Problème de connexion avec la base de données");
-        	/* Affiche un message d'erreur */
-        	NotifService.warningCon();
-        } else {
-        	if (authenData.user_nom === undefined) { // Connexion refusé
-        		NotifService.errorCon();
+	        if (typeof authenData === 'string' && authenData.indexOf("Impossible de se connecter") != -1) { // Problème avec la BDD
+	        	console.log("Problème de connexion avec la base de données");
+	        	/* Affiche un message d'erreur */
+	        	NotifService.warningCon();
 	        } else {
-	        	/* Stocke les données dans la session grâce à la méthode set du SessionService */
-	        	
-	        	var data = {'user_id': authenData.user_id, 'user_token': authenData.user_token};
-				    var $res = $http.post("assets/php/checkConfiguration.php", data);
-				    $res.then(function (message) {
-					    SessionService.set('user_id', authenData.user_id);
-		        	SessionService.set('user_nom', authenData.user_nom);
-		        	SessionService.set('user_prenom', authenData.user_prenom);
-		        	SessionService.set('user_type', authenData.user_type);
-		        	SessionService.set('user_token', authenData.user_token);
+	        	if (authenData.user_nom === undefined) { // Connexion refusé
+	        		NotifService.errorCon();
+		        } else {
+		        	/* Stocke les données dans la session grâce à la méthode set du SessionService */
+		        	var data = {'user_id': authenData.user_id, 'user_token': authenData.user_token};
+					var $res = $http.post("assets/php/checkConfiguration.php", data);
+					$res.then(function (message) {
+						SessionService.set('user_id', authenData.user_id);
+			        	SessionService.set('user_nom', authenData.user_nom);
+			        	SessionService.set('user_prenom', authenData.user_prenom);
+			        	SessionService.set('user_type', authenData.user_type);
+			        	SessionService.set('user_token', authenData.user_token);
 					    SessionService.set('user_configured', message.data);
 
 					    /* Définit les éléments du user */
 					    $rootScope.user = {};
 					    $rootScope.user.id = authenData.user_id;
-		        	$rootScope.user.nom = authenData.user_nom;
-		        	$rootScope.user.prenom = authenData.user_prenom;
-		        	$rootScope.user.type = authenData.user_type;
-		        	$rootScope.user.token = authenData.user_token;
-		        	$rootScope.user.config = message.data;
-		        	/* Connexion réussi*/
-		        	NotifService.successCon();
-		        	$location.path('/home');
-		        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé
-				    });
-	        }
-	      }
+			        	$rootScope.user.nom = authenData.user_nom;
+			        	$rootScope.user.prenom = authenData.user_prenom;
+			        	$rootScope.user.type = authenData.user_type;
+			        	$rootScope.user.token = authenData.user_token;
+			        	$rootScope.user.config = message.data;
+			        	
+			        	/* Connexion réussi*/
+			        	NotifService.successCon();
+			        	$location.path('/home');
+			        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé
+					});
+		        }
+		      }
 			});
 		},
 		/* La fonction logout, qui ne reçoit aucun paramètre
