@@ -1,8 +1,16 @@
 <?php
 	require_once("classes/Sanitizer.php");
-	require_once("classes/EtatInitial.php");
+	require_once("classes/UserAuthentication.php");
 
 	$authData = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	$res = InitialState::checkConfiguration($authData); // Récupère le résulat obtenu
-	echo(json_encode($res));
+
+	$authentified = UserAuthentication::checkAuthentication($authData['user_id'], $authData['user_token']);
+
+	if ($authentified == false) { // Contrôle que l'utilisateur qui envoi la requête est authorisé
+		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
+	} else {
+		require_once("classes/EtatInitial.php");
+		$res = EtatInitial::checkConfiguration($authData); // Récupère le résulat obtenu
+		echo(json_encode($res));
+	}
 ?>

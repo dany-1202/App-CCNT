@@ -12,6 +12,7 @@ require_once("MySQLManager.php");
  * @access public
  */
 class UserAuthentication {
+
 	/**
 	 * Start a secured session
 	 *
@@ -20,7 +21,7 @@ class UserAuthentication {
 	 */
 	public static function secureSessionStart() {
 		$sessionName = 'ctrlCCNT';
-		$secure = false;
+		$secure = true; // HTTPS
 		$httponly = true;
 		
 		ini_set('session.use_only_cookies', 1);
@@ -105,19 +106,24 @@ class UserAuthentication {
 	 * @static
 	 * @return boolean true if the user is considered logged in, false otherwise
 	 */
-	public static function checkLogin($user_id, $token) {
+	public static function checkAuthentication($user_id, $token) {
 		// get a database handle-- 
 		$db = MySQLManager::get(); 
-		$query = "SELECT per_token FROM ccn_personne WHERE per_id = ?";
+		$query = "SELECT per_token, per_admin FROM ccn_personne WHERE per_id = ?";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param("i", $user_id);
 			$stmt->execute();
 			$stmt->store_result();
 			if ($stmt->num_rows == 1) {
-				$stmt->bind_result($per_token);
+				$stmt->bind_result($per_token, $per_admin);
 				$stmt->fetch();
-				MySQLManager::close();
-				return $per_token == $token;
+				if ($per_admin != 1) { // L'utilisateur n'est pas un employeur (c'est un employé)
+					MySQLManager::close();
+					return false;
+				} else {
+					MySQLManager::close();
+					return $per_token == $token; // Checker que les token correspondent sinon ne peut pas
+				}
 			}
 		}
 		MySQLManager::close();

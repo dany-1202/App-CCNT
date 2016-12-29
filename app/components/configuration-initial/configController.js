@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
   $scope.nbSteps = 4;
   $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -37,12 +37,21 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
                                 {id:1, type: 'text', name:'Nom', value:"",min:2, max:40,error:false,message:"Le nom n'est pas correct!"}, 
                                 {id:2, type: 'text', name:'Adresse', value:"",min:2, max:50,error:false,message:"L'adresse ne réponds pas aux critères!"},
                                 {id:3, type: 'text', name:'Adresse Infos +', value:"",min:0, max:100,error:false,message:""}, 
+<<<<<<< HEAD
                                 {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
                                 {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
                                 {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"Email incorrect!"},
                                 {id:7, type: 'text', name:'Site Web', value:"",min:0, max:30,error:false,message:"Url incorrect"},
                                 {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Code Postal invalide!"},
                                 {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
+=======
+                                {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correct!"},
+                                {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correct!"},
+                                {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"L'email n'est pas correct!"},
+                                {id:7, type: 'text', name:'Site Web', value:"",min:4, max:30,error:false,message:""},
+                                {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Le code postal n'est pas correct!"},
+                                {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité n'est pas correcte!"},
+>>>>>>> refs/remotes/origin/appCCNT
                               ];
   $scope.ccntHeure = [
                         {id:1,name:"42 Heures",value:42,check:""},
@@ -51,6 +60,10 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
                       ];
 
   $scope.selectedDates = [];
+
+  $scope.plagesEvents = [];
+  $scope.events = [];
+  $scope.calEvents = [];
 
   var self = this; // Référence sur le contrôleur
 
@@ -78,18 +91,22 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
   this.saveConfiguration = function() {
 
     var dataEtablissement = { 'nom': $scope.infoEtablissement[0].value, 
-                            'adresse': $scope.infoEtablissement[1].value, 
-                            'telReservation': $scope.infoEtablissement[3].value, 
-                            'telDirection': $scope.infoEtablissement[4].value, 
-                            'email': $scope.infoEtablissement[5].value, 
-                            'siteWeb': $scope.infoEtablissement[6].value, 
-                            'adresseInfo': $scope.infoEtablissement[2].value, 
-                            'codePostal': $scope.infoEtablissement[7].value, 
-                            'localite': $scope.infoEtablissement[8].value, 
-                            'nbHeure': $scope.nbHoursChosen};
+                              'adresse': $scope.infoEtablissement[1].value, 
+                              'telReservation': $scope.infoEtablissement[3].value, 
+                              'telDirection': $scope.infoEtablissement[4].value, 
+                              'email': $scope.infoEtablissement[5].value, 
+                              'siteWeb': $scope.infoEtablissement[6].value, 
+                              'adresseInfo': $scope.infoEtablissement[2].value, 
+                              'codePostal': $scope.infoEtablissement[7].value, 
+                              'localite': $scope.infoEtablissement[8].value, 
+                              'nbHeure': $scope.nbHoursChosen,
+                              'user_id' : SessionService.get('user_id'),
+                              'user_token' : SessionService.get('user_token')
+                            };
 
     var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
     $res.then(function (message) {
+      console.log(message);
       /* Insertion des horaires */ 
       var idEstablishment = message.data;
       var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
@@ -118,13 +135,11 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
         $res.then(function (message) {});
       };
     });
-    console.log($rootScope);
     if ($rootScope.user != null) {
       $rootScope.user.config = true;
     }
     SessionService.set('user_configured', true);
     $location.path('/home');
-    NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
+    NotifService.success("Configuration-Initial","Tous vos paramètres ont bien été enregistrés");  
   }
-
 });

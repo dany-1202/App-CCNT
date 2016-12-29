@@ -625,6 +625,7 @@ div#carre-8:hover {
    color: red!important;
 }
 
+<<<<<<< HEAD
 .parent {
   display: flex!important;
   min-height: 96vh!important;
@@ -689,3 +690,10 @@ used to vertically center elements, may need modification if you're not using de
 }
 
 /**/
+=======
+
+.image {
+	width: 125px;
+	height: 60px;
+}
+>>>>>>> refs/remotes/origin/appCCNT

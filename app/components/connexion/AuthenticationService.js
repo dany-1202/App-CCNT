@@ -35,24 +35,24 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 				    var $res = $http.post("assets/php/checkConfiguration.php", data);
 				    $res.then(function (message) {
 					    SessionService.set('user_id', authenData.user_id);
-			        	SessionService.set('user_nom', authenData.user_nom);
-			        	SessionService.set('user_prenom', authenData.user_prenom);
-			        	SessionService.set('user_type', authenData.user_type);
-			        	SessionService.set('user_token', authenData.user_token);
+		        	SessionService.set('user_nom', authenData.user_nom);
+		        	SessionService.set('user_prenom', authenData.user_prenom);
+		        	SessionService.set('user_type', authenData.user_type);
+		        	SessionService.set('user_token', authenData.user_token);
 					    SessionService.set('user_configured', message.data);
 
 					    /* Définit les éléments du user */
 					    $rootScope.user = {};
 					    $rootScope.user.id = authenData.user_id;
-			        	$rootScope.user.nom = authenData.user_nom;
-			        	$rootScope.user.prenom = authenData.user_prenom;
-			        	$rootScope.user.type = authenData.user_type;
-			        	$rootScope.user.token = authenData.user_token;
-			        	$rootScope.user.config = message.data;
-			        	/* Connexion réussi*/
-			        	NotifService.successCon();
-			        	$location.path('/home');
-			        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé
+		        	$rootScope.user.nom = authenData.user_nom;
+		        	$rootScope.user.prenom = authenData.user_prenom;
+		        	$rootScope.user.type = authenData.user_type;
+		        	$rootScope.user.token = authenData.user_token;
+		        	$rootScope.user.config = message.data;
+		        	/* Connexion réussi*/
+		        	NotifService.successCon();
+		        	$location.path('/home');
+		        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé
 				    });
 	        }
 	      }
@@ -63,7 +63,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 			- Il va retirer les données stockées dans la session grâce au Service SessionService et à la méthode destroy
 		*/
 		logout : function () {
-			var data = {'id' : SessionService.get('user_id')}; // Créer la variable data sous forme d'objet, qui va contenir l'id de l'utilisateur
+			var data = {'user_id' : SessionService.get('user_id')}; // Créer la variable data sous forme d'objet, qui va contenir l'id de l'utilisateur
 			var $promise = $http.post("assets/php/disconnectAuthentication.php", data); // Lange la promesse
 			$promise.then(function (message) {
 				SessionService.destroyAll(); //Destruction de toutes les données stockées dans la session
