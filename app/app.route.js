@@ -31,7 +31,8 @@ ctrlCCNT.config(function($mdDateLocaleProvider) {
  * Si le chemin n'est pas trouvé l'application redirige l'utilisateur vers la page connexion.
 **/
 ctrlCCNT.config(['$routeProvider',
-    function($routeProvider) { // $routeProvider essentiel pour la configuration des routes
+    function($routeProvider) {
+             // $routeProvider essentiel pour la configuration des routes
         $routeProvider
 
         /* Les changements ou ajouts de route se font ici */

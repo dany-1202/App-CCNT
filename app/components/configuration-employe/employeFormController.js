@@ -9,6 +9,7 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
   $scope.dep = [
                     {name:"Bar"},{name:'Cuisine'},{name:'Salle'}
                     ];
+  console.log($scope);
   $scope.monDep = $scope.dep[0];
 
   $scope.horaire = [
@@ -34,18 +35,19 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 
   $scope.nbHeure = 0; // nb d'heure spécifier dans le champs 
 
-  $scope.validation = [
+  $scope.validations = [
                     {name:"Nom",valide:true},{name:"Prenom",valide:true},{name:"Adresse",valide:true},
                     {name:"code",valide:true},{name:"localite",valide:true},{name:"mail",valide:true},
                     {name:"dep",valide:true},{name:"dateIn",valide:true},{name:"dateOut",valide:true},
                     {name:"horaire",valide:true},{name:"particularite",valide:true},{name:"contrat",valide:true}
                     ];
 
+
   //verification si un utilisateur a été sélectionné pour etre modifier
   if($rootScope.myEmp == null){
     $scope.myEmp = {id:1,nom:'', prenom:'',adresse:'',code:0,localite:'',mail:'' ,dep: 'Bar',dateIn:null,dateOut:null,horaire:"Par heure",particularite:0,contrat:"Normal"};
   }else{
-    $scope.myEmp = $rootScope.myEmp;
+    $scope.myEmp = angular.copy($rootScope.myEmp);
     //met a jour le dep
     for (var i = $scope.dep.length - 1; i >= 0; i--) {
       if($scope.dep[i].name == $scope.myEmp.dep){
@@ -97,32 +99,51 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     };
     $scope.myEmp.contrat = $scope.monContrat.name;
     //vérification de la saisie
-    if ($scope.myEmp.nom.trim().length == 0) {
-      $scope.validation[0].valide = false;
+    if ($scope.myEmp.nom.trim().length < 2) {
+      $scope.validations[0].valide = false;
+    } else {
+      $scope.validations[0].valide = true;
     };
-    if ($scope.myEmp.prenom.trim().length == 0) {
-      $scope.validation[1].valide = false;
+    if ($scope.myEmp.prenom.trim().length < 2) {
+      $scope.validations[1].valide = false;
+    } else {
+      $scope.validations[1].valide = true;
     };
     if ($scope.myEmp.adresse.trim().length == 0) {
-      $scope.validation[2].valide = false;
+      $scope.validations[2].valide = false;
+    } else {
+      $scope.validations[2].valide = true;
     };
-    if ($scope.myEmp.code < 1000 || $scope.myEmp.code < 99999 ) {
-      $scope.validation[3].valide = false;
+    if ($scope.myEmp.code < 1000 || $scope.myEmp.code > 99999 ) {
+      $scope.validations[3].valide = false;
+    } else {
+      $scope.validations[3].valide = true;
     };
     if ($scope.myEmp.localite.trim().length == 0) {
-      $scope.validation[4].valide = false;
+      $scope.validations[4].valide = false;
+    } else {
+      $scope.validations[4].valide = true;
     };
+
     var patternEmail = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-    $scope.validation[5].valide = !patternEmail.test($scope.myEmp.mail);
+    $scope.validations[5].valide = patternEmail.test($scope.myEmp.mail);
+    
     if($scope.myEmp.horaire =="Spécial" && $scope.myEmp.particularite < 0){
-      $scope.validation[10].valide = false;
+      $scope.validations[10].valide = false;
     };
-    for (var i = $scope.validation.length - 1; i >= 0; i--) {
-      console.log($scope.validation[i].name+" "+$scope.validation[i].valide);
-      if($scope.validation[i].valide){
+    
+    for (var i = 0; i < $scope.validations.length; i++) {
+      //console.log($scope.validations[i].name+" "+$scope.validations[i].valide);
+      if(!$scope.validations[i].valide){
         valideForm = false;
+        return; // Dès qu'un champ n'est pas valide 
       };
     };
+
+    /* Toutes les validations ont été faites */
+    if (valideForm) {
+
+    }
   };
 
   // permet d'afficher les champs en plus si on choisi un certain type d'horaire pour l'employé
