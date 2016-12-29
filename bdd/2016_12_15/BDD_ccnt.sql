@@ -189,6 +189,9 @@ CREATE TABLE `ccnt`.`ccn_horairecontrat` (
   `hor_nom` VARCHAR(50) NOT NULL , PRIMARY KEY (`hor_id`))
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `ccnt`.`ccn_contrat`
+-- -----------------------------------------------------
 CREATE TABLE `ccnt`.`ccn_contrat` ( 
   `con_dateIn` DATE NOT NULL , 
   `con_dateOut` DATE NULL ,
@@ -197,21 +200,22 @@ CREATE TABLE `ccnt`.`ccn_contrat` (
   `con_hor_id` INT(2) NOT NULL , 
   `con_typ_id` INT(2) NOT NULL),
   PRIMARY KEY (`con_per_id`, `con_hor_id`, `con_typ_id`),
-  INDEX `fk_ccn_possede_ccn_departement1_idx` (`pos_dep_id` ASC),
-  INDEX `fk_ccn_possede_ccn_personne1_idx` (`pos_per_id` ASC),
-  CONSTRAINT `fk_ccn_possede_ccn_departement1`
+  INDEX `fk_ccn_contrat_ccn_personne1_idx` (`con_per_id` ASC),
+  INDEX `fk_ccn_contrat_ccn_horairecontrat1_idx` (`con_hor_id` ASC),
+  INDEX `fk_ccn_contrat_ccn_typecontrat1_idx` (`con_typ_id` ASC),
+  CONSTRAINT `fk_ccn_contrat_ccn_personne1_idx`
     FOREIGN KEY (`con_per_id`)
-    REFERENCES `ccnt`.`ccn_departement` (`dep_id`)
+    REFERENCES `ccnt`.`ccn_personne` (`per_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ccn_possede_ccn_personne1`
+  CONSTRAINT `fk_ccn_contrat_ccn_horairecontrat1_idx`
     FOREIGN KEY (`con_hor_id`)
-    REFERENCES `ccnt`.`ccn_personne` (`per_id`)
+    REFERENCES `ccnt`.`ccn_horairecontrat` (`hor_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-  CONSTRAINT `fk_ccn_possede_ccn_personne1`
+    ON UPDATE NO ACTION),
+  CONSTRAINT `fk_ccn_contrat_ccn_typecontrat1_idx`
     FOREIGN KEY (`con_typ_id`)
-    REFERENCES `ccnt`.`ccn_personne` (`per_id`)
+    REFERENCES `ccnt`.`ccn_personne` (`typ_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
