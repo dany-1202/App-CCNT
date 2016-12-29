@@ -37,6 +37,12 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
                                 {id:1, type: 'text', name:'Nom', value:"",min:2, max:40,error:false,message:"Le nom n'est pas correct!"}, 
                                 {id:2, type: 'text', name:'Adresse', value:"",min:2, max:50,error:false,message:"L'adresse ne réponds pas aux critères!"},
                                 {id:3, type: 'text', name:'Adresse Infos +', value:"",min:0, max:100,error:false,message:""}, 
+                                {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
+                                {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
+                                {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"Email incorrect!"},
+                                {id:7, type: 'text', name:'Site Web', value:"",min:0, max:30,error:false,message:"Url incorrect"},
+                                {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Code Postal invalide!"},
+                                {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
                                 {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correct!"},
                                 {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correct!"},
                                 {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"L'email n'est pas correct!"},
@@ -44,6 +50,12 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
                                 {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Le code postal n'est pas correct!"},
                                 {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité n'est pas correcte!"},
                               ];
+  $scope.ccntHeure = [
+                        {id:1,name:"42 Heures",value:42,check:""},
+                        {id:2,name:"43.5 Heures",value:43.5,check:""},
+                        {id:3,name:"45 Heures",value:45,check:"checked"}
+                      ];
+
   $scope.selectedDates = [];
 
   $scope.plagesEvents = [];

@@ -625,8 +625,75 @@ div#carre-8:hover {
    color: red!important;
 }
 
+<<<<<<< HEAD
+.parent {
+  display: flex!important;
+  min-height: 96vh!important;
+}
+.enfant {
+  margin: auto!important;
+}
+
+/* GESTION EMPLOYE*/
+.panel-table .panel-body{
+  padding:0!important;
+}
+
+.panel-table .panel-body .table-bordered{
+  border-style: none!important;
+  margin:0!important;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+    text-align:center!important;
+    width: 0px!important;
+
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+.panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+  border-right: 0px!important;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+.panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+  border-left: 0px!important;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
+  border-bottom: 0px!important;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
+  border-top: 0px!important;
+}
+
+.panel-table .panel-footer .pagination{
+  margin:0!important; 
+}
+
+/*
+used to vertically center elements, may need modification if you're not using default sizes.
+*/
+.panel-table .panel-footer .col{
+ line-height: 34px!important;
+ height: 34px!important;
+}
+
+.panel-table .panel-heading .col h3{
+ line-height: 30px!important;
+ height: 30px!important;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr > td{
+  line-height: 34px!important;
+}
+
+/**/
+=======
 
 .image {
 	width: 125px;
 	height: 60px;
 }
+>>>>>>> refs/remotes/origin/appCCNT
