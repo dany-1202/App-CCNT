@@ -6,11 +6,38 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
   $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
 
-  $scope.dep = [{name:"Bar"},{name:'Cuisine'},{name:'Salle'}];
-  $scope.monDep = $scope.dep[0];
-
+  $scope.deps = [];
   $scope.horaire = [{name:"Par heure"},{name:'Mensuel'},{name:'Spécial'},{name:'Cadre'}];
   $scope.monHoraire = $scope.horaire[0];
+
+  $scope.contrat = [{name:"Normal"},{name:'Apprentissage'},{name:'Personne externe'}];
+  $scope.monContrat = $scope.contrat[0];
+
+  var getDeps = function () {
+    var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token')};
+    var $promise = $http.post('assets/php/getDepartementsAPI.php', data);
+    $promise.then(function (message) {
+      var tab = message.data;
+      for (var i = 0; i < tab.length; i++) {
+        $scope.deps.push(tab[i]);
+      }
+    });
+    $scope.monDep = $scope.deps[0];
+  }
+
+  var getHoraires = function () {
+
+  }
+
+  var getTypeContrat = function () {
+
+  }
+
+  getDeps();
+  getHoraires();
+  getTypeContrat();
+
+  $scope.genres = [{name: "Masculin", checked: true}, {name:"Féminin", checked: false}];
 
   $scope.pourcentage = [
     {name:"20%",value:0.20},{name:"25%",value:0.25},{name:"30%",value:0.30},{name:"35%",value:0.35},{name:"40%",value:0.40},
@@ -20,9 +47,7 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
   ];
   $scope.monPourc = $scope.pourcentage[0];
 
-  $scope.contrat = [{name:"Normal"},{name:'Apprentissage'},{name:'Personne externe'}];
-  $scope.monContrat = $scope.contrat[0];
-
+  
   $scope.showMen = false; // Savoir si on doit afficher champs mensuel
   $scope.showSpe = false; // Savoir si on doit afficher champs spécial
 
@@ -32,7 +57,8 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
                     {name:"Nom",valide:true},{name:"Prenom",valide:true},{name:"Adresse",valide:true},
                     {name:"code",valide:true},{name:"localite",valide:true},{name:"mail",valide:true},
                     {name:"dep",valide:true},{name:"dateIn",valide:true},{name:"dateOut",valide:true},
-                    {name:"horaire",valide:true},{name:"particularite",valide:true},{name:"contrat",valide:true}
+                    {name:"horaire",valide:true},{name:"particularite",valide:true},{name:"contrat",valide:true},
+                    {name:"dateNaissance", valide:true},{name:"telFixe", valide:true},{name:"telMobile", valide:true}
                     ];
 
 
@@ -41,11 +67,13 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     $scope.myEmp = {id:1,nom:'', prenom:'',adresse:'',code:0,localite:'',mail:'' ,dep: 'Bar',dateIn:null,dateOut:null,horaire:"Par heure",particularite:0,contrat:"Normal"};
   }else{
     $scope.myEmp = angular.copy($rootScope.myEmp);
-
     //met a jour le dep
-    for (var i = $scope.dep.length - 1; i >= 0; i--) {
-      if($scope.dep[i].name == $scope.myEmp.dep.nom){
-          $scope.monDep = $scope.dep[i];
+    console.log($scope.myEmp);
+    for (var i = $scope.deps.length - 1; i >= 0; i--) {
+      
+      if($scope.deps[i].name == $scope.myEmp.dep.nom){
+
+          $scope.monDep = $scope.deps[i];
       };
     };
     //met a jour le champ de l'horaire
@@ -124,6 +152,38 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     $scope.validations[5].valide = patternEmail.test($scope.myEmp.mail);
   }
 
+  $scope.validationTelFixe = function () {
+    if (isNaN($scope.myEmp.telFixe) || $scope.myEmp.telFixe.length != 10) {
+      $scope.validations[13].valide = false;
+    } else {
+      $scope.validations[13].valide = true;
+    };
+  }
+
+  $scope.validationTelMobile = function () {
+   if (isNaN($scope.myEmp.telMobile) || $scope.myEmp.telMobile.length != 10) {
+      $scope.validations[14].valide = false;
+    } else {
+      $scope.validations[14].valide = true;
+    };
+  }
+
+  $scope.validationDateNaissance = function () {
+    if ($scope.myEmp.dateNaissance == null) {
+      $scope.validations[12].valide = false;
+    } else {
+      $scope.validations[12].valide = true;
+    }
+  }
+
+  $scope.validationDateEntree = function () {
+    if ($scope.myEmp.dateIn == null) {
+      $scope.validations[7].valide = false;
+    } else {
+      $scope.validations[7].valide = true;
+    }
+  }
+
   $scope.validation = function () {
     var valideForm = true;
     //attribution des valeurs
@@ -145,11 +205,13 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     $scope.validationCodePost();
     $scope.validationLocalite();
     $scope.validationEmail();
+    $scope.validationDateNaissance();
+    $scope.validationTelFixe();
+    $scope.validationTelMobile();
+    $scope.validationDateEntree();
 
-    if($scope.myEmp.horaire =="Spécial" && $scope.myEmp.particularite <= 0){
-      $scope.validations[10].valide = false;
-    } else {
-      $scope.validations[10].valide = true;
+    if($scope.myEmp.horaire.nom =="Spécial"){
+      $scope.validations[10].valide = $scope.myEmp.particularite <= 0 ? false : true;
     }
     
     for (var i = 0; i < $scope.validations.length; i++) {
@@ -167,7 +229,7 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     /* Toutes les validations ont été faites */
     if ($scope.validation()) {
       // Lancer la modification de l'employé 
-      NotifService.success('Modification employé', "L'employé n°  " + $scope.myEmp.nom + " a été modifié avec succès.");
+      NotifService.success('Modification employé', "L'employé n° " + $scope.myEmp.id + " , " + $scope.myEmp.nom + " a été modifié avec succès.");
       $scope.retour();
     }
   }
@@ -186,5 +248,10 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     };
     
   };
+  $scope.changementGenre = function() {
+    
+    console.log($scope.genres[0]);
+    console.log($scope.genres[1]);
+  }
 
 });
