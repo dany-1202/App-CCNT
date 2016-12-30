@@ -690,10 +690,15 @@ used to vertically center elements, may need modification if you're not using de
 }
 
 /**/
-=======
 
 .image {
 	width: 125px;
 	height: 60px;
 }
->>>>>>> refs/remotes/origin/appCCNT
+
+.error {
+	border-color: red!important;
+}
+
+.correct {}
+

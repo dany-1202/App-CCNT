@@ -40,3 +40,6 @@ INSERT INTO `ccnt`.`ccn_horairecontrat` (`hor_id`, `hor_nom`) VALUES ('1', 'Par 
 INSERT INTO `ccnt`.`ccn_horairecontrat` (`hor_id`, `hor_nom`) VALUES ('2', 'Mensuel');
 INSERT INTO `ccnt`.`ccn_horairecontrat` (`hor_id`, `hor_nom`) VALUES ('3', 'Spécial');
 INSERT INTO `ccnt`.`ccn_horairecontrat` (`hor_id`, `hor_nom`) VALUES ('4', 'Cadre');
+
+INSERT INTO `ccnt`.`ccn_contrat` (`con_dateIn`, `con_dateOut`, `con_particularite`, `con_per_id`, `con_hor_id`, `con_typ_id`) VALUES ('2016-12-13', NULL, 15, '3', '3', '2');
+INSERT INTO `ccnt`.`ccn_contrat` (`con_dateIn`, `con_dateOut`, `con_particularite`, `con_per_id`, `con_hor_id`, `con_typ_id`) VALUES ('2016-12-14', NULL, 0.70, '5', '2', '2');

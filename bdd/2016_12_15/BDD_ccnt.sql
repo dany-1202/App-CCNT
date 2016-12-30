@@ -192,13 +192,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `ccnt`.`ccn_contrat`
 -- -----------------------------------------------------
-CREATE TABLE `ccnt`.`ccn_contrat` ( 
+CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_contrat` ( 
   `con_dateIn` DATE NOT NULL , 
   `con_dateOut` DATE NULL ,
-  `con_particularite` INT NULL,
+  `con_particularite` FLOAT NULL,
   `con_per_id` INT NOT NULL ,
   `con_hor_id` INT(2) NOT NULL , 
-  `con_typ_id` INT(2) NOT NULL),
+  `con_typ_id` INT(2) NOT NULL,
   PRIMARY KEY (`con_per_id`, `con_hor_id`, `con_typ_id`),
   INDEX `fk_ccn_contrat_ccn_personne1_idx` (`con_per_id` ASC),
   INDEX `fk_ccn_contrat_ccn_horairecontrat1_idx` (`con_hor_id` ASC),
@@ -212,10 +212,10 @@ CREATE TABLE `ccnt`.`ccn_contrat` (
     FOREIGN KEY (`con_hor_id`)
     REFERENCES `ccnt`.`ccn_horairecontrat` (`hor_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION),
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_ccn_contrat_ccn_typecontrat1_idx`
     FOREIGN KEY (`con_typ_id`)
-    REFERENCES `ccnt`.`ccn_personne` (`typ_id`)
+    REFERENCES `ccnt`.`ccn_typecontrat` (`typ_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
