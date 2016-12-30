@@ -702,3 +702,7 @@ used to vertically center elements, may need modification if you're not using de
 
 .correct {}
 
+.margin-bottom-10 {
+	margin-bottom: 10px!important;
+}
+

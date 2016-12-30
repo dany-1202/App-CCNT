@@ -43,3 +43,5 @@ INSERT INTO `ccnt`.`ccn_horairecontrat` (`hor_id`, `hor_nom`) VALUES ('4', 'Cadr
 
 INSERT INTO `ccnt`.`ccn_contrat` (`con_dateIn`, `con_dateOut`, `con_particularite`, `con_per_id`, `con_hor_id`, `con_typ_id`) VALUES ('2016-12-13', NULL, 15, '3', '3', '2');
 INSERT INTO `ccnt`.`ccn_contrat` (`con_dateIn`, `con_dateOut`, `con_particularite`, `con_per_id`, `con_hor_id`, `con_typ_id`) VALUES ('2016-12-14', NULL, 0.70, '5', '2', '2');
+
+INSERT INTO `ccnt`.`ccn_appartient` (`app_eta_id`, `app_per_id`) VALUES ('1', '1');
