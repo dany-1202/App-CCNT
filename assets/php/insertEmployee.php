@@ -10,8 +10,8 @@
 	if ($authentified == false) {
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		require_once("classes/EtatInitial.php");
-		$res = EtatInitial::insertEmploye($authData);
+		require_once("classes/EmployeeDAO.php");
+		$res = EmployeeDAO::insertEmployee($authData);
 
 		if ($res) {
 			//si erreur :

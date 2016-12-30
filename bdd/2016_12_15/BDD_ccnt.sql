@@ -195,7 +195,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_contrat` ( 
   `con_dateIn` DATE NOT NULL , 
   `con_dateOut` DATE NULL ,
-  `con_particularite` INT NULL,
+  `con_particularite` FLOAT NULL,
   `con_per_id` INT NOT NULL ,
   `con_hor_id` INT(2) NOT NULL , 
   `con_typ_id` INT(2) NOT NULL,
