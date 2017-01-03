@@ -16,10 +16,11 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 	var routeSansLogin = ['/connexion'];
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
-	var routeAvecLogin = ['/home', '/config-init', '/construction'];
+	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition'];
 
 	/* Fonction déclenché quand un changement de route se fait dans le run de l'application */
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
+		//next.$$route.originalPath);
 		if (SessionService.get('user_token') == null) { // Si le service ne trouve aucune donnée pour le token
 			$location.path('/connexion'); // Redirection sur connexion
 		} else {

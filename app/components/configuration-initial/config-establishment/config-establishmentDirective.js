@@ -6,6 +6,7 @@ ctrlCCNT.directive('configEstablishment', function() {
 		templateUrl : 'app/components/configuration-initial/config-establishment/config-establishmentView.html', // Template à utiliser lorsque la balise est utilisé
 		transclude : true, // Inclu la vue au template déjà existant
 		link: function(scope, element, attrs) {
+
 			/* Controleur se gère ici */
 			scope.verification = function(id, index){
 				var obj = scope.infoEtablissement[index];
@@ -19,11 +20,11 @@ ctrlCCNT.directive('configEstablishment', function() {
 					if(Number.isInteger(obj.value) == false && obj.value < 0){
 						obj.error = true;
 					}
-				}else if(obj.type == "email"){
+				}else if(obj.type == "email" && obj.value.toString().length != 0){
 					var patternEmail = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
 					obj.error = !patternEmail.test(obj.value);
 					return;
-				}else if(obj.id == 7){//Controle l'url 
+				}else if(obj.id == 7 && obj.value.toString().length != 0){//Controle l'url 
 					var patternUrl= new RegExp(/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/);
 					obj.error = !patternUrl.test(obj.value);
 					return;
@@ -48,6 +49,15 @@ ctrlCCNT.directive('configEstablishment', function() {
 					if (scope.infoEtablissement[i].error == true){err=true;}
 				};
 				if(err == false){scope.$parent.ctrl.next(2);}
+			}
+
+			scope.changementHeureCcnt = function(index){
+				for (var i = scope.ccntHeure.length -1; i >= 0;i--) {
+					scope.ccntHeure[i].check = "";
+				};
+				scope.ccntHeure[index].check = "checked";
+
+				
 			}
     },
 	};

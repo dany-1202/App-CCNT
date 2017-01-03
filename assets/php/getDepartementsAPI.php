@@ -1,24 +1,17 @@
 <?php
-
 	require_once("classes/Sanitizer.php");
 	require_once("classes/UserAuthentication.php");
 
-	$authData = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-	
+	$authData = Sanitizer::getSanitizedJSInput();
 	$authentified = UserAuthentication::checkAuthentication($authData['user_id'], $authData['user_token']);
 
 	if ($authentified == false) {
+		/* Utilisateur non autorisé */
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		require_once("classes/EtatInitial.php");
-		$res = EtatInitial::insertEmploye($authData);
-
-		if ($res) {
-			//si erreur :
-			echo(json_encode($authData));
-		}else {
-			echo("on insére l'employé");
-		}
+		/* Utilisateur autorisé */
+		require_once("classes/DepartementDAO.php");
+		$res = DepartementDAO::getDepartements($authData['user_id']); // Récupère le résulat obtenu
+		echo(json_encode($res));
 	}
-	
 ?>

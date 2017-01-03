@@ -29,6 +29,7 @@ class MySQLManager {
 	public static function get() {
 		if (self::$dbhandle == NULL) {
 			self::$dbhandle = new mysqli(SERVER, USER, PASS, DATABASE);
+			self::$dbhandle->set_charset('utf8'); // Permettre l'encodage UTF-8
 			if (self::$dbhandle->connect_error) {
 				die("Impossible de se connecter à la base");
 				self::$dbhandle = NULL;

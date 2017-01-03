@@ -73,28 +73,6 @@ class EtatInitial {
 		return -1;
 	} // insertEtablissement
 
-	/*Permet d'ajouter les données d'une personne dans la table ccn_personne
-	  En paramètre: un tableau de data[] contenant :
-		per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, 
-		per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, 
-		per_telFixe, per_telMobile, per_dep_id, per_genre
-
-	  Contraine BDD : l'attribut per_dep_id doit être > 0 et doit exister dans la bdd
-	*/	
-	public static function insertPersonne ($data) {
-		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssssisisss', $data['nom'], $data['prenom'], $data['mail'], $data['mdp'], $data['token'], $data['dateNaissance'], $data['adresse'], $data['infoSuppAdresse'], $data['codePostal'], $data['ville'], $data['admin'], $data['telFixe'], $data['telMobile'], $data['perGenre']);
-		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  	}
-		}
-		MySQLManager::close();
-		return false;
-	} // insertPersonne
 	
 	/* Permet d'insérer dans la bdd le lien qui relie le département à une personne */
 	//LA FONCTION N'A PAS ENCORE ETE TESTEE

@@ -31,7 +31,8 @@ ctrlCCNT.config(function($mdDateLocaleProvider) {
  * Si le chemin n'est pas trouvé l'application redirige l'utilisateur vers la page connexion.
 **/
 ctrlCCNT.config(['$routeProvider',
-    function($routeProvider) { // $routeProvider essentiel pour la configuration des routes
+    function($routeProvider) {
+             // $routeProvider essentiel pour la configuration des routes
         $routeProvider
 
         /* Les changements ou ajouts de route se font ici */
@@ -50,6 +51,14 @@ ctrlCCNT.config(['$routeProvider',
         .when('/construction', { // Chemin d'une page en construction
             templateUrl: 'app/constructionView.html',
             //controller: 'homeController' // Contrôleur de la page home
+        })
+        .when('/employe', { // Chemin d'une page en construction
+            templateUrl: 'app/components/configuration-employe/employeView.html',
+            controller: 'employeController' // Contrôleur de la page home
+        })
+        .when('/employe/edition', { // Chemin d'une page en construction
+            templateUrl: 'app/components/configuration-employe/employeFormView.html',
+            controller: 'employeFormController' // Contrôleur de la page home
         })
         .otherwise({
             redirectTo: '/connexion' // Redirection sur la page de connexion
