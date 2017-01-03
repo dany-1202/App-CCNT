@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_personne` (
   `per_telFixe` VARCHAR(20) NULL,
   `per_telMobile` VARCHAR(20) NULL,
   `per_genre` VARCHAR(1) NULL,
+  `per_inactif` TINYINT(1) NOT NULL,
   PRIMARY KEY (`per_id`))
 ENGINE = InnoDB;
 
