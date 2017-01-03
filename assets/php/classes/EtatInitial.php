@@ -166,34 +166,6 @@ class EtatInitial {
 		MySQLManager::close();
 		return false; // Il ne trouve rien
 	} // checkConfiguration
-	
-	/*
-		Permet de modififier certaines données d'une personne :
-			Nom 	Prenom  	Mail
-			DateNaissance	Adresse
-			InfoSuppAdresse 	CodePostal
-			Ville	TelephoneFixe
-			TelephoneMobile	Genre
-		Contrainte : Il faut impérativement le per_id de la personne !
-	*/
-	//LA FONCTION N'A PAS ENCORE ETE TESTEE
-	public static function setPersonne ($data) {
-		$db = MySQLManager::get();
-		$query = "UPDATE ccn_personne 
-					SET (per_nom = ?, per_prenom = ?, per_mail = ?, per_dateNaissance = ?, per_adresse = ?, per_infoSuppAdresse = ?, per_codePostal = ?, per_ville = ?, per_telFixe = ?, per_telMobile = ?, per_genre = ?) 
-					WHERE per_id = ?";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssissssi', $data['perNom'], $data['perPrenom'], $data['perNaissance'], $data['perAdresse'], $data['perSuppAdresse'], $data['perCodePostal'], $data['perVille'], $data['perTelFixe'], $data['perTelMobile'], $data['perGenre'], $data['perId']);
-		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  }
-		}
-		MySQLManager::close();
-		return false;
-	} // setPersonne
-
 
 	/* 
 		Permet de modifier le mot de passe d'une personne dans la base de données

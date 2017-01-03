@@ -1,15 +1,14 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService) {
+ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService) {
 
 	$scope.user = {};
   $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
-
+  var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 	$scope.employe = []; //Tableau contenant les employes
 
   $scope.getEmployes = function () {
-    var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
     var $promise = $http.post('assets/php/getEmployeesAPI.php', data);
     $promise.then(function (message) {
       var tab = message.data;
@@ -22,16 +21,26 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
   
   $scope.getEmployes();
 
+  /* Ajout d'une personne */
   $scope.ajouterEmploye = function () {
     $rootScope.myEmp = null;
     $location.url("/employe/edition");
   }
 
-  $scope.supEmploye = function(id) {
-    //fonctionne : supression de l'utilisateur 
-    $scope.employe.splice(id,1);
+  /* Suppression d'un employé (la suppression n'a pas vraiment lieu - le champ per_inactif est mis à 1) */
+  $scope.supEmploye = function(index) {
+    data.id = $scope.employe[index].id;
+    var nom = $scope.employe[index].nom;
     // Supprimer de la base de données
-    
+    var $promise = $http.post('assets/php/supEmployeeAPI.php', data);
+    $promise.then(function (message) {
+      if (message.data) {
+        NotifService.success("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " a été supprimé");
+      } else {
+        NotifService.error("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " n'a pu étre supprimé");
+      }
+    });
+    $scope.employe.splice(index,1);
   };
 
   $scope.modEmploye = function(id) {
