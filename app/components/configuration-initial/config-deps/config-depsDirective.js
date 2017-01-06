@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configDeps', function() {
+ctrlCCNT.directive('configDeps', function($timeout) {
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
 		templateUrl : 'app/components/configuration-initial/config-deps/config-depsView.html', // Template à utiliser lorsque la balise est utilisé
@@ -9,11 +9,10 @@ ctrlCCNT.directive('configDeps', function() {
 			var self = scope;
 			var CARRE = "carre-"; // Constante pour les objets du département (div#carre-id)
 
-      // Ajouter un departement au tableau depuis la div visuel des départements
+      	  // Ajouter un departement au tableau depuis la div visuel des départements
 		  scope.ajouterDepartementTab = function(event){
 		  	var length = scope.$parent.depart.length;
 		  	scope.ajouterDepartement(event);
-		  	
 		  	/*
 		    if ($(event.target).get(0).nodeName=="SPAN") {return;} // Si je clique sur le span
 
@@ -34,14 +33,24 @@ ctrlCCNT.directive('configDeps', function() {
 		  }
 
 		  scope.suivant = function () {
-		  	for (var i = scope.$parent.depart.length - 1; i >= 0; i--) {
-		  		var obj = scope.$parent.depart[i];
-		  		if (obj.error == true) { // Dès que je trouve une erreur je ne met pas suivant
-		  			$('#' + obj.id).focus();
-		  			return;
-		  		}
-		  	};
-		  	scope.ctrl.next(4);
+		  	if (scope.$parent.depart.length == 0) {
+		  		$('#grand-carre').notify(
+					  "Vous n'avez pas de département" , { className: 'error', position:"top center"}
+					);
+		  		$('#btnAjoutDep').notify(
+					  "Vous devez insérer au moins 1 département" , { className: 'error', position:"top center"}
+					).focus();
+					return;
+		  	} else {  		
+			  	for (var i = scope.$parent.depart.length - 1; i >= 0; i--) {
+			  		var obj = scope.$parent.depart[i];
+			  		if (obj.error == true) { // Dès que je trouve une erreur je ne met pas suivant
+			  			$('#' + obj.id).focus();
+			  			return;
+			  		}
+			  	};
+			  	scope.ctrl.next(4);
+		  	}
 		  }
 
 		  scope.verification = function (index) {
@@ -54,17 +63,29 @@ ctrlCCNT.directive('configDeps', function() {
 				return obj.error;
 		  }
 
+		  var add = function () {
+		  	var length = scope.$parent.depart.length;
+		  	if (length < 8) {
+		  		var posIns = length + 1;
+			   	var el = document.getElementById(CARRE + posIns);
+			    if ($(el).hasClass("transparence")) {
+			    	$(el).toggleClass("transparence");
+			    }
+			    scope.$parent.depart.push({id:posIns,name:'Votre département', carre:CARRE + posIns, error: false});
+			};
+		  }
+
 		  // Ajouter un département au tableau depuis le bouton ajouter département
 		  scope.ajouterDepartement = function(event){
 		  	var length = scope.$parent.depart.length;
 		  	var posIns = length + 1;
-		    if (length < 8) {
-		    	var el = document.getElementById(CARRE + posIns);
-		      if ($(el).hasClass("transparence")) {
-		        $(el).toggleClass("transparence");
-		      }
-		      scope.$parent.depart.push({id:posIns,name:'Votre département', carre:CARRE + posIns, error: false});
-		    };
+		  	$timeout(add, 10);
+		  	$timeout(focus, 20);
+		  }
+
+		  var focus = function () {
+		  	var length = scope.$parent.depart.length;
+		  	$('#' + length).focus().select();
 		  }
 
 		  // Supression d'un departement qui se trouve dans le tableau

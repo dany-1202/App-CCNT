@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
   $scope.nbSteps = 4;
   $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -52,6 +52,10 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
 
   $scope.selectedDates = [];
 
+  $scope.plagesEvents = [];
+  $scope.events = [];
+  $scope.calEvents = [];
+
   var self = this; // Référence sur le contrôleur
 
   /* Change la vue du switch et met à jour les pourcentage pour l'étape */
@@ -78,18 +82,22 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
   this.saveConfiguration = function() {
 
     var dataEtablissement = { 'nom': $scope.infoEtablissement[0].value, 
-                            'adresse': $scope.infoEtablissement[1].value, 
-                            'telReservation': $scope.infoEtablissement[3].value, 
-                            'telDirection': $scope.infoEtablissement[4].value, 
-                            'email': $scope.infoEtablissement[5].value, 
-                            'siteWeb': $scope.infoEtablissement[6].value, 
-                            'adresseInfo': $scope.infoEtablissement[2].value, 
-                            'codePostal': $scope.infoEtablissement[7].value, 
-                            'localite': $scope.infoEtablissement[8].value, 
-                            'nbHeure': $scope.nbHoursChosen};
+                              'adresse': $scope.infoEtablissement[1].value, 
+                              'telReservation': $scope.infoEtablissement[3].value, 
+                              'telDirection': $scope.infoEtablissement[4].value, 
+                              'email': $scope.infoEtablissement[5].value, 
+                              'siteWeb': $scope.infoEtablissement[6].value, 
+                              'adresseInfo': $scope.infoEtablissement[2].value, 
+                              'codePostal': $scope.infoEtablissement[7].value, 
+                              'localite': $scope.infoEtablissement[8].value, 
+                              'nbHeure': $scope.nbHoursChosen,
+                              'user_id' : SessionService.get('user_id'),
+                              'user_token' : SessionService.get('user_token')
+                            };
 
     var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
     $res.then(function (message) {
+      console.log(message);
       /* Insertion des horaires */ 
       var idEstablishment = message.data;
       var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
@@ -118,13 +126,11 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
         $res.then(function (message) {});
       };
     });
-    console.log($rootScope);
     if ($rootScope.user != null) {
       $rootScope.user.config = true;
     }
     SessionService.set('user_configured', true);
     $location.path('/home');
-    NotifService.success("Configuration-Initial","Tout vos paramètres ont bien été enregistrés");  
+    NotifService.success("Configuration-Initial","Tous vos paramètres ont bien été enregistrés");  
   }
-
 });

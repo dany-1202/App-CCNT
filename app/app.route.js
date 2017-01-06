@@ -6,15 +6,33 @@
  * var xxx = angular.module('ctrlCCNT'); Ainsi je récupère les dépendances de ctrlCCNT.
 **/
                                           /* On déclare ici toutes les dépendances */
-var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers']);
+var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers', 'mwl.calendar', 'ui.bootstrap', 'colorpicker.module']);
 
+
+ctrlCCNT.config(['calendarConfig', function(calendarConfig) {
+  calendarConfig.dateFormatter = 'angular'; // use moment to format dates
+  calendarConfig.allDateFormats.moment.date.hour = 'HH:mm';
+}]);
+
+ctrlCCNT.config(function($mdDateLocaleProvider) {
+    $mdDateLocaleProvider.formatDate = function(date) {
+      return date ? moment(date).format('DD/MM/YYYY') : null;
+    };
+
+    $mdDateLocaleProvider.parseDate = function(dateString) {
+      var m = moment(dateString, 'DD/MM/YYYY', true);
+      return m.isValid() ? m.toDate() : new Date(NaN);
+    };
+    
+});
 /**
  * Configuration du module principal : ctrlCCNT
  * La configuration des routes de l'applications est faites dans la procédures suivante.
  * Si le chemin n'est pas trouvé l'application redirige l'utilisateur vers la page connexion.
 **/
 ctrlCCNT.config(['$routeProvider',
-    function($routeProvider) { // $routeProvider essentiel pour la configuration des routes
+    function($routeProvider) {
+             // $routeProvider essentiel pour la configuration des routes
         $routeProvider
 
         /* Les changements ou ajouts de route se font ici */

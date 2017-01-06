@@ -1,25 +1,46 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService) {
+ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService) {
 
 	$scope.user = {};
   $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
+  var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
+	$scope.employe = []; //Tableau contenant les employes
 
-	$scope.employe = [
-                    {id:1,nom:'Gomes', prenom:'Dany',adresse:'ch. des beaux-champs 5C',code:1234,localite:'Vessy',mail:'dany@gmail.com' ,dep: 'Bar',dateIn:'24-01-2015',dateOut:null,horaire:"Mensuel",particularite:0.70,contrat:"Apprentissage"},
-                    {id:2,nom:'Jalley', prenom:'Vincent',adresse:'ch. des beaux-champs 5C',code:1222,localite:'Vessy',mail:'vincent@gmail.com' ,dep: 'Cuisine',dateIn:'24-01-2015',dateOut:null,horaire:"Spécial",particularite:15,contrat:"Apprentissage"},
-                    {id:3,nom:'Da Silva', prenom:'Joel',adresse:'ch. des beaux-champs 5C',code:1212,localite:'Vessy',mail:'joel@gmail.com' ,dep: 'Salle',dateIn:'24-01-2015',dateOut:null,horaire:"Mensuel",particularite:0.70,contrat:"Apprentissage"}
-                  ]; //Tableau contenant les employes
+  $scope.getEmployes = function () {
+    var $promise = $http.post('assets/php/getEmployeesAPI.php', data);
+    $promise.then(function (message) {
+      var tab = message.data;
+      for (var i = 0; i < tab.length; i++) {
+        var person = tab[i];
+        $scope.employe.push({id:person.id,nom:person.nom,prenom:person.prenom,adresse:person.adresse,code:person.codePostal,localite:person.ville,mail:person.mail,dep:person.dep,dateIn:new Date(person.contrat.dateIn),dateOut:person.contrat.dateOut == null ? null: new Date (person.contrat.dateOut),horaire:person.contrat.horaire,particularite:person.contrat.particularite,contrat:person.contrat.type, dateNaissance: new Date(person.dateNaissance), telFixe: person.telFixe, telMobile: person.telMobile, genre: person.genre, adresseSup: person.adresseSup});
+      }
+    });
+  }
+  
+  $scope.getEmployes();
 
+  /* Ajout d'une personne */
   $scope.ajouterEmploye = function () {
     $rootScope.myEmp = null;
     $location.url("/employe/edition");
   }
 
-  $scope.supEmploye = function(id) {
-    //fonctionne : supression de l'utilisateur 
-    $scope.employe.splice(id,1);
+  /* Suppression d'un employé (la suppression n'a pas vraiment lieu - le champ per_inactif est mis à 1) */
+  $scope.supEmploye = function(index) {
+    data.id = $scope.employe[index].id;
+    var nom = $scope.employe[index].nom;
+    // Supprimer de la base de données
+    var $promise = $http.post('assets/php/supEmployeeAPI.php', data);
+    $promise.then(function (message) {
+      if (message.data) {
+        NotifService.success("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " a été supprimé");
+      } else {
+        NotifService.error("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " n'a pu étre supprimé");
+      }
+    });
+    $scope.employe.splice(index,1);
   };
 
   $scope.modEmploye = function(id) {
