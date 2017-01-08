@@ -5,21 +5,19 @@
 	
 
 	$authData = Sanitizer::getSanitizedJSInput(); // Récupère les données aseptisée
-
 	$authentified = UserAuthentication::checkAuthentication($authData['user_id'], $authData['user_token']);
 
 	if ($authentified == false) {
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		require_once("classes/EtatInitial.php");
-		$res = EtatInitial::insertPossede($authData);
-
-		if ($res) {
-			//si erreur
-			echo(json_encode($authData));
+		require_once("classes/EstablishmentDAO.php");
+		/* Droit de faire le travail souhaité */
+		$res = EstablishmentDAO::insertEtablissement($authData);
+		if ($res != -1) {
+			//echo(json_encode($res));
+			echo(json_encode($res));
 		}else {
-			echo("insertPossde($authData)");
+			echo("Impossible d'insérer l'établissement");
 		}
-	}
-		
+	} 
 ?>

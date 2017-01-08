@@ -13,27 +13,6 @@ require_once("MySQLManager.php");
 */
 class EtatInitial {
 
-	/*Permet d'ajouter un Departement dans la table ccn_departement
-	  En paramètre: un tableau de data[] contenant :
-		le nom du Departement
-		l'id de l'Etablissement
-	  Contraine BDD : l'attribut etaId de l'instance de Departement doit être > 0 et exister dans la bdd
-	*/
-	public static function insertDepartement ($data) {
-		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_eta_id`) VALUES (?, ?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('si', $data['nom'], $data['noEta']);
-		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  	}
-		}
-		MySQLManager::close();
-		return false;
-	} // insertDepartement
-
 	/*Permet de modifier le nom d'un Departement de la table ccn_departement
 	  En paramètre: un tableau de data[] contenant :
 		le nom du Departement
@@ -55,46 +34,8 @@ class EtatInitial {
 		return false;
 	} // setDepartement
 
-	/*Permet d'ajouter un Etablissement dans la table ccn_etablissement
-	  En paramètre: un tableau de data[] contenant :
-		le nom, l'adresse, le teléphone de réservation, le téléphone de direction, l'email, 
-		le site web, le supplément d'adresse, le code postal, la localite, le nombre d'heure
-	*/	
-	public static function insertEtablissement ($data) {
-	    $db = MySQLManager::get();
-		$query = "INSERT INTO ccn_etablissement (eta_nom, eta_adresse, eta_telReservation, eta_telDirection, eta_email, eta_siteWeb, eta_adresseInfo, eta_codePostal, eta_localite, eta_nbHeure) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sssssssisi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
-			$stmt->execute();
-			MySQLManager::close();
-			return $stmt->insert_id;
-		}
-		MySQLManager::close();
-		return -1;
-	} // insertEtablissement
+	
 
-	/*Permet d'ajouter les données d'une personne dans la table ccn_personne
-	  En paramètre: un tableau de data[] contenant :
-		per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, 
-		per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, 
-		per_telFixe, per_telMobile, per_dep_id, per_genre
-
-	  Contraine BDD : l'attribut per_dep_id doit être > 0 et doit exister dans la bdd
-	*/	
-	public static function insertPersonne ($data) {
-		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssssisisss', $data['nom'], $data['prenom'], $data['mail'], $data['mdp'], $data['token'], $data['dateNaissance'], $data['adresse'], $data['infoSuppAdresse'], $data['codePostal'], $data['ville'], $data['admin'], $data['telFixe'], $data['telMobile'], $data['perGenre']);
-		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  	}
-		}
-		MySQLManager::close();
-		return false;
-	} // insertPersonne
 	
 	/* Permet d'insérer dans la bdd le lien qui relie le département à une personne */
 	//LA FONCTION N'A PAS ENCORE ETE TESTEE
@@ -178,44 +119,30 @@ class EtatInitial {
 		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('i', $data['user_id']);
-	  	$stmt->execute();
-	  	$stmt->store_result();
-	  	if ($stmt->num_rows == 1) {
-	  		MySQLManager::close();
-	  		return true;
-	  	}
+		  	$stmt->execute();
+		  	$stmt->store_result();
+		  	if ($stmt->num_rows == 1) {
+		  		MySQLManager::close();
+		  		return true;
+		  	}
 		}
 		MySQLManager::close();
 		return false; // Il ne trouve rien
 	} // checkConfiguration
-	
-	/*
-		Permet de modififier certaines données d'une personne :
-			Nom 	Prenom  	Mail
-			DateNaissance	Adresse
-			InfoSuppAdresse 	CodePostal
-			Ville	TelephoneFixe
-			TelephoneMobile	Genre
-		Contraine : Il faut impérativement le per_id de la personne !
-	*/
-	//LA FONCTION N'A PAS ENCORE ETE TESTEE
-	public static function setPersonne ($data) {
+
+	public static function getEstablishmentPerson ($data) {
 		$db = MySQLManager::get();
-		$query = "UPDATE ccn_personne 
-					SET (per_nom = ?, per_prenom = ?, per_mail = ?, per_dateNaissance = ?, per_adresse = ?, per_infoSuppAdresse = ?, per_codePostal = ?, per_ville = ?, per_telFixe = ?, per_telMobile = ?, per_genre = ?) 
-					WHERE per_id = ?";
+		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssissssi', $data['perNom'], $data['perPrenom'], $data['perNaissance'], $data['perAdresse'], $data['perSuppAdresse'], $data['perCodePostal'], $data['perVille'], $data['perTelFixe'], $data['perTelMobile'], $data['perGenre'], $data['perId']);
-		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  }
+			$stmt->bind_param('i', $data['user_id']);
+			$stmt->execute();
+			$stmt->bind_result($eta_id);
+			$stmt->fetch(); // Il faut le mettre sinon ça ne marche pas ! 
+			return $eta_id;
 		}
 		MySQLManager::close();
-		return false;
-	} // setPersonne
-
+		return -1; // Il ne trouve rien
+	} // checkConfiguration
 
 	/* 
 		Permet de modifier le mot de passe d'une personne dans la base de données

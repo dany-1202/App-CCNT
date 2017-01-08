@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
   $scope.nbSteps = 4;
   $scope.nbPercentage = 25;
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -37,14 +37,24 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
                                 {id:1, type: 'text', name:'Nom', value:"",min:2, max:40,error:false,message:"Le nom n'est pas correct!"}, 
                                 {id:2, type: 'text', name:'Adresse', value:"",min:2, max:50,error:false,message:"L'adresse ne réponds pas aux critères!"},
                                 {id:3, type: 'text', name:'Adresse Infos +', value:"",min:0, max:100,error:false,message:""}, 
-                                {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correct!"},
-                                {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correct!"},
-                                {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"L'email n'est pas correct!"},
-                                {id:7, type: 'text', name:'Site Web', value:"",min:4, max:30,error:false,message:""},
-                                {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Le code postal n'est pas correct!"},
-                                {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité n'est pas correcte!"},
+                                {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
+                                {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:"Le numéro n'est pas correcte!"},
+                                {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:"Email incorrect!"},
+                                {id:7, type: 'text', name:'Site Web', value:"",min:0, max:30,error:false,message:"Url incorrect"},
+                                {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:"Code Postal invalide!"},
+                                {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
                               ];
+  $scope.ccntHeure = [
+                        {id:1,name:"42 Heures",value:42,check:""},
+                        {id:2,name:"43.5 Heures",value:43.5,check:""},
+                        {id:3,name:"45 Heures",value:45,check:"checked"}
+                      ];
+
   $scope.selectedDates = [];
+
+  $scope.plagesEvents = [];
+  $scope.events = [];
+  $scope.calEvents = [];
 
   var self = this; // Référence sur le contrôleur
 
@@ -69,50 +79,63 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
     };
   }
 
+  var getDateStr = function (date) {
+    var tabDate = date.split('/');
+    return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
+  }
+
   this.saveConfiguration = function() {
-
+    var nbHours = 0;
+      for (var i = 0; i < $scope.ccntHeure.length; i++) {
+        if ($scope.ccntHeure[i].checked = "checked") {
+          nbHours = $scope.ccntHeure[i].value;
+        }
+      }
     var dataEtablissement = { 'nom': $scope.infoEtablissement[0].value, 
-                            'adresse': $scope.infoEtablissement[1].value, 
-                            'telReservation': $scope.infoEtablissement[3].value, 
-                            'telDirection': $scope.infoEtablissement[4].value, 
-                            'email': $scope.infoEtablissement[5].value, 
-                            'siteWeb': $scope.infoEtablissement[6].value, 
-                            'adresseInfo': $scope.infoEtablissement[2].value, 
-                            'codePostal': $scope.infoEtablissement[7].value, 
-                            'localite': $scope.infoEtablissement[8].value, 
-                            'nbHeure': $scope.nbHoursChosen};
+                              'adresse': $scope.infoEtablissement[1].value, 
+                              'telReservation': $scope.infoEtablissement[3].value, 
+                              'telDirection': $scope.infoEtablissement[4].value, 
+                              'email': $scope.infoEtablissement[5].value, 
+                              'siteWeb': $scope.infoEtablissement[6].value, 
+                              'adresseInfo': $scope.infoEtablissement[2].value, 
+                              'codePostal': $scope.infoEtablissement[7].value, 
+                              'localite': $scope.infoEtablissement[8].value, 
+                              'nbHeure': nbHours,
+                              'user_id' : SessionService.get('user_id'),
+                              'user_token' : SessionService.get('user_token')
+                            };
 
-    var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
+    var $res = $http.post("assets/php/insertEtablissementAPI.php", dataEtablissement);
     $res.then(function (message) {
+      console.log(message);
       /* Insertion des horaires */ 
       var idEstablishment = message.data;
-      var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
-      var $res = $http.post("assets/php/updatePersonneEstablishment.php", data);
+      var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token': SessionService.get('user_token')};
+      var $res = $http.post("assets/php/updatePersonneEstablishmentAPI.php", data);
       $res.then(function (message) {});
       for (var i = 0; i < $scope.hours.length; i++) {
         var obj = $scope.hours[i];
         if (obj.journee.debut != "Ouverture") {
-          var dataInsertOuvertureInfo = {'jour': obj.day, 'debut': moment(obj.journee.debut).add(1, 'h').toDate(), 'fin': moment(obj.journee.fin).add(1, 'h').toDate(), 'pauseDebut': moment(obj.pause.debut).add(1, 'h').toDate(), 'pauseFin': moment(obj.pause.fin).add(1, 'h').toDate(), 'etaId': idEstablishment};
-          var $res = $http.post("assets/php/insertOuvertureInfo.php", dataInsertOuvertureInfo);
+          var dataInsertOuvertureInfo = {'jour': obj.day, 'debut': moment(obj.journee.debut).add(1, 'h').toDate(), 'fin': moment(obj.journee.fin).add(1, 'h').toDate(), 'pauseDebut': moment(obj.pause.debut).add(1, 'h').toDate(), 'pauseFin': moment(obj.pause.fin).add(1, 'h').toDate(), 'etaId': idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
+          var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
           $res.then(function (message) {});
         }
       } 
       /* Insertion des départements */
       for (var i = 0; i < $scope.depart.length; i++) {
         var obj = $scope.depart[i];
-        var data = {'nom': obj.name, 'noEta': idEstablishment};
-        var $res = $http.post("assets/php/insertDepartement.php", data);
-        $res.then(function (message) {});
+        var data = {'nom': obj.name, 'noEta': idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
+        var $res = $http.post("assets/php/insertDepartementAPI.php", data);
+        $res.then(function (message) {console.log(message);});
       };
 
       /* Insertion des jours fériés et vacances */
-      for (var i = 0; i < $scope.selectedDates.length; i++) {
-        var dataFermetureInfo = {'date': moment($scope.selectedDates[i] ).add(1, 'h').toDate(), 'etaId': idEstablishment};
-        var $res = $http.post("assets/php/insertFermetureInfo.php", dataFermetureInfo);
-        $res.then(function (message) {});
+      for (var i = 0; i < $scope.calEvents.length; i++) {
+        var dataFermetureInfo = {'date': moment(getDateStr($scope.calEvents[i].date)).add(1, 'h').toDate(), 'etaId': idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
+        var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
+        $res.then(function (message) {console.log(message);});
       };
     });
-    console.log($rootScope);
     if ($rootScope.user != null) {
       $rootScope.user.config = true;
     }
@@ -120,5 +143,4 @@ ctrlCCNT.controller('configController', function($rootScope, $scope, $http, $loc
     $location.path('/home');
     NotifService.success("Configuration-Initial","Tous vos paramètres ont bien été enregistrés");  
   }
-
 });

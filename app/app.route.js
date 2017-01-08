@@ -11,14 +11,28 @@ var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'materialCale
 
 ctrlCCNT.config(['calendarConfig', function(calendarConfig) {
   calendarConfig.dateFormatter = 'angular'; // use moment to format dates
+  calendarConfig.allDateFormats.moment.date.hour = 'HH:mm';
 }]);
+
+ctrlCCNT.config(function($mdDateLocaleProvider) {
+    $mdDateLocaleProvider.formatDate = function(date) {
+      return date ? moment(date).format('DD/MM/YYYY') : null;
+    };
+
+    $mdDateLocaleProvider.parseDate = function(dateString) {
+      var m = moment(dateString, 'DD/MM/YYYY', true);
+      return m.isValid() ? m.toDate() : new Date(NaN);
+    };
+    
+});
 /**
  * Configuration du module principal : ctrlCCNT
  * La configuration des routes de l'applications est faites dans la procédures suivante.
  * Si le chemin n'est pas trouvé l'application redirige l'utilisateur vers la page connexion.
 **/
 ctrlCCNT.config(['$routeProvider',
-    function($routeProvider) { // $routeProvider essentiel pour la configuration des routes
+    function($routeProvider) {
+             // $routeProvider essentiel pour la configuration des routes
         $routeProvider
 
         /* Les changements ou ajouts de route se font ici */
@@ -37,6 +51,14 @@ ctrlCCNT.config(['$routeProvider',
         .when('/construction', { // Chemin d'une page en construction
             templateUrl: 'app/constructionView.html',
             //controller: 'homeController' // Contrôleur de la page home
+        })
+        .when('/employe', { // Chemin d'une page en construction
+            templateUrl: 'app/components/configuration-employe/employeView.html',
+            controller: 'employeController' // Contrôleur de la page home
+        })
+        .when('/employe/edition', { // Chemin d'une page en construction
+            templateUrl: 'app/components/configuration-employe/employeFormView.html',
+            controller: 'employeFormController' // Contrôleur de la page home
         })
         .otherwise({
             redirectTo: '/connexion' // Redirection sur la page de connexion
