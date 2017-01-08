@@ -11,16 +11,9 @@
 	if ($authentified == false) {
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		require_once("classes/EtatInitial.php");
-		$res = EtatInitial::insertDepartement($authData);
-
-		if ($res) {
-			//si erreur :
-			//echo(json_encode($res));
-			echo(json_encode($authData));
-		}else {
-			echo("Impossible d'insérer le département");
-		}
+		require_once("classes/DepartementDAO.php");
+		$res = DepartementDAO::insertDepartement($authData);
+		echo(json_encode($res));
 	}
 	
 ?>

@@ -10,10 +10,11 @@ require_once("PossedeDAO.php");
 class EmployeeDAO {
 	
 	/* Récupère tous les employés (Attention seulement les employés per_admin = 0) */
-	public static function getEmployees () {
+	public static function getEmployees ($eta_id) {
 		$db = MySQLManager::get();
-		$query = "SELECT per_id, per_nom, per_prenom, per_adresse, per_dateNaissance, per_InfoSuppAdresse, per_telFixe, per_telMobile, per_codePostal, per_ville, per_mail, per_genre, dep_id, dep_nom, con_dateIn, con_dateOut, con_particularite, hor_id, hor_nom, typ_id, typ_nom FROM ccn_personne JOIN ccn_possede ON pos_per_id = per_id JOIN ccn_departement ON pos_dep_id = dep_id JOIN ccn_contrat ON con_per_id = per_id JOIN ccn_horairecontrat ON con_hor_id = hor_id JOIN ccn_typecontrat ON con_typ_id = typ_id WHERE per_admin = 0 AND per_inactif = 0";
+		$query = "SELECT per_id, per_nom, per_prenom, per_adresse, per_dateNaissance, per_InfoSuppAdresse, per_telFixe, per_telMobile, per_codePostal, per_ville, per_mail, per_genre, dep_id, dep_nom, con_dateIn, con_dateOut, con_particularite, hor_id, hor_nom, typ_id, typ_nom FROM ccn_personne JOIN ccn_possede ON pos_per_id = per_id JOIN ccn_departement ON pos_dep_id = dep_id JOIN ccn_contrat ON con_per_id = per_id JOIN ccn_horairecontrat ON con_hor_id = hor_id JOIN ccn_typecontrat ON con_typ_id = typ_id WHERE per_admin = 0 AND per_inactif = 0 AND dep_eta_id = ?";
 		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $eta_id);
 			/* Exécution de la requête */
 		    $stmt->execute();
 		    /* Lecture des variables résultantes */

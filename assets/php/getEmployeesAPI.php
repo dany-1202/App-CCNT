@@ -11,7 +11,9 @@
 	} else {
 		/* Utilisateur autorisé */
 		require_once("classes/EmployeeDAO.php");
-		$res = EmployeeDAO::getEmployees(); // Récupère le résulat obtenu
+		require_once("classes/EtatInitial.php");
+		$eta_id = EtatInitial::getEstablishmentPerson($authData);
+		$res = EmployeeDAO::getEmployees($eta_id); // Récupère le résulat obtenu
 		echo(json_encode($res));
 	}
 ?>

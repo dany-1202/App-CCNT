@@ -10,9 +10,9 @@
 	if ($authentified == false) {
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		require_once("classes/EtatInitial.php");
+		require_once("classes/EstablishmentDAO.php");
 		/* Droit de faire le travail souhaité */
-		$res = EtatInitial::insertEtablissement($authData);
+		$res = EstablishmentDAO::insertEtablissement($authData);
 		if ($res != -1) {
 			//echo(json_encode($res));
 			echo(json_encode($res));

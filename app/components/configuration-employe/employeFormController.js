@@ -62,7 +62,7 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 
   /* Récupération et traitement des départements */
   var majDep = function() {
-    if ($rootScope.myEmp != null) {
+    if ($rootScope.myEmp != null && $scope.deps.length == 0) {
         //Met à jour le dep
       for (var i = $scope.deps.length - 1; i >= 0; i--) {
         if($scope.deps[i].name == $scope.myEmp.dep.nom){
@@ -225,6 +225,23 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     }
   }
 
+  $scope.validationDateOut = function () {
+    if ($scope.myEmp.dateOut == null || $scope.myEmp.dateOut == "") {
+       $scope.validations[8].valide = true;
+    } else {
+      if ($scope.myEmp.dateIn == null || $scope.myEmp.dateIn == "") {
+        $scope.validations[7].valide = false;
+        $scope.validations[8].valide = false;
+      } else {
+        if (moment($scope.myEmp.dateOut).isAfter(moment($scope.myEmp.dateIn))) {
+          $scope.validations[8].valide = true;
+        } else {
+          $scope.validations[8].valide = false;
+        }
+      }
+    }
+  }
+
   $scope.validation = function () {
     var valideForm = true;
     //attribution des valeurs
@@ -251,6 +268,7 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     $scope.validationTelFixe();
     $scope.validationTelMobile();
     $scope.validationDateEntree();
+    $scope.validationDateOut();
 
     if($scope.myEmp.horaire.nom =="Spécial"){
       $scope.validations[10].valide = $scope.myEmp.particularite <= 0 ? false : true;
@@ -308,6 +326,12 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
     /* Toutes les validations ont été faites */
     if ($scope.validation()) {
       if ($rootScope.myEmp == null) { // Lancer l'insertion de l'employé
+        $scope.myEmp.dateIn = moment($scope.myEmp.dateIn).add(1, 'd').toDate(); // Ajouter l'heure pour ajouter correctement
+        $scope.myEmp.dateNaissance = moment($scope.myEmp.dateNaissance).add(1, 'd').toDate();
+        if ($scope.myEmp.dateOut != null || $scope.myEmp.dateOut != '') {
+          $scope.myEmp.dateOut = moment($scope.myEmp.dateOut).add(1, 'd').toDate();
+        }
+        console.log($scope.myEmp);
         insertionEmploye();
       } else { // Lancer la modification de l'employé 
         modificationEmploye();

@@ -6,6 +6,28 @@ require_once("MySQLManager.php");
 * Tout le CRUD sera géré ici.	
 */
 class DepartementDAO {
+	
+	/*Permet d'ajouter un Departement dans la table ccn_departement
+	  En paramètre: un tableau de data[] contenant :
+		le nom du Departement
+		l'id de l'Etablissement
+	  Contraine BDD : l'attribut etaId de l'instance de Departement doit être > 0 et exister dans la bdd
+	*/
+	public static function insertDepartement ($data) {
+		$db = MySQLManager::get();
+		$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_eta_id`) VALUES (?, ?)";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('si', $data['nom'], $data['noEta']);
+		  	$stmt->execute();
+		  	if ($stmt->num_rows == 1) {
+		  		MySQLManager::close();
+		  		return true;
+		  	}
+		}
+		MySQLManager::close();
+		return false;
+	} // insertDepartement
+
 	/* Récupère tous les départements d'un établissement (de l'utilisateur (employeur) connecté) */
 	public static function getDepartements ($user_id) {
 		$db = MySQLManager::get();
