@@ -13,27 +13,6 @@ require_once("MySQLManager.php");
 */
 class EtatInitial {
 
-	/*Permet d'ajouter un Departement dans la table ccn_departement
-	  En paramètre: un tableau de data[] contenant :
-		le nom du Departement
-		l'id de l'Etablissement
-	  Contraine BDD : l'attribut etaId de l'instance de Departement doit être > 0 et exister dans la bdd
-	*/
-	public static function insertDepartement ($data) {
-		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_eta_id`) VALUES (?, ?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('si', $data['nom'], $data['noEta']);
-		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  	}
-		}
-		MySQLManager::close();
-		return false;
-	} // insertDepartement
-
 	/*Permet de modifier le nom d'un Departement de la table ccn_departement
 	  En paramètre: un tableau de data[] contenant :
 		le nom du Departement
@@ -55,23 +34,7 @@ class EtatInitial {
 		return false;
 	} // setDepartement
 
-	/*Permet d'ajouter un Etablissement dans la table ccn_etablissement
-	  En paramètre: un tableau de data[] contenant :
-		le nom, l'adresse, le teléphone de réservation, le téléphone de direction, l'email, 
-		le site web, le supplément d'adresse, le code postal, la localite, le nombre d'heure
-	*/	
-	public static function insertEtablissement ($data) {
-	    $db = MySQLManager::get();
-		$query = "INSERT INTO ccn_etablissement (eta_nom, eta_adresse, eta_telReservation, eta_telDirection, eta_email, eta_siteWeb, eta_adresseInfo, eta_codePostal, eta_localite, eta_nbHeure) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sssssssisi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
-			$stmt->execute();
-			MySQLManager::close();
-			return $stmt->insert_id;
-		}
-		MySQLManager::close();
-		return -1;
-	} // insertEtablissement
+	
 
 	
 	/* Permet d'insérer dans la bdd le lien qui relie le département à une personne */
@@ -156,15 +119,29 @@ class EtatInitial {
 		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('i', $data['user_id']);
-	  	$stmt->execute();
-	  	$stmt->store_result();
-	  	if ($stmt->num_rows == 1) {
-	  		MySQLManager::close();
-	  		return true;
-	  	}
+		  	$stmt->execute();
+		  	$stmt->store_result();
+		  	if ($stmt->num_rows == 1) {
+		  		MySQLManager::close();
+		  		return true;
+		  	}
 		}
 		MySQLManager::close();
 		return false; // Il ne trouve rien
+	} // checkConfiguration
+
+	public static function getEstablishmentPerson ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['user_id']);
+			$stmt->execute();
+			$stmt->bind_result($eta_id);
+			$stmt->fetch(); // Il faut le mettre sinon ça ne marche pas ! 
+			return $eta_id;
+		}
+		MySQLManager::close();
+		return -1; // Il ne trouve rien
 	} // checkConfiguration
 
 	/* 

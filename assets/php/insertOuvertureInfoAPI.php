@@ -13,13 +13,7 @@
 	} else {
 		require_once("classes/EtatInitial.php");
 		$res = EtatInitial::insertOuvertureInfo($authData);
-
-		if ($res) {
-			//echo(json_encode($res));
-			echo(json_encode($authData));
-		}else {
-			echo("Impossible d'insérer la date / heure de fermeture");
-		}
+		echo($res);
 	}
 		
 ?>
