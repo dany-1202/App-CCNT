@@ -79,8 +79,18 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
     };
   }
 
-  this.saveConfiguration = function() {
+  var getDateStr = function (date) {
+    var tabDate = date.split('/');
+    return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
+  }
 
+  this.saveConfiguration = function() {
+    var nbHours = 0;
+      for (var i = 0; i < $scope.ccntHeure.length; i++) {
+        if ($scope.ccntHeure[i].checked = "checked") {
+          nbHours = $scope.ccntHeure[i].value;
+        }
+      }
     var dataEtablissement = { 'nom': $scope.infoEtablissement[0].value, 
                               'adresse': $scope.infoEtablissement[1].value, 
                               'telReservation': $scope.infoEtablissement[3].value, 
@@ -90,40 +100,40 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
                               'adresseInfo': $scope.infoEtablissement[2].value, 
                               'codePostal': $scope.infoEtablissement[7].value, 
                               'localite': $scope.infoEtablissement[8].value, 
-                              'nbHeure': $scope.nbHoursChosen,
+                              'nbHeure': nbHours,
                               'user_id' : SessionService.get('user_id'),
                               'user_token' : SessionService.get('user_token')
                             };
 
-    var $res = $http.post("assets/php/insertEtablissement.php", dataEtablissement);
+    var $res = $http.post("assets/php/insertEtablissementAPI.php", dataEtablissement);
     $res.then(function (message) {
       console.log(message);
       /* Insertion des horaires */ 
       var idEstablishment = message.data;
-      var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id')};
-      var $res = $http.post("assets/php/updatePersonneEstablishment.php", data);
+      var data = {'eta_id' : idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token': SessionService.get('user_token')};
+      var $res = $http.post("assets/php/updatePersonneEstablishmentAPI.php", data);
       $res.then(function (message) {});
       for (var i = 0; i < $scope.hours.length; i++) {
         var obj = $scope.hours[i];
         if (obj.journee.debut != "Ouverture") {
-          var dataInsertOuvertureInfo = {'jour': obj.day, 'debut': moment(obj.journee.debut).add(1, 'h').toDate(), 'fin': moment(obj.journee.fin).add(1, 'h').toDate(), 'pauseDebut': moment(obj.pause.debut).add(1, 'h').toDate(), 'pauseFin': moment(obj.pause.fin).add(1, 'h').toDate(), 'etaId': idEstablishment};
-          var $res = $http.post("assets/php/insertOuvertureInfo.php", dataInsertOuvertureInfo);
+          var dataInsertOuvertureInfo = {'jour': obj.day, 'debut': moment(obj.journee.debut).add(1, 'h').toDate(), 'fin': moment(obj.journee.fin).add(1, 'h').toDate(), 'pauseDebut': moment(obj.pause.debut).add(1, 'h').toDate(), 'pauseFin': moment(obj.pause.fin).add(1, 'h').toDate(), 'etaId': idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
+          var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
           $res.then(function (message) {});
         }
       } 
       /* Insertion des départements */
       for (var i = 0; i < $scope.depart.length; i++) {
         var obj = $scope.depart[i];
-        var data = {'nom': obj.name, 'noEta': idEstablishment};
-        var $res = $http.post("assets/php/insertDepartement.php", data);
-        $res.then(function (message) {});
+        var data = {'nom': obj.name, 'noEta': idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
+        var $res = $http.post("assets/php/insertDepartementAPI.php", data);
+        $res.then(function (message) {console.log(message);});
       };
 
       /* Insertion des jours fériés et vacances */
-      for (var i = 0; i < $scope.selectedDates.length; i++) {
-        var dataFermetureInfo = {'date': moment($scope.selectedDates[i] ).add(1, 'h').toDate(), 'etaId': idEstablishment};
-        var $res = $http.post("assets/php/insertFermetureInfo.php", dataFermetureInfo);
-        $res.then(function (message) {});
+      for (var i = 0; i < $scope.calEvents.length; i++) {
+        var dataFermetureInfo = {'date': moment(getDateStr($scope.calEvents[i].date)).add(1, 'h').toDate(), 'etaId': idEstablishment, 'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
+        var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
+        $res.then(function (message) {console.log(message);});
       };
     });
     if ($rootScope.user != null) {
