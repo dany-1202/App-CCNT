@@ -9,6 +9,21 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 			var self = scope;
 			var CARRE = "carre-"; // Constante pour les objets du département (div#carre-id)
 
+
+			var show = function () {
+				$('#grand-carre').popover('show');
+				$('#btnAjoutDep').popover('show');
+			}
+
+			var hide = function () {
+				$('#grand-carre').popover('hide');
+				$('#btnAjoutDep').popover('hide');
+			}
+			
+			$timeout(show, 1);
+			$timeout(hide, 10000);
+
+
       	  // Ajouter un departement au tableau depuis la div visuel des départements
 		  scope.ajouterDepartementTab = function(event){
 		  	var length = scope.$parent.depart.length;
@@ -32,7 +47,7 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 		    }*/
 		  }
 
-		  scope.suivant = function () {
+		  var enregistrer  = function() {
 		  	if (scope.$parent.depart.length == 0) {
 		  		$('#grand-carre').notify(
 					  "Vous n'avez pas de département" , { className: 'error', position:"top center"}
@@ -48,9 +63,16 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 			  			$('#' + obj.id).focus();
 			  			return;
 			  		}
-			  	};
-			  	scope.ctrl.next(4);
-		  	}
+			  	}
+		  	};
+		  	scope.ctrl.next(4);
+		  }
+
+
+		  scope.suivant = function () {
+		  	$timeout(show, 1);
+		  	$timeout(hide, 1);
+		  	$timeout(enregistrer, 10);
 		  }
 
 		  scope.verification = function (index) {
@@ -77,6 +99,7 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 
 		  // Ajouter un département au tableau depuis le bouton ajouter département
 		  scope.ajouterDepartement = function(event){
+		  	$timeout(hide, 10);
 		  	var length = scope.$parent.depart.length;
 		  	var posIns = length + 1;
 		  	$timeout(add, 10);
@@ -90,6 +113,7 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 
 		  // Supression d'un departement qui se trouve dans le tableau
 		  scope.supprimerDepartement = function(event, id, index){
+		  	$timeout(hide, 10);
 		  	var length = scope.$parent.depart.length;
 		  	var el = (index == 0 && length == 1 ? document.getElementById(CARRE + 1): document.getElementById(CARRE + length));
 		  	scope.$parent.depart.splice(index, 1);
