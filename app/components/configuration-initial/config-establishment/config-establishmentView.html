@@ -2,6 +2,10 @@
                <!-- affichage des champs -->
                <div class="col-lg-12 padding-bottom">
                   <h2 class="no-margin-left">Informations sur l'établissement</h1>
+                  <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Saisir les informations de votre établissement</h4>
+                    <p>Saisissez toutes les informations principales concernant votre établissement ainsi que ses heures soumis au CCNT.</p>
+                  </div>
                </div>
             </div>
             <div ng-repeat="item in infoEtablissement">
@@ -18,14 +22,25 @@
             <div class="row">
                <div class="col-lg-3"></div>
                   <div class="col-lg-6">
-                     <span>Votre établissement est soumis CCNT : (Cocher la réponse correspondante)</span>
+                  <hr>
+                     <span>Votre établissement est soumis <strong>CCNT</strong> : (Cocher la réponse correspondante)</span>
+                     <br>
                   </div>
             </div>
             <div class="row">
-               <div class="col-lg-3"></div>
-                  <div ng-repeat="item in ccntHeure">
-                     <div class="col-lg-2"><span><input id="{{item.id}}" ng-click="changementHeureCcnt($index)" type="radio" name="group1" value="{{item.value}}" checked="{{item.check}}">  {{item.name}}</span></div>
+               <div class="col-lg-12">
+                  <div class="col-lg-3"></div>
+                  <div class="col-lg-6">
+                  <br>
+                     <md-radio-group ng-model="hoursCCNTChosen" class="md-primary">
+                       <md-radio-button ng-repeat="h in ccntHeure"
+                                        ng-value="h.value">
+                           {{h.name}}<br/>
+                       </md-radio-button>
+                     </md-radio-group>
                   </div>
+               </div>
+                  
             </div>
             <!-- affichage du bouton -->
             <div class="col-lg-12 padding-top">
