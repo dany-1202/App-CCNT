@@ -9,20 +9,23 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 			var self = scope;
 			var CARRE = "carre-"; // Constante pour les objets du département (div#carre-id)
 
+			var hide = function () {
+				$("div.popover").popover('hide');
+			}
 
 			var show = function () {
 				$('#grand-carre').popover('show');
 				$('#btnAjoutDep').popover('show');
-			}
-
-			var hide = function () {
-				$('#grand-carre').popover('hide');
-				$('#btnAjoutDep').popover('hide');
+				$('#supDep0').popover('show');
+				$("div.popover").click(function(e) {
+					$(e.currentTarget).popover('hide');
+				});
 			}
 			
 			$timeout(show, 1);
-			$timeout(hide, 10000);
+			$timeout(hide, 30000);
 
+			
 
       	  // Ajouter un departement au tableau depuis la div visuel des départements
 		  scope.ajouterDepartementTab = function(event){
@@ -65,14 +68,17 @@ ctrlCCNT.directive('configDeps', function($timeout) {
 			  		}
 			  	}
 		  	};
-		  	scope.ctrl.next(4);
+		  	scope.ctrl.next(3);
 		  }
 
-
 		  scope.suivant = function () {
-		  	$timeout(show, 1);
 		  	$timeout(hide, 1);
 		  	$timeout(enregistrer, 10);
+		  }
+
+		  scope.precedent = function () {
+		  	$timeout(hide, 1);
+		  	$timeout(scope.ctrl.previous(1), 10);
 		  }
 
 		  scope.verification = function (index) {

@@ -11,6 +11,7 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
   $scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
   $scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
   $scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
+  $scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
 
   $scope.nbHoursChosen = null;
 
@@ -45,9 +46,9 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
                                 {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:"La Localité est incorrecte!"},
                               ];
   $scope.ccntHeure = [
-                        {id:1,name:"42 Heures",value:42,check:""},
-                        {id:2,name:"43.5 Heures",value:43.5,check:""},
-                        {id:3,name:"45 Heures",value:45,check:"checked"}
+                        {id:1,name:"42 Heures",value:42},
+                        {id:2,name:"43.5 Heures",value:43.5},
+                        {id:3,name:"45 Heures",value:45}
                       ];
 
   $scope.selectedDates = [];
@@ -85,12 +86,6 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
   }
 
   this.saveConfiguration = function() {
-    var nbHours = 0;
-      for (var i = 0; i < $scope.ccntHeure.length; i++) {
-        if ($scope.ccntHeure[i].checked = "checked") {
-          nbHours = $scope.ccntHeure[i].value;
-        }
-      }
     var dataEtablissement = { 'nom': $scope.infoEtablissement[0].value, 
                               'adresse': $scope.infoEtablissement[1].value, 
                               'telReservation': $scope.infoEtablissement[3].value, 
@@ -100,7 +95,7 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
                               'adresseInfo': $scope.infoEtablissement[2].value, 
                               'codePostal': $scope.infoEtablissement[7].value, 
                               'localite': $scope.infoEtablissement[8].value, 
-                              'nbHeure': nbHours,
+                              'nbHeure': $scope.hoursCCNTChosen,
                               'user_id' : SessionService.get('user_id'),
                               'user_token' : SessionService.get('user_token')
                             };

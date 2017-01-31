@@ -50,15 +50,6 @@ ctrlCCNT.directive('configEstablishment', function() {
 				};
 				if(err == false){scope.$parent.ctrl.next(2);}
 			}
-
-			scope.changementHeureCcnt = function(index){
-				for (var i = scope.ccntHeure.length -1; i >= 0;i--) {
-					scope.ccntHeure[i].check = "";
-				};
-				scope.ccntHeure[index].check = "checked";
-
-				
-			}
     },
 	};
 });
