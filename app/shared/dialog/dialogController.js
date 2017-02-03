@@ -16,7 +16,8 @@ dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, NotifService, $l
           .ariaLabel('Déconnexion')
           .targetEvent(ev)
           .ok('Oui') // Bouton Oui - veut se déconnecter
-          .cancel('Non'); // Bouton Non - annulation
+          .cancel('Non')
+          .parent(angular.element(document.body.parentElement)); // Bouton Non - annulation
     $mdDialog.show(confirm).then(function() { // Si l'utilisateur clic sur Oui 
       AuthenticationService.logout();
       NotifService.success("Statut Connexion", "Déconnexion réussi !");

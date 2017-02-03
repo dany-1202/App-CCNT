@@ -13,6 +13,11 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
   $scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
   $scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
 
+  $rootScope.firstTimeEta = true;
+  $rootScope.firstTimeDep = true;
+  $rootScope.firstTimeHours = true;
+  $rootScope.firstTimeFerm = true;
+
   $scope.nbHoursChosen = null;
 
   /* Définition des horaires de la semaine */

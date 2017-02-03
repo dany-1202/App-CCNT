@@ -708,3 +708,7 @@ used to vertically center elements, may need modification if you're not using de
 	margin-bottom: 10px!important;
 }
 
+.width-smartphone {
+	margin: 0px;
+}
+
