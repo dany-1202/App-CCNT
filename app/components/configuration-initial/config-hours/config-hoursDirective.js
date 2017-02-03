@@ -331,7 +331,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
     				$scope.msgNotif("#nbHours", "Vos heures : " + $scope.nbHours + " dépasse le nombre \n\r total d'heure : " + $scope.$parent.nbHoursChosen + " accordé \n\r pour votre semaine", 'error');
     				return;
     			}
-    			$scope.ctrl.next(3);
+    			$scope.ctrl.next(4);
     		}	else {
     			$scope.msgNotif("#1debut", "Veuillez configurer votre semaine !", 'error');
     		}
