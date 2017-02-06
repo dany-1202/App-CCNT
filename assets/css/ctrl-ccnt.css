@@ -712,3 +712,49 @@ used to vertically center elements, may need modification if you're not using de
 	margin: 0px;
 }
 
+.hours-ccnt{
+	font-size:18px;
+	color:black;
+	background-color: white;
+	padding: 25px!important;
+	border-top : 0px solid #212121;
+	box-shadow: 0 4px 5px 0 rgba(0,0,0,0.4),0 4px 5px 0 rgba(0,0,0,0.4)!important;
+	cursor:pointer;
+}
+
+.hours-ccnt:hover{
+	font-size:18px;
+	background-color: white;
+	box-shadow: 0 4px 5px 0 rgba(0,0,0,0.8),0 4px 5px 0 rgba(0,0,0,0.8)!important;
+}
+
+
+.border-ellipse-hours {
+	font-weight: bold;
+	color:black;
+}
+
+.popovers {
+	margin-top:15px;
+}
+
+.popovers-content {
+
+	margin-top:-1px;
+	padding: 5px!important;
+	  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 0px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+
+  line-break: auto;
+}
+
+.no-margin-top-16 {
+	margin-top: -40px!important;
+	margin-right: 18px!important;
+}
+
