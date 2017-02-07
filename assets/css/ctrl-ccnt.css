@@ -779,3 +779,7 @@ div#carre-8:hover {
 	background-color:#3E2723!important;
 	line-height:50px!important
 }
+
+.bold {
+	font-weight: bold!important;
+}

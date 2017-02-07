@@ -16,16 +16,6 @@ ctrlCCNT.factory('Popover', function ($timeout) {
    	pop.firstTimeHours = true; // Popovers dans les horaires d'ouvertures
    	pop.firstTimeFerm = true; // Popovers dans les jours fériés et vacances
 
-   	pop.bindEvent = function () {
-   		$("div.popover").click(function(e) {
-			$(e.currentTarget).popover('hide');
-		});
-   	}
-
-   	pop.affPopoversHours = function () {
-   		pop.bindEvent();
-   	}
-
 	pop.changeFirstTimeEta = function () { 
 		pop.firstTimeEta = false; // Mettre à l'état à false afin de ne plus afficher
 	}
