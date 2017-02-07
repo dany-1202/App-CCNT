@@ -8,9 +8,6 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 		transclude : true, // Inclu la vue au template déjà existant
 		
 		link: function($scope, $element, $attrs) {
-			
-			$scope.status = '  ';
-
 
 			/* Construction des dates nécessaires */
 			var now = new Date();
@@ -21,11 +18,13 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			$scope.affChoiceOpenning = true; // Afficher la question du type d'ouverture
 	  		$scope.affCalendar = false; // Afficher le calendrier
 			$scope.choix = null; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
+			$scope.freq = null;
 
 			/* Construction de l'heure de début */
 			now.setHours(7);
 			now.setMinutes(0);
 			$scope.hourDebut = now;
+			$scope.selectedD = [];
 
 			/* Construction de l'heure de fin */
 			nowFin.setHours(23);
@@ -54,7 +53,10 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 			var show = function () {
 				$('#choiceOpenning').popover('show');
-				Popover.affPopoversHours('choiceOpenning');
+				$("div.popover").click(function(e) {
+		   			e.preventDefault();
+					$(e.currentTarget).popover('hide');
+				});
 			}
 
 			if (Popover.firstTimeHours) {
@@ -62,6 +64,33 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				$timeout(hide, 30000); // Cacher les popovers 
 				Popover.changeFirstTimeHours();
 			}
+
+			$scope.hidePopovers = function () {
+				$timeout(hide, 1);
+			}
+
+			$scope.toggle = function (item, list) {
+		        var idx = list.indexOf(item);
+		        var pos = $scope.hours.indexOf(item);
+		        if (idx > -1) {
+		          list.splice(idx, 1);
+		          $scope.hours[pos].pause.existe = false;
+		        }
+		        else {
+		          list.push(item);
+		          $scope.hours[pos].pause.existe = true;
+		        }
+		    };
+
+			$scope.exists = function (item, list) {
+		        return list.indexOf(item) > -1;
+	      	};
+
+	      
+	  		$scope.afficherCalendar = function () {
+	  			$scope.affChoiceOpenning = true;
+	  			$scope.affCalendar = false;
+	  		}
 
 	  		$scope.affModif = function () {
 	  			if ($scope.modifHours == false) {
@@ -99,23 +128,23 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	  			$timeout(hide, 1);
 	  			$scope.choix = idChoix == 0 ? {id: idChoix, nom:"En Continue", color: "#27ae60"} : {id: idChoix, nom:"Avec Coupures", color: "#428bca"};
 	  			if (idChoix != 1) {
-	  				$scope.affChoiceOpenning = false;
-	  				$scope.affCalendar = true;
+	  				$scope.afficherCalendar();
 	  			}
 	  		}
 
 	  		$scope.choiceFrequencyCoup = function (idFreq) {
 	  			$scope.choix.freq = idFreq == 0 ? {id: idFreq, nom:"Tous les jours"} : {id: idFreq, nom:"Certains jours"};
-	  			$scope.affChoiceOpenning = false;
-  				$scope.affCalendar = true;
+	  			if (idFreq != 1) {
+		  			$scope.afficherCalendar();
+	  			}
   				$timeout(hide, 1);
 	  		}
 
 
 	  		$scope.modifChoiceOpenning = function () {
 	  			$scope.choix = null;
-	  			$scope.affChoiceOpenning = true;
-	  			$scope.affCalendar = false;
+	  			$scope.afficherCalendar();
+	  			console.log("ICI");
 	  		}
 
 			$scope.showAdvanced = function(ev, objHour) {

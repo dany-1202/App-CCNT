@@ -46,7 +46,7 @@
 
       <div class="row" ng-show="affChoiceOpenning">
          <div class="col-lg-12" >
-            <div class="card card-inverse text-center" id="choiceOpenning" data-title="Question Type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Choisissez si votre établissement est ouvert en continue ou avec des coupures" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
+            <div class="card card-inverse text-center" ng-click="hidePopovers()" id="choiceOpenning" data-title="Question Type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Choisissez si votre établissement est ouvert en continue ou avec des coupures" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
                <h3 class="card-header">Ouverture de l'établissement</h3><hr>
                <div class="card-block">
 
@@ -64,7 +64,7 @@
                   </div>
 
                   <!-- Suite Avec coupures -->
-                  <div ng-show="choix.id == 1">
+                  <div ng-show="choix.id == 1 && choix.freq.id != 1">
                      <h4 class="card-title">Les coupures sont faites tous les jours ou pour seulement certains jours de la semaine ?</h4>
                      <p class="card-text">
                         <button class="btn btn-primary" ng-click="choiceFrequencyCoup(0)"> 
@@ -74,6 +74,21 @@
                            Certains jours
                         </button>
                      </div>
+                  </div>
+
+                  <!-- Suite Avec coupures et certains jours -->
+                  <div ng-show="choix.id == 1 && choix.freq.id == 1">
+                     <h4 class="card-title">Pour quels jours ces coupures ont-elle lieu ?</h4>
+                     <p class="card-text">
+                        <div class="row" ng-repeat="item in hours">
+                           <md-checkbox class="md-primary" ng-checked="exists(item, selectedD)" ng-click="toggle(item, selectedD)">
+                              <span ng-class="{bold: exists(item, selectedD)}"> {{ item.day }} </span>
+                           </md-checkbox>  
+                        </div>
+                        <button class="btn btn-primary" ng-click="afficherCalendar()" class="md-raised">
+                           Terminer
+                        </button>
+                     </p>
                   </div>
 
                </div>
