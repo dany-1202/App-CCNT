@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope) {
+ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover) {
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
 		templateUrl : 'app/components/configuration-initial/config-establishment/config-establishmentView.html', // Template à utiliser lorsque la balise est utilisé
@@ -21,10 +21,10 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope) {
 				});
 			}
 
-			if ($rootScope.firstTimeEta) {
+			if (Popover.firstTimeEta) {
 				$timeout(show, 1);
 				$timeout(hide, 30000);
-				$rootScope.firstTimeEta = false; // Je vois si c'est la première fois que j'affiche le popover ou non
+				Popover.changeFirstTimeEta() // Je vois si c'est la première fois que j'affiche le popover ou non
 			}
 
 			/* Controleur se gère ici */
@@ -64,7 +64,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope) {
 			}
 
 			scope.verificationSuivant = function(){
-				$timeout(hide, 10);
+				$timeout(hide, 1);
 				var err = false;
 				for (var i = scope.infoEtablissement.length - 1; i >= 0; i--) {
 					scope.verification(scope.infoEtablissement[i].id,i);

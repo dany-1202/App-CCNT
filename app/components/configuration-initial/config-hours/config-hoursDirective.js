@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDialog) {
+ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDialog, $timeout, Popover) {
 	
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
@@ -8,29 +8,60 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 		transclude : true, // Inclu la vue au template déjà existant
 		
 		link: function($scope, $element, $attrs) {
+			
 			$scope.status = '  ';
+
+
+			/* Construction des dates nécessaires */
 			var now = new Date();
 			var nowFin = new Date();
 			var nowPauseDebut = new Date();
 			var nowPauseFin = new Date();
+
+			$scope.affChoiceOpenning = true; // Afficher la question du type d'ouverture
+	  		$scope.affCalendar = false; // Afficher le calendrier
+			$scope.choix = null; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
+
+			/* Construction de l'heure de début */
 			now.setHours(7);
 			now.setMinutes(0);
 			$scope.hourDebut = now;
+
+			/* Construction de l'heure de fin */
 			nowFin.setHours(23);
 			nowFin.setMinutes(00);
 			$scope.hourFin = nowFin;
+
+			/* Construction de l'heure de pause du début */
 			nowPauseDebut.setHours(15);
 			nowPauseDebut.setMinutes(00);
 			$scope.pauseDebut = nowPauseDebut;
+
+			/* Construction de l'heure de pause de fin */
 			nowPauseFin.setHours(17);
 			nowPauseFin.setMinutes(00);
 			$scope.pauseFin = nowPauseFin;
 
-	  		$scope.customFullscreen = true;
-	  		$scope.nbHours = 0;
+	  		$scope.customFullscreen = true; // Affiche la fenêtre modale en plein écran pour les smartphones
+	  		$scope.nbHours = 0; // Nombres d'heures Soumis CCNT
 	  		$scope.affFirstTime = false;
 	  		$scope.modifCCNT = false;
 	  		$scope.modifHours = false;
+
+	  		var hide = function () {
+				$("div.popover").popover('hide');
+			}
+
+			var show = function () {
+				$('#choiceOpenning').popover('show');
+				Popover.affPopoversHours('choiceOpenning');
+			}
+
+			if (Popover.firstTimeHours) {
+				$timeout(show, 1); // Lancer les popovers
+				$timeout(hide, 30000); // Cacher les popovers 
+				Popover.changeFirstTimeHours();
+			}
 
 	  		$scope.affModif = function () {
 	  			if ($scope.modifHours == false) {
@@ -41,6 +72,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	  		$scope.affModifHours = function () {
 	  			$scope.modifCCNT = false;
 	  			$scope.modifHours = true;
+	  			$timeout(hide, 1);
 	  		}
 
 
@@ -48,18 +80,43 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	  			$scope.hoursCCNTChosen = hours;
 	  			$scope.modifCCNT = false;
 	  			$scope.modifHours = false;
+	  			$timeout(hide, 1);
 	  		}
 
 	  		$scope.msgNotif = function (id, text, className) {
-					$(id).notify(
-						  text , { className: className, position:"bottom center"}
-						).focus();
-				}
+				$(id).notify(
+					  text , { className: className, position:"bottom center"}
+				).focus();
+			}
 
+			/* Gestion du type d'ouverture : En continue ou avec coupures */
 	  		if ($scope.$parent.nbHoursChosen == null || $scope.$parent.nbHoursChosen == "") {
 	  			/* Afficher message du nombre d'heure */ 
 	  			$scope.msgNotif("#nbHours", "Insérer le nombre totales d'heures pour la semaine", 'info');
-	  		};	
+	  		};
+
+	  		$scope.choiceOpenning = function (idChoix) {
+	  			$timeout(hide, 1);
+	  			$scope.choix = idChoix == 0 ? {id: idChoix, nom:"En Continue", color: "#27ae60"} : {id: idChoix, nom:"Avec Coupures", color: "#428bca"};
+	  			if (idChoix != 1) {
+	  				$scope.affChoiceOpenning = false;
+	  				$scope.affCalendar = true;
+	  			}
+	  		}
+
+	  		$scope.choiceFrequencyCoup = function (idFreq) {
+	  			$scope.choix.freq = idFreq == 0 ? {id: idFreq, nom:"Tous les jours"} : {id: idFreq, nom:"Certains jours"};
+	  			$scope.affChoiceOpenning = false;
+  				$scope.affCalendar = true;
+  				$timeout(hide, 1);
+	  		}
+
+
+	  		$scope.modifChoiceOpenning = function () {
+	  			$scope.choix = null;
+	  			$scope.affChoiceOpenning = true;
+	  			$scope.affCalendar = false;
+	  		}
 
 			$scope.showAdvanced = function(ev, objHour) {
 			    $mdDialog.show({
@@ -94,21 +151,21 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				});
 		  	}
 
-		  $scope.addPause = function (index) {
-		  	//$scope.hours[index].pause.existe = true;
-		  }
+			  $scope.addPause = function (index) {
+			  	//$scope.hours[index].pause.existe = true;
+			  }
 
 			function DialogController($scope, $mdDialog) {
 			  	$scope.days = [
-			  									//{day: 'Tous les jours', chosen : false},
-			  									{day: 'Lundi', chosen : false},
+			  					//{day: 'Tous les jours', chosen : false},
+			  					{day: 'Lundi', chosen : false},
 			                    {day: 'Mardi', chosen : false},
 			                    {day: 'Mercredi', chosen : false},
 			                    {day: 'Jeudi', chosen : false},
 			                    {day: 'Vendredi', chosen : false},
 			                    {day: 'Samedi', chosen : false},
 			                    {day: 'Dimanche', chosen : false}
-			  								];
+			  				];
 
 			  	$scope.verifyEveryDay = function(index) {
 			  		/*var objHour = $scope.days[index];
@@ -189,17 +246,14 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 					return true;
 				}
 
-	      /* Affiche le timePicker pour ouverture */
+	      		/* Affiche le timePicker pour ouverture */
 				$scope.showTimeJourneeDebut = function(ev, index) {
 					var objHour = $scope.hours[index];
-
-					
-
-					if ($scope.verifyNbHours()) {return;}; // Si le nombre d'heures n'est pas configuré je quitte
 				 
 				 	$mdpTimePicker(objHour.journee.debut == "Ouverture" ? $scope.hourDebut: objHour.journee.debut, {
 				 		targetEvent: ev
 				 	}).then(function(selectedDate) {
+				 		console.log(selectedDate);
 				 		if (selectedDate == 'Annuler') {
 							objHour.journee.debut = "Ouverture";
 							objHour.journee.fin = "Fermeture";
@@ -218,10 +272,13 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				 	});
 				};
 
+
+
 				/* Affiche le timePicker pour fermeture */
 				$scope.showTimeJourneeFin = function(ev, index) {
 					var objHour = $scope.hours[index];
-					if ($scope.verifyNbHours()) {return;}; 
+
+
 					if (objHour.journee.debut == "Ouverture") {
 						$scope.msgNotif("#"+objHour.id+"debut", "Configurer l'heure d'ouverture ! ", 'error');
 						return;
@@ -230,20 +287,28 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				 	$mdpTimePicker(objHour.journee.fin == "Fermeture" ? $scope.hourFin: objHour.journee.fin, {
 				 		targetEvent: ev
 				 	}).then(function(selectedDate) {
-					 		if (selectedDate == 'Annuler') {
-								$scope.$parent.hours[index].journee.fin = "Fermeture";
-								$scope.nbHours = $scope.calculateTotalNbHours();
-							} else {
-								if (!$scope.validateHourFin(objHour, selectedDate)) {
-									// Si l'heure de début est supérieur à l'heure de fin
-									$scope.msgNotif("#"+objHour.id+"debut", "L'heure de début doit être inférieur à l'heure de fin ! ", 'error');
-									$scope.msgNotif("#"+objHour.id+"fin", "L'heure de début doit être inférieur à l'heure de fin ! ", 'error');
-									return;
-								}
-								$scope.$parent.hours[index].journee.fin = selectedDate;
-								$scope.nbHours = $scope.calculateTotalNbHours();
-								//$scope.showAdvanced(ev); // 
-					 		}
+				 		console.log(selectedDate);
+
+				 		var nbHours = $scope.calculateNbHours(objHour.journee.debut, selectedDate);
+
+				 		if (nbHours > 24) { // Si la date dépasse 24 heures
+				 			// Ajouter seulement un jour au journee de début pour la selectedDate
+				 		} else {
+				 			if ($scope.validateHourFin(objHour, selectedDate) == false) {
+					 			console.log(objHour);
+					 			console.log(selectedDate);
+					 			// Ajouter tranquillement un jour à la selectedDate
+				 			}
+				 		}
+				 		
+
+				 		if (selectedDate == 'Annuler') {
+							$scope.$parent.hours[index].journee.fin = "Fermeture";
+							$scope.nbHours = $scope.calculateTotalNbHours();
+						} else {
+							
+							$scope.$parent.hours[index].journee.fin = selectedDate;
+				 		}
 				 	});
 				};
 
@@ -337,7 +402,9 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    	};
 
 	    	$scope.validationHours = function () {
+	    		$timeout(hide, 1);
 	    		// Valider le nombre total d'heure
+	    		/*
 	    		if ($scope.$parent.nbHoursChosen == null || $scope.$parent.nbHours == "") {
 	    			$scope.msgNotif("#nbHours", "Veuillez insérer un nombre d'heures valide !", 'error');
 	    		}
@@ -349,11 +416,11 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    			if ($scope.nbHours > $scope.$parent.nbHoursChosen) {
 	    				$scope.msgNotif("#nbHours", "Vos heures : " + $scope.nbHours + " dépasse le nombre \n\r total d'heure : " + $scope.$parent.nbHoursChosen + " accordé \n\r pour votre semaine", 'error');
 	    				return;
-	    			}
-	    			$scope.ctrl.next(4);
-	    		}	else {
+	    			}*/
+	    			$timeout($scope.ctrl.next(4), 2)
+	    	/*	}	else {
 	    			$scope.msgNotif("#1debut", "Veuillez configurer votre semaine !", 'error');
-	    		}
+	    		}*/
 	    	}
 
     } // Fin du link
