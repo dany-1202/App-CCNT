@@ -777,9 +777,42 @@ div#carre-8:hover {
 
 .tableau-darkBrown {
 	background-color:#3E2723!important;
-	line-height:50px!important
+	line-height:50px!important;
+	min-width: 90px!important;
+}
+
+.tableau-darkBrownWithC {
+	background-color:#3E2723!important;
+	line-height:108px!important;
+	min-width: 90px!important;
 }
 
 .bold {
 	font-weight: bold!important;
+}
+
+.color-Coup {
+	font-size: 20px!important;
+	color: #428bca !important;
+	line-height: 10px;
+}
+
+.dayCoup {
+	line-height:105px!important
+}
+
+.dayCoupS {
+	line-height:0px!important
+}
+
+.celCoupS {
+	width: 20px !important;
+	height: 15px!important;
+	background-color: white!important;
+	line-height: -50px!important;
+	max-height: 15px!important;
+}
+
+.coup {
+	line-height: 25px!important;
 }

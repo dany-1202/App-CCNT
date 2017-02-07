@@ -81,8 +81,8 @@
                      <h4 class="card-title">Pour quels jours ces coupures ont-elle lieu ?</h4>
                      <p class="card-text">
                         <div class="row" ng-repeat="item in hours">
-                           <md-checkbox class="md-primary" ng-checked="exists(item, selectedD)" ng-click="toggle(item, selectedD)">
-                              <span ng-class="{bold: exists(item, selectedD)}"> {{ item.day }} </span>
+                           <md-checkbox class="md-primary" ng-model="item.pause.existe">
+                              <span ng-class="{bold: item.pause.existe}"> {{ item.day }} </span>
                            </md-checkbox>  
                         </div>
                         <button class="btn btn-primary" ng-click="afficherCalendar()" class="md-raised">
@@ -113,43 +113,114 @@
          </div>
       </div>
       
-      <div class="row" ng-show="affCalendar">
-         <div class="col-lg-12">
-            <div class="centrer table-responsive">
-               <table md-whiteframe="1" class="table flat-table" style="text-align:center">
-                  <tbody>
-                     <tr>
-                        <th class="darkBrown"></th>
-                        <th class="darkBrown" ng-repeat="data in hours">{{data.day}}</th>
-                     </tr>
-                     <tr>
-                        <th rowspan="2" class="tableau-darkBrown">Matin 
-                           <i class="fa fa-sun-o" aria-hidden="true"></i>
-                        </th>
-                        <td ng-repeat="data in hours">
-                           <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeJourneeDebut($event, $index)" aria-label="show picker">
-                              <strong>{{ data.journee.debut | date:'HH:mm' }}</strong>
-                              <i class="espace-avant fa fa-clock-o"></i>
-                           </md-button>
-                           <span class="centrer"></span>
-                        </td>
-                     <tr>
-                          
-                     </tr>
+      <!-- Affichage En continue -->
+      <div ng-show="choix.id == 0">
+         <div class="row" ng-show="affCalendar">
+            <div class="col-lg-12">
+               <div class="centrer table-responsive">
+                  <table md-whiteframe="1" class="table flat-table" style="text-align:center">
+                     <tbody>
+                        <tr>
+                           <th class="darkBrown"></th>
+                           <th class="darkBrown" ng-repeat="data in hours">{{data.day}}</th>
+                        </tr>
+                        <tr>
+                           <th rowspan="1" class="tableau-darkBrown">Matin 
+                              <i class="fa fa-sun-o" aria-hidden="true"></i>
+                           </th>
+                           <td ng-repeat="data in hours">
+                              <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+                              <span class="centrer"></span>
+                           </td>
+                        </tr>
+                        <tr class="ligne">
+                           <th class="tableau-darkBrown">Soir
+                              <i class="fa fa-moon-o" aria-hidden="true"></i>
+                           </th>
+                           <td ng-repeat="data in hours">
+                              <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+                           </td>
+                        </tr>   
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
 
-                     <tr class="ligne">
-                        <th rowspan="2" class="tableau-darkBrown">Soir 
-                           <i class="fa fa-moon-o" aria-hidden="true"></i>
-                        </th>
-                        <td ng-repeat="data in hours">
-                           <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeJourneeFin($event, $index)" aria-label="show picker">
-                              <strong>{{ data.journee.fin | date:'HH:mm' }}</strong>
-                              <i class="espace-avant fa fa-clock-o"></i>
-                           </md-button>
-                        </td>
-                     </tr>   
-                  </tbody>
-               </table>
+      <!-- Affichage Avec coupuress -->
+      <div ng-show="choix.id == 1">
+         <div class="row" ng-show="affCalendar">
+            <div class="col-lg-12">
+               <div class="centrer table-responsive">
+                  <table md-whiteframe="1" class="table flat-table" style="text-align:center">
+                     <tbody>
+                        <tr>
+                           <th class="darkBrown"></th>
+                           <th class="darkBrown coup" ng-repeat="data in hours">{{data.day}} <span ng-if="data.pause.existe" class="color-Coup">*</span></th>
+                        </tr>
+                        <tr>
+                           <th rowspan="2" class="tableau-darkBrownWithC">Matin 
+                              <i class="fa fa-sun-o" aria-hidden="true"></i>
+                           </th>
+                           <td ng-repeat="data in hours" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}">
+                              <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+                              <span class="centrer"></span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td ng-if="data.pause.existe" ng-repeat="data in hours">
+                              <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+                              <span class="centrer"></span>
+                           </td>
+                        </tr>
+
+                        <tr class="ligne">
+                           <th rowspan="2" class="tableau-darkBrownWithC">Soir 
+                              <i class="fa fa-moon-o" aria-hidden="true"></i>
+                           </th>
+
+                           <td ng-repeat="data in hours" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}">
+
+                              <md-button ng-if="data.pause.existe"  id="{{data.id}}sDebut" class="btnS md-raised" ng-click="showTimeSoirDebut($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.soir.debut | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+
+                              <md-button ng-if="!data.pause.existe" id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+                              <span class="centrer"></span>
+                           </td>
+
+                        </tr>
+
+                        <tr>
+                           <td rowspan="1" ng-repeat="data in hours" ng-if="data.pause.existe"> 
+                              <md-button id="{{data.id}}sFin2" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+                                 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+                                 <i class="espace-avant fa fa-clock-o"></i>
+                              </md-button>
+                              <span class="centrer"></span>
+                           </td>
+                        </tr>
+
+                     </tbody>
+                  </table>
+               </div>
             </div>
          </div>
       </div>
