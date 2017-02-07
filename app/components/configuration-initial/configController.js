@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService) {
+ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const) {
 
    $scope.nbSteps = 4; // Nombre d'étapes de la configuration initiale
    $scope.nbPercentage = 25; // Pourcentage en fonction de l'avancement de la configuration 
@@ -26,13 +26,13 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
 
    /* Définition des horaires de la semaine */
    $scope.hours = [
-      {id: 1, day: 'Lundi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
-      {id: 2, day: 'Mardi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
-      {id: 3, day: 'Mercredi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
-      {id: 4, day: 'Jeudi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
-      {id: 5, day: 'Vendredi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
-      {id: 6, day: 'Samedi', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
-      {id: 7, day: 'Dimanche', journee : {debut: "Ouverture", fin: "Fermeture"}, pause: {existe: false, debut: "Début", fin:"Fin"}, nbHours : 0},
+      {id: 1, day: 'Lundi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+      {id: 2, day: 'Mardi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+      {id: 3, day: 'Mercredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+      {id: 4, day: 'Jeudi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+      {id: 5, day: 'Vendredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+      {id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+      {id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
    ]
 
    /* Définition des départements de l'établissement */
@@ -56,9 +56,9 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
    ]; // Tableau contenant les noms des champs de l'établissement
 
    $scope.ccntHeure = [
-      {id:1,name:"42 Heures",value:42},
-      {id:2,name:"43.5 Heures",value:43.5},
-      {id:3,name:"45 Heures",value:45}
+      {id:1,name:"42 Heures",value:Const.CCNT1},
+      {id:2,name:"43.5 Heures",value:Const.CCNT2},
+      {id:3,name:"45 Heures",value:Const.CCNT3}
    ];
 
    $scope.selectedDates = [];
