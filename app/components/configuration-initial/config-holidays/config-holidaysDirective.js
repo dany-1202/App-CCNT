@@ -3,33 +3,28 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 ctrlCCNT.controller()
 
 
-ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeout) {
+ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeout, DateFactory, Popover) {
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
 		templateUrl : 'app/components/configuration-initial/config-holidays/config-holidaysView.html', // Template à utiliser lorsque la balise est utilisé
 		transclude : true, // Inclu la vue au template déjà existant
 		link: function(scope, element, attrs) {
 
-			var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-
-			var dayNames = ["L", "M", "M", "J", "V", "S", "D"];
+			var monthNames = DateFactory.monthNames;
+			var dayNames = DateFactory.dayNames;
 			var photo = "https://image.jimcdn.com/app/cms/image/transf/dimension=300x10000:format=jpg/path/se1a08fc9547ef1da/image/i8097eee300b9501a/version/1337253899/jour-f%C3%A9ri%C3%A9.jpg";
+			
 			scope.afficherJour = false; // Afficher la div pour ajouter un jour
 			scope.afficherPlage = false; // Afficher la div pour ajouter une plage
-
 			scope.modifJour = false; // Etat modification
-
 			scope.objIndex = -1;
 			scope.modifPlage = false; // Etat modification
-
 			scope.dateDay = {title : '', date: new Date(), dateDebut : '', dateFin : ''};
 			
 			/* Libellé des boutons */
 			scope.messageAjout = "Ajouter un jour férié";
 			scope.messageEnlever = "Annuler l'insertion";
-
 			scope.messageAjoutPlage = "Ajouter une période";
-
 			scope.btnAdd = "Ajouter";
 			scope.btnModif = "Modifier"; 
 
@@ -40,25 +35,65 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7)
 				}
 			});
-/*
+
+
+			/*****************************************************************************************\
+			*                           Gestion de l'affichage des popovers                           *
+			\*****************************************************************************************/
+
 			var show = function () {
-				$('#btn').popover('show');
+				$('#addDay').popover('show');
+				$('#addPlage').popover('show');
+				$("div.popover").click(function(e) { // Ajout d'évennement pour pouvoir cacher les popovers quand on clique dessus
+		   			e.preventDefault();
+					$(e.currentTarget).popover('hide');
+				});
+			}
+
+			var showPopTableDays = function () {
+				$('#tableDays').popover('show');
+				$('#calendari_lateral1').popover('show');
+				$("div.popover").click(function(e) { // Ajout d'évennement pour pouvoir cacher les popovers quand on clique dessus
+		   			e.preventDefault();
+					$(e.currentTarget).popover('hide');
+				});
 			}
 
 			var hide = function () {
-				$('#btn').popover('hide');
+				$('div.popover').popover('hide');
 			}
 			
-			$timeout(show, 1);
-			//$timeout(hide, 5000); */
+			if (Popover.firstTimeHol) { // Savoir grâce au factory si c'est la première fois qu'il affiche le poppover
+				$timeout(show, 200); // Lancer les popovers
+				$timeout(hide, 30000); // Cacher les popovers 
+				Popover.changeFirstTimeHol(); // Change à false pour que la prochaine fois il ne rentre plus dans le test, car il l'aura afficher
+			}
+
+			/* Cacher les popovers */
+			scope.hidePopovers = function () { 
+				$timeout(hide, 1);
+			}
+
+			/*///////////////////////////////////////////////////////////////////////////////////////*/
 
 
-			/*******************/
-			/* Gestion du jour */
+			/*****************************************************************************************\
+			*                                     Gestion du jour                                     *
+			\*****************************************************************************************/
+
+			scope.showAddDay = function () {
+				$timeout(hide, 1);
+				scope.afficherJour = !scope.afficherJour;
+			}
 
 			scope.addDayClose = function () { // Quand j'ajoute un jour de fermeture
 				scope.addDay(scope.dateDay);
 				scope.afficherJour = false;
+				if (Popover.affTableDays) {
+					$timeout(showPopTableDays, 300);
+					$timeout(hide, 1);
+					Popover.changeAffTableDays();
+				}
 			}
 
 			/* Ajouter un jour dans les deux tableaux : events et calEvents (calendrier) */
@@ -123,7 +158,8 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			/**********************/
 			/* Gestion des plages */
 
-			scope.affPlage = function () {
+			scope.showAddPlage = function () {
+				$timeout(hide, 1);
 				scope.dateDay.dateDebut = new Date();
 				scope.dateDay.dateFin = angular.copy(scope.dateDay.dateDebut);
 				scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7);
@@ -184,6 +220,11 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			scope.addPlageClose = function () {
 				scope.addPlage(scope.dateDay);
 				scope.afficherPlage = false;
+				if (Popover.affTableDays) {
+					$timeout(showPopTableDays, 300);
+					$timeout(hide, 1);
+					Popover.changeAffTableDays();
+				}
 			}
 
 			scope.supprimerPlageEvent = function (index) {
