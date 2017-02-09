@@ -9,7 +9,7 @@
             <div class="row">
               <!-- Colonne de gauche -->
               <div class="col-lg-6 centrer">
-                <md-button id="addDay" ng-click="afficherJour = !afficherJour" class="bouton">{{afficherJour == false ? messageAjout: messageEnlever}}</md-button>
+                <md-button id="addDay" data-title="Ajout jour férié" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer pour ajouter un jour férié" ng-click="showAddDay()" class="bouton">{{afficherJour == false ? messageAjout: messageEnlever}}</md-button>
                 <div class="row" ng-show="afficherJour">
                   <form name="formDay" class="well" flex-gt-xs>
                     <md-input-container class="centrer">
@@ -35,7 +35,7 @@
 
               <!-- Colonne de droite -->
               <div class="col-lg-6 centrer">
-                <md-button id="btn" data-container="body" data-toggle="popover" data-placement="right" data-content="Vous pouvez ajouter une plage ici" ng-click="affPlage()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
+                <md-button id="addPlage" data-title="Ajout période" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter une période" ng-click="showAddDay()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
                 <div class="row well" ng-show="afficherPlage">
                   
 
@@ -87,7 +87,7 @@
             <div class="row">
               <div class="col-md-12">
                 <h3>Liste des jours et plages de fermeture</h3>
-                <div class="table-responsive">          
+                <div id="tableDays" ng-click="hidePopovers()" data-title="Consultation jours et périodes" data-container="body" data-toggle="popover" data-placement="top" data-content="Dans ce tableau vous pourrez consulter les jours fériés et les périodes que vous avez configuré" class="table-responsive">          
                   <table class="table table-striped">
                     <thead>
                       <tr>
@@ -145,7 +145,7 @@
             <h2 class="centrer">Vue d'ensemble</h2>
             <div class="row">
               <div class="col-lg-12">
-                <div id="calendari_lateral1"></div>
+                <div ng-click="hidePopovers()" id="calendari_lateral1" data-title="Consultation jours et périodes" data-container="body" data-toggle="popover" data-placement="top" data-content="Dans ce calendrier vous pourrez consulter les jours fériés et les périodes que vous avez configuré"></div>
                 <!--<config-calendar></config-calendar>-->
                <!-- Calendrier  <mwl-calendar
                     events="events"

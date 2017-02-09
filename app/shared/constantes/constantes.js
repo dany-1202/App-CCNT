@@ -10,6 +10,7 @@ ctrlCCNT.constant("Const", {
     "END": "Fermeture",
     "PAUSED": "Début",
     "PAUSEF": "Fin",
+    "ANNULER" : "Annuler",
     "CCNT1": 42,
     "CCNT2": 43.5,
     "CCNT3": 45

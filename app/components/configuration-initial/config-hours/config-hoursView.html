@@ -4,8 +4,8 @@
             <div class="right no-margin-top-16">
                <div class="hours-ccnt centrer">CCNT soumis: 
                   <span class="border-ellipse-hours">{{hoursCCNTChosen}} H  
-                     <i class="espace-avant fa fa-clock-o"></i> 
-                     <button ng-hide="modifCCNT || modifHours" ng-click="affModif()" class="btn btn-secondary btn-modif">
+                     <i class="espace-avant fa fa-clock-o"></i><br>
+                     <button id="choiceCCNT" md-whiteframe="1" data-title="Modifier heures CCNT" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour modifier les heures auquelles votre établissement est soumis CCNT" ng-hide="modifCCNT || modifHours" ng-click="affModif()" class="btn btn-secondary btn-modif">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                      </button>
                   </span>
@@ -47,7 +47,7 @@
       <div class="row" ng-show="affChoiceOpenning">
          <div class="col-lg-12" >
             <div class="card card-inverse text-center" ng-click="hidePopovers()" id="choiceOpenning" data-title="Question Type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Choisissez si votre établissement est ouvert en continue ou avec des coupures" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
-               <h3 class="card-header">Ouverture de l'établissement</h3><hr>
+               <h2 class="card-header">Ouverture de l'établissement</h2><hr>
                <div class="card-block">
 
                   <!-- Choix entre les deux -->
@@ -85,7 +85,7 @@
                               <span ng-class="{bold: item.pause.existe}"> {{ item.day }} </span>
                            </md-checkbox>  
                         </div>
-                        <button class="btn btn-primary" ng-click="afficherCalendar()" class="md-raised">
+                        <button class="btn btn-primary" ng-click="endCoupures()" class="md-raised">
                            Terminer
                         </button>
                      </p>
@@ -96,11 +96,65 @@
          </div>
       </div>
 
+
+      <div class="row" > <!--ng-show="affOtherHours" -->
+         <div class="col-lg-12">
+             <div class="card card-inverse text-center" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
+               <h2 class="card-header">Gestion des horaires</h2><hr>
+               
+               <div class="card-block" ng-show="false"> <!-- ng-show="affModifOtherHours1" -->
+               <h4 class="card-title">Durant l’année aurez-vous d’autres horaires ? </h3><hr>
+                  <button class="btn btn-primary" ng-click="addOtherHours()"> 
+                     Oui
+                  </button>
+                  <button class="btn btn-primary" ng-click="affOtherHours = false">
+                     Non
+                  </button>
+               </div>
+
+               <!-- Quand l'utilisateur clique sur oui -->
+               <div class="card-block" style="min-height:50px!important"> <!-- ng-show="affModifOtherHours2" -->
+                  <div class="col-lg-3 centrer margin-bottom-xs">
+                     <input type="text" class="form-control" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="nameCalendar">
+                  </div>
+                  <div class="col-lg-6 centrer margin-bottom-xs">
+                     De  <input type="date" ng-model="periodDebut" class="form-control centrer " style="width: 150px!important; display:inline!important;">
+                     à  <input type="date" ng-model="periodFin" class="form-control centrer" style="width: 150px!important; display:inline!important;">
+                  </div>
+                  <button class="btn btn-primary" ng-click="addHoursToTab()"> 
+                     Enregistrer
+                  </button>
+                  <div class="col-lg-3"></div>
+                  <button class="btn btn-primary" ng-click="choiceFrequencyCoup(1)">
+                     Finir les horaires
+                  </button>
+                  <hr>
+                  
+               </div>
+
+               <div class="card-block" ng-show="tabCalendars.length > 0">
+               <div class="col-lg-12">
+                  <h3 class="left">Liste des horaires</h3>
+               </div>
+               </div>
+               <div class="card-block" ng-repeat="item in tabCalendars">
+                  <h4>{{item.name}} <button class="btn btn-primary" ng-click="choiceFrequencyCoup(1)">
+                     Modifier Horaire
+                  </button></h4>
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+
+
       <div class="row" ng-show="affCalendar">
          <div class="col-lg-12">
             <h3> Ouverture de l'établissement : 
                <span style="color: {{choix.color}}">{{choix.nom}}</span>  
-               <button class="btn btn-secondary btn-modif" ng-click="modifChoiceOpenning()">
+               <button md-whiteframe="1" id="hourModif" data-title="Modifier type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer pour modifier le type d'ouverture de l'établissement" class="btn btn-secondary btn-modif" ng-click="modifChoiceOpenning()">
                   <i class="fa fa-pencil" aria-hidden="true"></i>
                </button>
             </h3> 
@@ -128,8 +182,8 @@
                            <th rowspan="1" class="tableau-darkBrown">Matin 
                               <i class="fa fa-sun-o" aria-hidden="true"></i>
                            </th>
-                           <td ng-repeat="data in hours">
-                              <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+                           <td ng-repeat="data in hours" style="background-color: white!important">
+                              <md-button data-title="Ajout d'heures" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter vos horaire de la semaine" md-whiteframe="1" id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
                                  <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
                                  <i class="espace-avant fa fa-clock-o"></i>
                               </md-button>
@@ -140,8 +194,8 @@
                            <th class="tableau-darkBrown">Soir
                               <i class="fa fa-moon-o" aria-hidden="true"></i>
                            </th>
-                           <td ng-repeat="data in hours">
-                              <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
+                           <td ng-repeat="data in hours" style="background-color: white!important">
+                              <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
                                  <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
                                  <i class="espace-avant fa fa-clock-o"></i>
                               </md-button>
@@ -154,7 +208,7 @@
          </div>
       </div>
 
-      <!-- Affichage Avec coupuress -->
+      <!-- Affichage Avec coupures -->
       <div ng-show="choix.id == 1">
          <div class="row" ng-show="affCalendar">
             <div class="col-lg-12">
@@ -169,8 +223,8 @@
                            <th rowspan="2" class="tableau-darkBrownWithC">Matin 
                               <i class="fa fa-sun-o" aria-hidden="true"></i>
                            </th>
-                           <td ng-repeat="data in hours" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}">
-                              <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+                           <td ng-repeat="data in hours" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+                              <md-button id="{{data.id}}debutMatin" data-title="Ajout d'heures" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter vos horaire de la semaine"  class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
                                  <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
                                  <i class="espace-avant fa fa-clock-o"></i>
                               </md-button>
@@ -178,8 +232,8 @@
                            </td>
                         </tr>
                         <tr>
-                           <td ng-if="data.pause.existe" ng-repeat="data in hours">
-                              <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+                           <td ng-if="data.pause.existe" ng-repeat="data in hours" style="background-color: white!important">
+                              <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
                                  <strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
                                  <i class="espace-avant fa fa-clock-o"></i>
                               </md-button>
@@ -192,7 +246,7 @@
                               <i class="fa fa-moon-o" aria-hidden="true"></i>
                            </th>
 
-                           <td ng-repeat="data in hours" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}">
+                           <td ng-repeat="data in hours" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
 
                               <md-button ng-if="data.pause.existe"  id="{{data.id}}sDebut" class="btnS md-raised" ng-click="showTimeSoirDebut($event, $index)" aria-label="show picker">
                                  <strong>{{ data.soir.debut | date:'HH:mm' }}</strong>
@@ -209,8 +263,8 @@
                         </tr>
 
                         <tr>
-                           <td rowspan="1" ng-repeat="data in hours" ng-if="data.pause.existe"> 
-                              <md-button id="{{data.id}}sFin2" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+                           <td rowspan="1" ng-repeat="data in hours" ng-if="data.pause.existe" style="background-color: white!important"> 
+                              <md-button id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
                                  <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
                                  <i class="espace-avant fa fa-clock-o"></i>
                               </md-button>
@@ -224,6 +278,7 @@
             </div>
          </div>
       </div>
+
 
       <div class="row">
          <div class="col-lg-12 padding-top">

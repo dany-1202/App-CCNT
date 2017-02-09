@@ -14,7 +14,9 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 	pop.firstTimeEta = true; // Popovers dans établissement
     pop.firstTimeDep = true; // Popovers dans les départements
    	pop.firstTimeHours = true; // Popovers dans les horaires d'ouvertures
-   	pop.firstTimeFerm = true; // Popovers dans les jours fériés et vacances
+   	pop.firstTimeHol = true; // Popovers dans les jours fériés et vacances
+   	pop.affHourModif = true;
+   	pop.affTableDays = true;
 
 	pop.changeFirstTimeEta = function () { 
 		pop.firstTimeEta = false; // Mettre à l'état à false afin de ne plus afficher
@@ -28,8 +30,16 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 		pop.firstTimeHours = false; // Mettre à l'état à false afin de ne plus afficher
 	}
 
-	pop.changeFirstTimeFerm = function () {
-		pop.firstTimeFerm = false; // Mettre à l'état à false afin de ne plus afficher
+	pop.changeFirstTimeHol = function () {
+		pop.firstTimeHol = false; // Mettre à l'état à false afin de ne plus afficher
+	}
+
+	pop.changeAffHourModif = function () {
+		pop.affHourModif = false; // Mettre à l'état à false afin de ne plus afficher
+	}
+
+	pop.changeAffTableDays = function () {
+		pop.affTableDays = false; // Mettre à l'état à false afin de ne plus afficher
 	}
 
 	return pop;

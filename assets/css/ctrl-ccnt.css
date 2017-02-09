@@ -607,6 +607,10 @@ div#carre-8:hover {
 	margin-bottom : -25px!important;
 }
 
+.margin-bottom-xs {
+	margin-bottom : 5px!important;
+}
+
 .margin-left {
 	margin-left: 25px !important;
 }
