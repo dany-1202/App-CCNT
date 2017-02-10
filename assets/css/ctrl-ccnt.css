@@ -24,6 +24,30 @@ Description : Feuille de style pour l'ensemble de l'application
 	border-collapse:collapse;
 }
 
+.table--listhours {
+	width: 100%!important;
+}
+
+.table--listhours th {
+	color : black;
+	border-bottom: 2px solid black!important;
+	border-color : #7f8c8d!important;
+	background-color : white!important;
+}
+
+.table--listhours td {
+	color : black;
+	border: none;
+	text-align: center;
+	background-color : white!important;
+	line-height: 35px!important;
+}
+
+
+.table--listhours tr:hover td {
+	background-color : #ecf0f1!important;
+}
+
 th {
 	/*border:1px solid black;*/
 	background-color: #5D4037!important;
@@ -819,4 +843,14 @@ div#carre-8:hover {
 
 .coup {
 	line-height: 25px!important;
+}
+
+
+.completed {
+	color:#27ae60!important;
+}
+
+
+.incompleted {
+	color: #c0392b!important;
 }

@@ -17,6 +17,7 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
    /* Savoir si c'est la première visite pour les afficher ou non les popovers : 
       - Si c'est la première fois les popovers sont à true sinon il passe à false
    */
+
    $rootScope.firstTimeEta = true;
    $rootScope.firstTimeDep = true;
    $rootScope.firstTimeHours = true;
