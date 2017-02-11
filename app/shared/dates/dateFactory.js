@@ -40,12 +40,17 @@ ctrlCCNT.factory('DateFactory', function () {
 
 	date.getToday = function () {
 		return moment().startOf('day').toDate();
+	};
+
+	date.getDateStr = function () {
+		var tabDate = date.split('/');
+		return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
 	}
 
 	date.validateHour = function (hourDebut, hourFin) {
 		var res = hourFin-hourDebut;
 		return res >= 0;
-	}
+	};
 
 	date.calculateNbHours = function (timeDebut, timeFin) {
 		var tmp = timeFin - timeDebut; // Je fait la différence entre les deux dates
@@ -56,6 +61,26 @@ ctrlCCNT.factory('DateFactory', function () {
 		tmp = Math.floor((tmp-diffmin)/60) // Nombre d'heures (partie entière)
 		return tmp; // Renvoie le nombre d'heures qui sépare les dates
 	};
+
+	date.calculateNbDays = function (dateDebut, dateFin) {
+		var diff = {}                           // Initialisation du retour
+	    var tmp = date2 - date1;
+	 
+	    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+	    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+	 
+	    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+	    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+	 
+	    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+	    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+	    
+	    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+	    diff.day = tmp;
+        
+		return diff;
+	};
+
 
 	date.getMinutesUntilFinalDay = function (hours, minutes) {
 		var nbHours = (24 - hours); // Le nombre d'heures qu'il restent pour arriver à 24
