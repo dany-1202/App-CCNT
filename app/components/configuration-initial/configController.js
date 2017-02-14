@@ -45,15 +45,15 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
 
    /* Définition des informations nécessaires pour l'établissement */
    $scope.infoEtablissement = [  
-      {id:1, type: 'text', name:'Nom', value:"",min:2, max:40,error:false,message:Const.ERRORNAME}, 
-      {id:2, type: 'text', name:'Adresse', value:"",min:2, max:50,error:false,message:Const.ERRORADRESS},
-      {id:3, type: 'text', name:'Adresse Infos +', value:"",min:0, max:100,error:false, message:Const.ERRORADRESS}, 
-      {id:4, type: 'tel', name:'Tél. Réservation', value:"",min:10, max:10,error:false,message:Const.ERRORPHONE},
-      {id:5, type: 'tel', name:'Tél. Direction', value:"",min:10, max:10,error:false,message:Const.ERRORPHONE},
-      {id:6, type: 'email', name:'Email', value:"",min:6, max:30,error:false,message:Const.ERROREMAIL},
-      {id:7, type: 'text', name:'Site Web', value:"",min:0, max:30,error:false,message:Const.ERRORURL},
-      {id:8, type: 'number', name:'Code Postal', value:"",min:4, max:4,error:false,message:Const.ERRORPOST},
-      {id:9, type: 'text', name:'Localité', value:"",min:2, max:30,error:false,message:Const.LOCATION},
+      {id:1, type: 'text', name:Const.NAME, value:"",min:2, max:40,error:false,message:Const.ERRORNAME}, 
+      {id:2, type: 'text', name:Const.ADRESSE, value:"",min:2, max:50,error:false,message:Const.ERRORADRESS},
+      {id:3, type: 'text', name:Const.ADRESSEPLUS, value:"",min:0, max:100,error:false, message:Const.ERRORADRESS}, 
+      {id:4, type: 'tel', name:Const.PHONERES, value:"",min:10, max:10,error:false,message:Const.ERRORPHONE},
+      {id:5, type: 'tel', name:Const.PHONEDIR, value:"",min:10, max:10,error:false,message:Const.ERRORPHONE},
+      {id:6, type: 'email', name:Const.EMAIL, value:"",min:6, max:30,error:false,message:Const.ERROREMAIL},
+      {id:7, type: 'text', name:Const.URL, value:"",min:0, max:30,error:false,message:Const.ERRORURL},
+      {id:8, type: 'number', name:Const.POST, value:"",min:4, max:4,error:false,message:Const.ERRORPOST},
+      {id:9, type: 'text', name:Const.LOCATION, value:"",min:2, max:30,error:false,message:Const.LOCATION},
    ]; // Tableau contenant les noms des champs de l'établissement
 
    $scope.ccntHeure = [
@@ -88,11 +88,6 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
          console.log($scope.hours[i].soir.debut);
          console.log($scope.hours[i].soir.fin);
       };
-   }
-
-   var getDateStr = function (date) {
-      var tabDate = date.split('/');
-      return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
    }
 
    this.saveConfiguration = function() {
@@ -142,7 +137,7 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
          /* Insertion des jours fériés et vacances */
          for (var i = 0; i < $scope.calEvents.length; i++) {
             var dataFermetureInfo = {
-               'date': moment(getDateStr($scope.calEvents[i].date)).add(1, 'h').toDate(), 
+               'date': moment(DateFactory.getDateStr($scope.calEvents[i].date)).add(1, 'h').toDate(), 
                'etaId': idEstablishment, 'user_id' : SessionService.get('user_id'), 
                'user_token' : SessionService.get('user_token')
             };
@@ -156,4 +151,5 @@ ctrlCCNT.controller('configController', function($rootScope, $mdDialog, $scope, 
       $location.path('/home');
       NotifService.success(Const.CONFIG-INIT,Const.CONFIG-SUCCESS);  
    }
-});
+   
+}); // Fin du controller

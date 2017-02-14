@@ -29,14 +29,15 @@
       </div>
     </md-dialog-content>
 
-    <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button class="md-raised" aria-label="Annuler" ng-click="cancel()">
-        Annuler
-      </md-button>
-      <md-button class="bouton" aria-label="Enregistrer" ng-click="answer()">
-        Enregistrer
-      </md-button>
+    <md-dialog-actions layout="row" style="min-height: 100px!important;">
+      <div class="col-lg-12 centrer">
+        <md-button class="bouton-prec bouton-l margin-bottom-xs" style="margin-bottom: 0px!important" aria-label="Annuler" ng-click="cancel()">
+          Annuler
+        </md-button>
+        <md-button class="bouton bouton-l margin-bottom-xs" aria-label="Enregistrer" ng-click="answer()">
+          Enregistrer
+        </md-button>
+      </div>
     </md-dialog-actions>
   </form>
 </md-dialog>

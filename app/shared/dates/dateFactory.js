@@ -64,7 +64,7 @@ ctrlCCNT.factory('DateFactory', function () {
 
 	date.calculateNbDays = function (dateDebut, dateFin) {
 		var diff = {}                           // Initialisation du retour
-	    var tmp = date2 - date1;
+	    var tmp = dateFin - dateDebut;
 	 
 	    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
 	    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
@@ -80,6 +80,18 @@ ctrlCCNT.factory('DateFactory', function () {
         
 		return diff;
 	};
+
+	date.isPeriodValid = function (dateDebut, dateFin) {
+		if (moment(dateDebut).isBefore(moment(dateFin))) {
+			return false
+		}
+		return true;
+	};
+
+	date.age = function (birthday) {
+		birthday = new Date(birthday);
+  		return new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0);
+	}
 
 
 	date.getMinutesUntilFinalDay = function (hours, minutes) {

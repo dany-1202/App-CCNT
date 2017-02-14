@@ -1,9 +1,14 @@
   var ctrlCCNT = angular.module('ctrlCCNT');
 
-  ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog) {
+  ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State) {
   	
   	$scope.user = {};
   	$scope.user.configuration = SessionService.get('user_configured');
+
+    $scope.lancerConfigEmp = function () {
+      $location.url("/employe");
+    }
+
 
   	$scope.lancerConfig = function (ev) {
   		$mdDialog.show({
@@ -24,6 +29,7 @@
 
   	    function DialogController(scope, $mdDialog) {
           scope.currentView = 1;
+          scope.configTuto = State.getConfigTuto();
 
           scope.next = function () {
             scope.currentView += 1;
@@ -35,19 +41,22 @@
 
 			    scope.hide = function() {
   		      $mdDialog.hide();
+            State.changeFinishTuto();
+            $location.url("/config-init");
   		    };
 
   		    scope.cancel = function() {
   		      $mdDialog.cancel();
+            State.changeFinishTuto();
+            $location.url("/config-init");
   		    };
 
   		    scope.answer = function(answer) {
   		      $mdDialog.hide(answer);
+            State.changeFinishTuto();
+            $location.url("/config-init");
   		    };
   		};
-
-  	   $location.url("/config-init");
-
   	}
 
   		

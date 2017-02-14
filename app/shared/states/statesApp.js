@@ -22,13 +22,36 @@ ctrlCCNT.factory('State', function (Const){
       {id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
    	]
 
+   	state.configTuto = [
+   		{id: 1, title: Const.TITLEESTA, src: Const.PATH1},
+   		{id: 2, title: Const.TITLEDEPS, src: Const.PATH2},
+   		{id: 3, title: Const.TITLEHOURS, src: Const.PATH3},
+   		{id: 4, title: Const.TITLEHOURS, src: Const.PATH4},
+   		{id: 5, title: Const.TITLEHOURS, src: Const.PATH5},
+   		{id: 6, title: Const.TITLEHOURS, src: Const.PATH6},
+   		{id: 7, title: Const.TITLEHOURS, src: Const.PATH7},
+   		{id: 8, title: Const.TITLEHOURS, src: Const.PATH8},
+   		{id: 9, title: Const.TITLEHOLI, src: Const.PATH9},
+   		{id: 10, title: Const.TITLEHOLI, src: Const.PATH10},
+   	]
+
+   	state.getConfigTuto = function () {
+   		return angular.copy(state.configTuto);
+   	}
+
+   	state.finishTuto = false;
+
+   	state.changeFinishTuto = function () {
+		state.finishTuto = true;
+	}
+
 	state.getTabCalDefault = function () {
 		return angular.copy(state.hours);
 	}
 
-	state.tabCalendars = [{name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet"}];
+	state.tabCalendars = [{name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet", errorName: false, errorPeriod:true}];
 
-	
+
 
 	state.changeChoix = function (idChoix) {
 		state.choix = idChoix == 0 ? {id: idChoix, nom:"En Continue", color: "#27ae60"} : {id: idChoix, nom:"Avec Coupures", color: "#428bca"};
