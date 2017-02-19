@@ -7,6 +7,6 @@ ctrlCCNT.directive('configPrevisual', function() {
 		transclude : true, // Inclu la vue au template déjà existant
 		link: function(scope, element, attrs) {
 			/* Controleur se gère ici */
-    },
+            	}
 	};
 });

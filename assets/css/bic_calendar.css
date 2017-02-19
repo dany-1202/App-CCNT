@@ -78,10 +78,13 @@
     font-weight: bold;
 }
 .bic_calendar .event a{
-    color: #795548;
+    color: #2c3e50;
     padding-bottom: 2px!important;
-    border-bottom: 3px solid #4e342e;
-    font-size: 15px;
+    border: 2px solid #303943;
+    padding: 2px;
+    font-size: 17px;
+    border-spacing: 25px;
+    background-color: #ecf0f1;
 }
 .bic_calendar .table{
     margin-bottom: 3px;

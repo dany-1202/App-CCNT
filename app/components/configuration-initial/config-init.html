@@ -1,46 +1,46 @@
 <!-- Page qui affiche la parti de la configuration initial -->
 <div ng-controller="configController as ctrl" class="back-app" id="wrapper">
-   <ng-menu></ng-menu> <!-- Afficher le menu -->
-   <div id="page-wrapper" class="padding-top-50">
-    <div class="container-fluid">
-      <div class="row">
-         <div class="col-lg-12">
-            <div class="col-lg-5">
-               <h1>Configuration Initiale</h1>
-            </div>
-            <div class="col-lg-7">
-               <div class="progress">
-                   <div class="progress-bar" role="progressbar" aria-valuenow="{{pourcentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{pourcentage}}%;"> Étape: {{currentView}} sur {{nbSteps}}
-                  </div>
-               </div>   
-            </div>
-         </div>
-      </div>
+	<ng-menu></ng-menu> <!-- Afficher le menu -->
+	<div id="page-wrapper" class="padding-top-50">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="col-lg-5">
+						<h1>Configuration Initiale</h1>
+					</div>
+					<div class="col-lg-7">
+						<div class="progress">
+								<div class="progress-bar" role="progressbar" aria-valuenow="{{pourcentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{pourcentage}}%;"> Étape: {{currentView}} sur {{nbSteps}}
+								</div>
+						</div>   
+					</div>
+				</div>
+			</div>
 
-      <hr> <!-- Ligne de séparation -->
-      <!-- Affichage selon l'étape de la configuration -->
-      <div ng-switch on = "currentView">
-         <div ng-switch-when="2">
-            <!-- Etape configuration des départements -->
-            <config-deps></config-deps>
-         </div>
-         <div ng-switch-when="3">
-            <!-- Etape configuration des horaires ouverture et fermeture -->
-            <config-hours></config-hours>
-         </div>
-         <div ng-switch-when="4">
-            <!-- Etape configuration des jours fériés -->
-            <config-holidays></config-holidays>
-         </div>
-         <div ng-switch-when="5">
-            <!-- Etape afficher la prévisualisation -->
-            <config-previsual></config-previsual>
-         </div>
-         <div ng-switch-default>
-            <!-- Etape configuration des infos de l'établissement -->
-            <config-hours></config-hours>
-         </div>
-      </div>
-   </div>
-</div>
+			<hr> <!-- Ligne de séparation -->
+			<!-- Affichage selon l'étape de la configuration -->
+			<div ng-switch on = "currentView">
+				<div ng-switch-when="2">
+					<!-- Etape configuration des départements -->
+					<config-deps></config-deps>
+				</div>
+				<div ng-switch-when="3">
+					<!-- Etape configuration des horaires ouverture et fermeture -->
+					<config-hours></config-hours>
+				</div>
+				<div ng-switch-when="4">
+					<!-- Etape configuration des jours fériés -->
+					<config-holidays></config-holidays>
+				</div>
+				<div ng-switch-when="5">
+					<!-- Etape afficher la prévisualisation -->
+					<config-previsual></config-previsual>
+				</div>
+				<div ng-switch-default>
+					<!-- Etape configuration des infos de l'établissement -->
+					<config-establishment></config-establishment>
+				</div>
+			</div>
+	 	</div>
+	</div>
 </div>

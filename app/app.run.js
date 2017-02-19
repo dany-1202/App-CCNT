@@ -11,6 +11,15 @@ var ctrlCCNT = angular.module('ctrlCCNT'); // Importe les dépendances du parent
 * Ecoute de tous les changements qui se font dans l'application
 * 
 **/
+ctrlCCNT.filter('capitalize', function() {
+  	return function(input, scope) {
+	    	if (input!=null)
+	    	input = input.toLowerCase();
+	    	return input.substring(0,1).toUpperCase()+input.substring(1);
+  	}
+});
+
+
 ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService, $mdDialog){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
 	var routeSansLogin = ['/connexion'];
