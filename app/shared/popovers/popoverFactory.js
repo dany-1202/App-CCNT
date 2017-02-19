@@ -12,7 +12,7 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 	var pop = {}; // Je crée un objet
 
 	pop.firstTimeEta = true; // Popovers dans établissement
-    pop.firstTimeDep = true; // Popovers dans les départements
+    	pop.firstTimeDep = true; // Popovers dans les départements
    	pop.firstTimeHours = true; // Popovers dans les horaires d'ouvertures
    	pop.firstTimeHol = true; // Popovers dans les jours fériés et vacances
    	pop.affHourModif = true;
@@ -44,4 +44,5 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 
 	return pop;
 })
+
 })();

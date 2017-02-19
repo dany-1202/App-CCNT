@@ -1,68 +1,160 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover) {
+ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover, State, $q, $log) {
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
 		templateUrl : 'app/components/configuration-initial/config-establishment/config-establishmentView.html', // Template à utiliser lorsque la balise est utilisé
 		transclude : true, // Inclu la vue au template déjà existant
 		link: function(scope, element, attrs) {
 
+		      scope.simulateQuery = true;
+		    	scope.isDisabled    = false;
+
+		    	// list of `state` value/display objects
+		    	scope.states        = loadAll();
+			scope.querySearch        = querySearch;
+			scope.selectedItemChange = selectedItemChange;
+			scope.searchTextChange   = searchTextChange;
+			scope.selectedItem       = scope.infoEtablissement[3].value.no == "" || scope.infoEtablissement[3].value.nom == ""  ? "": {value: scope.infoEtablissement[3].value, display: scope.infoEtablissement[3].value.no + " " + scope.infoEtablissement[3].value.nom};
+
+		    	scope.newState = newState;
+
+			function newState(state) {
+				alert("Sorry! You'll need to create a Constitution for " + state + " first!");
+			}
+
+		    	/*****************************************************************************************\
+		    			* Internal Méthodes *                        
+		    	\*****************************************************************************************/
+
+		    	/**
+		     	* Pour simuler la recherche on utilise le $timeout
+		     	* Simulation d'appel de requête
+		     	*/
+		    	function querySearch (query) {
+		      		var results = query ? scope.states.filter( createFilterFor(query) ) : scope.states,
+		          deferred;
+			      if (scope.simulateQuery) {
+				      	deferred = $q.defer();
+				      	$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+				      	return deferred.promise;
+			      } else {
+			      		return results;
+			      }
+		    	}
+
+			function searchTextChange(text) {
+				//$log.info('Text changed to ' + text);
+			}
+			
+			var majInfo = function (item) {
+				if(isNaN(item.value.no) || item.value.no <= 0 || item.value.nom == ""){
+					scope.infoEtablissement[3].error = true;
+				} else {
+					scope.infoEtablissement[3].error = false;
+				}
+			}
+			
+			function selectedItemChange(item) {
+			//$log.info('Item changed to ' + JSON.stringify(item));
+				scope.infoEtablissement[3].value = angular.copy(item.value);
+				$timeout(scope.verification(4, 3), 1);
+				$timeout(majInfo(item), 10);
+			}
+
+		    /**
+		     * Build `states` list of key/value pairs
+		     */
+			function loadAll() {
+				var allPostaux = scope.$parent.postaux.localites;
+				return allPostaux.map( function (state) {
+					return {
+						value: {no: state.no, nom: angular.lowercase(state.ville)},
+						display: state.no + " " + state.ville
+					};
+				});
+			}
+			
+			/**
+			* Create filter function for a query string
+			*/
+			function createFilterFor(query) {
+				var lowercaseQuery = angular.lowercase(query);
+				return function filterFn(state) {
+					return isNaN(lowercaseQuery) ? (state.value.nom.indexOf(lowercaseQuery) === 0) : (state.value.no.toString().indexOf(lowercaseQuery) === 0) ;
+				};
+			}
+			
+			/*****************************************************************************************\
+			* Gestion des popovers *                        
+			\*****************************************************************************************/
+			
 			/* Cache les popovers */
 			var hide = function () {
 				$("#btnSuivant").popover('hide');
 			}
-
-
-			/* Afficher les popovers et défini un listner pour chacune d'entre elle si on clique sur la popover elle la cache */
+			
+			/* Afficher les popovers et défini un listener pour chacune d'entre elle si on clique sur la popover elle la cache */
 			var show = function () {
 				$('#btnSuivant').popover('show');
 				$("div.popover").click(function(e) {
 					$(e.currentTarget).popover('hide');
 				});
 			}
-
-			if (Popover.firstTimeEta) {
-				$timeout(show, 1);
+			
+			if (Popover.firstTimeEta && State.finishTuto) {
+				$timeout(show, 300);
 				$timeout(hide, 30000);
 				Popover.changeFirstTimeEta() // Je vois si c'est la première fois que j'affiche le popover ou non
 			}
-
-			/* Controleur se gère ici */
+			
+			/*///////////////////////////////////////////////////////////////////////////////////////*/
+			
+			/*****************************************************************************************\
+			* Gestion du contrôleur == link ici *                        
+			\*****************************************************************************************/
+			
+			/* Vérification de la validation du champ concerné - l'error est mis à true si elle existe à false sinon */
+			
 			scope.verification = function(id, index){
-				$timeout(hide, 10);
+				$timeout(hide, 1);
 				var obj = scope.infoEtablissement[index];
 				obj.error = false;
-				console.log(obj);
-				if(obj.type == "tel"){
-					var patternTel = new RegExp(/^(?:(?:|0{1,2}|\+{0,2})41(?:|\(0\))|0)([1-9]\d)(\d{3})(\d{2})(\d{2})$/);
-		    		obj.error = !patternTel.test(obj.value);
-		    		return;
-				}else if(obj.type == "number"){
-					if(Number.isInteger(obj.value) == false && obj.value < 0){
-						obj.error = true;
-					}
-				}else if(obj.type == "email" && obj.value.toString().length != 0){
-					var patternEmail = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-					obj.error = !patternEmail.test(obj.value.toString());
+				if (obj.value === undefined) {
+					obj.error = true;
 					return;
-				}else if(obj.id == 7 && obj.value.toString().length != 0){//Controle l'url 
+				}
+				if (obj.type == "tel") {
+					var patternTel = new RegExp(/^(?:(?:|0{1,2}|\+{0,2})41(?:|\(0\))|0)([1-9]\d)(\d{3})(\d{2})(\d{2})$/);
+					obj.error = !patternTel.test(obj.value);
+					return;
+				} else if (obj.id == 4) {
+					if (isNaN(obj.value.no) || obj.value.no <= 0 || obj.value.nom == "") {
+						obj.error = true;
+						return;
+					} else {
+						obj.error = false;
+						return;
+					}
+				} else if (obj.type == "email" && obj.value.length != 0) {
+					var patternEmail = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+					obj.error = !patternEmail.test(obj.value);
+					return;
+				} else if (obj.id == 7 && obj.value.toString().length != 0) {//Controle l'url 
 					var patternUrl= new RegExp(/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/);
 					obj.error = !patternUrl.test(obj.value.toString());
 					return;
 				}
 				var len = obj.value.toString().length;
-				if(len < obj.min || len > obj.max && obj.type != "tel"){
+				if (len < obj.min || len > obj.max && obj.type != "tel") {
 					obj.error = true;
 					return;
 				}
 			}
-
-			//Verifie l'etat de l'attribut error
-			scope.verificationError = function(id, index){
-				var obj = scope.infoEtablissement[index];
-				return obj.error;
-			}
-
+			
+			/*///////////////////////////////////////////////////////////////////////////////////////*/
+			
+			/* Valide si l'étape est validé */
 			scope.verificationSuivant = function(){
 				$timeout(hide, 1);
 				var err = false;
@@ -72,6 +164,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 				};
 				if(err == false){scope.$parent.ctrl.next(2);}
 			}
-    },
-	};
-});
+			
+    		}, // Fin Link
+	}; // Fin Return
+}); // Fin Directive

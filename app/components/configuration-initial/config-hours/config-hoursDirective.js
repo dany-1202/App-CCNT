@@ -181,9 +181,13 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			\*****************************************************************************************/
 
 			$scope.closeAddOtherHours = function () {
-				$scope.affOtherHours = false;
-				$scope.affModifOtherHours1 = false;
-				$scope.affModifOtherHours2 = false;
+				if (isCurrentInfoCalCorrect()) {
+	    			$scope.affOtherHours = false;
+					$scope.affModifOtherHours1 = false;
+					$scope.affModifOtherHours2 = false;
+	    		} else {
+	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+	    		}
 			}
 
 			$scope.showAffModifOtherHours = function () {
@@ -192,17 +196,17 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				$scope.affModifOtherHours2 = true;
 				$scope.affCalendar = false;
 				var pos = $scope.tabCalendars.length;
-    			$scope.tabCalendars.push({name: "Nouveau horaire", period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: "Incomplet"});
+    			$scope.tabCalendars.push({name: "Nouveau horaire", period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
     			$scope.cal = $scope.tabCalendars[pos];
 			}
 
 			var showDivOtherHours = function () {
 				if (isHoursCompleted()) {
-					$scope.cal.state = "Complet";
+					$scope.cal.state = Const.COMP;
 					$scope.affOtherHours = true; 
 					$scope.addOtherHours();
 				} else {
-					$scope.cal.state = "Incomplet";
+					$scope.cal.state = Const.INCOMP;
 					$scope.affOtherHours = false;
 				}
 			}
@@ -512,7 +516,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 			var isAllInfoCalCorrect = function () {
 				for (var i = 0; i < $scope.tabCalendars.length; i++) {
-					if ($scope.tabCalendars[i].state=="Incomplet") {return false;}
+					if ($scope.tabCalendars[i].state==Const.INCOMP || $scope.tabCalendars[i].errorName || $scope.tabCalendars[i].errorPeriod ) {return false;}
 				}
 				return true;
 			}
@@ -531,6 +535,9 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 
 	    	var isCurrentInfoCalCorrect = function () {
+	    		if ($scope.cal.errorName == true || $scope.cal.errorPeriod == true) {
+	    			return false;
+	    		}
 	    		return true; // Vérification à faire des infos champs nom pas vide et période pas vide et celle fin doit être plus grande que celle de début
 	    	}
 
@@ -546,18 +553,22 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    	$scope.addHour = function () {
 	    		if (isCurrentInfoCalCorrect()) {
 	    			var pos = $scope.tabCalendars.length;
-	    			$scope.tabCalendars.push({name: "Nouveau horaire", period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: "Incomplet"});
+	    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
 	    			$scope.cal = $scope.tabCalendars[pos];
-	    		} // Sinon message
+	    		} else {
+	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+	    		}
 	    	}
 
 
 	    	$scope.addHoursToTab = function () {
 	    		if (isCurrentInfoCalCorrect()) {
-	    			$scope.cal.state = "Complet";
+	    			$scope.cal.state = Const.COMP;
 	    			$scope.affModifOtherHours = false;
 	    			$scope.affModifOtherHours1 = true;
-	    		} // Sinon message d'erreur à afficher
+	    		} else {
+	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+	    		}
 	    		
 	    	}
 
@@ -570,6 +581,21 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    		}
 	    	}
 
+	    	$scope.isNameValid = function () {
+	    		$scope.cal.errorName = false;
+	    		if ($scope.cal.name == "" || angular.isUndefined($scope.cal.name)) {
+	    			$scope.cal.errorName = true;
+	    		}
+	    	}
+
+	    	$scope.isPeriodValid = function () {
+	    		$scope.cal.errorPeriod = false;
+	    		var dateDebut = $scope.cal.period.debut;
+	    		var dateFin = $scope.cal.period.fin;
+	    		if (dateDebut == "" || dateFin == "" || DateFactory.isPeriodValid(dateDebut, dateFin) || DateFactory.calculateNbDays(dateDebut, dateFin).day < 7) {
+					$scope.cal.errorPeriod = true;
+	    		}
+	    	}
 
     } // Fin du link
   } // Fin du return
