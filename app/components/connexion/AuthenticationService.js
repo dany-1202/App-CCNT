@@ -9,7 +9,7 @@ var ctrlCCNT = angular.module('ctrlCCNT') /* Toujours ça à la création d'un m
 	Création du service AuthenticatorService
 	Qui va permettre de gérer l'authentification de l'utilisateur et le déconnecter de la session.
 */
-ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifService, SessionService, $rootScope) {
+ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifService, SessionService, $rootScope, State) {
 	return {
 		/* La fonction login, qui reçoit les données (data) et le scope
 			La fonction va permettre de lancer une promesse sur l'api php pour obtenir le droit à la connexion 
@@ -48,7 +48,8 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 					        	$rootScope.user.type = authenData.user_type;
 					        	$rootScope.user.token = authenData.user_token;
 					        	$rootScope.user.config = message.data;
-				        	
+				        		
+				        		State.getAllInfos();
 					        	/* Connexion réussi*/
 					        	NotifService.successCon();
 					        	$location.path('/home');

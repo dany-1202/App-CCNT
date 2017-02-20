@@ -13,26 +13,13 @@ ctrlCCNT.controller('configController', function ($rootScope, $mdDialog, $scope,
 	$scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
 	$scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
-
+	
+	if (State.postaux == null) {State.getPostaux();}
+	$scope.postaux = angular.copy(State.postaux);
+	
 	/* Savoir si c'est la première visite pour les afficher ou non les popovers : p
 		 - Si c'est la première fois les popovers sont à true sinon il passe à false
 	*/
-	$scope.postaux = null
-
-	/*****************************************************************************************\
-			* Récupération des localités avec les numéros postaux *
-	\*****************************************************************************************/
-	var getJsonData = function () {
-		var $res = $http.get("assets/json/nopostaux.json");
-		$res.then(function (message) {
-			console.log(message);
-			$scope.postaux = message.data;
-		});
-	}
-
-	getJsonData();
-
-	/*///////////////////////////////////////////////////////////////////////////////////////*/
 	
 	$scope.nbHoursChosen = null;
 

@@ -19,7 +19,6 @@ ctrlCCNT.filter('capitalize', function() {
   	}
 });
 
-
 ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService, $mdDialog){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
 	var routeSansLogin = ['/connexion'];
