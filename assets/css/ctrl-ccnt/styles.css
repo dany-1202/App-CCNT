@@ -1,0 +1,329 @@
+.age {
+    display: block;
+    position: absolute;
+    top: 46px;
+    left: 88px;
+    z-index: 4;
+    min-height: 26px;
+    font-size: 1em;
+    color: rgb(0, 0, 0);
+}
+.btn-group-emp {
+    position: absolute;
+    top: 27px;
+    right: 7px;
+    z-index: 10;
+    width: 10.0432314343%;
+    height: 47px;
+}
+
+.btn-modif-emp {
+    float: right;
+    width: 36px;
+    height: 37px;
+    margin: 5px 57px 0 0;
+    background-color: transparent;
+}
+
+.btn-sup-emp {
+    float: right;
+    clear: both;
+    width: 36px;
+    height: 37px;
+    margin: -37px 8px 0 0;
+    background-color: transparent;
+}
+
+.card-emp {
+    position: relative;
+    float: left;
+    clear: both;
+    width: 97%;
+    height: 84px;
+    margin: 17px 30px 0px 15px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 1px 1px rgba(0, 0, 0, .5);
+}
+
+.container-dep {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 350px;
+    z-index: 7;
+    width: 200px;
+    min-width: 200px;
+    height: 70px;
+    margin: auto 0;
+}
+
+.icon-emp {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    z-index: 1;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    background-color: #333333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+}
+
+.image {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    z-index: 5;
+    width: 81px;
+    height: auto;
+    margin: auto 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+    opacity: 0.8;
+    overflow: hidden;
+}
+
+.image:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+    opacity: 1;
+}
+
+.image:focus {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+}
+
+.name {
+    display: block;
+    position: absolute;
+    top: 14px;
+    left: 88px;
+    z-index: 2;
+    min-height: 26px;
+    font-size: 1.188em;
+    color: rgb(0, 0, 0);
+}
+
+
+.prenom {
+    font-size: 1em;
+    color: #333333;
+}
+
+.title-dep {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 112px;
+    z-index: 6;
+    height: 50px;
+    min-height: 50px;
+    margin: auto 0;
+    font-size: 1em;
+    line-height: 3;
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+._text {
+    float: left;
+    width: 96.8172484599%;
+    margin: 15px 0 0 15px;
+    font-size: 1.875em;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+}
+
+@media(max-width: 995px) {
+
+    .btn-group-emp .btn-modif-emp {
+        float: left;
+        margin-top: 0;
+        margin-right: 0;
+        margin-left: 5px;
+    }
+
+    .btn-group-emp .btn-sup-emp {
+        float: right;
+        clear: none;
+        margin-top: 0;
+        margin-right: 5px;
+    }
+
+    .card-emp .btn-group-emp {
+      top: 88px;
+      left: 0;
+      right: 0;
+      width: 16.0849772382%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .card-emp .container-dep {
+      position: relative;
+      float: right;
+      top: auto;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      margin-top: 5px;
+      margin-right: 14px;
+    }
+
+
+    .container-dep .image {
+      top: 0;
+      bottom: 0;
+      height: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .container-dep .title-dep {
+      top: 0;
+      bottom: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+      .card-emp {
+      width: 94.2333042875%;
+      height: 150px;
+    }
+}
+
+@media(max-width: 830px) {
+
+    .btn-group-emp .btn-modif-emp {
+      margin-left: 0;
+    }
+
+    .btn-group-emp .btn-sup-emp {
+      margin-right: 0;
+    }
+
+    .card-emp .btn-group-emp {
+      position: static;
+      top: auto;
+      width: 94px;
+      height: 37px;
+      margin-top: 150px;
+    }
+
+    .card-emp .container-dep {
+      position: absolute;
+      float: none;
+      top: 70px;
+      left: 0;
+      right: 0;
+      margin-top: 0;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .container-dep .image {
+      top: 0;
+      bottom: 0;
+      height: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .container-dep .title-dep {
+      top: 0;
+      bottom: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .card-emp {
+      height: 200px;
+    }
+}
+
+@media(max-width: 400px) {
+
+    .card-emp .age {
+      top: 58px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .card-emp .btn-group-emp {
+      margin-top: 153px;
+    }
+
+    .card-emp .container-dep {
+      position: relative;
+      float: left;
+      clear: both;
+      top: auto;
+      left: auto;
+      right: auto;
+      z-index: 7;
+      margin-top: -115px;
+      margin-right: 0;
+      margin-left: 64px;
+    }
+
+    .card-emp .name {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .card-emp .prenom {
+      font-size: 13px;
+    }
+
+    .container-dep .image {
+      top: 0;
+      bottom: 0;
+      height: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .container-dep .title-dep {
+      top: 12px;
+      bottom: auto;
+      left: 115px;
+      height: auto;
+      font-size: 1.182em;
+    }
+
+    ._text {
+      font-size: 2.727em;
+    }
+}
+
+/* Animations */
+
+#page-wrapper {
+    opacity:0;
+    -moz-animation: anim 0.3s linear forwards 0s;
+    -webkit-animation: anim 0.3s linear forwards 0s;
+    -o-animation: anim 0.3s linear forwards 0s ;
+    -ms-animation: anim 0.3s linear forwards 0s;
+    animation: anim 0.3s linear forwards 0s;
+}
+@-moz-keyframes anim {
+   0%  {opacity:0;}
+   100% {opacity:1;}
+}
+@-webkit-keyframes anim {
+   0%  {opacity:0;}
+   100% {opacity:1;}
+}
+@-o-keyframes anim {
+   0%  {opacity:0;}
+   100% {opacity:1;}
+}
+@-ms-keyframes anim {
+   0%  {opacity:0;}
+   100% {opacity:1;}
+}
+@keyframes anim {
+   0%  {opacity:0;}
+   100% {opacity:1;}
+}

@@ -1,12 +1,15 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService) {
+ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State) {
   
 	$scope.user = {};
       $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
 	
+	if (State.postaux == null) {State.getPostaux();}
+      
       var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
+      
       $scope.employe = []; //Tableau contenant les employes
 
       $scope.getEmployes = function () {

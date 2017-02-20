@@ -5,11 +5,32 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.factory('State', function (Const){
+ctrlCCNT.factory('State', function (Const, $http){
 	var state = {};
 	state.choix = null; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
 	state.freq = null; // Choix sur la fréquence des coupures
 	state.selectedD = []; // Choix des jours avec coupures
+  
+      state.postaux = null // NoPostaux
+
+      /*****************************************************************************************\
+          * Récupération des localités avec les numéros postaux *
+      \*****************************************************************************************/
+     	var getJsonData = function () {
+          	var $res = $http.get("assets/json/nopostaux.json"); // Lancement de la requête pour récupérer les numéros postaux
+            $res.then(function (message) {
+	            state.postaux = message.data;
+            });
+      }
+      state.getAllInfos = function () {
+      		getJsonData(); // Récupérer les numéros postaux depuis le fichiers JSON
+      	}
+      	
+      	state.getPostaux = function () {
+      		getJsonData(); // Récupérer les numéros postaux depuis le fichiers JSON
+      	}
+      
+      /*///////////////////////////////////////////////////////////////////////////////////////*/
 
      	state.hours = [
            	{id: 1, day: 'Lundi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
