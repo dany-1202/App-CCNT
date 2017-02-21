@@ -3,14 +3,14 @@ use `ccnt`;
 INSERT INTO `ccn_etablissement` (`eta_nom`, `eta_adresse`, `eta_telReservation`, `eta_telDirection`, `eta_email`, `eta_siteWeb`, `eta_adresseInfo`, `eta_codePostal`, `eta_localite`, `eta_nbHeure`) 
 VALUES ('Le Château d''If', 'Route de Thonon 51', '+41 22 752 12 11', '', '', 'www.chateaudif.ch', 'CP 166', '1222', 'Vésenaz', '45');
 
-INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_eta_id`) 
-VALUES (NULL, 'Cuisine', '1');
+INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_img_no`, `dep_eta_id`) 
+VALUES (NULL, 'Cuisine', '1',  '1');
 
-INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_eta_id`) 
-VALUES (NULL, 'Bar', '1');
+INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_img_no`, `dep_eta_id`) 
+VALUES (NULL, 'Bar', '2', '1');
 
-INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_eta_id`) 
-VALUES (NULL, 'Service', '1');
+INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_img_no`, `dep_eta_id`) 
+VALUES (NULL, 'Service', '3', '1');
 
 
 INSERT INTO `ccn_personne` (`per_id`, `per_nom`, `per_prenom`, `per_mail`, `per_mdp`, `per_token`, `per_dateNaissance`, `per_adresse`, `per_InfoSuppAdresse`, `per_codePostal`, `per_ville`, `per_admin`, `per_telFixe`, `per_telMobile`, `per_genre`, `per_inactif`) 

@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State) {
+ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux) {
 	
 	function init() {
 		$scope.user = {};
@@ -79,10 +79,10 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		function selectedItemChange(item) {
 			//$log.info('Item changed to ' + JSON.stringify(item));
 			if (!angular.isUndefined(item)) {
-				$scope.myEmp.code = item.value.no;
-				$scope.myEmp.localite = State.capitalize(item.value.nom);
+				var obj = angular.copy(item.display);
+				$scope.myEmp.code = State.getCode(obj);
+				$scope.myEmp.localite = State.capitalize(State.getVille(obj));
 			}
-
 		}
 
 		/**
@@ -141,11 +141,11 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 
 		/* Récupération et traitement des départements */
 		var majDep = function() {
-			if ($rootScope.myEmp != null && $scope.deps.length == 0) {
+			if ($rootScope.myEmp != null || $scope.deps.length == 0) {
 					//Met à jour le dep
 				for (var i = $scope.deps.length - 1; i >= 0; i--) {
 					if($scope.deps[i].name == $scope.myEmp.dep.nom){
-							$scope.monDep = $scope.deps[i];
+						$scope.monDep = $scope.deps[i];
 					};
 				};
 			}
@@ -439,16 +439,11 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		}
 	}
 	
-	if ($scope.postaux == null) {;
-		var $res = $http.get("assets/json/nopostaux.json"); // Lancement de la requête pour récupérer les numéros postaux
-            $res.then(function (message) {
-            		$scope.postaux = message.data;
-	            init();
-            });
-            
-	} else {
-		
-	}
-	
+	if ($scope.postaux == null) {
+		Postaux.query(function(data) {
+		    $scope.postaux = data;
+		    init();
+	  	});
+	} 
 
 });

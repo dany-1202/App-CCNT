@@ -42,7 +42,7 @@
 			return moment().startOf('day').toDate();
 		};
 
-		date.getDateStr = function () {
+		date.getDateStr = function (date) {
 			var tabDate = date.split('/');
 			return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
 		}

@@ -83,9 +83,11 @@ class EtatInitial {
 	*/
 	public static function insertOuvertureInfo ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_debut, ouv_fin, ouv_pauseDebut, ouv_pauseFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
+		$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_matinDebut, ouv_matinFin, ouv_soirDebut, ouv_soirFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sssssi', $data['jour'], $data['debut'], $data['fin'], $data['pauseDebut'], $data['pauseFin'], $data['etaId']);
+	  		if ($data['matinFin'] == "") {$matinFin = NULL;} else {$matinFin = $data['matinFin'];}
+	  		if ($data['soirDebut'] == "") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}
+			$stmt->bind_param('sssssi', $data['jour'], $data['matinDebut'], $matinFin, $soirDebut, $data['soirFin'], $data['etaId']);
 		  	$stmt->execute();
 		  	if ($stmt->num_rows == 1) {
 		  		MySQLManager::close();

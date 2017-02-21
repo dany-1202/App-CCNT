@@ -5,41 +5,31 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.factory('State', function (Const, $http){
+ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	var state = {};
 	state.choix = null; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
 	state.freq = null; // Choix sur la fréquence des coupures
 	state.selectedD = []; // Choix des jours avec coupures
   
-      state.postaux = null // NoPostaux
+      state.postaux = undefined // NoPostaux
 
       /*****************************************************************************************\
           * Récupération des localités avec les numéros postaux *
       \*****************************************************************************************/
-     	var getJsonData = function () {
-          	var $res = $http.get("assets/json/nopostaux.json"); // Lancement de la requête pour récupérer les numéros postaux
-            $res.then(function (message) {
-	            state.postaux = message.data;
-            });
-      }
       state.getAllInfos = function () {
-      		getJsonData(); // Récupérer les numéros postaux depuis le fichiers JSON
+      		//getJsonData(); // Récupérer les numéros postaux depuis le fichiers JSON
       	}
       	
-      	state.getPostaux = function () {
-      		getJsonData(); // Récupérer les numéros postaux depuis le fichiers JSON
-      	}
-      
       /*///////////////////////////////////////////////////////////////////////////////////////*/
 
      	state.hours = [
-           	{id: 1, day: 'Lundi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
-            	{id: 2, day: 'Mardi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
-            	{id: 3, day: 'Mercredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
-            	{id: 4, day: 'Jeudi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
-            	{id: 5, day: 'Vendredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
-            	{id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
-            	{id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe: false, debut: Const.PAUSED, fin:Const.PAUSEF}, nbHours : 0},
+           	{id: 1, day: 'Lundi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
+            	{id: 2, day: 'Mardi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END},  pause:{existe : false}, nbHours : 0},
+            	{id: 3, day: 'Mercredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END},  pause: {existe : false}, nbHours : 0},
+            	{id: 4, day: 'Jeudi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause:{existe : false}, nbHours : 0},
+            	{id: 5, day: 'Vendredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
+            	{id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
+            	{id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
      	]
 
       state.configTuto = [
@@ -85,6 +75,14 @@ ctrlCCNT.factory('State', function (Const, $http){
 			input = input.toLowerCase();
 		}
 		return input.substring(0,1).toUpperCase()+input.substring(1);
+	}
+	
+	state.getVille =  function(item) {
+		return item.substring(5);
+	}
+	
+	state.getCode =  function(item) {
+		return item.substring(0, 4);
 	}
  
        return state; // Retourne l'état de l'application

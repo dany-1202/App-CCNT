@@ -5,8 +5,6 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 	$scope.user = {};
       $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
-	
-	if (State.postaux == null) {State.getPostaux();}
       
       var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
       
@@ -18,8 +16,16 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
                   var tab = message.data;
                   	for (var i = 0; i < tab.length; i++) {
                   		var person = tab[i];
-                  		$scope.employe.push(
-                  		{id:person.id,nom:person.nom,prenom:person.prenom,adresse:person.adresse,code:person.codePostal,localite:person.ville,mail:person.mail,dep:person.dep,dateIn:person.contrat.dateIn == null ? null: new Date (person.contrat.dateIn),dateOut:person.contrat.dateOut == null ? null: new Date (person.contrat.dateOut),horaire:person.contrat.horaire,particularite:person.contrat.particularite,contrat:person.contrat.type, dateNaissance: new Date(person.dateNaissance), telFixe: person.telFixe, telMobile: person.telMobile, genre: person.genre, adresseSup: person.adresseSup});
+                  		$scope.employe.push({
+                               	id:person.id,nom:person.nom,prenom:person.prenom,
+                              	adresse:person.adresse,code:person.codePostal,
+                                localite:person.ville,mail:person.mail,dep:person.dep,
+                                dateIn:person.contrat.dateIn == null ? null: new Date (person.contrat.dateIn),
+                                dateOut:person.contrat.dateOut == null ? null: new Date (person.contrat.dateOut),
+                                horaire:person.contrat.horaire,particularite:person.contrat.particularite,contrat:person.contrat.type, 
+                                dateNaissance: new Date(person.dateNaissance), telFixe: person.telFixe, telMobile: person.telMobile, 
+                                genre: person.genre, adresseSup: person.adresseSup
+                         	});
                   	}
             });
       }

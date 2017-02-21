@@ -16,26 +16,28 @@
 			<div class="centrer">
 				<input ng-if="item.id != 4" id="{{item.id}}" for="" class="infoEtabFormDroite form-control" ng-model="item.value" class="centrer" ng-blur="verification(item.id, $index)" placeholder="{{item.name}}" ng-class="{error : item.error}" maxlength="{{item.max}}" type="{{item.type}}"></input>
 
-				<md-autocomplete ng-blur="verification(item.id, $index)" ng-if="item.id == 4"
-					ng-disabled="isDisabled"
-					md-no-cache="noCache"
-					md-selected-item="selectedItem"
-					md-select-on-focus
-					md-search-text-change="searchTextChange(searchText)"
-					md-search-text="searchText"
-					md-selected-item-change="selectedItemChange(item)"
-					md-items="item in querySearch(searchText)"
-					md-item-text="item.display"
-					md-min-length="0"
-					placeholder="Localité, exemple : 1227 ou Carouge"
-					>
-					<md-item-template>
-						<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
-					</md-item-template>
-					<md-not-found>
-						Aucun résulat pour "{{searchText}}" n'a été trouvé.
-					</md-not-found>
-				</md-autocomplete>
+				<div  ng-if="item.id == 4" ng-class="{autocompleteError : item.error}" >
+					<md-autocomplete ng-blur="verification(item.id, $index)"
+						ng-disabled="isDisabled"
+						md-no-cache="noCache"
+						md-selected-item="selectedItem"
+						md-select-on-focus
+						md-search-text-change="searchTextChange(searchText)"
+						md-search-text="searchText"
+						md-selected-item-change="selectedItemChange(item)"
+						md-items="item in querySearch(searchText)"
+						md-item-text="item.display"
+						md-min-length="0"
+						placeholder="Localité, exemple : 1227 ou Carouge"
+						>
+						<md-item-template >
+							<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
+						</md-item-template >
+						<md-not-found>
+							Aucun résulat pour "{{searchText}}" n'a été trouvé.
+						</md-not-found>
+					</md-autocomplete>
+				</div>
 				
 				<span class="red" ng-show="item.error">{{item.message}}</span>
 			</div>
@@ -57,7 +59,7 @@
 		<div class="col-lg-3"></div>
 		<div class="col-lg-6">
 			<br>
-			<md-radio-group ng-model="hoursCCNTChosen" class="md-primary">
+			<md-radio-group ng-model="$parent.hoursCCNTChosen" class="md-primary">
 				<md-radio-button ng-repeat="h in ccntHeure" ng-value="h.value">
 					{{h.name}}<br/>
 				</md-radio-button>
