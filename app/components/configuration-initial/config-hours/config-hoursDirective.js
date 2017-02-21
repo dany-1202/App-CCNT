@@ -27,7 +27,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			$scope.affModifOtherHours1 = false;
 			$scope.affModifOtherHours2 = false;
 
-			$scope.tabCalendars = angular.copy(State.tabCalendars);
+			$scope.tabCalendars = $scope.$parent.tabCalendars;
 			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
 
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
@@ -158,7 +158,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 	  		/* Enregistre la modification des Heures CCNT*/
 	  		$scope.modifHoursCCNT = function (hours) {
-	  			$scope.hoursCCNTChosen = hours;
+	  			$scope.$parent.hoursCCNTChosen = hours;
 	  			$scope.modifCCNT = false;
 	  			$scope.modifHours = false;
 	  			$timeout(hide, 1);

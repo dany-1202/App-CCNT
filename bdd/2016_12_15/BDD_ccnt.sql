@@ -97,11 +97,11 @@ DROP TABLE IF EXISTS `ccnt`.`ccn_ouvertureInfo` ;
 CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_ouvertureInfo` (
   `ouv_id` INT NOT NULL AUTO_INCREMENT,
   `ouv_jour` VARCHAR(20) NULL,
-  `ouv_debut` DATETIME NULL,
-  `ouv_fin` DATETIME NULL,
+  `ouv_matinDebut` DATETIME NULL,
+  `ouv_matinFin` DATETIME NULL,
   `ouv_eta_id` INT NOT NULL,
-  `ouv_pauseDebut` DATETIME NULL,
-  `ouv_pauseFin` DATETIME NULL,
+  `ouv_soirDebut` DATETIME NULL,
+  `ouv_soirFin` DATETIME NULL,
   PRIMARY KEY (`ouv_id`, `ouv_eta_id`),
   INDEX `fk_InfoOuverture_Etablissement1_idx` (`ouv_eta_id` ASC),
   CONSTRAINT `fk_InfoOuverture_Etablissement1`
@@ -120,6 +120,7 @@ DROP TABLE IF EXISTS `ccnt`.`ccn_departement` ;
 CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_departement` (
   `dep_id` INT NOT NULL AUTO_INCREMENT,
   `dep_nom` VARCHAR(45) NULL,
+  `dep_img_no` INT NOT NULL,
   `dep_eta_id` INT NOT NULL,
   PRIMARY KEY (`dep_id`, `dep_eta_id`),
   INDEX `fk_Departement_Etablissement1_idx` (`dep_eta_id` ASC),

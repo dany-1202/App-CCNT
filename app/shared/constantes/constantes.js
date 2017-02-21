@@ -61,8 +61,8 @@ ctrlCCNT.constant("Const", {
       "CCNT3": 45,
 
       /* Constantes utilisé pour les messages de notifications */
-      "CONFIG-INIT":"Configuration-Initiale",
-      "CONFIG-SUCCESS" : "Tous vos paramètres ont bien été enregistrés",
+      "CONFIGINIT":"Configuration-Initiale",
+      "CONFIGSUCCESS" : "Tous vos paramètres ont bien été enregistrés",
 
       /* Constantes utilisé pour les messages d'erreur */
       "ERRORNAME" : "Le nom n'est pas correct!",

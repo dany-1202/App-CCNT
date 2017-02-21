@@ -123,7 +123,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					var objDate = obj.date;
 					scope.afficherJour = true;
 					scope.dateDay.title = obj.title;
-					scope.dateDay.date = getDateStr(objDate);
+					scope.dateDay.date = DateFactory.getDateStr(objDate);
 
 					/* Etat modification */
 					scope.objIndex = index;
@@ -170,11 +170,11 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				} else {
 					/* Traitement date début */
 					var objDate = obj.dateDebut;
-					scope.dateDay.dateDebut = getDateStr(objDate);
+					scope.dateDay.dateDebut = DateFactory.getDateStr(objDate);
 
 					/* Traitement date fin */
 					var objDate = obj.dateFin;
-					scope.dateDay.dateFin = getDateStr(objDate);
+					scope.dateDay.dateFin = DateFactory.getDateStr(objDate);
 
 					scope.afficherPlage = true;
 					scope.dateDay.title = obj.title;
@@ -228,14 +228,6 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				scope.$parent.plagesEvents.splice(index, 1);
 				/* Boucle pour supprimer du calendrier */
 
-			}
-
-			/*******************/
-			/* Divers méthodes */
-
-			var getDateStr = function (date) {
-				var tabDate = date.split('/');
-				return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
 			}
 
 			var maj = function () {
