@@ -136,13 +136,13 @@
 	<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 	<div class="collapse navbar-collapse navbar-ex1-collapse">
 		<ul class="nav navbar-nav side-nav">
-			<li class="active">
+			<li ng-class="{active: $route.current.activetab == 'dashboard'}">
 				<a href="#/home"><i class="fa fa-fw fa-dashboard"></i> Tableau de bord</a>
 			</li>
-			<li ng-show="{{user.configuration}}">
+			<li ng-class="{active: $route.current.activetab == 'emp'}" ng-show="{{user.configuration}}">
 				<a href="#/employe"><i class="fa fa-fw fa-user"></i> Gestion employés</a>
 			</li>
-			<li>
+			<li ng-class="{active: $route.current.activetab == 'planning'}">
 				<a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-calendar"></i> Planning
 				<i class="fa fa-fw fa-caret-down"></i></a>
 				<ul id="demo" class="collapse">
@@ -157,16 +157,16 @@
 					</li>
 				</ul>
 			</li>
-			<li>
+			<li ng-class="{active: $route.current.activetab == 'hist'}">
 				<a href="#/construction"><i class="fa fa-fw fa-history"></i> Historique</a>
 			</li>
-			<li>
+			<li ng-class="{active: $route.current.activetab == 'rest'}">
 				<a href="#/construction"><i class="fa fa-fw fa-cutlery"></i> Mon Restaurant</a>
 			</li>
-			<li>
+			<li ng-class="{active: $route.current.activetab == 'stat'}">
 				<a href="#/construction"><i class="fa fa-fw fa-pie-chart"></i> Statistiques</a>
 			</li>
-			<li>
+			<li ng-class="{active: $route.current.activetab == 'param'}">
 				<a href="#/construction"><i class="fa fa-fw fa-wrench"></i> Paramètres</a>
 			</li>
 		</ul>

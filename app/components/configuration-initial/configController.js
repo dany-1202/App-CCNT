@@ -5,8 +5,8 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function ($rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory) {
-
+ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory) {
+	$scope.$route = $route;
 	$scope.nbSteps = 4; // Nombre d'étapes de la configuration initiale
 	$scope.nbPercentage = 25; // Pourcentage en fonction de l'avancement de la configuration
 	$scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -16,6 +16,7 @@ ctrlCCNT.controller('configController', function ($rootScope, $mdDialog, $scope,
 	if (angular.isUndefined($scope.postaux)) {
 		Postaux.query(function(data) {$scope.postaux = data;});
 	}
+
 	/* Savoir si c'est la première visite pour les afficher ou non les popovers : p
 		 - Si c'est la première fois les popovers sont à true sinon il passe à false
 	*/

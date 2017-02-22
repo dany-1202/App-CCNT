@@ -1,7 +1,7 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux) {
-	
+ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux, $route) {
+	$scope.$route = $route;
 	function init() {
 		$scope.user = {};
 		$scope.idUser = -1;

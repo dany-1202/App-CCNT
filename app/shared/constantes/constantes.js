@@ -10,8 +10,8 @@ ctrlCCNT.constant("Const", {
       /* Constantes Générales de l'application */
       "ANNULER" : "Annuler",
       "ADD" : "Ajouter",
-    	"MODIFY" : "Modifier",
-    	"DELETE" : "Supprimer",
+      "MODIFY" : "Modifier",
+      "DELETE" : "Supprimer",
 
       /* Constantes utilisé dans Config des informations de l'établissement */
       "NAME" : "Nom",

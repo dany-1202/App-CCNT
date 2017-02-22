@@ -1,7 +1,7 @@
 (function(){ 
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDialog, $timeout, Popover, DateFactory, Const, State) {
+ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDialog, $timeout, Popover, DateFactory, Const, State, $route) {
 	
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
@@ -9,7 +9,6 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 		transclude : true, // Inclut la vue au template déjà existant
 		
 		link: function($scope, $element, $attrs) {
-
 			/* Construction des dates nécessaires - Afin d'avoir des valeurs par défaut */
 			$scope.matinDebut = DateFactory.matinDebut;
 			$scope.matinFin = DateFactory.matinFin;
@@ -196,8 +195,8 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				$scope.affModifOtherHours2 = true;
 				$scope.affCalendar = false;
 				var pos = $scope.tabCalendars.length;
-    			$scope.tabCalendars.push({name: "Nouveau horaire", period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
-    			$scope.cal = $scope.tabCalendars[pos];
+	    			$scope.tabCalendars.push({name: "Nouveau horaire", period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
+	    			$scope.cal = $scope.tabCalendars[pos];
 			}
 
 			var showDivOtherHours = function () {
@@ -303,14 +302,14 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			function DialogController($scope, $mdDialog) {
 			  	$scope.days = [
 			  					//{day: 'Tous les jours', chosen : false},
-			  					{day: 'Lundi', chosen : false},
+	  					{day: 'Lundi', chosen : false},
 			                    {day: 'Mardi', chosen : false},
 			                    {day: 'Mercredi', chosen : false},
 			                    {day: 'Jeudi', chosen : false},
 			                    {day: 'Vendredi', chosen : false},
 			                    {day: 'Samedi', chosen : false},
 			                    {day: 'Dimanche', chosen : false}
-			  				];
+				];
 
 			    $scope.hide = function() {
 			      $mdDialog.hide();
@@ -338,14 +337,12 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 		     	};
 			}
 
-			
-
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
 			$scope.showAdvanced = function(ev, objHour) {
 			    $mdDialog.show({
 			      controller: DialogController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
 			      templateUrl: 'app/components/configuration-initial/config-hours/config-mdDialogView.html',
-			      parent: angular.element(document.body), // Son parent (très important) - position, enfants, etc...
+			      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
 			      targetEvent: ev,
 			      clickOutsideToClose:true,
 			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
@@ -370,7 +367,8 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				$timeout(hide, 1);
 				var objHour = $scope.cal.hours[index];
 			 	$mdpTimePicker(objHour.matin.debut == Const.OPEN ? $scope.matinDebut: objHour.matin.debut, {
-			 		targetEvent: ev
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
 			 		if (selectedDate == Const.ANNULER) { // (Cliquer sur Supprimer == Annuller)
 						objHour.matin.debut = Const.OPEN;
@@ -394,7 +392,8 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				}// Rediriger sur date début
 
 			 	$mdpTimePicker(objHour.matin.fin == Const.END ? DateFactory.matinFin: objHour.matin.fin, {
-			 		targetEvent: ev
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
 
 			 		if (selectedDate == Const.ANNULER) {objHour.matin.fin = Const.END; return;} // Si il annule (Clique sur supprimer)
@@ -432,7 +431,8 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				var objHour = $scope.cal.hours[index];
 
 			 	$mdpTimePicker(objHour.soir.debut == Const.OPEN ? DateFactory.soirDebut: objHour.soir.debut, {
-			 		targetEvent: ev
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
 			 		if (selectedDate == Const.ANNULER) {
 						objHour.soir.debut = Const.OPEN;
@@ -471,7 +471,8 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 				/* Affiche le timePicker */
 			 	$mdpTimePicker(objHour.soir.fin == Const.END ? $scope.soirFin: objHour.soir.fin, {
-			 		targetEvent: ev
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
 			 		/* Dès que la saisie est faite */
 			 		

@@ -19,12 +19,33 @@ ctrlCCNT.filter('capitalize', function() {
   	}
 });
 
-ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService, $mdDialog){
+ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
 	var routeSansLogin = ['/connexion'];
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
 	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition'];
+	
+	$rootScope.$on('$locationChangeStart', function(event, next, current) {
+		var chemin = $location.path();
+		console.log("Chemin en cours " + chemin);
+		console.log("Actuel" + " " + current);
+		console.log("Suivant" + " " + next);
+		if (current.indexOf(chemin) != -1) {
+			
+		} else {
+			if (current == next) {
+				event.preventDefault();
+			} else {
+				if (next.indexOf(routeAvecLogin[1]) == -1 && current.indexOf(routeAvecLogin[1]) != -1) {
+					
+				}
+			}
+		}
+			
+	});
+	
+	
 
 	/* Fonction déclenché quand un changement de route se fait dans le run de l'application */
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {

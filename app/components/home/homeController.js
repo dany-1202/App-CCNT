@@ -1,10 +1,11 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State) {
-
+ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State, $route) {
+	$scope.$route = $route;
 	$scope.user = {};
 	$scope.user.configuration = SessionService.get('user_configured');
-
+	
+	
 	$scope.lancerConfigEmp = function () {
 		$location.url("/employe");
 	}
