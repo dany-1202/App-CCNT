@@ -23,6 +23,15 @@ ctrlCCNT.constant("Const", {
       "URL" : "Site Web",
       "POST" : "Code Postale",
       "LOCATION" : "Localité",
+      // Icônes
+      "INAME" : "home",
+      "IADRESSE" : "location",
+      "IADRESSEPLUS" : "location",
+      "IPHONERES" : "phone",
+      "IPHONEDIR" : "phone",
+      "IEMAIL" : "mail",
+      "IURL" : "world",
+      "IPOST" : "search",
 
       /* Constantes utilisé dans Home Controller */
       "TITLEESTA" : "Etape 1 - Informations Etablissement",

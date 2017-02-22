@@ -19,31 +19,38 @@ ctrlCCNT.filter('capitalize', function() {
   	}
 });
 
-ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService){
+ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService, $timeout){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
 	var routeSansLogin = ['/connexion'];
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
 	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition'];
 	
-	$rootScope.$on('$locationChangeStart', function(event, next, current) {
-		var chemin = $location.path();
-		console.log("Chemin en cours " + chemin);
-		console.log("Actuel" + " " + current);
-		console.log("Suivant" + " " + next);
-		if (current.indexOf(chemin) != -1) {
-			
-		} else {
-			if (current == next) {
-				event.preventDefault();
+	var onRouteChangeOff = $rootScope.$on('$locationChangeStart', routeChange);
+	var essai = 1;
+	
+	function routeChange (event, newUrl, oldUrl) {
+		var chemin = $location.path().split('/')[1];
+		if (oldUrl.indexOf(chemin) == -1) {
+			if (oldUrl.indexOf(newUrl) != -1) {
+				return;
 			} else {
-				if (next.indexOf(routeAvecLogin[1]) == -1 && current.indexOf(routeAvecLogin[1]) != -1) {
-					
+				if (newUrl.indexOf(routeAvecLogin[1].split('/')[1]) == -1 && oldUrl.indexOf(routeAvecLogin[1].split('/')[1]) != -1 && essai == 1) {
+					UIkit.modal.confirm('Attention si vous quittez la configuration intiale, toutes les données enregistrées seront perdues, souhaitez-vous continuer ?', {center: true}).then(function() {
+					    	//onRouteChangeOff(); //Stop listening for location changes
+					    	essai = 2;
+					    	var obj = $location.url(newUrl).$$hash.split('!')[1];
+					    	console.log(obj);
+	            			$location.path(obj);//Go to page they're interested in
+	            			$rootScope.$apply();
+	            			essai = 1;
+					}, function () {});
+					event.preventDefault();
+  					return;
 				}
 			}
 		}
-			
-	});
+	}
 	
 	
 

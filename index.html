@@ -10,7 +10,9 @@
 
       <!-- Custom CSS Bootstrap Template -->
       <link href="assets/css/bootstrap.css" rel="stylesheet">
+      <link href="assets/css/uikit.min.css" rel="stylesheet">
       <link href="assets/css/sb-admin.css" rel="stylesheet">
+
 
       <!-- Custom CSS AppCCNT -->
       <link rel="stylesheet" type="text/css" href="assets/css/dialog.css">
@@ -18,22 +20,20 @@
       <link rel="stylesheet" type="text/css" href="assets/css/home.css">
       <link rel="stylesheet" type="text/css" href="assets/css/ctrl-ccnt.css">
       <link rel="stylesheet" type="text/css" href="assets/css/etatInitial.css">
-      <!--<link rel="stylesheet" href="assets/css/ctrl-ccnt/standardize.css">-->
-      <link rel="stylesheet" href="assets/css/ctrl-ccnt/styles.css">
+      <link rel="stylesheet" type="text/css"  href="assets/css/ctrl-ccnt/styles.css">
 
       <!-- Custom CSS External Use -->
+      <link rel="stylesheet" type="text/css" href="assets/css/angular-material.min.css">
       <link rel="stylesheet" type="text/css" href="assets/css/angular-ui-notification.min.css"> 
       <link rel="stylesheet" type="text/css" href="assets/css/angular-mdPickers.css">
       <link rel="stylesheet" type="text/css" href="assets/css/angular-material-calendar.css">
       <link rel="stylesheet" type="text/css" href="assets/css/angular-bootstrap-calendar.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="assets/css/bic_calendar.css"><!--Import materialize.css-->
-      
+      <link rel="stylesheet" type="text/css" href="assets/css/bic_calendar.css">
       
       <!-- Custom Fonts -->
-      <link href="assets/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-      <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
+      <link rel="stylesheet" type="text/css" href="assets/css/font-awesome/css/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="assets/fonts/gloria.css" >
+      <link rel="stylesheet" type="text/css" href="assets/fonts/roboto.css">
 
       <!-- Import Librairies Angular -->
       <!-- Version 1.6.2 
@@ -43,7 +43,7 @@
                   - rajouté une condition function walkDOM(element) 
                   - la condition element === document.body || element === document.body.parentElement 
                   - Pour que la modale passe par dessus le body !
-      -->    
+      -->
       <script type="text/javascript" src="assets/angular/angular.min.js"></script>
       <script type="text/javascript" src="assets/angular/angular-route.min.js"></script>
       <script type="text/javascript" src="assets/angular/angular-animate.min.js"></script>
@@ -63,20 +63,20 @@
       <script type="text/javascript" src="app/shared/data/postauxFactory.js"></script>
       <script type="text/javascript" src="app/shared/dates/dateFactory.js"></script>
       <script type="text/javascript" src="app/shared/states/statesApp.js"></script>
+      <script type="text/javascript" src="app/shared/dialog/dialogController.js"></script>
+      <script type="text/javascript" src="app/shared/menu/menu-principaleDirective.js"></script>
       <script type="text/javascript" src="app/components/security/SessionService.js"></script>
       <script type="text/javascript" src="app/components/connexion/AuthenticationService.js"></script>
       <script type="text/javascript" src="app/app.run.js"></script>
       <script type="text/javascript" src="app/components/connexion/connexionController.js"></script>
       <script type="text/javascript" src="app/components/home/homeController.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/configController.js"></script>
-      <script type="text/javascript" src="app/shared/menu/menu-principaleDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-hours/config-hoursDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-deps/config-depsDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-holidays/config-holidaysDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-previsual/config-previsualDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-establishment/config-establishmentDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-holidays/config-calendarDirective.js"></script>
-      <script type="text/javascript" src="app/shared/dialog/dialogController.js"></script>
       <script type="text/javascript" src="app/components/configuration-employe/employeController.js"></script>
       <script type="text/javascript" src="app/components/configuration-employe/employeFormController.js"></script>
       
@@ -85,13 +85,13 @@
       
       <!-- Import Librairies -->
       <script type="text/javascript" src="assets/libs/jquery.js"></script>
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
       <script type="text/javascript" src="assets/libs/bootstrap.min.js"></script>
+      <script type="text/javascript" src="assets/libs/uikit.min.js"></script>
       <script type="text/javascript" src="assets/libs/moment-with-locales.js"></script>
       <script type="text/javascript" src="assets/libs/notify.js"></script>
-      <script type="text/javascript" src="assets/angular/angular-bootstrap-calendar-tpls.js"></script>
       <script type="text/javascript" src="assets/libs/bic_calendar.js"></script>
-
+      <script type="text/javascript" src="assets/angular/angular-bootstrap-calendar-tpls.js"></script>
       <script type="text/javascript" src="assets/angular/angular-material-calendar.js"></script>
       <script type="text/javascript" src="assets/angular/angular-mdPickers.js"></script>
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>

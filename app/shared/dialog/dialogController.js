@@ -6,11 +6,19 @@
 var dialog= angular.module('ctrlCCNT');
 
 dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, NotifService, $location, AuthenticationService) {
-      $scope.status = '  ';
-      $scope.customFullscreen = false; // Prend tout l'écran : non
+    	$scope.status = '  ';
+    	$scope.customFullscreen = false; // Prend tout l'écran : non
 
-      $scope.showConfirm = function(ev) {
-            ev.preventDefault();
+    	$scope.showConfirm = function(ev) {
+          	ev.preventDefault();
+          /*  
+          	UIkit.modal.confirm('UIkit confirm!').then(function() {
+               	AuthenticationService.logout();
+              	NotifService.success("Statut Connexion", "Déconnexion réussi !");
+          	}, function () {
+          		// Annuler
+          	});*/
+           
             // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.confirm()
                   .title('Voulez-vous vraiment vous déconnecter ?')

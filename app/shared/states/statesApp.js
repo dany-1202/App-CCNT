@@ -69,7 +69,10 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		state.choix.freq = idFreq == 0 ? {id: idFreq, nom:"Tous les jours"} : {id: idFreq, nom:"Certains jours"};
 		return state.choix.freq;
 	}
-
+	
+	/*****************************************************************************************\
+	* Fonction qui permet de mettre la première lettre d'un mot en majuscule *                        
+	\*****************************************************************************************/
 	state.capitalize =  function(input) {
 		if (input!=null) {
 			input = input.toLowerCase();
@@ -77,6 +80,9 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		return input.substring(0,1).toUpperCase()+input.substring(1);
 	}
 	
+	/*****************************************************************************************\
+	* Fonction pour récupérer les champs de l'autocomplete - code postale et localité *                        
+	\*****************************************************************************************/
 	state.getVille =  function(item) {
 		return item.substring(5);
 	}
