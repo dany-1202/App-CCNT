@@ -6,7 +6,8 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 /* Création du contrôleur connexionController */
-ctrlCCNT.controller('connexionController', function($scope, AuthenticationService, $http, NotifService) {
+ctrlCCNT.controller('connexionController', function($scope, $rootScope, AuthenticationService, $http, NotifService) {
+	
 	/* Valeur du user sont mise à null par défaut - évite les erreurs */
 	$scope.user = {
 		login: null,

@@ -1,7 +1,8 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State) {
-  
+ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State, $route) {
+    	$scope.$route = $route;
+
 	$scope.user = {};
       $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
@@ -65,7 +66,6 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 \*****************************************************************************************/
 ctrlCCNT.filter('age', function(DateFactory) {
       	return function(date) {
-            	console.log(date);
             	return DateFactory.age(date) + " ans";
       	};
 })

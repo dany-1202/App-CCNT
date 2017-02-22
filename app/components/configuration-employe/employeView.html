@@ -27,14 +27,14 @@
 					        	<div ng-click="supEmploye($index)" class="btn-sup-emp"><a md-whiteframe="1" class="btn btn-danger" style="width: 100%; height: 100%" ><em class="fa fa-trash" style="line-height: 25px"></em></a></div>
 				        	</div>
 				        	<div class="container-dep">
-				        		<img src="assets/img/bande{{emp.dep.img}}.jpg" alt=""  class="image image-dep"/>
+				        		<img ng-cloak ng-src="assets/img/bande{{emp.dep.img}}.jpg" alt=""  class="image image-dep"/>
 				          		<span class="title-dep">{{emp.dep.nom}}</span>
 				        	</div>
 				        	<span class="age">{{emp.dateNaissance | age}}</span>
 				        	<span class="name">{{emp.nom}} <span class="prenom">{{emp.prenom}}</span></span>
 				        	
-		        			<img class="icon-emp" ng-if="emp.genre == 'M'" src="assets/img/man.png">
-						<img class="icon-emp" ng-if="emp.genre == 'F'" src="assets/img/women.png">
+		        			<img class="icon-emp" ng-if="emp.genre == 'M'" ng-src="assets/img/man.png">
+						<img class="icon-emp" ng-if="emp.genre == 'F'" ng-src="assets/img/women.png">
 				      </div>
 				</div>
 			</div>
