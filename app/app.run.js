@@ -2,14 +2,14 @@
 * Module qui permet de gérer le fonctionnement de l'application
 * En effet, la fonction $on du $rootScope va permettre de vérifier si l'utilisateur est connecté
 * dès que l'application change de route il va appeler cette méthode
-* 
+*
 **/
 var ctrlCCNT = angular.module('ctrlCCNT'); // Importe les dépendances du parent ctrlCCNT
 
 /**
-* Fonction Run 
+* Fonction Run
 * Ecoute de tous les changements qui se font dans l'application
-* 
+*
 **/
 ctrlCCNT.filter('capitalize', function() {
   	return function(input, scope) {
@@ -25,10 +25,10 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
 	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition'];
-	
+
 	var onRouteChangeOff = $rootScope.$on('$locationChangeStart', routeChange);
 	var essai = 1;
-	
+
 	function routeChange (event, newUrl, oldUrl) {
 		var chemin = $location.path().split('/')[1];
 		if (oldUrl.indexOf(chemin) == -1) {
@@ -51,8 +51,8 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 			}
 		}
 	}
-	
-	
+
+
 
 	/* Fonction déclenché quand un changement de route se fait dans le run de l'application */
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
