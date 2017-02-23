@@ -49,7 +49,7 @@
 		<div class="col-md-4"></div>
 		<div class="col-md-3">
 			<!--<span class="span-size-font">Nom du Département : </span>-->
-			<input id="{{item.id}}" ng-model="depart[$index].name" placeholder="{{item.name}}" class="left form-control centrer" value="{{item.name}}" ng-class="{error: item.error}" type="text" ng-blur="verification($index)" autofocus> 
+			<input id="{{item.id}}" ng-model="depart[$index].name" placeholder="{{item.name}}" class="left uk-input centrer" value="{{item.name}}" ng-class="{error: item.error}" type="text" ng-blur="verification($index)" autofocus>
 			</input>
 			<div class="centrer">
 				<span class="red errorDep" ng-show="item.error">{{msgError}}</span>
@@ -87,4 +87,4 @@
 			</div>
 		</div>
 	</div>
-</div> 
+</div>

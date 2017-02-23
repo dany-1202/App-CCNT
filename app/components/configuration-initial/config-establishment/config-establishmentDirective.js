@@ -17,7 +17,6 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 				scope.selectedItemChange = selectedItemChange;
 				scope.searchTextChange   = searchTextChange;
 				scope.selectedItem       = scope.infoEtablissement[3].value.no == "" || scope.infoEtablissement[3].value.nom == ""  ? "": {value: scope.infoEtablissement[3].value, display: scope.infoEtablissement[3].value.no + " " + scope.infoEtablissement[3].value.nom};
-				console.log(scope);
 			    	scope.newState = newState;
 
 				function newState(state) {

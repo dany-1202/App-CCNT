@@ -37,7 +37,6 @@ ctrlCCNT.config(['$routeProvider',
         	.when('/home', { // Chemin du home
 	            templateUrl: 'app/components/home/homeView.html',
 	            controller: 'homeController',
-	            reloadOnSearch: false,
 	            activetab: 'dashboard' // Contrôleur de la page home
        	})
         	.when('/connexion', { // Chemin de la connexion
@@ -47,29 +46,26 @@ ctrlCCNT.config(['$routeProvider',
 		.when('/config-init', { // Chemin de la configuration initial */
 			templateUrl: 'app/components/configuration-initial/config-init.html',
 			controller: 'configController', // Contrôleur pour la configuration initial
-			reloadOnSearch: false,
 			activetab: 'dashboard'
 		})
 		.when('/construction', { // Chemin d'une page en construction
 			templateUrl: 'app/constructionView.html',
-			reloadOnSearch: false,
 			//controller: 'homeController' // Contrôleur de la page home
 		})
 		.when('/employe', { // Chemin d'une page en construction
 			templateUrl: 'app/components/configuration-employe/employeView.html',
 			controller: 'employeController',
-			reloadOnSearch: false,
 			activetab: 'emp' // Contrôleur de la page home
 		})
 		.when('/employe/edition', { // Chemin d'une page en construction
 			templateUrl: 'app/components/configuration-employe/employeFormView.html',
 			controller: 'employeFormController',
-			reloadOnSearch: false,
 			activetab: 'emp' // Contrôleur de la page home
 		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
 		});
+		
  	}
 ]);
 
