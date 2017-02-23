@@ -24,24 +24,24 @@
 
       <!-- Custom CSS External Use -->
       <link rel="stylesheet" type="text/css" href="assets/css/angular-material.min.css">
-      <link rel="stylesheet" type="text/css" href="assets/css/angular-ui-notification.min.css"> 
+      <link rel="stylesheet" type="text/css" href="assets/css/angular-ui-notification.min.css">
       <link rel="stylesheet" type="text/css" href="assets/css/angular-mdPickers.css">
       <link rel="stylesheet" type="text/css" href="assets/css/angular-material-calendar.css">
       <link rel="stylesheet" type="text/css" href="assets/css/angular-bootstrap-calendar.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="assets/css/bic_calendar.css">
-      
+
       <!-- Custom Fonts -->
       <link rel="stylesheet" type="text/css" href="assets/css/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" type="text/css" href="assets/fonts/gloria.css" >
       <link rel="stylesheet" type="text/css" href="assets/fonts/roboto.css">
 
       <!-- Import Librairies Angular -->
-      <!-- Version 1.6.2 
+      <!-- Version 1.6.2
              Fix issues :
              - Dans mdPickers il faut avoir ceci  - $compileProvider.preAssignBindingsEnabled(true);
-             - Dans angular-material : Corrections des fenêtre modales qui ne marchait pas dans edge 
-                  - rajouté une condition function walkDOM(element) 
-                  - la condition element === document.body || element === document.body.parentElement 
+             - Dans angular-material : Corrections des fenêtre modales qui ne marchait pas dans edge
+                  - rajouté une condition function walkDOM(element)
+                  - la condition element === document.body || element === document.body.parentElement
                   - Pour que la modale passe par dessus le body !
       -->
       <script type="text/javascript" src="assets/angular/angular.min.js"></script>
@@ -53,7 +53,7 @@
       <script type="text/javascript" src="assets/angular/angular-sanitize.min.js"></script>
       <script type="text/javascript" src="assets/angular/angular-material.min.js"></script>
       <script type="text/javascript" src="assets/angular/angular-ui-notification.min.js"></script>
-      
+
       <!-- Script Angular - Application -->
       <script type="text/javascript" src="app/app.route.js"></script>
       <script type="text/javascript" src="app/shared/constantes/constantes.js"></script>
@@ -79,10 +79,10 @@
       <script type="text/javascript" src="app/components/configuration-initial/config-holidays/config-calendarDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-employe/employeController.js"></script>
       <script type="text/javascript" src="app/components/configuration-employe/employeFormController.js"></script>
-      
+
       <!-- Attention récupère les formats des dates en Français (à changer si plutart on change de langue) -->
-      <script type="text/javascript" src="assets/angular/angular-locale_fr-fr.js"></script> 
-      
+      <script type="text/javascript" src="assets/angular/angular-locale_fr-fr.js"></script>
+
       <!-- Import Librairies -->
       <script type="text/javascript" src="assets/libs/jquery.js"></script>
       <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
@@ -96,7 +96,7 @@
       <script type="text/javascript" src="assets/angular/angular-mdPickers.js"></script>
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-bootstrap-colorpicker/3.0.25/js/bootstrap-colorpicker-module.min.js"></script>
-      
+
       <script language="javascript" type="text/javascript">
             /* Prévien le raffraîchissement de la page avec F5 */
             document.onkeydown = function(){
@@ -106,7 +106,7 @@
                         event.keyCode = 0;
                         return false;
                     case 82 : //R button
-                        if (event.ctrlKey){ 
+                        if (event.ctrlKey){
                             event.returnValue = false;
                             event.keyCode = 0;
                             return false;

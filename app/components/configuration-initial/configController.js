@@ -21,7 +21,7 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 		 - Si c'est la première fois les popovers sont à true sinon il passe à false
 	*/
 	$scope.tabCalendars = State.tabCalendars;
-	
+
 	$scope.nbHoursChosen = null;
 
 	/* Définition des horaires de la semaine */
@@ -79,17 +79,11 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 	}
 
 	this.afficherHeure = function () {
-		for (var i = 0; i < $scope.hours.length; i++) {
-			console.log($scope.hours[i].day);
-			console.log($scope.hours[i].journee.debut);
-			console.log($scope.hours[i].journee.fin);
-			console.log($scope.hours[i].soir.debut);
-			console.log($scope.hours[i].soir.fin);
-		};
+		for (var i = 0; i < $scope.hours.length; i++) {};;
 	}
 
 	this.saveConfiguration = function () {
-		
+
 		/* Informations de l'établissement */
 		var dataEtablissement = {
 			'nom': $scope.infoEtablissement[0].value,
@@ -118,20 +112,20 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 			};
 			var $res = $http.post("assets/php/updatePersonneEstablishmentAPI.php", data);
 			$res.then(function (message) { });
-			
+
 			/* Insertion des horaires de l'établissement */
 			for (var i = 0; i < $scope.tabCalendars.length; i++) {
 				var cal = $scope.tabCalendars[i];
 				for (var i = 0; i < cal.hours.length; i++) {
 					var obj = cal.hours[i];
-					var dataInsertOuvertureInfo = { 
-						'jour': obj.day, 
+					var dataInsertOuvertureInfo = {
+						'jour': obj.day,
 						'matinDebut': moment(obj.matin.debut).add(1, 'h').toDate(),
-						'matinFin': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN)  ? moment(obj.matin.fin).add(1, 'h').toDate() : null, 
-						'soirDebut': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN)  ? moment(obj.soir.debut).add(1, 'h').toDate() : null, 
+						'matinFin': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN)  ? moment(obj.matin.fin).add(1, 'h').toDate() : null,
+						'soirDebut': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN)  ? moment(obj.soir.debut).add(1, 'h').toDate() : null,
 						'soirFin': moment(obj.soir.fin).add(1, 'h').toDate(),
-						'etaId': idEstablishment, 
-						'user_id': SessionService.get('user_id'), 
+						'etaId': idEstablishment,
+						'user_id': SessionService.get('user_id'),
 						'user_token': SessionService.get('user_token')
 					 };
 					var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
@@ -157,7 +151,7 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 				$res.then(function (message) { console.log(message); });
 			};
 		});
-	
+
 		if ($rootScope.user != null) { $rootScope.user.config = true; }
 		SessionService.set('user_configured', true);
 		$location.path('/home');
