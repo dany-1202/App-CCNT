@@ -33,16 +33,16 @@ ctrlCCNT.config(['$routeProvider',
            // $routeProvider essentiel pour la configuration des routes
         	$routeProvider
 
-        /* Les changements ou ajouts de route se font ici */
-        	.when('/home', { // Chemin du home
-	            templateUrl: 'app/components/home/homeView.html',
-	            controller: 'homeController',
-	            activetab: 'dashboard' // Contrôleur de la page home
-       	})
-        	.when('/connexion', { // Chemin de la connexion
-	            templateUrl: 'app/components/connexion/connexionView.html',
-	            controller: 'connexionController' // Contrôleur de la connexion
-        	})
+	        	/* Les changements ou ajouts de route se font ici */
+	        	.when('/home', { // Chemin du home
+		            templateUrl: 'app/components/home/homeView.html',
+		            controller: 'homeController',
+		            activetab: 'dashboard' // Contrôleur de la page home
+	       	})
+	        	.when('/connexion', { // Chemin de la connexion
+		            templateUrl: 'app/components/connexion/connexionView.html',
+		            controller: 'connexionController' // Contrôleur de la connexion
+	        	})
 		.when('/config-init', { // Chemin de la configuration initial */
 			templateUrl: 'app/components/configuration-initial/config-init.html',
 			controller: 'configController', // Contrôleur pour la configuration initial
@@ -61,6 +61,11 @@ ctrlCCNT.config(['$routeProvider',
 			templateUrl: 'app/components/configuration-employe/employeFormView.html',
 			controller: 'employeFormController',
 			activetab: 'emp' // Contrôleur de la page home
+		})
+		.when('/createplanning', {
+			templateUrl: 'app/components/planning/createplanningView.html',
+			controller: 'CreatePlanningCtrl',
+			activetab: 'planning'
 		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
