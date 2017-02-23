@@ -19,7 +19,7 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 			clickOutsideToClose:false,
 			fullscreen: false,
 			openFrom : {top: -50,width: 30,height: 80},
-				closeTo : {left: 1500}
+			closeTo : {left: 1500}
 		 })
 		.then(function(answer) {
 			 $scope.status = 'You said the information was "' + answer + '".';
