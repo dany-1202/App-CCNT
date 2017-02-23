@@ -4957,12 +4957,21 @@ a.badge:focus {
   margin-left: 3px;
 }
 .jumbotron {
+  border: 2px solid #E0E0E0;
   padding-top: 30px;
   padding-bottom: 30px;
   margin-bottom: 30px;
   color: inherit;
-  background-color: #eee;
+  box-sizing: border-box;
+  -webkit-transition: box-shadow .1s ease-in-out;
+  transition: box-shadow .1s ease-in-out;
+  background-color: #FAFAFA!important;
 }
+
+.jumbotron:hover {
+  background-color: #F5F5F5!important;
+}
+
 .jumbotron h1,
 .jumbotron .h1 {
   color: inherit;

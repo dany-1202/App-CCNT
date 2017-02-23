@@ -7,7 +7,7 @@
 			<!-- Page Heading -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="uk-margin-top uk-heading-bullet"><span>Tableau de bord</span></h1>
+					<h1 class="uk-margin-top uk-heading-line"><span>Tableau de bord</span></h1>
 					<div class="breadcrumb1 flat">
 						<a href="#!/home" >Home</a>
 						<a href="#!/home" class="active">Dashboard</a>
@@ -19,7 +19,8 @@
 			<!--  ng-hide="{{user.config}}" -->
 			<div id="configInit" ng-hide="{{user.configuration}}" class="row">
 				<div class="col-lg-12">
-					<div class="jumbotron centrer clouds">
+					<div class="jumbotron centrer">
+						<div class="uk-card-badge uk-label">nouveau</div>
 						<h1>Configuration Initiale</h1>
 						<p>Vous n'avez pas encore configuré votre établissement</p>
 						<md-button ng-click="lancerConfig($event)" class="bouton-grand centrer">Commencer</md-button>
