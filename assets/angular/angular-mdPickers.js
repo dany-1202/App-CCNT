@@ -14,6 +14,10 @@ module.config(["$mdIconProvider", "mdpIconsRegistry", function($mdIconProvider, 
 	});
 }]);
 
+module.config(function($compileProvider) {
+    $compileProvider.preAssignBindingsEnabled(true);
+})
+
 module.run(["$templateCache", "mdpIconsRegistry", function($templateCache, mdpIconsRegistry) {
 	angular.forEach(mdpIconsRegistry, function(icon, index) {
 		$templateCache.put(icon.url, icon.svg);
@@ -806,6 +810,7 @@ module.provider("$mdpTimePicker", function() {
                             '</md-dialog-content>' +
                         '</md-dialog>',
                 targetEvent: options.targetEvent,
+                parent: options.parent,
                 locals: {
                     time: time,
                     autoSwitch: options.autoSwitch

@@ -3974,6 +3974,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav {
   padding-left: 0;
   margin-bottom: 0;
+  margin-top: 0;
   list-style: none;
 }
 .nav > li {
@@ -5057,7 +5058,7 @@ a.thumbnail.active {
 }
 .alert-success {
   color: #3c763d;
-  background-color: #dff0d8;
+  background-color: black;
   border-color: #d6e9c6;
 }
 .alert-success hr {
@@ -5124,7 +5125,8 @@ a.thumbnail.active {
   }
 }
 .progress {
-  height: 20px;
+  margin-top:0;
+  height: 40px;
   margin-bottom: 20px;
   overflow: hidden;
   background-color: #f5f5f5;
@@ -5136,8 +5138,8 @@ a.thumbnail.active {
   float: left;
   width: 0;
   height: 100%;
-  font-size: 12px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 40px;
   color: #fff;
   text-align: center;
   background-color: #337ab7;
@@ -6108,7 +6110,8 @@ button.close {
   z-index: 1060;
   display: none;
   max-width: 276px;
-  padding: 1px;
+  padding: 0px;
+  cursor: pointer;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-style: normal;
@@ -6135,6 +6138,18 @@ button.close {
 
   line-break: auto;
 }
+
+.popover:hover {
+   background-color: #fff;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .8);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .6);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, .6);
+}
+
 .popover.top {
   margin-top: -10px;
 }
@@ -6151,7 +6166,9 @@ button.close {
   padding: 8px 14px;
   margin: 0;
   font-size: 14px;
-  background-color: #f7f7f7;
+  text-align: center;
+  color:white;
+  background-color: #212121;
   border-bottom: 1px solid #ebebeb;
   border-radius: 5px 5px 0 0;
 }
@@ -6178,7 +6195,7 @@ button.close {
   bottom: -11px;
   left: 50%;
   margin-left: -11px;
-  border-top-color: #999;
+  border-top-color: #212121;
   border-top-color: rgba(0, 0, 0, .25);
   border-bottom-width: 0;
 }
@@ -6186,14 +6203,14 @@ button.close {
   bottom: 1px;
   margin-left: -10px;
   content: " ";
-  border-top-color: #fff;
+  border-top-color: #212121;
   border-bottom-width: 0;
 }
 .popover.right > .arrow {
   top: 50%;
   left: -11px;
   margin-top: -11px;
-  border-right-color: #999;
+  border-right-color: #212121;
   border-right-color: rgba(0, 0, 0, .25);
   border-left-width: 0;
 }
@@ -6201,7 +6218,7 @@ button.close {
   bottom: -10px;
   left: 1px;
   content: " ";
-  border-right-color: #fff;
+  border-right-color: #212121;
   border-left-width: 0;
 }
 .popover.bottom > .arrow {
@@ -6209,7 +6226,7 @@ button.close {
   left: 50%;
   margin-left: -11px;
   border-top-width: 0;
-  border-bottom-color: #999;
+  border-bottom-color: #212121;
   border-bottom-color: rgba(0, 0, 0, .25);
 }
 .popover.bottom > .arrow:after {
@@ -6217,14 +6234,14 @@ button.close {
   margin-left: -10px;
   content: " ";
   border-top-width: 0;
-  border-bottom-color: #fff;
+  border-bottom-color: #212121;
 }
 .popover.left > .arrow {
   top: 50%;
   right: -11px;
   margin-top: -11px;
   border-right-width: 0;
-  border-left-color: #999;
+  border-left-color: #212121;
   border-left-color: rgba(0, 0, 0, .25);
 }
 .popover.left > .arrow:after {
@@ -6232,7 +6249,7 @@ button.close {
   bottom: -10px;
   content: " ";
   border-right-width: 0;
-  border-left-color: #fff;
+  border-left-color: #212121;
 }
 .carousel {
   position: relative;
