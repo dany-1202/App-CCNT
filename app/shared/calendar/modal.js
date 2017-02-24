@@ -7,6 +7,7 @@ angular
         templateUrl: 'app/shared/calendar/modalContent.html',
         controller: function() {
           var vm = this;
+          console.log(scope);
           vm.persons = angular.copy(scope.persons);
           vm.action = action;
           vm.event = event;
