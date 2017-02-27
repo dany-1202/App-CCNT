@@ -62,6 +62,11 @@ ctrlCCNT.config(['$routeProvider',
 			controller: 'employeFormController',
 			activetab: 'emp' // Contrôleur de la page home
 		})
+		.when('/employe/password', { // Chemin d'une page en construction
+			templateUrl: 'app/components/configuration-employe/employePassword.html',
+			controller: 'employePassword',
+			activetab: 'emp' // Contrôleur de la page home
+		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
 		});
