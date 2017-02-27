@@ -22,7 +22,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	vm.calendarView = 'month'; // Vue par défaut : 'Mois'
 	vm.cellIsOpen = true; // La cellule d'aujourd'hui est ouverte
 	vm.events = []; // Liste des évennements (Horaires des personnes)
+<<<<<<< Updated upstream
 
+=======
+/*
+>>>>>>> Stashed changes
 	var getInfoEvent = function (nomPrenom) {
 	  var person = null;
 	  for (var i = 0; i < $scope.persons.length; i++) {
@@ -33,8 +37,12 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  }
 	  return person;
 	}
+<<<<<<< Updated upstream
      	$scope.departments = [];
 
+=======
+*/      	$scope.departments = [];
+>>>>>>> Stashed changes
 
   	$scope.departmentsSel = [];
   	$scope.deps = [ // Stocke les codes couleurs nécessaires pour les départements
@@ -71,6 +79,7 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 		  	var heureFin = getTimeDate(objDate.endsAt);
 		  	var dateDebut = getDateBDD(objDate.startsAt);
 
+<<<<<<< Updated upstream
 		  	var $req = $http.post("assets/php/supHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': person.id, 'date' : dateDebut, 'heureDebut' : heureDebut, 'heureFin': heureFin});
 		  	$req.then(function (message) {
 			  	if (message.data != null) {
@@ -79,6 +88,13 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 						NotifService.success('Suppression Horaire', "L'horaire : " + dateDebut + " de l'employé : " + person.nom + " " + person.prenom + " a été supprimé avec succès");
 					}, function () {return;});
 					
+=======
+		  	var $req = $http.post("php/supprimerHorairePersonneAPI.php", {'per_id': person.id, 'date' : dateDebut, 'heureDebut' : heureDebut, 'heureFin': heureFin});
+		  	$req.then(function (message) {
+			  	if (message.data != null) {
+					vm.events.splice(args.calendarEvent.calendarEventId, 1);
+					NotifService.success('Suppression Horaire', "L'horaire : " + dateDebut + " de l'employé : " + person.nom + " " + person.prenom + " a été supprimé avec succès");
+>>>>>>> Stashed changes
 			  	} else {
 					NotifService.success('Suppression Horaire', "L'horaire n'a pas pu être supprimé");
 			  	}
@@ -92,10 +108,15 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  	endsAt: moment().endOf('day').toDate(),
 		color: calendarConfig.colorTypes.important,
 		draggable: true,
+<<<<<<< Updated upstream
 		type: 'info',
 	  	resizable: true,
 	  	actions : actions,
 	  	cssClass: 'custom-event'
+=======
+	  	resizable: true,
+	  	actions : actions,
+>>>>>>> Stashed changes
 	  };
 
 	var reinitEvent = function () {
@@ -106,8 +127,12 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 		  	color: calendarConfig.colorTypes.important,
 		  	draggable: true,
 		  	resizable: true,
+<<<<<<< Updated upstream
 		  	actions : actions,
 		  	cssClass: 'custom-event'
+=======
+		  	actions : actions
+>>>>>>> Stashed changes
 		};
 	  	$scope.myPerson = null;
 	  	$scope.depSel = "";
@@ -127,7 +152,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	var searchDepNom = function (nom) {
 	  	var pos = -1;
 	  	for (var i = 0; i < $scope.departmentsSel.length; i++) {
+<<<<<<< Updated upstream
 			if ($scope.departmentsSel[i].name == nom) {
+=======
+			if ($scope.departmentsSel[i].nom == nom) {
+>>>>>>> Stashed changes
 		  		pos = i;
 			}
 	  	}
@@ -146,7 +175,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 
 	var virerEmployeDep = function (item) {
 	  	for (var i = $scope.personsDeps.length - 1; i >= 0; i--) {
+<<<<<<< Updated upstream
 			if ($scope.personsDeps[i].dep.id == item.id) {
+=======
+			if ($scope.personsDeps[i].dep_id == item.id) {
+>>>>>>> Stashed changes
 		  		$scope.personsDeps.splice(i, 1);
 			}
 	  	}
@@ -154,7 +187,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 
 	var virerEmployeDep = function (dep) {
 	  	for (var i = $scope.personsDeps.length - 1; i >= 0; i--) {
+<<<<<<< Updated upstream
 			if ($scope.personsDeps[i].dep.id == dep.id) {
+=======
+			if ($scope.personsDeps[i].dep_id == dep.id) {
+>>>>>>> Stashed changes
 			  	var pos = searchPersonID($scope.personsDeps[i].id);
 			  	if (pos != -1) {
 					$scope.personsSel.splice(pos, 1);
@@ -166,7 +203,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 
 	var ajouterEmployeDep = function (dep) {
 	  	for (var i = 0; i < $scope.persons.length; i++) {
+<<<<<<< Updated upstream
 			if ($scope.persons[i].dep.id == dep.id) {
+=======
+			if ($scope.persons[i].dep_id == dep.id) {
+>>>>>>> Stashed changes
 			  	$scope.personsDeps.push($scope.persons[i]);
 			  	$scope.personsSel.push($scope.persons[i]);
 			}
@@ -187,11 +228,19 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  	}
 
 	  	vm.events.splice(0, vm.events.length); // Supprimer l'affichage
+<<<<<<< Updated upstream
 	  	var $req = $http.post("assets/php/getPersonnesFiltreDepAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'deps' : $scope.departmentsSel});
+=======
+	  	var $req = $http.post("php/getPersonnesFiltreDepAPI.php", {'eta_id': 1, 'deps' : $scope.departmentsSel});
+>>>>>>> Stashed changes
 	  	$req.then(function (message) {
 			var tabPerson = message.data;
 			if (message.data.length > 0) { // Si il y a des données
 			  	for (var i = 0; i < tabPerson.length; i++) {
+<<<<<<< Updated upstream
+=======
+					console.log(tabPerson);
+>>>>>>> Stashed changes
 					getHoraires(tabPerson[i]);
 			  	}
 			}
@@ -206,7 +255,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 			$scope.personsSel.push(person);
 	  	}
 	  	vm.events.splice(0, vm.events.length); // Supprimer l'affichage
+<<<<<<< Updated upstream
 	  	var $req = $http.post("assets/php/getPersonnesFiltreEmpAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'deps' : $scope.departmentsSel, 'emps' : $scope.personsSel});
+=======
+	  	var $req = $http.post("php/getPersonnesFiltreEmpAPI.php", {'eta_id': 1, 'deps' : $scope.departmentsSel, 'emps' : $scope.personsSel});
+>>>>>>> Stashed changes
 	  	$req.then(function (message) {
 			var tabPerson = message.data;
 			if (message.data.length > 0) { // Si il y a des données
@@ -220,6 +273,10 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	var getDeps = function () {
 	  	var $req = $http.post("assets/php/getDepartementsAPI.php",{user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token')});
 	  	$req.then(function (message) {
+<<<<<<< Updated upstream
+=======
+	  		console.log(message);
+>>>>>>> Stashed changes
 			$scope.departments = message.data;
 			$scope.departmentsSel = angular.copy($scope.departments);
 	  	});
@@ -247,16 +304,27 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 
 	/* Récupère l'objet couleur selon l'id du départements */
 	$scope.getColor = function (id) {
+<<<<<<< Updated upstream
 	  	return $scope.deps[id];
+=======
+	  return $scope.deps[id];
+>>>>>>> Stashed changes
 	};
 
 	$scope.majPerson = function() {
 	  	var person = rechercherPersonne($scope.myPerson);
 	  	if (person != null) {
+<<<<<<< Updated upstream
 			$scope.depSel = person.dep.nom;
 			$scope.styleDep = {'color' : $scope.getColor(person.dep.img).primary}
 			$scope.event.title = person.nom + " " + person.prenom;
 			$scope.event.color = $scope.getColor(person.dep.img);
+=======
+			$scope.depSel = person.dep_nom;
+			$scope.styleDep = {'color' : $scope.getColor(person.dep_id).primary}
+			$scope.event.title = person.nom + " " + person.prenom;
+			$scope.event.color = $scope.getColor(person.dep_id);
+>>>>>>> Stashed changes
 	  	}
 	}
 
@@ -273,6 +341,10 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	var getHoraires = function (personne) {
 	  	var $req = $http.post("assets/php/getHorairesEmployeeAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token'), per_id: personne.id});
 	  	$req.then(function (message) {
+<<<<<<< Updated upstream
+=======
+	  		console.log(message);
+>>>>>>> Stashed changes
 			tabHoraires = message.data;
 			if (tabHoraires.length > 0) { // Si l'employé n'a pas d'horaires n'ajoute rien au calendrier
 			 	 for (var i = 0; i < tabHoraires.length; i++) {
@@ -281,6 +353,10 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 					var heureFin = getTime(hor.heureFin);
 					var dateDebut = moment(new Date(hor.date)).subtract(1, 'hours'); // On enleve une heure, car GMT+1
 					var dateFin = getDateFin(hor.heureDebut, hor.heureFin, hor.date);
+<<<<<<< Updated upstream
+=======
+					console.log(personne);
+>>>>>>> Stashed changes
 					var horaire = {
 					  	title: personne.nom + " " + personne.prenom,
 					  	color: $scope.getColor(personne.dep.img),
@@ -289,7 +365,10 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 					  	draggable: true,
 					  	resizable: true,
 					  	actions: actions,
+<<<<<<< Updated upstream
 					  	cssClass: 'custom-event'
+=======
+>>>>>>> Stashed changes
 					};
 					vm.events.push(horaire);
 			  	}
@@ -318,11 +397,21 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 			$scope.event.endsAt = dateFin;
 			
 			var pos = searchDepNom($scope.depSel);
+<<<<<<< Updated upstream
 			if (pos != -1) {vm.events.push($scope.event);}
 
 			/* Insérer le département */
 			var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': getDateBDD(dateDebut), 'heureDebut': heureDebut, 'heureFin': heureFin}); // Envoie de la requête en 'POST'
 			$res.then(function (message) {
+=======
+
+			if (pos != -1) {vm.events.push($scope.event);}
+
+			/* Insérer le département */
+			var $res = $http.post("php/insertHorairePersonneAPI.php", {'per_id': $scope.myPerson, 'date': getDateBDD(dateDebut), 'heureDebut': heureDebut, 'heureFin': heureFin}); // Envoie de la requête en 'POST'
+			$res.then(function (message) {
+			  	console.log(message.data);
+>>>>>>> Stashed changes
 			});
 
 			NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
@@ -335,7 +424,10 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  	var $res = $http.post("assets/php/getEmployeesAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')}); // Envoie de la requête en 'POST'
 	  
 	  	$res.then(function (message) { // Réponse de la promesse
+<<<<<<< Updated upstream
 	  		
+=======
+>>>>>>> Stashed changes
 			var tabPerson = message.data; // Stocke le tableau d'objet
 			if (message.data.length > 0) { // Si il y a des données
 			  	for (var i = 0; i < tabPerson.length; i++) {
@@ -391,6 +483,7 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	vm.modifyCell = function (calendarCell) {
 
 	}
+<<<<<<< Updated upstream
 	
 	/*
 	vm.groupEvents = function(cell) {
@@ -401,6 +494,8 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 		        	cell.groups[event.type].push(event);
       		});
     	};*/
+=======
+>>>>>>> Stashed changes
 
 	vm.timespanClicked = function(date, cell) {
 	  	if (vm.calendarView === 'month') {

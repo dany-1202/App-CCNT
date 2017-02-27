@@ -1,6 +1,7 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('CreatePlanningCtrl', function($timeout, $scope, moment, calendarConfig, $http, NotifService) {
+<<<<<<< Updated upstream
 	$scope.affFiltre = false;
 	$scope.affAddHoraire = false;
 	 var originalFormat = calendarConfig.dateFormats.hour;
@@ -11,4 +12,7 @@ ctrlCCNT.controller('CreatePlanningCtrl', function($timeout, $scope, moment, cal
 	$scope.$on('$destroy', function() {
 	     	calendarConfig.dateFormats.hour = originalFormat; // reset for other demos
     	});
+=======
+	
+>>>>>>> Stashed changes
 });
