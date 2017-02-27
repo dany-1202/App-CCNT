@@ -1,7 +1,7 @@
 .breadcrumb1 {
   /*centering*/
   display: inline-block;
-  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   border-radius: 5px;
   /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/

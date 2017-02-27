@@ -5,10 +5,10 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="uk-margin-top uk-heading-bullet"><span>Gestion des employés</span></h1>
-					<div class="breadcrumb1 flat">
+					<h1 class="uk-margin-top uk-heading-line"><span>Gestion des employés</span></h1>
+					<div class="uk-breadcrumb">
 						<a href="#!/home" >Home</a>
-						<a href="#!/home" class="active">Employés</a>
+						<a href="#!/employe" class="active">Employés</a>
 					</div>
 					<br><br>
 					<div class="alert alert-success" role="alert">
@@ -40,7 +40,7 @@
 				        	<span class="name">{{emp.nom}} <span class="prenom">{{emp.prenom}}</span></span>
 
 		        			<img class="icon-emp" ng-if="emp.genre == 'M'" ng-src="assets/images/man.png">
-						<img class="icon-emp" ng-if="emp.genre == 'F'" ng-src="assets/images/women.png">
+					<img class="icon-emp" ng-if="emp.genre == 'F'" ng-src="assets/images/women.png">
 				      </div>
 				</div>
 			</div>

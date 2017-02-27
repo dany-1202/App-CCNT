@@ -24,11 +24,11 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			$scope.selectedD = State.selectedD; // Contient les jours ou des coupures ont lieu
 			$scope.affOtherHours = false;
 			$scope.affModifOtherHours1 = false;
-			$scope.affModifOtherHours2 = false;
+			$scope.affModifOtherHours2 = false
 
 			$scope.tabCalendars = $scope.$parent.tabCalendars;
 			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
-
+			
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
 		  	/*****************************************************************************************\
@@ -536,7 +536,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 
 	    	var isCurrentInfoCalCorrect = function () {
-	    		if ($scope.cal.errorName == true || $scope.cal.errorPeriod == true) {
+	    		if ($scope.cal.errorName == true /*|| $scope.cal.errorPeriod == true*/) {
 	    			return false;
 	    		}
 	    		return true; // Vérification à faire des infos champs nom pas vide et période pas vide et celle fin doit être plus grande que celle de début
@@ -564,6 +564,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 	    	$scope.addHoursToTab = function () {
 	    		if (isCurrentInfoCalCorrect()) {
+	    			$scope.cal.errorPeriod = false;
 	    			$scope.cal.state = Const.COMP;
 	    			$scope.affModifOtherHours = false;
 	    			$scope.affModifOtherHours1 = true;
