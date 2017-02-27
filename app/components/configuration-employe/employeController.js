@@ -6,14 +6,20 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 	$scope.user = {};
       $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
+  console.log(SessionService.get('user_confEmp'));
+  
+      
       
       var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
       
       $scope.employe = []; //Tableau contenant les employes
+      
+     
 
       $scope.getEmployes = function () {
             var $promise = $http.post('assets/php/getEmployeesAPI.php', data);
             $promise.then(function (message) {
+              console.log(message);
                   var tab = message.data;
                   	for (var i = 0; i < tab.length; i++) {
                   		var person = tab[i];
@@ -53,6 +59,11 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
                   	}
             	});
             	$scope.employe.splice(index,1);
+            if ($scope.employe.length == 0) {
+                  SessionService.set('user_confEmp', false);
+            } else {
+                  SessionService.set('user_confEmp', true);
+            }
       };
 
       $scope.modEmploye = function(id) {

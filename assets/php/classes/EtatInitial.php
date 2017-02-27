@@ -131,6 +131,31 @@ class EtatInitial {
 		MySQLManager::close();
 		return false; // Il ne trouve rien
 	} // checkConfiguration
+	
+	public static function checkConfigurationEmp ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['user_id']);
+		  	$stmt->execute();
+		  	$stmt->bind_result($eta_id);
+		  	if ($stmt->fetch()) {
+		  		$stmt->close();
+		  		$query1 = "SELECT COUNT(pos_per_id) FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON pos_dep_id = dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE eta_id = ? AND per_admin = 0 AND per_inactif = 0";
+		  		$db1 = MySQLManager::get();
+		  		if ($stmt1 = $db1->prepare($query1)) {
+					$stmt1->bind_param('i', $eta_id);
+				  	$stmt1->execute();
+				  	$stmt1->bind_result($nbPersons);
+				  	$stmt1->fetch();
+			  		MySQLManager::close();
+	  				return $nbPersons;
+				}
+		  	}
+		}
+		MySQLManager::close();
+		return 0; // Il ne trouve rien
+	} // checkConfiguration
 
 	public static function getEstablishmentPerson ($data) {
 		$db = MySQLManager::get();
@@ -140,6 +165,7 @@ class EtatInitial {
 			$stmt->execute();
 			$stmt->bind_result($eta_id);
 			$stmt->fetch(); // Il faut le mettre sinon ça ne marche pas ! 
+			$stmt->close();
 			return $eta_id;
 		}
 		MySQLManager::close();
