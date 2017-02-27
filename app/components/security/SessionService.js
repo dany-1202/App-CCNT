@@ -25,6 +25,7 @@ ctrlCCNT.factory('SessionService', ['$http', function($http) {
 			sessionStorage.removeItem('user_prenom');
 			sessionStorage.removeItem('user_token');
 			sessionStorage.removeItem('user_configured');
+			sessionStorage.removeItem('user_confEmp');
 		} 
 	};
 }]);

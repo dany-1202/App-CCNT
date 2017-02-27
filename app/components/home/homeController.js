@@ -4,6 +4,14 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	$scope.$route = $route;
 	$scope.user = {};
 	$scope.user.configuration = SessionService.get('user_configured');
+	var res = SessionService.get('user_configured');
+	console.log(res);
+	
+	
+	if (res === false) {
+		console.log('ici');
+	}
+	//console.log($scope.confEmp);
 	
 	
 	$scope.lancerConfigEmp = function () {
@@ -17,6 +25,13 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 		$promise.then(function (message) {
 			console.log(message.data);
 		});
+	}
+	
+	if (SessionService.get('user_configured') == false) {
+		console.log('ici');
+		$scope.confEmp = false;
+	} else {
+		$scope.confEmp = SessionService.get('user_configured');
 	}
 
 	$scope.lancerConfig = function (ev) {
