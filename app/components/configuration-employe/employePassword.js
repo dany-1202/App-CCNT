@@ -5,8 +5,6 @@ ctrlCCNT.controller('employePassword', function($timeout, $rootScope, $scope, $h
 			$scope.valide = true;
 			/* Validation des mots de passes */
 			$scope.enregistrer = function () {
-							console.log($("#newPass").val());
-							console.log($("#confPass").val());
 
 							// vérification des deux mots de passes
 							if($("#newPass").val() == $("#confPass").val() && $("#newPass").val().trim() != "" && $("#newPass").val().length >= 8){

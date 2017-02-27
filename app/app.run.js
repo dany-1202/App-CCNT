@@ -59,7 +59,6 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 		//next.$$route.originalPath);
 		if (SessionService.get('user_token') == null) { // Si le service ne trouve aucune donnée pour le token
 			// Test si l'utilisateur doit se diriger vers la connexion ou vers le mot de passe
-			if(next.$$route.originalPath === undefined){return;}
 			if((next.$$route.originalPath.indexOf(routeSansLogin[0]) != -1) || (next.$$route.originalPath.indexOf(routeSansLogin[1]) != -1)){
 				return ;
 			}else{
