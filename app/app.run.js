@@ -41,9 +41,9 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 					    	essai = 2;
 					    	var obj = $location.url(newUrl).$$hash.split('!')[1];
 					    	console.log(obj);
-	            			$location.path(obj);//Go to page they're interested in
-	            			$rootScope.$apply();
-	            			essai = 1;
+	            				$location.path(obj);//Go to page they're interested in
+	            				$rootScope.$apply();
+	            				essai = 1;
 					}, function () {});
 					event.preventDefault();
   					return;
@@ -73,10 +73,6 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 				if (routeSansLogin.indexOf($location.path()) != -1 && message.data) {
 					$location.path('/home');
 					NotifService.infoCon($rootScope.user.nom);
-				}
-
-				if (current != null && current.originalPath == routeAvecLogin[1] && next.originalPath != current.originalPath) {
-
 				}
 			});
 		}

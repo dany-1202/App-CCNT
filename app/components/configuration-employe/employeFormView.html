@@ -46,8 +46,8 @@
 				<div class="row margin-bottom-10">
 					<div class="col-lg-3">Date de naissance : </div>
 					<div class="col-lg-7">
-						<input ng-blur="validationDateNaissance()" class="uk-input" ng-class="{'error': validations[12].valide == false, 'correct': validations[12].valide}" ng-model="myEmp.dateNaissance" type="date" ></input>
-						<span ng-hide="validations[12].valide" style="color:red">La date de naissance n'est pas valide</span>
+						<md-datepicker ng-class="{'error': validations[12].valide == false, 'correct': validations[12].valide}"  ng-blur="validationDateNaissance()" ng-model="myEmp.dateNaissance" md-placeholder="Choisir date"></md-datepicker>
+						<span ng-hide="validations[12].valide" style="color:red; display: block">La date de naissance n'est pas valide</span>
 					</div>
 				</div>
 				<div class="row margin-bottom-10">
@@ -127,16 +127,16 @@
 				<div class="row margin-bottom-10">
 					<div class="col-lg-3">Date d'entrée : </div>
 					<div class="col-lg-7">
-						<input class="uk-input" ng-blur="validationDateEntree()" ng-class="{'error': validations[7].valide == false, 'correct': validations[7].valide}" type="date" ng-model="myEmp.dateIn"></input>
-						<span ng-hide="validations[7].valide" style="color:red">La date d'entrée n'est pas valide</span>
+						<md-datepicker  ng-class="{'error': validations[7].valide == false, 'correct': validations[7].valide}" ng-blur="validationDateEntree()"  ng-model="myEmp.dateIn" md-placeholder="Choisir date"></md-datepicker>
+						<span ng-hide="validations[7].valide" style="color:red; display: block">La date d'entrée n'est pas valide</span>
 					</div>
 					<div class="col-lg-4" ></div>
 				</div>
 				<div class="row margin-bottom-10"> <!-- ng-hide="myEmp.dateOut == null" -->
 					<div class="col-lg-3">Date de sortie : </div>
 					<div class="col-lg-7">
-						<input class="uk-input" ng-blur="validationDateOut()" ng-class="{'error': validations[8].valide == false, 'correct': validations[8].valide}" type="date" ng-model="myEmp.dateOut"></input>
-						<span ng-hide="validations[8].valide" style="color:red">La date de sortie doit être supérieur à la date d'entrée</span>
+						<md-datepicker ng-blur="validationDateOut()" ng-class="{'error': validations[8].valide == false, 'correct': validations[8].valide}" ng-model="myEmp.dateOut" md-placeholder="Choisir date"></md-datepicker>
+						<span ng-hide="validations[8].valide" style="color:red; display: block">La date de sortie doit être supérieur à la date d'entrée</span>
 					</div>
 				</div>
 				<div class="row margin-bottom-10">
