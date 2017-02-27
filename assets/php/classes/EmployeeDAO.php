@@ -258,7 +258,7 @@ class EmployeeDAO {
 		$db = MySQLManager::get();
 		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_id = ?";
 		if ($stmt = $db->prepare($query)) {
-			$pwdCrypted = sha512($data['password']);
+			$pwdCrypted = hash('sha512', $data['password']);
 			$stmt->bind_param('si', $pwdCrypted, $data['user_id']);
 		  	$stmt->execute();
 	  		MySQLManager::close();
