@@ -144,6 +144,24 @@ class EmployeeDAO {
 		MySQLManager::close();
 		return -1;
 	} // insertPersonne
+
+	/*
+		Met à jours le mot de passe d'un employé
+	*/	
+	public static function updatePasswordEmploye ($data) {
+		$db = MySQLManager::get();
+		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$pwdCrypted = sha512($data['password']);
+			$stmt->bind_param('si', $pwdCrypted, $data['user_id']);
+		  	$stmt->execute();
+	  		MySQLManager::close();
+			return true;
+		}
+		MySQLManager::close();
+		return false;
+	} // updatePasswordEmploye
+
 }
 
 ?>
