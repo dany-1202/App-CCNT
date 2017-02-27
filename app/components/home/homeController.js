@@ -9,8 +9,18 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	$scope.lancerConfigEmp = function () {
 		$location.url("/employe");
 	}
+	
+	$scope.envoyerMail = function () {
+		console.log('ici');
+		var $promise = $http.post('assets/php/sendEmailAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), 'email' : 'vincent.jalley@hotmail.com'});
+	
+		$promise.then(function (message) {
+			console.log(message.data);
+		});
+	}
 
 	$scope.lancerConfig = function (ev) {
+		
 		$mdDialog.show({
 			controller: DialogController,
 			templateUrl: 'app/components/home/tuto.html',

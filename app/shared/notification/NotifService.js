@@ -16,23 +16,23 @@ ctrlCCNT.service('NotifService', function(Notification) {
 			Notification.success({message: "<p class='notifTexte'>Connexion réussi !</p>", delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> Statut Connexion</h3>'});
 		},
 		errorCon : function () {
-			Notification.error({message: "<p class='notifTexte'> Connexion échoué ! </p>", delay: 1500, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> Statut Connexion</h3>'});
+			Notification.error({message: "<p class='notifTexte'> Connexion échoué ! </p>", delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> Statut Connexion</h3>'});
 		},
 		warningCon : function () {
 			Notification.warning({message: "<p class='notifTexte'> La connexion avec la base de donnée a échoué, Veuillez contacter l'administrateur </p>", title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> Connexion Base de données</h3>'});
 		},
 		infoCon : function(nom) {
-			Notification.info({message: "<p class='notifTexte'> Vous-êtes déjà connecté M." + nom + " !</p>", delay: 1500, title: '<h3 class="notifTitre"><i class="fa fa-info"></i> Statut Connexion</h3>'});
+			Notification.info({message: "<p class='notifTexte'> Vous-êtes déjà connecté M." + nom + " !</p>", delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-info"></i> Statut Connexion</h3>'});
 		},
 		/* Fonction qui reçoivent en paramètre les messages et titres à afficher selon le type de notification */
 		success : function (titre, message) {
 			Notification.success({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> ' + titre + '</h3>'});
 		},
 		error : function(titre, message) {
-			Notification.error({message: '<p class="notifTexte">' + message + '</p>', delay: 1500, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
+			Notification.error({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
 		},
 		warning : function(titre, message) {
-			Notification.warning({message: '<p class="notifTexte">' + message + '</p>', delay: 1500, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
+			Notification.warning({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
 		}
 	}
 });

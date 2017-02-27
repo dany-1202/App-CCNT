@@ -115,20 +115,21 @@
 					 Votre semaine de base est configuré, veuillez insérer le nom que vous donnez à cette horaire et la période pour laquelle cette horaire doit être utilisé.
 				</h4>
 				<hr>
-				<div class="col-lg-3 centrer margin-bottom-xs">
+				<div class="col-lg-12 centrer margin-bottom-xs">
 					<input type="text" ng-blur="isNameValid()" ng-class="{error: cal.errorName}" class="uk-input centrer" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
 					<div class="centrer">
 						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
 					</div>
 				</div>
-
+				<!--
 				<div class="col-lg-6 centrer margin-bottom-xs">
-					Du  <input type="date" ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" class="uk-input centrer margin-bottom-xs " style="width: 150px!important; display:inline!important;">
-					au <input type="date" ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" class="uk-input centrer margin-bottom-xs" style="width: 150px!important; display:inline!important;">
+					
+					Du   <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de début"></md-datepicker>
+					au <md-datepicker ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de fin">
 					<div class="centrer">
 						<span class="red errorDep" ng-show="cal.errorPeriod">La période saisi n'est pas valide (minimum 1 semaine) </span>
 					</div>
-				</div>
+				</div>-->
 
 				<button class="uk-button uk-button-primary" ng-click="addHoursToTab()">
 					Enregistrer
@@ -195,7 +196,10 @@
 			<tbody>
 				<tr ng-repeat="item in tabCalendars">
 					<td style="line-height:53px!important">{{item.name}}</td>
-					<td style="line-height:53px!important">{{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</td>
+					<td style="line-height:53px!important">
+						<span ng-if="$index == 0" >Tous les jours</span>
+						<span ng-if="$index > 0"> {{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</span>
+					</td>
 					<td>
 							<p ng-if="item.state == 'Complet'"><span style="margin-top: 10px!important" class="w3-tag completed w3-round">{{item.state}}</span></p>
 							<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>

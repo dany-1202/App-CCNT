@@ -35,6 +35,7 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	}
      	$scope.departments = [];
 
+
   	$scope.departmentsSel = [];
   	$scope.deps = [ // Stocke les codes couleurs nécessaires pour les départements
 		  {}, // Premier objet vide
@@ -91,8 +92,10 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  	endsAt: moment().endOf('day').toDate(),
 		color: calendarConfig.colorTypes.important,
 		draggable: true,
+		type: 'info',
 	  	resizable: true,
 	  	actions : actions,
+	  	cssClass: 'custom-event'
 	  };
 
 	var reinitEvent = function () {
@@ -103,7 +106,8 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 		  	color: calendarConfig.colorTypes.important,
 		  	draggable: true,
 		  	resizable: true,
-		  	actions : actions
+		  	actions : actions,
+		  	cssClass: 'custom-event'
 		};
 	  	$scope.myPerson = null;
 	  	$scope.depSel = "";
@@ -205,7 +209,6 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  	var $req = $http.post("assets/php/getPersonnesFiltreEmpAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'deps' : $scope.departmentsSel, 'emps' : $scope.personsSel});
 	  	$req.then(function (message) {
 			var tabPerson = message.data;
-			console.log(message);
 			if (message.data.length > 0) { // Si il y a des données
 			  	for (var i = 0; i < tabPerson.length; i++) {
 					getHoraires(tabPerson[i]);
@@ -217,7 +220,6 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	var getDeps = function () {
 	  	var $req = $http.post("assets/php/getDepartementsAPI.php",{user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token')});
 	  	$req.then(function (message) {
-	  		console.log(message);
 			$scope.departments = message.data;
 			$scope.departmentsSel = angular.copy($scope.departments);
 	  	});
@@ -269,10 +271,8 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	}
 
 	var getHoraires = function (personne) {
-		console.log(personne);
 	  	var $req = $http.post("assets/php/getHorairesEmployeeAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token'), per_id: personne.id});
 	  	$req.then(function (message) {
-	  		console.log(message);
 			tabHoraires = message.data;
 			if (tabHoraires.length > 0) { // Si l'employé n'a pas d'horaires n'ajoute rien au calendrier
 			 	 for (var i = 0; i < tabHoraires.length; i++) {
@@ -281,7 +281,6 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 					var heureFin = getTime(hor.heureFin);
 					var dateDebut = moment(new Date(hor.date)).subtract(1, 'hours'); // On enleve une heure, car GMT+1
 					var dateFin = getDateFin(hor.heureDebut, hor.heureFin, hor.date);
-					console.log(personne);
 					var horaire = {
 					  	title: personne.nom + " " + personne.prenom,
 					  	color: $scope.getColor(personne.dep.img),
@@ -290,6 +289,7 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 					  	draggable: true,
 					  	resizable: true,
 					  	actions: actions,
+					  	cssClass: 'custom-event'
 					};
 					vm.events.push(horaire);
 			  	}
@@ -318,14 +318,11 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 			$scope.event.endsAt = dateFin;
 			
 			var pos = searchDepNom($scope.depSel);
-			console.log(pos);
-			console.log($scope.event);
 			if (pos != -1) {vm.events.push($scope.event);}
 
 			/* Insérer le département */
 			var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': getDateBDD(dateDebut), 'heureDebut': heureDebut, 'heureFin': heureFin}); // Envoie de la requête en 'POST'
 			$res.then(function (message) {
-			  	console.log(message.data);
 			});
 
 			NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
@@ -338,7 +335,6 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	  	var $res = $http.post("assets/php/getEmployeesAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')}); // Envoie de la requête en 'POST'
 	  
 	  	$res.then(function (message) { // Réponse de la promesse
-	  		console.log(message);
 	  		
 			var tabPerson = message.data; // Stocke le tableau d'objet
 			if (message.data.length > 0) { // Si il y a des données
@@ -395,6 +391,16 @@ appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, mom
 	vm.modifyCell = function (calendarCell) {
 
 	}
+	
+	/*
+	vm.groupEvents = function(cell) {
+	      	cell.groups = {};
+	      	cell.events.forEach(function(event) {
+	      		console.log(event);
+		       	cell.groups[event.type] = cell.groups[event.type] || [];
+		        	cell.groups[event.type].push(event);
+      		});
+    	};*/
 
 	vm.timespanClicked = function(date, cell) {
 	  	if (vm.calendarView === 'month') {
