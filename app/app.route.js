@@ -62,21 +62,19 @@ ctrlCCNT.config(['$routeProvider',
 			controller: 'employeFormController',
 			activetab: 'emp' // Contrôleur de la page home
 		})
-<<<<<<< HEAD
-		.when('/employe/password', { // Chemin d'une page en construction
+		.when('/employe/password', { // Chemin vers la page d'initialisation du password
 			templateUrl: 'app/components/configuration-employe/employePassword.html',
 			controller: 'employePassword',
 			activetab: 'emp' // Contrôleur de la page home
-=======
+		})
 		.when('/createplanning', {
 			templateUrl: 'app/components/planning/createplanningView.html',
 			controller: 'CreatePlanningCtrl',
 			activetab: 'planning'
->>>>>>> appCCNT
 		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
-		});
+		})
 		
  	}
 ]);

@@ -7,10 +7,7 @@ angular
         templateUrl: 'app/shared/calendar/modalContent.html',
         controller: function() {
           var vm = this;
-<<<<<<< Updated upstream
           console.log(scope);
-=======
->>>>>>> Stashed changes
           vm.persons = angular.copy(scope.persons);
           vm.action = action;
           vm.event = event;
