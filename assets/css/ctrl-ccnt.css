@@ -57,10 +57,17 @@ th {
 }
 
 td {
+    text-align: center;
+    /* padding: 10px 10px; */
+    /* border: 1px solid #9E9E9E; */
+    /* color: rgb(111,111,111); */
+    /* background-color: #FAFAFA!important; */
+}
+    /*
     padding: 10px 10px;
     border: 1px solid #9E9E9E;
     color: rgb(111,111,111);
-    background-color: #FAFAFA!important;
+    background-color: #FAFAFA!important;*/
 }
 
 .flat-table.ligne {

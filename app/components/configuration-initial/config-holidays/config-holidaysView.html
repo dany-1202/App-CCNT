@@ -26,7 +26,7 @@
 				</div>
 
 				</md-input-container>
-				<input type="text" ng-model="dateDay.title" class="uk-input centrer" style="width: 200px; margin:auto; margin-top:-22px; margin-bottom:10px" placeholder="Nom"> </input>
+				<input type="text" ng-model="dateDay.title" class="uk-input centrer" style="width: 200px; margin:auto; margin-top:-22px; margin-bottom:10px; display: block" placeholder="Nom"> </input>
 				<md-button ng-click="modifJour == false ? addDayClose() : modifierEventClose()" class="bouton">{{modifJour == false ? btnAdd : btnModif}}</md-button>
 			</form>
 		</div>
@@ -72,7 +72,7 @@
 					</md-input-container>
 				</form>
 			</div>
-			<input type="text" ng-model="dateDay.title" class="uk-input centrer" style="width: 200px; margin:auto; margin-top: 0px; margin-bottom:10px" placeholder="Nom de la période"> </input>
+			<input type="text" ng-model="dateDay.title" class="uk-input centrer" style="width: 200px; margin:auto; margin-top: 0px; margin-bottom:10px; display: block" placeholder="Nom de la période"> </input>
 			<md-button ng-click="addPlageClose()" class="bouton">{{modifPlage == false ? btnAdd : btnModif}}</md-button>
 		</div>
 	</div>
