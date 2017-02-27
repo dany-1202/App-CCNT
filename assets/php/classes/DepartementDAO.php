@@ -15,9 +15,9 @@ class DepartementDAO {
 	*/
 	public static function insertDepartement ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_eta_id`) VALUES (?, ?)";
+		$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_img_no`, `dep_eta_id`) VALUES (?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('si', $data['nom'], $data['noEta']);
+			$stmt->bind_param('sii', $data['nom'], $data['img'], $data['noEta']);
 		  	$stmt->execute();
 		  	if ($stmt->num_rows == 1) {
 		  		MySQLManager::close();
@@ -38,16 +38,17 @@ class DepartementDAO {
 		  	$stmt->bind_result($eta_id);
 		  	if ($stmt->fetch()) {
 		  		$stmt->close();
-		  		$query1 = "SELECT dep_id, dep_nom FROM ccn_departement WHERE dep_eta_id = ?";
+		  		$query1 = "SELECT dep_id, dep_nom, dep_img_no FROM ccn_departement WHERE dep_eta_id = ?";
 				if ($stmt1 = $db->prepare($query1)) {
 					$stmt1->bind_param('i', $eta_id);
 				  	$stmt1->execute();
-				  	$stmt1->bind_result($dep_id, $dep_nom);
+				  	$stmt1->bind_result($dep_id, $dep_nom, $dep_img_no);
 				  	$deps = array();
 				  	while($stmt1->fetch()) {
 				  		$dep = [];
 				  		$dep['id'] = $dep_id;
 				  		$dep['name'] = $dep_nom;
+				  		$dep['img'] = $dep_img_no;
 				  		$deps[] = $dep;
 				  	}
 				  	$stmt1->close();

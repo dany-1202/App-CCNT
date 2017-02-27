@@ -97,11 +97,11 @@ DROP TABLE IF EXISTS `ccnt`.`ccn_ouvertureInfo` ;
 CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_ouvertureInfo` (
   `ouv_id` INT NOT NULL AUTO_INCREMENT,
   `ouv_jour` VARCHAR(20) NULL,
-  `ouv_debut` DATETIME NULL,
-  `ouv_fin` DATETIME NULL,
+  `ouv_matinDebut` DATETIME NULL,
+  `ouv_matinFin` DATETIME NULL,
   `ouv_eta_id` INT NOT NULL,
-  `ouv_pauseDebut` DATETIME NULL,
-  `ouv_pauseFin` DATETIME NULL,
+  `ouv_soirDebut` DATETIME NULL,
+  `ouv_soirFin` DATETIME NULL,
   PRIMARY KEY (`ouv_id`, `ouv_eta_id`),
   INDEX `fk_InfoOuverture_Etablissement1_idx` (`ouv_eta_id` ASC),
   CONSTRAINT `fk_InfoOuverture_Etablissement1`
@@ -120,6 +120,7 @@ DROP TABLE IF EXISTS `ccnt`.`ccn_departement` ;
 CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_departement` (
   `dep_id` INT NOT NULL AUTO_INCREMENT,
   `dep_nom` VARCHAR(45) NULL,
+  `dep_img_no` INT NOT NULL,
   `dep_eta_id` INT NOT NULL,
   PRIMARY KEY (`dep_id`, `dep_eta_id`),
   INDEX `fk_Departement_Etablissement1_idx` (`dep_eta_id` ASC),
@@ -221,7 +222,43 @@ CREATE TABLE IF NOT EXISTS `ccnt`.`ccn_contrat` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `ccnt`.`ccn_horairepersonne`
+-- -----------------------------------------------------
+CREATE TABLE `ccnt`.`ccn_horairepersonne` (
+  `hop_id` INT NOT NULL AUTO_INCREMENT , 
+  `hop_date` DATE NOT NULL , 
+  `hop_heureDebut` TIME NOT NULL , 
+  `hop_heureFin` TIME NOT NULL , 
+  `hop_pauseDebut` TIME NULL , 
+  `hop_pauseFin` TIME NULL , 
+PRIMARY KEY (`hop_id`)) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `ccnt`.`ccn_travail`
+-- -----------------------------------------------------
+CREATE TABLE `ccnt`.`ccn_travail` ( 
+  `tra_per_id` INT NOT NULL , 
+  `tra_hop_id` INT NOT NULL ,
+  PRIMARY KEY (`tra_per_id`, `tra_hop_id`),
+  INDEX `fk_ccn_travail_ccn_personne1_idx` (`tra_per_id` ASC),
+  INDEX `fk_ccn_travail_ccn_horairepersonne_idx` (`tra_hop_id` ASC),
+  CONSTRAINT `fk_ccn_travail_ccn_personne1_idx`
+    FOREIGN KEY (`tra_per_id`)
+    REFERENCES `ccnt`.`ccn_personne` (`per_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ccn_travail_ccn_horairepersonne_idx`
+    FOREIGN KEY (`tra_hop_id`)
+    REFERENCES `ccnt`.`ccn_horairepersonne` (`hop_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+

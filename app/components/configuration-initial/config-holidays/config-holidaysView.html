@@ -1,170 +1,168 @@
-            <!-- Choisir les jours fériés -->
-            
-            <div class="row">
-             <div class="col-lg-12 padding-bottom">
-              <h2 class="no-margin-left">Jours fériés et Vacances</h1>
-              </div>
-            </div>
+<!-- Choisir les jours fériés -->
+<div class="row">
+ 	<div class="col-lg-12 padding-bottom">
+		<h2 class="no-margin-left">Période de fermeture de l’établissement</h1>
+	</div>
+</div>
 
-            <div class="row">
-              <!-- Colonne de gauche -->
-              <div class="col-lg-6 centrer">
-                <md-button id="addDay" ng-click="afficherJour = !afficherJour" class="bouton">{{afficherJour == false ? messageAjout: messageEnlever}}</md-button>
-                <div class="row" ng-show="afficherJour">
-                  <form name="formDay" class="well" flex-gt-xs>
-                    <md-input-container class="centrer">
-                    <label>Entrer une date</label>
+<div class="row">
+	<!-- Colonne de gauche -->
+	<div class="col-lg-6 centrer">
+		<md-button id="addDay" data-title="Ajout jour férié" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer pour ajouter un jour férié" ng-click="showAddDay()" class="bouton">{{afficherJour == false ? messageAjout: messageEnlever}}</md-button>
+		<div class="row" ng-show="afficherJour">
+			<form name="formDay" class="well" flex-gt-xs>
+				<md-input-container class="centrer">
+				<label>Entrer une date</label>
 
-                    <md-datepicker ng-model="dateDay.date" name="dateField" md-min-date="minDate"
-                      md-max-date="maxDate">
-                    </md-datepicker>
+				<md-datepicker ng-model="dateDay.date" name="dateField" md-min-date="minDate"
+					md-max-date="maxDate">
+				</md-datepicker>
 
-                    <div ng-messages="formDay.dateField.$error">
-                      <div ng-message="valid">Date invalide!</div>
-                      <div ng-message="required">Ce renseignement est obligatoire!</div>
-                      <div ng-message="mindate">Cette date est trop tôt!</div>
-                      <div ng-message="maxdate">Cette date est trop tard!</div>
-                    </div>
-                    
-                    </md-input-container>
-                    <input type="text" ng-model="dateDay.title" class="form-control centrer" style="width: 200px; margin:auto; margin-top:-22px; margin-bottom:10px" placeholder="Nom"> </input>
-                    <md-button ng-click="modifJour == false ? addDayClose() : modifierEventClose()" class="bouton">{{modifJour == false ? btnAdd : btnModif}}</md-button>
-                  </form>
-                </div>
-              </div>
+				<div ng-messages="formDay.dateField.$error">
+					<div ng-message="valid">Date invalide!</div>
+					<div ng-message="required">Ce renseignement est obligatoire!</div>
+					<div ng-message="mindate">Cette date est trop tôt!</div>
+					<div ng-message="maxdate">Cette date est trop tard!</div>
+				</div>
 
-              <!-- Colonne de droite -->
-              <div class="col-lg-6 centrer">
-                <md-button id="btn" data-container="body" data-toggle="popover" data-placement="right" data-content="Vous pouvez ajouter une plage ici" ng-click="affPlage()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
-                <div class="row well" ng-show="afficherPlage">
-                  
+				</md-input-container>
+				<input type="text" ng-model="dateDay.title" class="uk-input centrer" style="width: 200px; margin:auto; margin-top:-22px; margin-bottom:10px" placeholder="Nom"> </input>
+				<md-button ng-click="modifJour == false ? addDayClose() : modifierEventClose()" class="bouton">{{modifJour == false ? btnAdd : btnModif}}</md-button>
+			</form>
+		</div>
+	</div>
 
-                    <!-- Colonne gauche -->
-                    <div class="col-lg-6">
-                      <form name="formPlageDebut" flex-gt-xs>
-                        <md-input-container class="centrer" style="margin-bottom:-4px">
-                        <label>Date de début</label>
+	<!-- Colonne de droite -->
+	<div class="col-lg-6 centrer">
+		<md-button id="addPlage" data-title="Ajout période" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter une période" ng-click="showAddPlage()" class="bouton">{{afficherPlage == false ? messageAjoutPlage: messageEnlever}}</md-button>
+		<div class="row well" ng-show="afficherPlage">
+			<!-- Colonne gauche -->
+			<div class="col-lg-6">
+				<form name="formPlageDebut" flex-gt-xs>
+					<md-input-container class="centrer" style="margin-bottom:-4px">
+					<label>Date de début</label>
 
-                        <md-datepicker ng-model="dateDay.dateDebut" name="dateFieldDebut">
-                        </md-datepicker>
+					<md-datepicker ng-model="dateDay.dateDebut" name="dateFieldDebut">
+					</md-datepicker>
 
-                        <div ng-messages="formPlageDebut.dateFieldDebut.$error">
-                          <div ng-message="valid">Date invalide!</div>
-                          <div ng-message="required">Ce renseignement est obligatoire!</div>
-                          <div ng-message="mindate">Cette date est trop tôt!</div>
-                          <div ng-message="maxdate">Cette date est trop tard!</div>
-                        </div>
-                      </form>
-                    </div>
+					<div ng-messages="formPlageDebut.dateFieldDebut.$error">
+						<div ng-message="valid">Date invalide!</div>
+						<div ng-message="required">Ce renseignement est obligatoire!</div>
+						<div ng-message="mindate">Cette date est trop tôt!</div>
+						<div ng-message="maxdate">Cette date est trop tard!</div>
+					</div>
+				</form>
+			</div>
 
-                    <!-- Colonne droite -->
-                    <div class="col-lg-6">
-                      <form name="formPlageFin" flex-gt-xs>
-                        <md-input-container class="centrer" style="margin-bottom:-4px">
-                          <label>Date de fin</label>
+			<!-- Colonne droite -->
+			<div class="col-lg-6">
+				<form name="formPlageFin" flex-gt-xs>
+					<md-input-container class="centrer" style="margin-bottom:-4px">
+						<label>Date de fin</label>
 
-                          <md-datepicker ng-model="dateDay.dateFin" name="dateFieldFin" md-min-date="dateDay.dateDebut">
-                          </md-datepicker>
+						<md-datepicker ng-model="dateDay.dateFin" name="dateFieldFin" md-min-date="dateDay.dateDebut">
+						</md-datepicker>
 
-                          <div ng-messages="formPlageFin.dateFieldFin.$error">
-                            <div ng-message="valid">Date invalide!</div>
-                            <div ng-message="required">Ce renseignement est obligatoire!</div>
-                            <div ng-message="mindate">Cette date est trop tôt!</div>
-                            <div ng-message="maxdate">Cette date est trop tard!</div>
-                          </div>
-                        </md-input-container>
-                      </form>
-                    </div>
-                    <input type="text" ng-model="dateDay.title" class="form-control centrer" style="width: 200px; margin:auto; margin-top: 0px; margin-bottom:10px" placeholder="Nom de la période"> </input>
-                    <md-button ng-click="addPlageClose()" class="bouton">{{modifPlage == false ? btnAdd : btnModif}}</md-button>
+						<div ng-messages="formPlageFin.dateFieldFin.$error">
+							<div ng-message="valid">Date invalide!</div>
+							<div ng-message="required">Ce renseignement est obligatoire!</div>
+							<div ng-message="mindate">Cette date est trop tôt!</div>
+							<div ng-message="maxdate">Cette date est trop tard!</div>
+						</div>
+					</md-input-container>
+				</form>
+			</div>
+			<input type="text" ng-model="dateDay.title" class="uk-input centrer" style="width: 200px; margin:auto; margin-top: 0px; margin-bottom:10px" placeholder="Nom de la période"> </input>
+			<md-button ng-click="addPlageClose()" class="bouton">{{modifPlage == false ? btnAdd : btnModif}}</md-button>
+		</div>
+	</div>
+</div>
 
-                </div>
-              </div>
+<hr>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Liste des jours et plages de fermeture</h3>
+		<div id="tableDays" ng-click="hidePopovers()" data-title="Consultation jours et périodes" data-container="body" data-toggle="popover" data-placement="top" data-content="Dans ce tableau vous pourrez consulter les jours fériés et les périodes que vous avez configuré" class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Nom</th>
+						<th>Date</th>
+						<th>Début</th>
+						<th>Fin</th>
+						<th>Modifier</th>
+						<th>Supprimer</th>
+					</tr>
+				</thead>
+				<tbody class="centrer">
+					<tr ng-repeat="item in events">
+						<td>Jour</td>
+						<td>{{item.title}}</td>
+						<td>{{item.date}}</td>
+						<td>{{item.dateDebut}}</td>
+						<td>{{item.dateFin}}</td>
+						<td>
+							<md-button aria-label="Button" ng-click="modifierEvent($index)" class="bouton bouton-s poubelleDep">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</md-button>
+						</td>
+						<td>
+							<md-button aria-label="Button" ng-click="supprimerEvent($index)" class="bouton bouton-s poubelleDep">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</md-button>
+						</td>
+					</tr>
+					<tr class="ligne" ng-repeat="item in plagesEvents">
+						<td>Plage</td>
+						<td>{{item.title}}</td>
+						<td>{{item.date}}</td>
+						<td>{{item.dateDebut}}</td>
+						<td>{{item.dateFin}}</td>
+						<td>
+							<md-button aria-label="Button" ng-click="modifierPlageEvent($index)" class="bouton bouton-s poubelleDep">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</md-button>
+						</td>
+						<td>
+							<md-button aria-label="Button" ng-click="supprimerPlageEvent($index)" class="bouton bouton-s poubelleDep">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</md-button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-12">
-                <h3>Liste des jours et plages de fermeture</h3>
-                <div class="table-responsive">          
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Type</th>
-                        <th>Nom</th>
-                        <th>Date</th>
-                        <th>Début</th>
-                        <th>Fin</th>
-                        <th>Modifier</th>
-                        <th>Supprimer</th>
-                      </tr>
-                    </thead>
-                    <tbody class="centrer">
-                      <tr ng-repeat="item in events">
-                        <td>Jour</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.date}}</td>
-                        <td>{{item.dateDebut}}</td>
-                        <td>{{item.dateFin}}</td>
-                        <td>
-                          <md-button aria-label="Button" ng-click="modifierEvent($index)" class="bouton bouton-s poubelleDep">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                          </md-button>
-                        </td>
-                        <td>
-                          <md-button aria-label="Button" ng-click="supprimerEvent($index)" class="bouton bouton-s poubelleDep">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                          </md-button>
-                        </td>
-                      </tr>
-                      <tr class="ligne" ng-repeat="item in plagesEvents">
-                        <td>Plage</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.date}}</td>
-                        <td>{{item.dateDebut}}</td>
-                        <td>{{item.dateFin}}</td>
-                        <td>
-                          <md-button aria-label="Button" ng-click="modifierPlageEvent($index)" class="bouton bouton-s poubelleDep">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                          </md-button>
-                        </td>
-                        <td>
-                          <md-button aria-label="Button" ng-click="supprimerPlageEvent($index)" class="bouton bouton-s poubelleDep">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                          </md-button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+		<hr>
+		<h2 class="centrer">Vue d'ensemble</h2>
 
-            <hr>
-            <h2 class="centrer">Vue d'ensemble</h2>
-            <div class="row">
-              <div class="col-lg-12">
-                <div id="calendari_lateral1"></div>
-                <!--<config-calendar></config-calendar>-->
-               <!-- Calendrier  <mwl-calendar
-                    events="events"
-                    view="calendarView"
-                    view-title="calendarTitle"
-                    view-date="viewDate"
-                    on-event-click="eventClicked(calendarEvent)"
-                    on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-                    cell-is-open="cellIsOpen"
-                    day-view-start="06:00"
-                    day-view-end="23:59"
-                    day-view-split="30"
-                    cell-modifier="modifyCell(calendarCell)"
-                    cell-auto-open-disabled="true"
-                    on-timespan-click="timespanClicked(calendarDate, calendarCell)">
-                  </mwl-calendar> -->  
-            </div>
-          </div>
-    <div class="centrer padding-top">
-     <md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
-     <md-button ng-click="ctrl.saveConfiguration()" class="bouton bouton-l">Terminer</md-button>
-   </div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div ng-click="hidePopovers()" id="calendari_lateral1" data-title="Consultation jours et périodes" data-container="body" data-toggle="popover" data-placement="top" data-content="Dans ce calendrier vous pourrez consulter les jours fériés et les périodes que vous avez configuré"></div>
+				<!--<config-calendar></config-calendar>-->
+			 	<!-- Calendrier  <mwl-calendar
+						events="events"
+						view="calendarView"
+						view-title="calendarTitle"
+						view-date="viewDate"
+						on-event-click="eventClicked(calendarEvent)"
+						on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+						cell-is-open="cellIsOpen"
+						day-view-start="06:00"
+						day-view-end="23:59"
+						day-view-split="30"
+						cell-modifier="modifyCell(calendarCell)"
+						cell-auto-open-disabled="true"
+						on-timespan-click="timespanClicked(calendarDate, calendarCell)">
+					</mwl-calendar> -->
+			</div>
+		</div>
+
+
+<div class="centrer padding-top">
+	<md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
+	<md-button ng-click="ctrl.saveConfiguration()" class="bouton bouton-l">Terminer</md-button>
+</div>

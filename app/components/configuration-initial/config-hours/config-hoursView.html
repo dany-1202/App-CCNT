@@ -1,86 +1,351 @@
-            <!-- Horaires des établissements -->
-            <div class="row">
-               <div class="col-lg-12 padding-bottom">
-                  <h2 class="no-margin-left">Horaires de l'établissement</h1>
-               </div>
-            </div>
-            <div class="row">
-                  <div class="col-md-3"></div>
-                  <div class="col-md-6">
-                     <div class="panel panel-default">
-                        <div class="panel-heading centrer" style="background-color: white"><h3>Nombre d'heures/Semaine</h3></div>
-                        <div class="panel-body">
-                           <div class="centrer">
-                              <input id="nbHours" class="font-size-25 centrer form-control" ng-maxlength="2" type="number" ng-model="$parent.nbHoursChosen" autofocus></input></div>
-                        </div>
-                      </div>
-                  </div>
-               </div>
-            <div class="row">
-               <div class="col-md-12">
-                  <h4 class="margin-bottom-10">Nombre d'heures configurées : <strong>{{nbHours}}</strong></h4>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-lg-12 padding-top">
-                  <div class="centrer table-responsive">
-                     <table class="table flat-table" style="text-align:center">
-                        <tbody>
-                           <tr>
-                              <th></th>
-                              <th ng-repeat="data in hours">{{data.day}}</th>
-                           </tr>
-                           <tr>
-                              <th rowspan="2">Journée</th>
-                              <td ng-repeat="data in hours">
-                                 <md-button id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeJourneeDebut($event, $index)" aria-label="show picker">
-                                    <strong>{{ data.journee.debut | date:'HH:mm' }}</strong>
-                                    <i class="espace-avant fa fa-clock-o"></i>
-                                 </md-button>
-                                 <span class="centrer"></span>
-                              </td>
-                           <tr>
-                              <td ng-repeat="data in hours">
-                                 <md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeJourneeFin($event, $index)" aria-label="show picker">
-                                    <strong>{{ data.journee.fin | date:'HH:mm' }}</strong>
-                                    <i class="espace-avant fa fa-clock-o"></i>
-                                 </md-button>
-                              </td>
-                           </tr>
+<!-- Horaires des établissements -->
+<div class="row no-margin-bottom-16">
+	<div class="col-lg-12">
+		<div class="right no-margin-top-16">
 
-                           <tr class="ligne">
-                              <th rowspan="2">Pause</th>
-                              <td ng-repeat="data in hours">
+			<div class="hours-ccnt centrer">CCNT soumis:
+				<span class="border-ellipse-hours">{{hoursCCNTChosen}} H
+					<i class="espace-avant fa fa-clock-o"></i><br>
+					<button id="choiceCCNT" md-whiteframe="1" data-title="Modifier heures CCNT" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour modifier les heures auquelles votre établissement est soumis CCNT" ng-hide="modifCCNT || modifHours" ng-click="affModif()" class="btn btn-secondary btn-modif">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
+				</span>
+			</div>
 
-                                 <!-- Bouton ajouter pause
-                                 <md-button ng-show="{{!data.pause.existe}}" id="{{data.id}}pause" class="btnS md-raised" ng-click="addPause($index)" aria-label="show picker">
-                                    <strong>Ajouter Pause</strong>
-                                 </md-button> -->
-                                 <md-button id="{{data.id}}pauseDebut" class="btnS md-raised" ng-click="showTimePauseDebut($event, $index)" aria-label="show picker">
-                                    <strong>{{ data.pause.debut | date:'HH:mm' }}</strong>
-                                    <i class="espace-avant fa fa-clock-o"></i>
-                                 </md-button>
-                                 <span class="centrer"></span>
-                              </td>
-                           <tr>
-                              <td ng-repeat="data in hours">
-                                 <md-button id="{{data.id}}pauseFin" class="btnS md-raised" ng-click="showTimePauseFin($event, $index)" aria-label="show picker">
-                                    <strong>{{ data.pause.fin | date:'HH:mm' }}</strong>
-                                    <i class="espace-avant fa fa-clock-o"></i>
-                                 </md-button>
-                              </td>
-                           </tr>   
-                        </tbody>
-                     </table>
-                  </div>
-                  <div class="row">
-                     <div class="col-lg-12 padding-top">
-                        <div class="centrer">
-                           <md-button ng-click="ctrl.previous(1)" class="bouton-prec bouton-l">Précédent</md-button>
-                           <md-button ng-click="validationHours()" class="bouton bouton-l">Suivant</md-button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+			<div class="popovers" ng-show="modifCCNT">
+				<div class="popovers popover-title">Voulez-vous modifier les heures CCNT ?</div>
+				<div class="popovers-content">
+					<div class="centrer">
+						<button class="btn btn-secondary centrer" ng-click="affModifHours()">Oui</button>
+						<button class="btn btn-secondary"  ng-click="modifCCNT = false">Non</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="popovers" ng-show="modifHours">
+				<div class="popovers popover-title">Choisissez les heures CCNT</div>
+				<div class="popovers-content">
+					<div class="centrer">
+						<button class="btn btn-secondary" ng-click="modifHoursCCNT(42)">42</button>
+						<button class="btn btn-secondary" ng-click="modifHoursCCNT(43.5)">43.5</button>
+						<button class="btn btn-secondary" ng-click="modifHoursCCNT(45)">45</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 padding-bottom">
+		<h2 class="no-margin-left">Horaires de base</h2>
+		<div class="alert alert-success" role="alert">
+			<h4 class="alert-heading">Définir les horaires de base</h4>
+			<p>Définissez les horaires de base d'une semaine ou de plusieurs semaines pour votre établissement.</p>
+		</div>
+	</div>
+</div>
+
+<div class="row" ng-show="affChoiceOpenning">
+	<div class="col-lg-12" >
+		<div class="card card-inverse text-center" ng-click="hidePopovers()" id="choiceOpenning" data-title="Question Type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Choisissez si votre établissement est ouvert en continue ou avec des coupures" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
+			<h2 class="card-header">Ouverture de l'établissement</h2><hr>
+
+			<div class="card-block">
+				<!-- Choix entre les deux -->
+				<div ng-hide="choix.id == 1">
+					<h4 class="card-title">Votre établissement est-il ouvert en continue ou avec des coupures ?</h4>
+					<p class="card-text">
+						<button class="btn btn-primary btnCont margin-bottom-xs" ng-click="choiceOpenning(0)"> En Continue
+							<img class="margin-img-left" width="30px" height="30px" src="assets/images/continue.png"/>
+						</button>
+						<button class="btn btn-primary btnCoup margin-bottom-xs" ng-click="choiceOpenning(1)" class="md-raised">Avec Coupures
+							<img class="margin-img-left" width="30px" height="30px" src="assets/images/ciseaux.png">
+						</button>
+					</p>
+				</div>
+
+				<!-- Suite Avec coupures -->
+				<div ng-show="choix.id == 1 && choix.freq.id != 1">
+					<h4 class="card-title">Les coupures sont faites tous les jours ou pour seulement certains jours de la semaine ?</h4>
+					<p class="card-text">
+						<button class="btn btn-primary" ng-click="choiceFrequencyCoup(0)">
+							Tous les jours
+						</button>
+						<button class="btn btn-primary" ng-click="choiceFrequencyCoup(1)" class="md-raised">
+							Certains jours
+						</button>
+					</div>
+				</div>
+
+				<!-- Suite Avec coupures et certains jours -->
+				<div ng-show="choix.id == 1 && choix.freq.id == 1">
+					<h4 class="card-title">Pour quels jours ces coupures ont-elle lieu ?</h4>
+					<p class="card-text">
+						<div class="row" ng-repeat="item in cal.hours">
+							<div class="col-lg-12">
+								<div class="col-lg-5"></div>
+								<div class="col-lg-2">
+									<md-checkbox class="md-primary left" style="margin-left:30px!important" ng-model="item.pause.existe">
+										<span ng-class="{bold: item.pause.existe}"> {{ item.day }} </span>
+									</md-checkbox>
+								</div>
+								<div class="col-lg-4"></div>
+							</div>
+						</div>
+						<button ng-click="endCoupures()" class="uk-button uk-button-primary">Terminer</button>
+					</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Afficher la question de la fin -->
+<div class="row" ng-show="affOtherHours">
+	<div class="col-lg-12">
+		<div class="card card-inverse text-center" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
+			<h2 class="card-header light-grey">Gestion des horaires</h2><hr>
+
+			<div class="w3-container" ng-show="affModifOtherHours"> <!-- ng-show="affModifOtherHours1" -->
+				<h4 class="card-title">
+					 Votre semaine de base est configuré, veuillez insérer le nom que vous donnez à cette horaire et la période pour laquelle cette horaire doit être utilisé.
+				</h4>
+				<hr>
+				<div class="col-lg-3 centrer margin-bottom-xs">
+					<input type="text" ng-blur="isNameValid()" ng-class="{error: cal.errorName}" class="uk-input centrer" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
+					</div>
+				</div>
+
+				<div class="col-lg-6 centrer margin-bottom-xs">
+					Du  <input type="date" ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" class="uk-input centrer margin-bottom-xs " style="width: 150px!important; display:inline!important;">
+					au <input type="date" ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" class="uk-input centrer margin-bottom-xs" style="width: 150px!important; display:inline!important;">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorPeriod">La période saisi n'est pas valide (minimum 1 semaine) </span>
+					</div>
+				</div>
+
+				<button class="btn btn-primary" ng-click="addHoursToTab()">
+					Enregistrer
+				</button>
+			</div>
+
+			<div class="card-block" ng-show="affModifOtherHours1">
+				<h4 class="card-title">Durant l’année aurez-vous d’autres horaires ? </h4><hr>
+				<button class="btn btn-primary" ng-click="showAffModifOtherHours()">
+					Oui
+				</button>
+				<button class="btn btn-primary" ng-click="affOtherHours = false">
+					Non
+				</button>
+			</div>
+
+			<!-- Quand l'utilisateur clique sur oui -->
+			<div class="w3-container" style="min-height:50px!important" ng-show="affModifOtherHours2">
+				<div class="col-lg-3 centrer margin-bottom-xs">
+					<input type="text" class="uk-input centrer" ng-blur="isNameValid()" ng-class="{error: cal.errorName}" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
+					</div>
+				</div>
+				<div class="col-lg-6 centrer margin-bottom-xs">
+					Du  <input type="date" ng-model="cal.period.debut" ng-change="isPeriodValid()" ng-class="{error: cal.errorPeriod}" class="uk-input centrer " style="width: 150px!important; display:inline!important;">
+					au  <input type="date" ng-model="cal.period.fin" ng-change="isPeriodValid()" ng-class="{error: cal.errorPeriod}" class="uk-input centrer" style="width: 150px!important; display:inline!important;">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorPeriod">La période saisi n'est pas valide</span>
+					</div>
+				</div>
+				<button class="btn btn-primary" ng-click="addHour()">
+					Ajouter horaire
+				</button>
+				<div class="col-lg-3"></div>
+				<button class="btn btn-primary" ng-click="closeAddOtherHours()">
+					Finir les horaires
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="row" ng-show="tabCalendars[0].state == 'Complet'">
+	<div class="col-lg-12">
+		<hr>
+		<h2 class="card-header">Vos Horaires <i class="fa fa-calendar" style="margin-left:10px" aria-hidden="true"></i></h2><hr>
+
+		<h3 class="left"></h3>
+
+		<table class="table table-responsive table--listhours">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Période</th>
+					<th>État</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in tabCalendars">
+					<td style="line-height:53px!important">{{item.name}}</td>
+					<td style="line-height:53px!important">{{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</td>
+					<td>
+							<p ng-if="item.state == 'Complet'"><span style="margin-top: 10px!important" class="w3-tag completed w3-round">{{item.state}}</span></p>
+							<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>
+					</td>
+					<td style="line-height:53px!important">
+						<button md-whiteframe="1" class="btn btn-primary" ng-click="changeCal(item, $index)">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="row" ng-show="affCalendar || tabCalendars[0].state == 'Complet'">
+	<div class="col-lg-12">
+		<h3> Ouverture de l'établissement :
+			<span style="color: {{choix.color}}">{{choix.nom}}</span>
+			<button md-whiteframe="1" id="hourModif" data-title="Modifier type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer pour modifier le type d'ouverture de l'établissement" class="btn btn-secondary btn-modif" ng-click="modifChoiceOpenning()">
+				<i class="fa fa-pencil" aria-hidden="true"></i>
+			</button>
+		</h3>
+	</div>
+</div>
+
+<div class="row" ng-show="affCalendar">
+	<div class="col-lg-12">
+		<hr><h3>Horaires: {{cal.name}}</h3>
+	</div>
+</div>
+
+<!-- Affichage En continue -->
+<div ng-show="choix.id == 0">
+	<div class="row" ng-show="affCalendar">
+		<div class="col-lg-12">
+			 <div class="centrer table-responsive">
+				<table md-whiteframe="1" class="table flat-table" style="text-align:center">
+					 <tbody>
+						<tr>
+							 <th class="darkBrown"></th>
+							 <th class="darkBrown" ng-repeat="data in cal.hours track by $index">{{data.day}}</th>
+						</tr>
+						<tr>
+							 <th rowspan="1" class="tableau-darkBrown">Matin
+								<i class="fa fa-sun-o" aria-hidden="true"></i>
+							 </th>
+							 <td ng-repeat="data in cal.hours track by $index" style="background-color: white!important">
+								<md-button data-title="Ajout d'heures" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter vos horaire de la semaine" md-whiteframe="1" id="{{data.id}}debut" class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+									 <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+						<tr class="ligne">
+							 <th class="tableau-darkBrown">Soir
+								<i class="fa fa-moon-o" aria-hidden="true"></i>
+							 </th>
+							 <td ng-repeat="data in cal.hours track by $index" style="background-color: white!important">
+								<md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+							 </td>
+						</tr>
+					 </tbody>
+				</table>
+			 </div>
+		</div>
+	 </div>
+</div>
+
+<!-- Affichage Avec coupures -->
+<div ng-show="choix.id == 1">
+	 <div class="row" ng-show="affCalendar">
+		<div class="col-lg-12">
+			 <div class="centrer table-responsive">
+				<table md-whiteframe="1" class="table flat-table" style="text-align:center">
+					 <tbody>
+						<tr>
+							 <th class="darkBrown"></th>
+							 <th class="darkBrown coup" ng-repeat="data in cal.hours track by $index">{{data.day}} <span ng-if="data.pause.existe" class="color-Coup">*</span></th>
+						</tr>
+						<tr>
+							 <th rowspan="2" class="tableau-darkBrownWithC">Matin
+								<i class="fa fa-sun-o" aria-hidden="true"></i>
+							 </th>
+							 <td ng-repeat="data in cal.hours track by $index" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+								<md-button id="{{data.id}}debutMatin" data-title="Ajout d'heures" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter vos horaires de la semaine"  class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+									 <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+						<tr>
+							 <td ng-if="data.pause.existe" ng-repeat="data in cal.hours track by $index" style="background-color: white!important">
+								<md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+
+						<tr class="ligne">
+							 <th rowspan="2" class="tableau-darkBrownWithC">Soir
+								<i class="fa fa-moon-o" aria-hidden="true"></i>
+							 </th>
+
+							 <td ng-repeat="data in cal.hours track by $index" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+								<md-button ng-if="data.pause.existe"  id="{{data.id}}sDebut" class="btnS md-raised" ng-click="showTimeSoirDebut($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.debut | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+
+								<md-button ng-if="!data.pause.existe" id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+
+						<tr>
+							 <td rowspan="1" ng-repeat="data in cal.hours track by $index" ng-if="data.pause.existe" style="background-color: white!important">
+								<md-button id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+					 </tbody>
+				</table>
+			 </div>
+		</div>
+	 </div>
+</div>
+
+<!-- Affichage de l'information * jours avec coupures -->
+<div class="right" ng-show="choix.id == 1 && affCalendar"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
+
+<!-- Actions de l'étape -->
+<div class="row">
+	 <div class="col-lg-12 padding-top">
+			<div class="centrer">
+				 <md-button ng-click="ctrl.previous(2)" class="bouton-prec bouton-l">Précédent</md-button>
+				 <md-button ng-click="goNextStep()" class="bouton bouton-l">Suivant</md-button>
+			</div>
+	 </div>
+</div>
