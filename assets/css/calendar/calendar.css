@@ -32,6 +32,10 @@
 	background-color: #212121!important;
 }
 
+.bouton-np:hover {
+	color: white!important;
+}
+
 #tabFiltres td {
 	font-size: 18px!important;
 }
@@ -52,12 +56,13 @@
 		margin-top: -20px!important;
 		margin-bottom: 20px!important;
 	}
+	.searchable-container{margin:-20px 0 0 0!important; display:inline!important;}
 }
 
 .searchable-container{margin:20px 0 0 0}
 
 .searchable-container label.btn-default.active{background-color:#007ba7;color:#FFF}
-.searchable-container label.btn-default{width:100%;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
+.searchable-container label.btn-default{width:100%;height: 60px;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
 
 .searchable-container label.btn-default1.active{background-color:#00695c;color:#FFF}
 .searchable-container label.btn-default1{width:100%;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
@@ -84,7 +89,7 @@
 .searchable-container label.btn-default8{width:100%;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
 
 
-.searchable-container label .bizcontent{width:100%;}
+.searchable-container label .bizcontent{width:100%; height: 50px}
 .searchable-container .btn-group{width:90%; margin:5px;}
 .searchable-container .btn span.glyphicon{
     	opacity: 0;
@@ -95,6 +100,10 @@
 
 .searchable-container .btn.active h5 {
     	color:white!important;
+}
+
+.searchable-container label h5 {
+	margin-top: 5px;
 }
 
 .btnGris {
