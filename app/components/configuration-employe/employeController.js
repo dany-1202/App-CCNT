@@ -6,14 +6,20 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 	$scope.user = {};
       $scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');
+  console.log(SessionService.get('user_confEmp'));
+  
+      
       
       var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
       
       $scope.employe = []; //Tableau contenant les employes
+      
+     
 
       $scope.getEmployes = function () {
             var $promise = $http.post('assets/php/getEmployeesAPI.php', data);
             $promise.then(function (message) {
+              console.log(message);
                   var tab = message.data;
                   	for (var i = 0; i < tab.length; i++) {
                   		var person = tab[i];
@@ -41,18 +47,27 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 
       /* Suppression d'un employé (la suppression n'a pas vraiment lieu - le champ per_inactif est mis à 1) */
       $scope.supEmploye = function(index) {
-            	data.id = $scope.employe[index].id;
-            	var nom = $scope.employe[index].nom;
-            // Supprimer de la base de données
-            	var $promise = $http.post('assets/php/supEmployeeAPI.php', data);
-            	$promise.then(function (message) {
-                  	if (message.data) {
-                    	NotifService.success("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " a été supprimé");
-                  	} else {
-                    	NotifService.error("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " n'a pu étre supprimé");
-                  	}
-            	});
-            	$scope.employe.splice(index,1);
+            data.id = $scope.employe[index].id;
+            var nom = $scope.employe[index].nom;
+            UIkit.modal.confirm('<h3>Voulez vous vraiment supprimer <strong>' + nom + "</strong>?</h3>", {center: true}).then(function() {
+                    
+                  // Supprimer de la base de données
+                    var $promise = $http.post('assets/php/supEmployeeAPI.php', data);
+                    $promise.then(function (message) {
+                          if (message.data) {
+                            NotifService.success("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " a été supprimé");
+                          } else {
+                            NotifService.error("Suppression d'employé", "L'employé n°" + data.id + " , " + nom + " n'a pu étre supprimé");
+                          }
+                    });
+                    $scope.employe.splice(index,1);
+                  if ($scope.employe.length == 0) {
+                        SessionService.set('user_confEmp', false);
+                  } else {
+                        SessionService.set('user_confEmp', true);
+                  }
+            }, function () {return;});
+            
       };
 
       $scope.modEmploye = function(id) {

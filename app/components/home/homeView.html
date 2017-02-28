@@ -31,37 +31,19 @@
 				</div>
 			</div>
 			
-			<div id="modal-full" class="uk-modal-full" uk-modal>
-			    	<div class="uk-modal-dialog">
-			        		<button class="uk-modal-close-full" type="button" uk-close></button>
-			        		<div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
-					            	<div class="uk-background-cover" style="background-image: url('assets/images/restaurant.jpg');" uk-height-viewport></div>
-					            	<div class="uk-padding-large">
-					            		<h1>Marche à suivre</h1>
-					                	<p>Cette marche à suivre vous aidera pour savoir créer votre établissement et toutes ses informations.</p>
-					                	
-					                	<button class="uk-button uk-button-default">Continuer</button>
-					            	</div>
-				        	</div>
-			    	</div>
-			</div>
-			
-			
-										<!--  ng-hide="{{user.config}}" -->
-			<div id="configEmp" ng-show="{{user.configuration}}" class="row">
+			<div id="configEmp" ng-hide="{{user.configemp}}"  class="row">
 				<div class="col-lg-12">
 					<div class="jumbotron centrer">
 						<div class="uk-card-badge uk-label">nouveau</div>
 						<h1>Configuration Employés</h1>
-						<p>Vous n'avez toujours pas ajouter d'employés à votre établissement</p>
-						
+						<p>Vous n'avez aucun employé assigné à votre établissement</p>
 						<md-button ng-click="lancerConfigEmp()" class="bouton-grand centrer">Commencer</md-button>
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<!--<div class="row">
 				<div class="col-lg-12"><button class="uk-button uk-button-secondary" ng-click="envoyerMail()">Envoyer mail à Jally</button></div>
-			</div>
+			</div>-->
 
 			<div class="row">
 				<div class="col-lg-4">
@@ -166,13 +148,13 @@
 					                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: cog">
 					            		</div>
 					            		<div class="uk-width-expand">
-					                			<h3 class="uk-card-title uk-margin-remove-bottom">Mon restaurant</h3>
+					                			<h3 class="uk-card-title uk-margin-remove-bottom">Mon établissement</h3>
 				                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
 					            		</div>
 					        		</div>
 					    	</div>
 					    	<div class="uk-card-body">
-					        		<p>Gestion du profil de votre restaurant.</p>
+					        		<p>Gérer le profil de votre établissement, ses informations, etc...</p>
 				  		</div>
 					    	<div class="uk-card-footer">
 					        		<md-card-actions layout="row" layout-align="center">

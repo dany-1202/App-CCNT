@@ -112,21 +112,20 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			\*****************************************************************************************/
 
 			$scope.toggle = function (item, list) {
-		        var idx = list.indexOf(item);
-		        var pos = $scope.cal.hours.indexOf(item);
-		        if (idx > -1) {
-		          list.splice(idx, 1);
-		          $scope.cal.hours[pos].pause.existe = false;
-		        }
-		        else {
-		          list.push(item);
-		          $scope.cal.hours[pos].pause.existe = true;
-		        }
-		    };
+			        	var idx = list.indexOf(item);
+			        	var pos = $scope.cal.hours.indexOf(item);
+			        	if (idx > -1) {
+				          	list.splice(idx, 1);
+				          	$scope.cal.hours[pos].pause.existe = false;
+		        		} else {
+				          	list.push(item);
+				          	$scope.cal.hours[pos].pause.existe = true;
+		       		}
+		    	};
 
 			$scope.exists = function (item, list) {
-		        return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
-	      	};
+			        	return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
+		      	};
 
 	      	/*///////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -181,12 +180,12 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 			$scope.closeAddOtherHours = function () {
 				if (isCurrentInfoCalCorrect()) {
-	    			$scope.affOtherHours = false;
+	    				$scope.affOtherHours = false;
 					$scope.affModifOtherHours1 = false;
 					$scope.affModifOtherHours2 = false;
-	    		} else {
-	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
-	    		}
+		    		} else {
+		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+		    		}
 			}
 
 			$scope.showAffModifOtherHours = function () {
@@ -195,7 +194,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				$scope.affModifOtherHours2 = true;
 				$scope.affCalendar = false;
 				var pos = $scope.tabCalendars.length;
-	    			$scope.tabCalendars.push({name: "Nouveau horaire", period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
+	    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
 	    			$scope.cal = $scope.tabCalendars[pos];
 			}
 
@@ -300,41 +299,40 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 			/* Controleur de la modale */
 			function DialogController($scope, $mdDialog) {
-			  	$scope.days = [
-			  					//{day: 'Tous les jours', chosen : false},
-	  					{day: 'Lundi', chosen : false},
-			                    {day: 'Mardi', chosen : false},
-			                    {day: 'Mercredi', chosen : false},
-			                    {day: 'Jeudi', chosen : false},
-			                    {day: 'Vendredi', chosen : false},
-			                    {day: 'Samedi', chosen : false},
-			                    {day: 'Dimanche', chosen : false}
+			  	$scope.days = [ //{day: 'Tous les jours', chosen : false},
+					{day: 'Lundi', chosen : false},
+			                    	{day: 'Mardi', chosen : false},
+			                    	{day: 'Mercredi', chosen : false},
+			                    	{day: 'Jeudi', chosen : false},
+			                    	{day: 'Vendredi', chosen : false},
+			                   	{day: 'Samedi', chosen : false},
+			                    	{day: 'Dimanche', chosen : false}
 				];
 
-			    $scope.hide = function() {
-			      $mdDialog.hide();
-			    };
+			    	$scope.hide = function() {
+			      		$mdDialog.hide();
+			    	};
 
-			    $scope.cancel = function() {
-			      $mdDialog.cancel();
-			    };
+			    	$scope.cancel = function() {
+			      		$mdDialog.cancel();
+			    	};
 
-			    $scope.answer = function() {
-			    	$mdDialog.hide($scope.days);
-			    }
+			    	$scope.answer = function() {
+			    		$mdDialog.hide($scope.days);
+			    	}
 			};
 
 			var fillTimeDays = function (days, objHour) {
 				for (var i = days.length - 1; i >= 0; i--) {
-		     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
-		     			$scope.cal.hours[i].matin.debut = objHour.matin.debut;
-		     			$scope.cal.hours[i].soir.fin = objHour.soir.fin;
-		     			if (objHour.pause.existe) {
-		     				$scope.cal.hours[i].matin.fin = objHour.matin.fin;
-		     				$scope.cal.hours[i].soir.debut = objHour.soir.debut;
-		     			}
-		     		}
-		     	};
+			     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
+			     			$scope.cal.hours[i].matin.debut = objHour.matin.debut;
+			     			$scope.cal.hours[i].soir.fin = objHour.soir.fin;
+			     			if (objHour.pause.existe) {
+			     				$scope.cal.hours[i].matin.fin = objHour.matin.fin;
+			     				$scope.cal.hours[i].soir.debut = objHour.soir.debut;
+			     			}
+			     		}
+		     		};
 			}
 
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
@@ -374,8 +372,10 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 						objHour.matin.debut = Const.OPEN;
 						objHour.matin.fin = Const.END;
 					} else {
-				 		selectedDate = moment(DateFactory.getToday()).add(selectedDate.getHours(), 'hours').add(selectedDate.getMinutes(), 'minutes').toDate();
-						objHour.matin.debut = selectedDate; // Changement de l'heure à jour
+						if (DateFactory.isHourStartValid(selectedDate, index, $scope.cal.hours)) {
+							selectedDate = moment(DateFactory.getToday()).add(selectedDate.getHours(), 'hours').add(selectedDate.getMinutes(), 'minutes').toDate();
+							objHour.matin.debut = selectedDate; // Changement de l'heure à jour
+						} 
 					}
 					showDivOtherHours();
 			 	});
@@ -595,7 +595,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    		var dateDebut = $scope.cal.period.debut;
 	    		var dateFin = $scope.cal.period.fin;
 	    		if (dateDebut == "" || dateFin == "" || DateFactory.isPeriodValid(dateDebut, dateFin) || DateFactory.calculateNbDays(dateDebut, dateFin).day < 7) {
-					$scope.cal.errorPeriod = true;
+				$scope.cal.errorPeriod = true;
 	    		}
 	    	}
 

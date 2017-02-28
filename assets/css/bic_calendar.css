@@ -18,9 +18,6 @@
 .bic_calendar td div{
     padding: 5px;
 }
-.bic_calendar td {
-    background-color: red;
-}
 
 .bic_calendar .header{
     padding: 10px 0 10px 0;
@@ -65,16 +62,22 @@
 .bic_calendar .event{
     color: #795548;
     background: #d7ccc8;
-
-  /*  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); */
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); 
     font-weight: bold;
 }
-.bic_calendar .event:hover{
+
+.bic_calendar .event a{
+   background-color: transparent!important;
+   border:none!important;
+   color:white!important;
+}
+
+.bic_calendar .event a:hover{
     color: #795548;
     background: #3B5A97;
-  /*  box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.8); */
+    box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.8); 
     font-weight: bold;
 }
 .bic_calendar .event a{
@@ -118,6 +121,7 @@
 .bic_calendar .popover{
     color: black;
     text-shadow: none;
+    width: 100px;
 }
 .bic_calendar .popover-content{
     font-weight: 300;
@@ -125,7 +129,7 @@
 .bic_calendar .monthDisplayed{
     margin: 5px;
     margin-top: 25px;
-    /*border: 1px #ddd solid;*/
+    border: 1px #ddd solid;
     border-radius: 10px;
 }
 .bic_calendar .monthDisplayed .month{
