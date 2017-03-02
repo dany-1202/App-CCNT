@@ -44,9 +44,10 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	
 	$scope.envoyerMail = function () {
 		console.log('ici');
-		var $promise = $http.post('assets/php/sendEmailAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), 'email' : 'vincent.jalley@hotmail.com'});
+		var $promise = $http.post('assets/php/sendEmailAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), 'email' : 'vincent.jalley@gmail.com'});
 	
 		$promise.then(function (message) {
+			console.log(message);
 			console.log(message.data);
 		});
 	}

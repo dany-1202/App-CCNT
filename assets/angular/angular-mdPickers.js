@@ -584,14 +584,14 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
 function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 	var self = this;
-    this.VIEW_HOURS = 1;
-    this.VIEW_MINUTES = 2;
-    this.currentView = this.VIEW_HOURS;
-    this.time = moment(time);
-    this.autoSwitch = !!autoSwitch;
-    
-    this.clockHours = parseInt(this.time.format("h"));
-    this.clockMinutes = parseInt(this.time.minutes());
+            this.VIEW_HOURS = 1;
+            this.VIEW_MINUTES = 2;
+            this.currentView = this.VIEW_HOURS;
+            this.time = moment(time);
+            this.autoSwitch = !!autoSwitch;
+            
+            this.clockHours = parseInt(this.time.format("h"));
+            this.clockMinutes = parseInt(this.time.minutes());
     
 	$scope.$mdMedia = $mdMedia;
 	
@@ -600,8 +600,8 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 	};
     
 	this.setAM = function() {
-        if(self.time.hours() >= 12)
-            self.time.hour(self.time.hour() - 12);
+            if(self.time.hours() >= 12)
+                self.time.hour(self.time.hour() - 12);
 	};
     
     this.setPM = function() {
@@ -672,7 +672,6 @@ function ClockCtrl($scope) {
     
     this.setTime = function(time, type) {
         this.selected = time;
-        
         switch(self.type) {
             case TYPE_HOURS:
                 if(self.time.format("A") == "PM") time += 12;
@@ -693,6 +692,7 @@ function ClockCtrl($scope) {
                 for(var i = 1; i <= 12; i++)
                     self.steps.push(i);
                 self.selected = self.time.hours() || 0;
+
                 if(self.selected > 12) self.selected -= 12;
                     
                 break;
@@ -778,7 +778,6 @@ module.provider("$mdpTimePicker", function() {
         var timePicker = function(time, options) {
             if(!angular.isDate(time)) time = Date.now();
             if (!angular.isObject(options)) options = {};
-    
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', '$mdMedia', TimePickerCtrl],
                 controllerAs: 'timepicker',
