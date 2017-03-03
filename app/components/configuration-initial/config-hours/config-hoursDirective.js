@@ -334,7 +334,6 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			     			}
 			     		}
 		     		};
-		     		console.log($scope.cal.hours);
 			}
 
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
@@ -365,6 +364,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			$scope.showTimeMatinDebut = function(ev, index) {
 				$timeout(hide, 1);
 				var objHour = $scope.cal.hours[index];
+				
 				var date = objHour.matin.debut == Const.OPEN ? moment(angular.copy($scope.matinDebut)).add(index, 'days').toDate() : objHour.matin.debut;
 				
 			 	$mdpTimePicker(date, {
@@ -392,14 +392,17 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			/* Affiche le timePicker pour fermeture du Matin (Affiché seulement si existe une coupure = pause) */
 			$scope.showTimeMatinFin = function(ev, index) {
 				var objHour = $scope.cal.hours[index];
-
+				
+				var date = objHour.matin.fin == Const.END ? moment(angular.copy($scope.matinFin)).add(index, 'days').toDate() : objHour.matin.fin;
+				console.log(date);
+				
 				if (objHour.matin.debut == Const.OPEN) {
 					console.log(objHour);
 					NotifService.error("Heure d'ouverture non configuré", "L'heure d'ouverture doit être indiqué avant !");
 					return;
 				}// Rediriger sur date début
 
-			 	$mdpTimePicker(objHour.matin.fin == Const.END ? DateFactory.matinFin: objHour.matin.fin, {
+			 	$mdpTimePicker(date, {
 			 		targetEvent: ev,
 			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
@@ -437,8 +440,16 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			/* Affiche le timePicker pour la date de début du soir */
 			$scope.showTimeSoirDebut = function(ev, index) {
 				var objHour = $scope.cal.hours[index];
-
-			 	$mdpTimePicker(objHour.soir.debut == Const.OPEN ? DateFactory.soirDebut: objHour.soir.debut, {
+				var date = objHour.soir.debut == Const.OPEN ? moment(angular.copy(DateFactory.soirDebut)).add(index, 'days').toDate() : objHour.soir.debut;
+				console.log(date);
+				
+				if (objHour.matin.fin == Const.END) {
+					console.log(objHour);
+					NotifService.error("Heure d'ouverture non configuré", "L'heure d'ouverture doit être indiqué avant !");
+					return;
+				}// Rediriger sur date début
+				
+			 	$mdpTimePicker(date, {
 			 		targetEvent: ev,
 			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
@@ -446,9 +457,44 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 						objHour.soir.debut = Const.OPEN;
 						objHour.soir.fin = Const.END;
 					} else {
-						selectedDate = moment(DateFactory.getToday()).add(selectedDate.getHours(), 'hours').add(selectedDate.getMinutes(), 'minutes').toDate();
-						selectedDate = new Date(selectedDate);
 						
+						if (objHour.soir.fin != Const.END && !DateFactory.validateHour(selectedDate, objHour.soir.fin)) {
+							/* Date invalide */
+			 				NotifService.error("Horaire invalide", "L'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> du soir doit être avant la date de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.soir.fin) + "</span> du soir !");
+			 				return;
+						}
+						
+				 		var nbHours = DateFactory.calculateNbHours(objHour.matin.fin, selectedDate);
+
+				 		if (nbHours >= 24) { // Si la date dépasse 24 heures
+				 			var nbJours = Math.round(nbHours/24); // Virer les jours si il en a plus que ce qu'il doit
+				 			selectedDate = moment(selectedDate).subtract(nbJours, 'days').toDate();
+				 		}
+
+				 		if (selectedDate.getDate() != objHour.matin.debut.getDate()) { // Si c'est le jour suivant
+				 			selectedDate = selectedDate.setDate(objHour.matin.debut.getDate());
+				 			selectedDate = new Date(selectedDate);		 		
+				 		}
+				 		
+				 		/* Cas spécial si je veux choisir minuit ou autre avant l'heure du matin*/
+				 		if (selectedDate.getHours() >= 0 && selectedDate.getHours() < objHour.matin.debut.getHours()) {
+				 			var objSuiv = DateFactory.getDaySuiv(index, $scope.cal.hours);
+				 			
+				 			if (objSuiv.matin.debut != Const.OPEN) {
+				 				if (selectedDate.getHours() >= objSuiv.matin.debut.getHours()) {
+				 					if (selectedDate.getHours() == objSuiv.matin.debut.getHours()) {
+				 						/* Comparaison des minutes */
+				 						if (selectedDate.getMinutes() >= objSuiv.matin.debut.getMinutes()) {
+				 							NotifService.error("Date invalide", "L'heure d'ouverture du soir doit être après la date de fermeture du matin !");
+			 								return;
+				 						}
+				 					}
+				 				}
+				 			}
+				 			selectedDate = moment(selectedDate).add(1, 'days').toDate();
+			 				selectedDate = new Date(selectedDate);	
+				 		}
+				 		
 						/****************************************************************************\
 							Contrôler si la date est supérieur à matin fin ! Sinon on la rejette 
 						\****************************************************************************/
@@ -501,6 +547,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 				 			var nbJours = Math.round(nbHours/24); // Virer les jours si il en a plus que ce qu'il doit
 				 			selectedDate = moment(selectedDate).subtract(nbJours, 'days').toDate();
 				 		} else {
+				 			
 				 			if (selectedDate.getHours() >= 0 && selectedDate.getHours() <= objHour.matin.debut.getHours()) { // Si c'est le jour suivant
 				 				if (selectedDate.getHours() == objHour.matin.debut.getHours()) { // Si même heure
 				 					if (selectedDate.getMinutes() > objHour.matin.debut.getMinutes()) { // Comparer les minutes
@@ -532,6 +579,11 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 								selectedDate = new Date(selectedDate); 
 			 				}
 				 		}
+				 		
+				 		if (objHour.soir.debut != Const.OPEN && !DateFactory.validateHour(objHour.soir.debut, selectedDate)) {
+				 			NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour le soir doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.soir.debut) + "</span> du soir !"); 
+			 				return;
+				 		}
 				 						 		
 				 		/****************************************************************************\
 							Contrôler si la date est supérieur à matin fin ! Sinon on la rejette 
@@ -561,10 +613,11 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 			\*****************************************************************************************/
 
 			var isAllInfoCalCorrect = function () {
+				var nb = 0;
 				for (var i = 0; i < $scope.tabCalendars.length; i++) {
-					if ($scope.tabCalendars[i].state==Const.INCOMP || $scope.tabCalendars[i].errorName || $scope.tabCalendars[i].errorPeriod ) {return false;}
+					if ($scope.tabCalendars[i].state==Const.INCOMP || $scope.tabCalendars[i].errorName || $scope.tabCalendars[i].errorPeriod ) {nb++;}
 				}
-				return true;
+				return nb;
 			}
 
 
@@ -581,17 +634,15 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 
 
 	    	var isCurrentInfoCalCorrect = function () {
-	    		if ($scope.cal.errorName == true) {
-	    			if ($scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
-	    				return false
-	    			}
+	    		if ($scope.cal.errorName == true || $scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
+    				return false
 	    		}
 	    		return true; // Vérification à faire des infos champs nom pas vide et période pas vide et celle fin doit être plus grande que celle de début
 	    	}
 
 	    	/*///////////////////////////////////////////////////////////////////////////////////////*/
 
-
+    		
 	    	$scope.changeCal = function (item, index) {
 	    		$scope.cal = $scope.tabCalendars[index];
 	    		$scope.affCalendar = true;
@@ -601,7 +652,7 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    	$scope.addHour = function () {
 	    		if (isCurrentInfoCalCorrect()) {
 	    			var pos = $scope.tabCalendars.length;
-	    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
+	    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true});
 	    			$scope.cal = $scope.tabCalendars[pos];
 	    		} else {
 	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
@@ -620,13 +671,15 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    		}
 	    		
 	    	}
+	    	
 
 	    	$scope.goNextStep = function () {
 	    		$timeout(hide, 1);
-	    		if (isAllInfoCalCorrect()) {
+	    		var nb = isAllInfoCalCorrect();
+	    		if (nb == 0) {
 	    			$timeout($scope.ctrl.next(4), 2);
 	    		} else {
-	    			NotifService.error('Configuration Non Terminé', 'Il vous reste encore des calendrier à configurer');
+	    			NotifService.error('Configuration Non Terminé', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
 	    		}
 	    	}
 
@@ -634,18 +687,29 @@ ctrlCCNT.directive('configHours', function($mdpTimePicker, NotifService, $mdDial
 	    		$scope.cal.errorName = false;
 	    		if ($scope.cal.name == "" || angular.isUndefined($scope.cal.name)) {
 	    			$scope.cal.errorName = true;
+	    		} else {
+	    			var nb = 0;
+	    			for (var i = 0; i < $scope.tabCalendars.length; i++) {
+	    				if ($scope.tabCalendars[i].name == $scope.cal.name) {
+	    					nb++;
+	    					if (nb > 1) {
+				    			$scope.cal.errorName = true;
+				    			NotifService.error('Nom période existant', "Le nom : <span class='uk-label uk-label-default'>" + $scope.cal.name+ "</span> existe déjà !");
+				    			return;
+	    					}
+	    				}
+	    			}
 	    		}
 	    	}
 	    	
 	    	var findOtherPeriods = function (dateDebut, dateFin) {
-	    		console.log('oui');
 	    		for (var i = 1; i < $scope.tabCalendars.length; i++) {
 	    			var per = $scope.tabCalendars[i].period;
-	    			console.log(per);
-	    			console.log(moment(per.debut).isBetween(moment(dateDebut), moment(dateFin), 'days', true));
-	    			console.log(moment(per.fin).isBetween(moment(dateDebut), moment(dateFin), 'days', true));
-	    			if (moment(per.debut).isBetween(moment(dateDebut), moment(dateFin), 'days', true) || moment(per.fin).isBetween(moment(dateDebut), moment(dateFin), 'days', true)) {
-	    				return true;
+	    			if ($scope.tabCalendars[i].id != $scope.cal.id)  {
+		    			if ((dateDebut >= per.debut && dateDebut <= per.fin) || (dateFin >= per.debut && dateFin <= per.fin)) {
+		    				NotifService.error('Période déjà couverte', "La période choisi : <span class='uk-label uk-label-default'>" + moment($scope.cal.period.debut).format('D/MM/YYYY') + "</span> au <span class='uk-label uk-label-default'>" + moment($scope.cal.period.fin).format('D/MM/YYYY') + "</span> est déjà couverte par une autre période!");
+		    				return true;
+		    			}
 	    			}
 	    		}
 	    		return false;
