@@ -1,0 +1,66 @@
+<div cal-validator>
+	 <div class="row">
+		<div class="col-lg-12">
+			 <div class="centrer table-responsive">
+				<table md-whiteframe="1" class="table flat-table" style="text-align:center">
+					 <tbody>
+						<tr>
+						 	<th class="darkBrown"></th>
+						 	<th class="darkBrown coup" ng-repeat="data in cal.hours track by $index">{{data.day}} <span ng-if="data.pause.existe" class="color-Coup">*</span></th>
+						</tr>
+						<tr>
+							 <th rowspan="2" class="tableau-darkBrownWithC">Matin
+								<i class="fa fa-sun-o" aria-hidden="true"></i>
+							 </th>
+							 <td ng-repeat="data in cal.hours track by $index" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+								<md-button id="{{data.id}}debutMatin" data-title="Ajout d'heures" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter vos horaires de la semaine"  class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+									 <strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+						<tr>
+							 <td ng-if="data.pause.existe" ng-repeat="data in cal.hours track by $index" style="background-color: white!important">
+								<md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+
+						<tr class="ligne">
+							 <th rowspan="2" class="tableau-darkBrownWithC">Soir
+								<i class="fa fa-moon-o" aria-hidden="true"></i>
+							 </th>
+
+							 <td ng-repeat="data in cal.hours track by $index" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+								<md-button ng-if="data.pause.existe"  id="{{data.id}}sDebut" class="btnS md-raised" ng-click="showTimeSoirDebut($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.debut | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+
+								<md-button ng-if="!data.pause.existe" id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+
+						<tr>
+							 <td rowspan="1" ng-repeat="data in cal.hours track by $index" ng-if="data.pause.existe" style="background-color: white!important">
+								<md-button id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+									 <strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<span class="centrer"></span>
+							 </td>
+						</tr>
+					 </tbody>
+				</table>
+			 </div>
+		</div>
+	 </div>
+</div>
