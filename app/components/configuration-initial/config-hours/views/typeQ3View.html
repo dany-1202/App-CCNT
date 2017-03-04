@@ -1,0 +1,18 @@
+<!-- Suite Avec coupures et certains jours -->
+<div>
+	<h4 class="card-title">Pour quels jours ces coupures ont-elle lieu ?</h4>
+	<p class="card-text">
+		<div class="row" ng-repeat="item in cal.hours">
+			<div class="col-lg-12">
+				<div class="col-lg-5"></div>
+				<div class="col-lg-2">
+					<md-checkbox class="md-primary left" style="margin-left:30px!important" ng-model="item.pause.existe">
+						<span ng-class="{bold: item.pause.existe}"> {{ item.day }} </span>
+					</md-checkbox>
+				</div>
+				<div class="col-lg-4"></div>
+			</div>
+		</div>
+		<button ng-click="endCoupures()" class="uk-button uk-button-primary">Terminer</button>
+	</p>
+</div>
