@@ -155,11 +155,12 @@
 					</div>
 				</div>
 				<div class="col-lg-6 centrer margin-bottom-xs">
-					Du   <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de début"></md-datepicker>
-					au <md-datepicker ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de fin">
 					<div class="centrer">
 						<span class="red errorDep" ng-show="cal.errorPeriod">La période saisi n'est pas valide (minimum 1 semaine)</span>
 					</div>
+					Du   <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de début"></md-datepicker>
+					au <md-datepicker ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de fin">
+					
 				</div>
 				<button class="btn btn-primary" ng-click="addHour()">
 					Ajouter horaire
@@ -195,7 +196,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="item in tabCalendars">
-					<td style="line-height:53px!important">{{item.name}}</td>
+					<td style="line-height:53px!important">{{item.name}} <div  ng-if="item.errorName" style="width: 10px;height: 10px;border-radius:10px; display:inline-block;line-height:53px!important; background-color: red"></div></td>
 					<td style="line-height:53px!important">
 						<span ng-if="$index == 0" >Tous les jours</span>
 						<span ng-if="$index > 0"> {{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</span>

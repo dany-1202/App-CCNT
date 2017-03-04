@@ -58,7 +58,7 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		return angular.copy(state.hours);
 	}
 
-	state.tabCalendars = [{name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet", errorName: false, errorPeriod:true}];
+	state.tabCalendars = [{id: 0, name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet", errorName: false, errorPeriod:true}];
 
 	state.changeChoix = function (idChoix) {
 		state.choix = idChoix == 0 ? {id: idChoix, nom:"En Continue", color: "#27ae60"} : {id: idChoix, nom:"Avec Coupures", color: "#428bca"};
