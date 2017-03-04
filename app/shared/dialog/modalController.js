@@ -5,7 +5,7 @@
 **/
 var dialog= angular.module('ctrlCCNT');
 
-dialog.controller('DeconnexionCtrl',function($scope, $mdDialog, NotifService, $location, AuthenticationService) {
+dialog.controller('modalController',function($scope, $mdDialog, NotifService, $location, AuthenticationService) {
     	$scope.status = '  ';
     	$scope.customFullscreen = false; // Prend tout l'écran : non
 
