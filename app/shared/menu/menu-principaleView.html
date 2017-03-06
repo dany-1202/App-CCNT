@@ -125,7 +125,7 @@
 			</ul>
 		</li>
 		
-		<li ng-controller="DeconnexionCtrl">
+		<li ng-controller="modalController">
 			<a ng-click="showConfirm($event)" class="pointeur blanc"> 
 				<i class="fa fa-power-off fa-lg"></i> <span class="hide-top-navDeco">Déconnexion</span>
 				<md-tooltip class="showTooltip-3">Déconnexion</md-tooltip>
@@ -142,7 +142,7 @@
 			<li ng-class="{active: $route.current.activetab == 'emp'}" ng-show="{{user.configuration}}">
 				<a href="#!/employe"><i class="fa fa-fw fa-user"></i> Gestion employés</a>
 			</li>
-			<li ng-class="{active: $route.current.activetab == 'planning'}">
+			<li ng-class="{active: $route.current.activetab == 'planning'}" ng-show="{{user.configemp && user.configuration}}">
 				<a href="" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-calendar"></i> Planning
 				<i class="fa fa-fw fa-caret-down"></i></a>
 				<ul id="demo" class="collapse">

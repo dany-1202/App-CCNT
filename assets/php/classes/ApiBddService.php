@@ -5,6 +5,8 @@ class ApiBddService{
 	// Email de nouveau mot de passe:
 	private static $newPass_subject = 'Nouveau mot de passe';
 	private static $newPass_message = '<span style="font-family:arial; font-size:14px">Bonjour,<br/><br />Voici votre nouveau mot de passe : <span style="font-weight:bold; color:#009BC1;">$newPassword</span><br/>Une fois que vous serez connecter, merci de changer de mot de passe depuis la page "Profil" .<br/><br/><br/> Meilleures salutations, <br/><br />Emply</span>';	
+	// Always set content-type when sending HTML email
+	private static $headers = "MIME-Version: 1.0" . "\r\n" .  'From: <joel.10joel.10@gmail.com>' . "\r\n" .  'Content-Type: text/html;charset=utf-8';
 	
 	//-----------------------------------------------------------------------------------------------------------------
 	//------------------------------------------- LOGIN ET LOGOUT -----------------------------------------------------
@@ -37,7 +39,7 @@ class ApiBddService{
 						MySQLManager::close();
 						$res = true;
 					}
-			  }
+			  	}
 			} 
 			MySQLManager::close();
 		}
@@ -45,6 +47,8 @@ class ApiBddService{
 	}//logoutUser
 	
 	public static function forgottenUserPassword($email) {
+		// More headers
+
 		$db = MySQLManager::get();
 		if ($stmt = $db->prepare("SELECT per_id FROM ccn_personne WHERE per_mail = ?")) {
 			$stmt->bind_param('s', $email);
@@ -52,20 +56,26 @@ class ApiBddService{
 			$stmt->store_result();
 			$stmt->bind_result($user_id);
 			$stmt->fetch();
+			
 			if ($stmt->affected_rows == 1) { // Si l'email de cette personne existe :
+				
 				// On créer une nouveau mot de passe à 6 caractères avec Rand()
 				$newPassword =  rand (100000 ,999999);			
 				// On enregsitre le nouveau mot de passe dans le BDD
-				$passwordCrypt = hash('sha512', $newPassword);			
-				$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_id = ?"; // On enregistre le nouveau password			
+				
+				$passwordCrypt = hash('sha512', $newPassword);
+				
+				$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_id = ?"; // On enregistre le nouveau password
+				
 				if ($stmt = $db->prepare($query)) {
+					
 					$stmt->bind_param('si', $passwordCrypt, $user_id);
 					$stmt->execute();
 					if ($stmt->affected_rows > -1) {
 						MySQLManager::close();
 						// En envois un mail à la personne pour lui donner son nouveau mot de passe
 						$message = str_replace('$newPassword', $newPassword, self::$newPass_message);
-						mail($email, self::$newPass_subject, $message, "Content-Type: text/html;charset=utf-8");	
+						mail($email, self::$newPass_subject, $message, self::$headers);	
 						return  true;
 				  	} 
 				} 
@@ -219,7 +229,7 @@ class ApiBddService{
 						if ($stmt->affected_rows > -1) {
 							MySQLManager::close();
 							$res = true;
-					  } 
+					  	} 
 					} 
 				} 
 			} 

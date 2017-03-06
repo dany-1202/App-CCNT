@@ -7,11 +7,11 @@ appCal.config(['calendarConfig', function(calendarConfig) {
 }]);
 
 /* 
-* Contrôleur de l'application - CalendarCtrl
+* Contrôleur de l'application - calendarController
 * Paramètres : $scope, moment (pour les dates), alert (pour les fenêres modales), calendarConfig (Objet du calendrier), $http (Requêtes HTTP)
 * Gère le calendrier
 */
-appCal.controller('CalendarCtrl', function($timeout, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService) {
+appCal.controller('calendarController', function($timeout, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService) {
 
 	var vm = this; // Je prend la référence de moi-même et je la stocke
 	console.log($scope);

@@ -1,0 +1,30 @@
+<div ng-show="choix.id == 1 && choix.freq.id != 1">
+	<h4 class="card-title">Les coupures sont faites tous les jours ou pour seulement certains jours de la semaine ?</h4>
+	<p class="card-text">
+		<button class="btn btn-primary" ng-click="choiceFrequencyCoup(0)">
+			Tous les jours
+		</button>
+		<button class="btn btn-primary" ng-click="choiceFrequencyCoup(1)" class="md-raised">
+			Certains jours
+		</button>
+	</div>
+</div>
+
+<!-- Suite Avec coupures et certains jours -->
+<div ng-show="choix.id == 1 && choix.freq.id == 1">
+	<h4 class="card-title">Pour quels jours ces coupures ont-elle lieu ?</h4>
+	<p class="card-text">
+		<div class="row" ng-repeat="item in cal.hours">
+			<div class="col-lg-12">
+				<div class="col-lg-5"></div>
+				<div class="col-lg-2">
+					<md-checkbox class="md-primary left" style="margin-left:30px!important" ng-model="item.pause.existe">
+						<span ng-class="{bold: item.pause.existe}"> {{ item.day }} </span>
+					</md-checkbox>
+				</div>
+				<div class="col-lg-4"></div>
+			</div>
+		</div>
+		<button ng-click="endCoupures()" class="uk-button uk-button-primary">Terminer</button>
+	</p>
+</div>
