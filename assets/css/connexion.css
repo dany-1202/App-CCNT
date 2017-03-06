@@ -10,7 +10,7 @@ Description : Feuille de style pour la page connexion.html;
 	width: 100%!important;
 	margin : auto 0!important;
 	font-family: 'Roboto', sans-serif!important;
-	background-image: url('../img/fondecranconnexion.jpg')!important;
+	background-image: url('../images/fondecranconnexion.jpg')!important;
 }
 
 .conteneurConnexion {

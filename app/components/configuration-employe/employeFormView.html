@@ -1,124 +1,188 @@
-  <div ng-controller="employeFormController" id="wrapper" class="back-app">
-      <ng-menu></ng-menu>
-      <div id="page-wrapper" class="padding-top-50">
-          <div class="container-fluid">
-            <!-- Page Heading -->
-              <h2>Formulaire d'édition d'un employé</h2>
-              <hr>
-              <h3>Informations personnelles</h3>
-                <div class="row margin-bottom-10">
-                      <div style="line-height: 30px!important" id="errNom" class="col-lg-2">Nom : </div>
-                      <div class="col-lg-2"><input ng-blur="validationNom()" class="form-control" ng-class="{'error': validations[0].valide == false, 'correct': validations[0].valide}" ng-model="myEmp.nom" type="text" autofocus></input></div>
-                      <div class="col-lg-4" ng-hide="validations[0].valide">
-                        <span style="color:red" style="width: 150px!important">Le nom doit contenir au moins 2 lettres</span>
-                      </div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Prénom : </div>
-                      <div class="col-lg-2"><input ng-blur="validationPrenom()" class="form-control" ng-class="{'error': validations[1].valide == false, 'correct': validations[1].valide}" ng-model="myEmp.prenom" type="text" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[1].valide"><span style="color:red">Le prénom doit contenir au moins 2 lettres</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Genre : </div>
-                      <div class="col-lg-4">
-                      <md-radio-group ng-model="selectedGenre">
-                        <md-radio-button ng-repeat="genre in genres" flex ng-value="genre.id" class="md-primary">
-                          {{genre.name}}
-                        </md-radio-button>
-                      </div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Date de naissance : </div>
-                      <div class="col-lg-2"><input ng-blur="validationDateNaissance()" class="form-control" ng-class="{'error': validations[12].valide == false, 'correct': validations[12].valide}" ng-model="myEmp.dateNaissance" type="date" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[12].valide"><span style="color:red">La date de naissance n'est pas valide</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Adresse : </div>
-                      <div class="col-lg-2"><input ng-blur="validationAdresse()" class="form-control" ng-class="{'error': validations[2].valide == false, 'correct': validations[2].valide}" ng-model="myEmp.adresse" type="text" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[2].valide"><span style="color:red">L'adresse saisie n'est pas correcte</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Adresse supplémentaire : </div>
-                      <div class="col-lg-2">
-                      <input class="form-control" ng-model="myEmp.adresseSup" type="text" ></input>
-                      </div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Code Postal : </div>
-                      <div class="col-lg-2"><input ng-blur="validationCodePost()" class="form-control" ng-class="{'error': validations[3].valide == false, 'correct': validations[3].valide}" ng-model="myEmp.code" type="number" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[3].valide"><span style="color:red">Le code postal saisi n'est pas correct</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Localité : </div>
-                      <div class="col-lg-2"><input ng-blur="validationLocalite()" class="form-control" ng-class="{'error': validations[4].valide == false, 'correct': validations[4].valide}" ng-model="myEmp.localite" type="text" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[4].valide"><span style="color:red">La localité saisie n'est pas correcte</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Email : </div>
-                      <div class="col-lg-2"><input ng-blur="validationEmail()" class="form-control" ng-class="{'error': validations[5].valide == false, 'correct': validations[5].valide}" ng-model="myEmp.mail" type="text" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[5].valide"><span style="color:red">L'email saisi n'est pas correct</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Téléphone fixe : </div>
-                      <div class="col-lg-2"><input ng-blur="validationTelFixe()" class="form-control" ng-class="{'error': validations[13].valide == false, 'correct': validations[13].valide}" maxlength="10" ng-model="myEmp.telFixe" type="tel" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[13].valide"><span style="color:red">Le numéro doit contenir seulement 10 chiffres</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Téléphone mobile : </div>
-                      <div class="col-lg-2"><input ng-blur="validationTelMobile()" class="form-control" ng-class="{'error': validations[14].valide == false, 'correct': validations[14].valide}" maxlength="10" ng-model="myEmp.telMobile" type="tel" ></input></div>
-                      <div class="col-lg-4" ng-hide="validations[14].valide"><span style="color:red">Le numéro doit contenir seulement 10 chiffres</span></div>
-                </div>
+<div ng-controller="employeFormController" id="wrapper" class="back-app">
+	<ng-menu></ng-menu>
 
-                <hr>
-                <h3>Contrat</h3>
+	<div id="page-wrapper" class="padding-top-50">
+		<div class="container-fluid">
+			<!-- Page Heading -->
+			<h1 class="uk-margin-top uk-heading-bullet"><span>Formulaire d'édition d'un employé</span></h1>
+			<hr>
 
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Date d'entrée : </div>
-                      <div class="col-lg-2"><input class="form-control" ng-blur="validationDateEntree()" ng-class="{'error': validations[7].valide == false, 'correct': validations[7].valide}" type="date" ng-model="myEmp.dateIn"></input></div>
-                      <div class="col-lg-4" ng-hide="validations[7].valide"><span style="color:red">La date d'entrée n'est pas valide</span></div>
-                </div>
-                <div class="row margin-bottom-10"> <!-- ng-hide="myEmp.dateOut == null" -->
-                      <div class="col-lg-2">Date de sortie : </div>
-                      <div class="col-lg-2"><input class="form-control" ng-blur="validationDateOut()" ng-class="{'error': validations[8].valide == false, 'correct': validations[8].valide}" type="date" ng-model="myEmp.dateOut"></input></div>
-                       <div class="col-lg-4" ng-hide="validations[8].valide"><span style="color:red">La date de sortie doit être supérieur à la date d'entrée</span></div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Département : </div>
-                      <div class="col-lg-2">
-                        <select class="form-control" ng-model="monDep" ng-options="d.name for d in deps"></select>
-                      </div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Type d'horaire : </div>
-                      <div class="col-lg-2">
-                        <select class="form-control margin" ng-change="changementHoraire()" ng-model="monHoraire" ng-options="hor.name for hor in horaire"></select>
-                      </div>
-                      <div class="col-lg-6">
-                        <span ng-show="showMen">
-                          Choisir le taux d'horaire : <select class="form-control" style="width: 150px!important;display: inline-block;" ng-model="monPourc" ng-options="p.name for p in pourcentage"></select>
-                        </span>
-                        <span ng-show="showSpe">
-                          Nombre d'heure par semaine : <input class="form-control" style="width: 150px!important;display: inline-block;"  ng-model="nbHeure" type="number" ></input> 
-                          <span ng-hide="validations[10].valide" style="color:red;display: inline-block;">Le nombre d'heure par semaine doit être > 0</span>
-                        </span>
-                      </div>
-                </div>
-                <div class="row margin-bottom-10">
-                      <div class="col-lg-2">Type de contrat : </div>
-                      <div class="col-lg-2">
-                        <select class="form-control" ng-model="monContrat" ng-options="con.name for con in contrat"></select>
-                      </div>
-                </div>
-                <hr>
-                <div class="row margin-bottom-10">
-                  <div class="col-lg-12">
-                    <md-button ng-click="retour()" class="bouton" >Annuler</md-button>
-                    <md-button ng-click="enregistrer()" class="bouton" >Enregistrer</md-button>
-                  </div>
-                </div>
-              </div>
+			<!-- Collonne de gauche -->
+			<div class="col-lg-6">
+				<h3 class="margin-bottom-25">Informations personnelles</h3>
+					<div class="row margin-bottom-10">
+					<div style="line-height: 30px!important" id="errNom" class="col-lg-3">Nom : </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationNom()" class="uk-input" ng-class="{'error': validations[0].valide == false, 'correct': validations[0].valide}" ng-model="myEmp.nom" type="text" autofocus></input>
+						<span style="color:red" ng-hide="validations[0].valide" style="width: 150px!important">Le nom doit contenir au moins 2 lettres</span>
+					</div>
+				</div>
 
-        <!-- /#page-wrapper -->
-        </div>
-      </div>
-  </div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Prénom : </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationPrenom()" class="uk-input" ng-class="{'error': validations[1].valide == false, 'correct': validations[1].valide}" ng-model="myEmp.prenom" type="text" ></input>
+						<span style="color:red" ng-hide="validations[1].valide">Le prénom doit contenir au moins 2 lettres</span>
+					</div>
+				</div>
+
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Genre : </div>
+					<div class="col-lg-7">
+						<div class="col-lg-6">
+							<md-radio-group ng-model="selectedGenre" >
+								<md-radio-button ng-repeat="genre in genres" flex ng-value="genre.id" class="md-primary">
+									{{genre.name}}
+								</md-radio-button>
+							</md-radio-group>
+						</div>
+
+						<div class="col-lg-6">
+							<img ng-if="selectedGenre == 0" src="assets/images/man.png" class="w3-right w3-circle w3-margin-right" style="width:60px;">
+							<img ng-if="selectedGenre == 1" src="assets/images/women.png" class="w3-right w3-circle w3-margin-right" style="width:60px;">
+						</div>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Date de naissance : </div>
+					<div class="col-lg-7">
+						<md-datepicker ng-class="{'error': validations[12].valide == false, 'correct': validations[12].valide}"  ng-blur="validationDateNaissance()" ng-model="myEmp.dateNaissance" md-placeholder="Choisir date"></md-datepicker>
+						<span ng-hide="validations[12].valide" style="color:red; display: block">La date de naissance n'est pas valide</span>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Adresse 1 </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationAdresse()" class="uk-input" ng-class="{'error': validations[2].valide == false, 'correct': validations[2].valide}" ng-model="myEmp.adresse" type="text" ></input>
+						<span ng-hide="validations[2].valide" style="color:red">L'adresse saisie n'est pas correcte</span>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Adresse 2 </div>
+					<div class="col-lg-7">
+						<input class="uk-input" ng-model="myEmp.adresseSup" type="text" ></input>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Code postale et localité: </div>
+					<div class="col-lg-7">
+						<md-autocomplete ng-blur="validationCodePost()"
+							ng-disabled="isDisabled"
+							md-no-cache="noCache"
+							md-selected-item="selectedItem"
+							md-select-on-focus
+							md-search-text-change="searchTextChange(searchText)"
+							md-search-text="searchText"
+							md-selected-item-change="selectedItemChange(item)"
+							md-items="item in querySearch(searchText)"
+							md-item-text="item.display"
+							placeholder="Localité, exemple : 1227 ou Carouge"
+						>
+							<md-item-template>
+								<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
+							</md-item-template>
+							<md-not-found>
+								Aucun résulat pour "{{searchText}}" n'a été trouvé.
+							</md-not-found>
+						</md-autocomplete>
+						<span ng-hide="validations[3].valide" style="color:red">Le code postal saisi n'est pas correct</span>
+					</div>
+				</div>
+
+				<!-- <div class="row margin-bottom-10">
+					<div class="col-lg-3">Localité : </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationLocalite()" class="uk-input" ng-class="{'error': validations[4].valide == false, 'correct': validations[4].valide}" ng-model="myEmp.localite" type="text" ></input>
+						<span ng-hide="validations[4].valide" style="color:red">La localité saisie n'est pas correcte</span>
+					</div>
+				</div> -->
+
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Téléphone fixe : </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationTelFixe()" class="uk-input" ng-class="{'error': validations[13].valide == false, 'correct': validations[13].valide}" maxlength="10" ng-model="myEmp.telFixe" type="tel" ></input>
+						<span ng-hide="validations[13].valide" style="color:red">Le numéro doit contenir seulement 10 chiffres</span>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Téléphone mobile : </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationTelMobile()" class="uk-input" ng-class="{'error': validations[14].valide == false, 'correct': validations[14].valide}" maxlength="10" ng-model="myEmp.telMobile" type="tel" ></input>
+						<span ng-hide="validations[14].valide" style="color:red">Le numéro doit contenir seulement 10 chiffres</span>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Email : </div>
+					<div class="col-lg-7">
+						<input ng-blur="validationEmail()" class="uk-input" ng-class="{'error': validations[5].valide == false, 'correct': validations[5].valide}" ng-model="myEmp.mail" type="text" ></input>
+						<span ng-hide="validations[5].valide" style="color:red">L'email saisi n'est pas correct</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Collonne de droite -->
+			<div class="col-lg-6">
+				<h3 class="margin-bottom-25">Contrat</h3>
+
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Date d'entrée : </div>
+					<div class="col-lg-7">
+						<md-datepicker  ng-class="{'error': validations[7].valide == false, 'correct': validations[7].valide}" ng-blur="validationDateEntree()"  ng-model="myEmp.dateIn" md-placeholder="Choisir date"></md-datepicker>
+						<span ng-hide="validations[7].valide" style="color:red; display: block">La date d'entrée n'est pas valide</span>
+					</div>
+					<div class="col-lg-4" ></div>
+				</div>
+				<div class="row margin-bottom-10"> <!-- ng-hide="myEmp.dateOut == null" -->
+					<div class="col-lg-3">Date de sortie : </div>
+					<div class="col-lg-7">
+						<md-datepicker ng-blur="validationDateOut()" ng-class="{'error': validations[8].valide == false, 'correct': validations[8].valide}" ng-model="myEmp.dateOut" md-placeholder="Choisir date"></md-datepicker>
+						<span ng-hide="validations[8].valide" style="color:red; display: block">La date de sortie doit être supérieur à la date d'entrée</span>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Département : </div>
+					<div class="col-lg-7">
+						<div class="uk-uk-inputs">
+							<select class="uk-select" id="form-horizontal-select" ng-model="monDep" ng-options="d.name for d in deps"></select>
+						</div>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Type d'horaire : </div>
+					<div class="col-lg-7">
+						<div class="uk-uk-inputs">
+							<select class="uk-select" id="form-horizontal-select" ng-change="changementHoraire()" ng-model="monHoraire" ng-options="hor.name for hor in horaire"></select>
+						</div>
+					</div>
+					<div class="col-lg-3" ></div>
+					<div class="col-lg-7 margin-top">
+						<span ng-show="showMen">
+							Choisir le taux d'horaire : <select class="uk-input" style="display: inline-block;" ng-model="monPourc" ng-options="p.name for p in pourcentage"></select>
+						</span>
+						<span ng-show="showSpe">
+							Nombre d'heure par semaine : <input class="uk-input" style="display: inline-block;"  ng-model="nbHeure" type="number" ></input>
+							<span ng-hide="validations[10].valide" style="color:red;display: inline-block;">Le nombre d'heure par semaine doit être > 0</span>
+						</span>
+					</div>
+				</div>
+				<div class="row margin-bottom-10">
+					<div class="col-lg-3">Type de contrat : </div>
+					<div class="col-lg-7">
+						<div class="uk-uk-inputs">
+							<select class="uk-select" id="form-horizontal-select" ng-model="monContrat" ng-options="con.name for con in contrat"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row margin-bottom-10">
+				<div class="col-lg-12 text-center">
+					<hr>
+					<md-button ng-click="retour()" class="bouton" >Annuler</md-button>
+					<md-button ng-click="enregistrer()" class="bouton" >Enregistrer</md-button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
