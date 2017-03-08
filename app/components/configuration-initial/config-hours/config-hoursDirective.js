@@ -66,41 +66,12 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			*                           Gestion de l'affichage des popovers                           *
 			\*****************************************************************************************/
 
-	  		$scope.hide = function () {
-				$("div.popover").popover('hide');
-			}
-
-			$scope.show = function () {
-				$('#choiceOpenning').popover('show');
-				$("div.popover").click(function(e) {
-		   			e.preventDefault();
-					$(e.currentTarget).popover('hide');
-				});
-			}
-
 			$scope.showHourModif = function () {
-				$('#hourModif').popover('show');
-				$('#choiceCCNT').popover('show');
-				
-				if ($scope.choix.id == 0) {$('#1debut').popover('show');} else {$('#1debutMatin').popover('show');}
-				
-				$("div.popover").click(function(e) {
-		   			e.preventDefault();
-					$(e.currentTarget).popover('hide');
-				});
+				Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
 			}
-
-
-			if (Popover.firstTimeHours) { // Savoir grâce au factory si c'est la première fois qu'il affiche le poppover
-				$timeout($scope.show, 200); // Lancer les popovers
-				$timeout($scope.hide, 30000); // Cacher les popovers 
-				Popover.changeFirstTimeHours(); // Change à false pour que la prochaine fois il ne rentre plus dans le test, car il l'aura afficher
-			}
-
-			/* Cacher les popovers */
-			$scope.hidePopovers = function () { 
-				$timeout($scope.hide, 1);
-			}
+			
+			Popover.showPop(2, ['#choiceOpenning']);
+			
 			/*///////////////////////////////////////////////////////////////////////////////////////*/
 			
 			/*****************************************************************************************\
@@ -146,7 +117,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			\*****************************************************************************************/
 
 	  		$scope.choiceOpenning = function (idChoix) {
-	  			$timeout($scope.hide, 1);
+	  			$timeout(Popover.hide, 0);
 	  			$scope.choix = State.changeChoix(idChoix);
 	  			if (idChoix != 1) {
 	  				$scope.afficherCalendar();
@@ -159,7 +130,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 	  		$scope.choiceFrequencyCoup = function (idFreq) {
 	  			$scope.choix.freq = State.changeFreq(idFreq);
-	  			$timeout($scope.hide, 1);
+	  			$timeout(Popover.hide, 0);
 	  			if (idFreq != 1) {
 	  				$scope.putAllDayPause();
 		  			$scope.afficherCalendar();
@@ -171,7 +142,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  		}
 
 	  		$scope.modifChoiceOpenning = function () {
-	  			$timeout($scope.hide, 1);
+	  			$timeout(Popover.hide, 0);
 	  			$scope.choix = null;
 	  			$scope.removeAllDayPause();
 	  			$scope.affChoiceOpenning = true;
@@ -305,7 +276,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    	}
 
 	    	$scope.goNextStep = function () {
-	    		$timeout($scope.hide, 1);
+	    		$timeout(Popover.hide, 0);
 	    		var nb = $scope.isAllInfoCalCorrect();
 	    		if (nb == 0) {
 	    			$timeout($scope.ctrl.next(4), 2);
