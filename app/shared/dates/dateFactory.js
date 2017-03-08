@@ -50,6 +50,11 @@
 			var tabDate = date.split('/');
 			return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
 		}
+		
+		date.getTimeStr = function (date) {
+			var d = moment(date);
+			return d.format('HH:mm');
+		}
 
 		date.validateHour = function (hourDebut, hourFin) {
 			var res = hourFin-hourDebut;
@@ -84,8 +89,6 @@
     	        
 			return diff;
 		};
-
-                	
                 	
                 	date.isHourEndValid = function (objHour, index, tab) {
                 		return true;
@@ -98,22 +101,24 @@
 			return true;
 		};
 		
+		date.getDayPrec = function (index, tab) {
+			return  tab[index == 0 ? 6 : index-1];
+		}
+		
+		date.getDaySuiv = function (index, tab) {
+			return tab[index == 6 ? 0 : index+1];
+		}
+		
                 	date.isHourStartValid = function (date, index, tab) {
-                		var pos;
-                		if (index == 0) {pos = 6;} else {pos = index - 1;}
-                		
-    			var objPrec = tab[pos];
+    			var objPrec = tab[index == 0 ? 6 : index-1]; // Je récupère la date du jour d'avant
     			
     			if (objPrec.soir.fin == Const.END) {
     				return true;
-    			} else {
-    				console.log(date.getDay());
-    				if (moment(date).isBefore(moment(objPrec.soir.fin))) {
-    					console.log(date);
-    					console.log(objPrec.soir.fin);
-    				}
+    			} 
+    			if (moment(date).isBefore(moment(objPrec.soir.fin))) {
+				return false;
     			}
-    			return false;
+    			return true;
                 	}
 
 		date.age = function (birthday) {

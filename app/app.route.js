@@ -6,23 +6,8 @@
  * var xxx = angular.module('ctrlCCNT'); Ainsi je récupère les dépendances de ctrlCCNT.
 **/
                                           /* On déclare ici toutes les dépendances */
-var ctrlCCNT = angular.module('ctrlCCNT', ['ngRoute','ngMaterial', 'ngResource', 'materialCalendar', 'ui-notification', 'ngAnimate', 'ngAria', 'ngMessages', 'mdPickers', 'mwl.calendar', 'ui.bootstrap', 'ui.bootstrap.modal',  'colorpicker.module']);
+var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.config(['calendarConfig', function(calendarConfig) {
-      calendarConfig.dateFormatter = 'angular'; // use moment to format dates
-      calendarConfig.allDateFormats.moment.date.hour = 'HH:mm';
-}]);
-
-ctrlCCNT.config(function($mdDateLocaleProvider) {
-      $mdDateLocaleProvider.formatDate = function(date) {
-		return date ? moment(date).format('DD/MM/YYYY') : null;
-      };
-
-      $mdDateLocaleProvider.parseDate = function(dateString) {
-            	var m = moment(dateString, 'DD/MM/YYYY', true);
-            	return m.isValid() ? m.toDate() : new Date(NaN);
-      };
-});
 /**
  * Configuration du module principal : ctrlCCNT
  * La configuration des routes de l'applications est faites dans la procédures suivante.
@@ -69,7 +54,7 @@ ctrlCCNT.config(['$routeProvider',
 		})
 		.when('/createplanning', {
 			templateUrl: 'app/components/planning/createplanningView.html',
-			controller: 'CreatePlanningCtrl',
+			controller: 'planningController',
 			activetab: 'planning'
 		})
 		.otherwise({
@@ -79,22 +64,5 @@ ctrlCCNT.config(['$routeProvider',
  	}
 ]);
 
-/**
-* Configuration du $httpProvider
-* Ce qui va permettre de rediriger l'utilisateur sur la page de connexion si l'application
-* recontre l'erreur 401 (Qui veut dire que l'utilisateur n'est pas authentifié)
-**/
-ctrlCCNT.config(function ($httpProvider) {
-    	$httpProvider.interceptors.push(function ($location) { // Interception à chaque redirection
-	      	return {
-	            'responseError': function (rejection) {
-	                	if (rejection.status === 401) { // Si le status retourne 401
-		                   /* Redirection sur la page de connexion dès qu'il est connecté le retourne à la page qu'il souhaitait */
-		                   $location.url('/connexion?returnUrl=' + $location.path()); 
-	                	}
-	            }
-	      	};
-    	});
-});
 
 })();

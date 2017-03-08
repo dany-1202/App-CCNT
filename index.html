@@ -12,7 +12,7 @@
       <link href="assets/css/bootstrap.css" rel="stylesheet">
       <link href="assets/css/uikit.min.css" rel="stylesheet">
       <link href="assets/css/sb-admin.css" rel="stylesheet">
-
+      <link rel="stylesheet" href="assets/css/animations.css">
 
       <!-- Custom CSS AppCCNT -->
       <link rel="stylesheet" type="text/css" href="assets/css/dialog.css">
@@ -57,25 +57,34 @@
       <script type="text/javascript" src="assets/angular/angular-ui-notification.min.js"></script>
 
       <!-- Script Angular - Application -->
+      <script type="text/javascript" src="app/app.js"></script>
       <script type="text/javascript" src="app/app.route.js"></script>
-      <script type="text/javascript" src="app/shared/constantes/constantes.js"></script>
+      <script type="text/javascript" src="app/shared/app.constantes.js"></script>
+      <script type="text/javascript" src="app/shared/app.filtres.js"></script>
       <script type="text/javascript" src="app/shared/notification/notifConfig.js"></script>
       <script type="text/javascript" src="app/shared/notification/NotifService.js"></script>
-      <script type="text/javascript" src="app/shared/calendar/calendar.js"></script>
-      <script type="text/javascript" src="app/shared/calendar/modal.js"></script>
+      <script type="text/javascript" src="app/shared/calendar/calendarController.js"></script>
+      <script type="text/javascript" src="app/shared/calendar/modalFactory.js"></script>
       <script type="text/javascript" src="app/shared/popovers/popoverFactory.js"></script>
       <script type="text/javascript" src="app/shared/data/postauxFactory.js"></script>
       <script type="text/javascript" src="app/shared/dates/dateFactory.js"></script>
-      <script type="text/javascript" src="app/shared/states/statesApp.js"></script>
-      <script type="text/javascript" src="app/shared/dialog/dialogController.js"></script>
+      <script type="text/javascript" src="app/shared/states/statesAppFactory.js"></script>
+      <script type="text/javascript" src="app/shared/dialog/modalController.js"></script>
       <script type="text/javascript" src="app/shared/menu/menu-principaleDirective.js"></script>
-      <script type="text/javascript" src="app/components/security/SessionService.js"></script>
+      <script type="text/javascript" src="app/shared/session/SessionService.js"></script>
       <script type="text/javascript" src="app/components/connexion/AuthenticationService.js"></script>
       <script type="text/javascript" src="app/app.run.js"></script>
       <script type="text/javascript" src="app/components/connexion/connexionController.js"></script>
       <script type="text/javascript" src="app/components/home/homeController.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/configController.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-hours/config-hoursDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/typeOuvertureDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/typeQDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/gestionHorairesDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/listeHorairesDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/validatorDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/calContinueDirective.js"></script>
+      <script type="text/javascript" src="app/components/configuration-initial/config-hours/directives/calCoupureDirective.js"></script>      
       <script type="text/javascript" src="app/components/configuration-initial/config-deps/config-depsDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-holidays/config-holidaysDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-initial/config-previsual/config-previsualDirective.js"></script>
@@ -83,12 +92,16 @@
       <script type="text/javascript" src="app/components/configuration-initial/config-holidays/config-calendarDirective.js"></script>
       <script type="text/javascript" src="app/components/configuration-employe/employeController.js"></script>
       <script type="text/javascript" src="app/components/configuration-employe/employeFormController.js"></script>
+<<<<<<< HEAD
       <script type="text/javascript" src="app/components/configuration-employe/employePassword.js"></script>
       <script type="text/javascript" src="app/components/planning/CreatePlanningCtrl.js"></script>
+=======
+      <script type="text/javascript" src="app/components/planning/planningController.js"></script>
+>>>>>>> appCCNT
       
       <!-- Attention récupère les formats des dates en Français (à changer si plutart on change de langue) -->
       <script type="text/javascript" src="assets/angular/angular-locale_fr-fr.js"></script>
-
+      
       <!-- Import Librairies -->
       <script type="text/javascript" src="assets/libs/jquery.js"></script>
       <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
@@ -107,7 +120,7 @@
       <script language="javascript" type="text/javascript">
             /* Prévien le raffraîchissement de la page avec F5 */
             document.onkeydown = function(){
-              switch (event.keyCode){
+                  switch (event.keyCode){
                     case 116 : //F5 button
                         event.returnValue = false;
                         event.keyCode = 0;
@@ -122,7 +135,7 @@
             }
       </script>
 </head>
-<body ng-app="ctrlCCNT" class="conteneur">
-      <div ng-view></div> <!-- La vue de l'application -->
+<body ng-app="ctrlCCNT" class="conteneur" ng-controller="appController as vm">
+      <div ng-view class="animate-repeat"></div> <!-- La vue de l'application -->
 </body>
 </html>

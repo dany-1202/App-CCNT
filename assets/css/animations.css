@@ -1,0 +1,20 @@
+.slider.ng-enter, 
+.slider.ng-leave
+{ 
+    -webkit-transition: 250ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    -moz-transition: 250ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    -ms-transition: 250ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    -o-transition: 250ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+    transition: 250ms cubic-bezier(0.600, 0.040, 0.980, 0.335) all;
+} 
+ 
+.slider.ng-enter {
+    left: 100%;
+}
+.slider.ng-enter.slider.ng-enter-active {
+    left: 0;
+}
+ 
+.slider.ng-leave {
+    left: 0;
+}
