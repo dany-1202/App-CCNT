@@ -8,11 +8,11 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 		link: function(scope, element, attrs) {
 			
 			function init () {
-			      scope.simulateQuery = true;
-			    	scope.isDisabled    = false;
+		      	scope.simulateQuery = true;
+	    		scope.isDisabled    = false;
 				
-			    	// list of `state` value/display objects
-			    	scope.states        = loadAll();
+		    	// list of `state` value/display objects
+		    	scope.states        = loadAll();
 				scope.querySearch        = querySearch;
 				scope.selectedItemChange = selectedItemChange;
 				scope.searchTextChange   = searchTextChange;
@@ -23,25 +23,24 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 					alert("Sorry! You'll need to create a Constitution for " + state + " first!");
 				}
 
-			    	/*****************************************************************************************\
-			    			* Internal Méthodes *                        
-			    	\*****************************************************************************************/
+		    	/*****************************************************************************************\
+		    			* Internal Méthodes *                        
+		    	\*****************************************************************************************/
 
-			    	/**
-			     	* Pour simuler la recherche on utilise le $timeout
-			     	* Simulation d'appel de requête
-			     	*/
-			    	function querySearch (query) {
-			      		var results = query ? scope.states.filter( createFilterFor(query) ) : scope.states,
-			          deferred;
-				      if (scope.simulateQuery) {
-					      	deferred = $q.defer();
-					      	$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
-					      	return deferred.promise;
-				      } else {
-				      		return results;
-				      }
-			    	}
+		    	/**
+		     	* Pour simuler la recherche on utilise le $timeout
+		     	* Simulation d'appel de requête
+		     	*/
+		    	function querySearch (query) {
+		      		var results = query ? scope.states.filter( createFilterFor(query) ) : scope.states, deferred;
+			      	if (scope.simulateQuery) {
+				      	deferred = $q.defer();
+				      	$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+				      	return deferred.promise;
+			      	} else {
+			      		return results;
+			      	}
+		    	}
 
 				function searchTextChange(text) {
 					//$log.info('Text changed to ' + text);
@@ -92,25 +91,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 				/*****************************************************************************************\
 				* Gestion des popovers *                        
 				\*****************************************************************************************/
-				
-				/* Cache les popovers */
-				var hide = function () {
-					$("#btnSuivant").popover('hide');
-				}
-				
-				/* Afficher les popovers et défini un listener pour chacune d'entre elle si on clique sur la popover elle la cache */
-				var show = function () {
-					$('#btnSuivant').popover('show');
-					$("div.popover").click(function(e) {
-						$(e.currentTarget).popover('hide');
-					});
-				}
-				
-				if (Popover.firstTimeEta && State.finishTuto) {
-					$timeout(show, 300);
-					$timeout(hide, 30000);
-					Popover.changeFirstTimeEta() // Je vois si c'est la première fois que j'affiche le popover ou non
-				}
+				Popover.showPop(0, ['#btnSuivant']);
 				
 				/*///////////////////////////////////////////////////////////////////////////////////////*/
 				
@@ -121,7 +102,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 				/* Vérification de la validation du champ concerné - l'error est mis à true si elle existe à false sinon */
 				
 				scope.verification = function(id, index){
-					$timeout(hide, 1);
+					$timeout(Popover.hide, 0);
 					var obj = scope.infoEtablissement[index];
 					obj.error = false;
 					if (obj.value === undefined) {
@@ -160,7 +141,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 				
 				/* Valide si l'étape est validé */
 				scope.verificationSuivant = function(){
-					$timeout(hide, 1);
+					$timeout(Popover.hide, 0);
 					var err = false;
 					for (var i = scope.infoEtablissement.length - 1; i >= 0; i--) {
 						scope.verification(scope.infoEtablissement[i].id,i);
@@ -173,7 +154,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 			if (angular.isUndefined(scope.$parent.postaux)) {
 				Postaux.query(function(data) {scope.$parent.postaux = data; init();});
 			} else {
-				init();
+				$timeout(init(), 0);
 			}
 			
     		}, // Fin Link

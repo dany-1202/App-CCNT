@@ -15,7 +15,7 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
 	if (angular.isUndefined($scope.postaux)) {
 		Postaux.query(function(data) {$scope.postaux = data;});
-	}
+    }
 
 	/* Savoir si c'est la première visite pour les afficher ou non les popovers : p
 		 - Si c'est la première fois les popovers sont à true sinon il passe à false
