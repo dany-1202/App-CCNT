@@ -5,7 +5,7 @@
 **/
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory) {
+ctrlCCNT.controller('configController', function ($route, $timeout, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory, Popover) {
 	$scope.$route = $route;
 	$scope.nbSteps = 4; // Nombre d'étapes de la configuration initiale
 	$scope.nbPercentage = 25; // Pourcentage en fonction de l'avancement de la configuration
@@ -13,6 +13,7 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 	$scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
 	$scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
+	
 	if (angular.isUndefined($scope.postaux)) {
 		Postaux.query(function(data) {$scope.postaux = data;});
     }
@@ -78,12 +79,9 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 		$scope.pourcentage -= $scope.nbPercentage;
 	}
 
-	this.afficherHeure = function () {
-		for (var i = 0; i < $scope.hours.length; i++) {};;
-	}
-
 	this.saveConfiguration = function () {
-
+		$timeout(Popover.hide(), 0);
+		
 		/* Informations de l'établissement */
 		var dataEtablissement = {
 			'nom': $scope.infoEtablissement[0].value,
@@ -154,7 +152,7 @@ ctrlCCNT.controller('configController', function ($route, $rootScope, $mdDialog,
 
 		if ($rootScope.user != null) { $rootScope.user.config = true; }
 		SessionService.set('user_configured', true);
-		$location.path('/home');
+		$location.path('/home?state=1');
 		NotifService.success(Const.CONFIGINIT, Const.CONFIGSUCCESS);
 	}
 

@@ -68,11 +68,9 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 	pop.showPop = function (index, tab) {
 		$timeout(pop.hide, 0);
 		$timeout(function () {
-			
 			if (pop.pops[index]) {showPops(tab);pop.pops[index] = false;}
 		}, 200);
 	}
-	
 	return pop;
 })
 

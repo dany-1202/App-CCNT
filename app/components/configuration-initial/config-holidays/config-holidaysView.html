@@ -113,7 +113,7 @@
 							</md-button>
 						</td>
 					</tr>
-					<tr class="ligne" ng-repeat="item in plagesEvents">
+					<tr ng-repeat="item in plagesEvents" ng-class="{ligne : ($index == 0)}" >
 						<td>Plage</td>
 						<td>{{item.title}}</td>
 						<td>{{item.date}}</td>

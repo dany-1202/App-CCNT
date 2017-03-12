@@ -1,7 +1,7 @@
 (function (){
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, DateFactory, NotifService, $mdDialog, State) {
+ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, DateFactory, NotifService, $mdDialog, State, Popover) {
 	return {
 		restrict: 'A',
 		link: function ($scope, element, attrs) {
@@ -13,7 +13,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 
       			/* Affiche le timePicker pour ouverture du Matin */
 			$scope.showTimeMatinDebut = function(ev, index) {
-				$timeout($scope.hide, 1);
+				$timeout(Popover.hide, 0);
 				var objHour = $scope.cal.hours[index];
 				
 				var date = objHour.matin.debut == Const.OPEN ? moment(angular.copy($scope.matinDebut)).add(index, 'days').toDate() : objHour.matin.debut;
@@ -42,6 +42,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 
 			/* Affiche le timePicker pour fermeture du Matin (Affiché seulement si existe une coupure = pause) */
 			$scope.showTimeMatinFin = function(ev, index) {
+				$timeout(Popover.hide, 0);
 				var objHour = $scope.cal.hours[index];
 				
 				var date = objHour.matin.fin == Const.END ? moment(angular.copy($scope.matinFin)).add(index, 'days').toDate() : objHour.matin.fin;
@@ -90,6 +91,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 
 			/* Affiche le timePicker pour la date de début du soir */
 			$scope.showTimeSoirDebut = function(ev, index) {
+				$timeout(Popover.hide, 0);
 				var objHour = $scope.cal.hours[index];
 				var date = objHour.soir.debut == Const.OPEN ? moment(angular.copy(DateFactory.soirDebut)).add(index, 'days').toDate() : objHour.soir.debut;
 				console.log(date);
@@ -164,6 +166,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 
 			/* Affiche le timePicker pour la date de fin du soir */
 			$scope.showTimeSoirFin = function(ev, index) {
+				$timeout(Popover.hide, 0);
 				
 				var objHour = $scope.cal.hours[index];
 				var objSuiv = DateFactory.getDaySuiv(index, $scope.cal.hours);
