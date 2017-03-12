@@ -72,7 +72,7 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 			closeTo : {left: 1500}
 		 })
 		.then(function(answer) {
-			 $scope.status = 'You said the information was "' + answer + '".';
+			$scope.status = 'You said the information was "' + answer + '".';
 		}, function() {
 			$scope.status = 'You cancelled the dialog.';
 		});

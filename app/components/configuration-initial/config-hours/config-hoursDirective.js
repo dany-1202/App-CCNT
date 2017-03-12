@@ -211,19 +211,17 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				});
 		  	}
 		  	
-			
+			/*****************************************************************************************\
+			*                                  Validations des horaires                               *
+			\*****************************************************************************************/
 
-		/*****************************************************************************************\
-		*                                  Validations des horaires                               *
-		\*****************************************************************************************/
-
-		$scope.sAllInfoCalCorrect = function () {
-			var nb = 0;
-			for (var i = 0; i < $scope.tabCalendars.length; i++) {
-				if ($scope.tabCalendars[i].state==Const.INCOMP || $scope.tabCalendars[i].errorName || $scope.tabCalendars[i].errorPeriod ) {nb++;}
+			$scope.isAllInfoCalCorrect = function () {
+				var nb = 0;
+				for (var i = 0; i < $scope.tabCalendars.length; i++) {
+					if ($scope.tabCalendars[i].state==Const.INCOMP || $scope.tabCalendars[i].errorName || $scope.tabCalendars[i].errorPeriod ) {nb++;}
+				}
+				return nb;
 			}
-			return nb;
-		}
 
 
 	    	$scope.validationHours = function () {
