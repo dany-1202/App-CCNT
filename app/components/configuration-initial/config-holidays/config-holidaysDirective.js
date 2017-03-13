@@ -27,59 +27,38 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			/* Définir un listener qui est appelé quand la date de début dans une plage change */
 			scope.$watch('dateDay.dateDebut', function(newValue, oldValue) {
-				if (scope.dateDay.dateDebut != '') {
+				if (scope.dateDay.dateDebut != '' && !scope.modifPlage) {
 					scope.dateDay.dateFin = angular.copy(newValue);
 					scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7)
 				}
 			});
 
-
 			/*****************************************************************************************\
 			*                           Gestion de l'affichage des popovers                           *
 			\*****************************************************************************************/
 
-			var show = function () {
-				$('#addDay').popover('show');
-				$('#addPlage').popover('show');
-				$("div.popover").click(function(e) { // Ajout d'évennement pour pouvoir cacher les popovers quand on clique dessus
-		   			e.preventDefault();
-					$(e.currentTarget).popover('hide');
-				});
-			}
-
 			var showPopTableDays = function () {
-				$('#tableDays').popover('show');
-				$('#calendari_lateral1').popover('show');
-				$("div.popover").click(function(e) { // Ajout d'évennement pour pouvoir cacher les popovers quand on clique dessus
-		   			e.preventDefault();
-					$(e.currentTarget).popover('hide');
-				});
-			}
-
-			var hide = function () {
-				$('div.popover').popover('hide');
+				Popover.showPop(5, ['#tableDays', '#calendari_lateral1']);
 			}
 			
-			if (Popover.firstTimeHol) { // Savoir grâce au factory si c'est la première fois qu'il affiche le poppover
-				$timeout(show, 200); // Lancer les popovers
-				$timeout(hide, 30000); // Cacher les popovers 
-				Popover.changeFirstTimeHol(); // Change à false pour que la prochaine fois il ne rentre plus dans le test, car il l'aura afficher
-			}
-
-			/* Cacher les popovers */
-			scope.hidePopovers = function () { 
-				$timeout(hide, 1);
-			}
+			Popover.showPop(3, ['#addDay', '#addPlage']);
 
 			/*///////////////////////////////////////////////////////////////////////////////////////*/
 
+			var reInitJour = function () {
+				scope.dateDay.date = new Date();
+	    		scope.dateDay.title = "";
+			}
 
 			/*****************************************************************************************\
 			*                                     Gestion du jour                                     *
 			\*****************************************************************************************/
+			
+			
+
 
 			scope.showAddDay = function () {
-				$timeout(hide, 1);
+				$timeout(Popover.hide, 0);
 				scope.afficherJour = !scope.afficherJour;
 			}
 
@@ -88,7 +67,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				scope.afficherJour = false;
 				if (Popover.affTableDays) {
 					$timeout(showPopTableDays, 300);
-					$timeout(hide, 1);
+					$timeout(Popover.hide, 0);
 					Popover.changeAffTableDays();
 				}
 			}
@@ -116,6 +95,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 
 			scope.modifierEvent = function (index) {
+				$timeout(Popover.hide, 0);
 				var obj = scope.$parent.events[index];
 				if (obj.date == null || obj.date == "") {
 
@@ -133,20 +113,21 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			scope.modifierEventClose = function () {
 				var objModif = scope.$parent.events[scope.objIndex];
-				objModif.date = scope.dateDay.date.getDate() + "/" + (scope.dateDay.date.getMonth() + 1) + "/" + scope.dateDay.date.getFullYear(),
+				var objCalModif = scope.$parent.calEvents[scope.objIndex];
+				objModif.date = DateFactory.getStrDate(scope.dateDay.date);
 				objModif.title = scope.dateDay.title;
-				console.log(scope.$parent.events);
-				console.log(scope.$parent.calEvents);
+				objCalModif.date = DateFactory.getStrDate(scope.dateDay.date);
+				objCalModif.title = scope.dateDay.title;
+				
 				$timeout(maj, 1);
 				scope.objIndex = -1;
-				scope.dateDay.title = "";
-				scope.dateDay.date = "";
-				scope.afficherJour = false;
+				reInitJour();
 				scope.modifJour = false;
-
+				scope.afficherJour = false;
 			}
 
 			scope.supprimerEvent = function (index) {
+				$timeout(Popover.hide, 0);
 				scope.$parent.events.splice(index, 1);
 				scope.$parent.calEvents.splice(index, 1);
 				$timeout(maj, 1);
@@ -156,7 +137,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			/* Gestion des plages */
 
 			scope.showAddPlage = function () {
-				$timeout(hide, 1);
+				$timeout(Popover.hide, 0);
 				scope.dateDay.dateDebut = new Date();
 				scope.dateDay.dateFin = angular.copy(scope.dateDay.dateDebut);
 				scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7);
@@ -164,21 +145,19 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			}
 
 			scope.modifierPlageEvent = function (index) {
+				$timeout(Popover.hide, 0);
+				
 				var obj = scope.$parent.plagesEvents[index];
+
 				if (obj.dateDebut == null || obj.dateDebut == "") {
 
 				} else {
 					/* Traitement date début */
-					var objDate = obj.dateDebut;
-					scope.dateDay.dateDebut = DateFactory.getDateStr(objDate);
-
-					/* Traitement date fin */
-					var objDate = obj.dateFin;
-					scope.dateDay.dateFin = DateFactory.getDateStr(objDate);
-
 					scope.afficherPlage = true;
 					scope.dateDay.title = obj.title;
-
+					scope.dateDay.dateDebut = DateFactory.getDateStr(obj.dateDebut);
+					scope.dateDay.dateFin = DateFactory.getDateStr(obj.dateFin);
+					console.log(scope.dateDay);
 					scope.objIndex = index;
 					scope.modifPlage = true;
 				}
@@ -188,21 +167,24 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				var nbJours = DateFactory.calculateNbDays(dateDay.dateDebut, dateDay.dateFin);
 
 				if (nbJours.day != 0) {
-					scope.$parent.plagesEvents.push({
-						date : '',
-						dateDebut: dateDay.dateDebut.getDate() + "/" + (dateDay.dateDebut.getMonth() + 1) + "/" + dateDay.dateDebut.getFullYear(),
-						dateFin: dateDay.dateFin.getDate() + "/" + (dateDay.dateFin.getMonth() + 1) + "/" + dateDay.dateFin.getFullYear(),
-						title: dateDay.title,
-						color: '#5D4037',
-						content: '<img class="image" src="' + photo +'">',
-						class: '',
-					});
+					if (!scope.modifPlage) {
+						scope.$parent.plagesEvents.push({
+							date : '',
+							dateDebut: DateFactory.getStrDate(dateDay.dateDebut),
+							dateFin: DateFactory.getStrDate(dateDay.dateFin),
+							title: dateDay.title,
+							color: '#5D4037',
+							content: '<img class="image" src="' + photo +'">',
+							class: '',
+						});
+					}
+					
 					/* Ajouter dans le tableau d'events */
 					for (var i = 0; i <= nbJours.day; i++) {
 						var date = angular.copy(dateDay.dateDebut);
 						date.setDate(date.getDate() + i);
 						scope.$parent.calEvents.push({
-							date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
+							date: DateFactory.getStrDate(date),
 							title: dateDay.title,
 							color: '#5D4037',
 							content: '<img class="image" src="' + photo +'">',
@@ -215,19 +197,33 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			/* Quand j'ajoute une plage de fermeturefa */
 			scope.addPlageClose = function () {
-				scope.addPlage(scope.dateDay);
-				scope.afficherPlage = false;
-				if (Popover.affTableDays) {
-					$timeout(showPopTableDays, 300);
-					$timeout(hide, 1);
-					Popover.changeAffTableDays();
+				$timeout(showPopTableDays, 300);
+				if (scope.modifPlage) {
+					var objModif = scope.$parent.plagesEvents[scope.objIndex];
+					objModif.dateDebut = DateFactory.getStrDate(scope.dateDay.dateDebut);
+					objModif.dateFin = DateFactory.getStrDate(scope.dateDay.dateFin);
+					objModif.title = angular.copy(scope.dateDay.title);
+
 				}
+				scope.addPlage(scope.dateDay);
+				scope.objIndex = -1;
+				scope.dateDay.title = "";
+				scope.dateDay.dateDebut = "";
+				scope.dateDay.dateFin = "";
+				if (scope.modifPlage) {scope.modifPlage = !scope.modifPlage;}
+				scope.afficherPlage = false;
+				$timeout(maj, 1);
 			}
 
 			scope.supprimerPlageEvent = function (index) {
+				$timeout(Popover.hide, 0);
+				var obj = scope.$parent.plagesEvents[index];
+				var nbJours = DateFactory.calculateNbDays(DateFactory.getDateStr(obj.dateDebut), DateFactory.getDateStr(obj.dateFin));
+				console.log(nbJours);
 				scope.$parent.plagesEvents.splice(index, 1);
+				scope.$parent.calEvents.splice(index, nbJours.day+1);
+				$timeout(maj, 1);
 				/* Boucle pour supprimer du calendrier */
-
 			}
 
 			var maj = function () {
@@ -246,12 +242,6 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			var majCalEvents = function () {
 				var length = scope.$parent.calEvents.length;
 				scope.$parent.calEvents.splice(0, length);
-
-			}
-
-			var reInitJour = function () {
-				scope.dateDay.date = new Date();
-	    		scope.dateDay.title = "";
 			}
 
 			$('#calendari_lateral1').bic_calendar({

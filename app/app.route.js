@@ -15,19 +15,19 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 **/
 ctrlCCNT.config(['$routeProvider',
   	function($routeProvider) {
-           // $routeProvider essentiel pour la configuration des routes
-        	$routeProvider
+        // $routeProvider essentiel pour la configuration des routes
+    	$routeProvider
 
-	        	/* Les changements ou ajouts de route se font ici */
-	        	.when('/home', { // Chemin du home
-		            templateUrl: 'app/components/home/homeView.html',
-		            controller: 'homeController',
-		            activetab: 'dashboard' // Contrôleur de la page home
-	       	})
-	        	.when('/connexion', { // Chemin de la connexion
-		            templateUrl: 'app/components/connexion/connexionView.html',
-		            controller: 'connexionController' // Contrôleur de la connexion
-	        	})
+    	/* Les changements ou ajouts de route se font ici */
+    	.when('/home', { // Chemin du home
+            templateUrl: 'app/components/home/homeView.html',
+            controller: 'homeController',
+            activetab: 'dashboard' // Contrôleur de la page home
+       	})
+    	.when('/connexion', { // Chemin de la connexion
+            templateUrl: 'app/components/connexion/connexionView.html',
+            controller: 'connexionController' // Contrôleur de la connexion
+    	})
 		.when('/config-init', { // Chemin de la configuration initial */
 			templateUrl: 'app/components/configuration-initial/config-init.html',
 			controller: 'configController', // Contrôleur pour la configuration initial
