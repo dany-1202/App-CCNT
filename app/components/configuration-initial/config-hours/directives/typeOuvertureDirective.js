@@ -18,7 +18,7 @@
 
 		  		/* Affiche la modification des heures CCNT */
 		  		$scope.affModif = function () {
-		  			$timeout($scope.hide, 1);
+		  			$timeout(Popover.hide, 0);
 		  			if ($scope.modifHours == false) {
 		  				$scope.modifCCNT = !$scope.modifCCNT;	
 		  			}
@@ -26,9 +26,9 @@
 
 		  		/* Affiche la modification des heures (Valeurs) CCNT*/
 		  		$scope.affModifHours = function () {
+		  			$timeout(Popover.hide, 0);
 		  			$scope.modifCCNT = false;
 		  			$scope.modifHours = true;
-		  			$timeout($scope.hide, 1);
 		  		}
 
 		  		/* Enregistre la modification des Heures CCNT*/
@@ -36,7 +36,7 @@
 		  			$scope.$parent.hoursCCNTChosen = hours;
 		  			$scope.modifCCNT = false;
 		  			$scope.modifHours = false;
-		  			$timeout($scope.hide, 1);
+		  			$timeout(Popover.hide, 0);
 		  		}
 
 		  		$scope.endCoupures = function () {

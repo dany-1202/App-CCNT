@@ -28,15 +28,14 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 			if (oldUrl.indexOf(newUrl) != -1) {
 				return;
 			} else {
-				if (newUrl.indexOf(routeAvecLogin[1].split('/')[1]) == -1 && oldUrl.indexOf(routeAvecLogin[1].split('/')[1]) != -1 && essai == 1) {
+				if (newUrl.indexOf('state=1') == -1 && newUrl.indexOf(routeAvecLogin[1].split('/')[1]) == -1 && oldUrl.indexOf(routeAvecLogin[1].split('/')[1]) != -1 && essai == 1) {
 					UIkit.modal.confirm('Attention si vous quittez la configuration intiale, toutes les données enregistrées seront perdues, souhaitez-vous continuer ?', {center: true}).then(function() {
-					    	//onRouteChangeOff(); //Stop listening for location changes
-					    	essai = 2;
-					    	var obj = $location.url(newUrl).$$hash.split('!')[1];
-					    	console.log(obj);
-	            				$location.path(obj);//Go to page they're interested in
-	            				$rootScope.$apply();
-	            				essai = 1;
+				    	//onRouteChangeOff(); //Stop listening for location changes
+				    	essai = 2;
+				    	var obj = $location.url(newUrl).$$hash.split('!')[1];
+        				$location.path(obj);//Go to page they're interested in
+        				$rootScope.$apply();
+        				essai = 1;
 					}, function () {});
 					event.preventDefault();
   					return;
@@ -61,11 +60,9 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 				/* Si l'utilisateur essaye d'accéder sur une route qui n'est pas besoin de */
 				if (routeAvecLogin.indexOf($location.path()) != -1 && !message.data) {
 					$location.path('/connexion');
-				};
-
+				}
 				if (routeSansLogin.indexOf($location.path()) != -1 && message.data) {
 					$location.path('/home');
-					NotifService.infoCon($rootScope.user.nom);
 				}
 			});
 		}

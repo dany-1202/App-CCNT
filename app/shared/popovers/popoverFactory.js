@@ -12,11 +12,13 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 	var pop = {}; // Je crée un objet
 
 	pop.firstTimeEta = true; // Popovers dans établissement
-    	pop.firstTimeDep = true; // Popovers dans les départements
+	pop.firstTimeDep = true; // Popovers dans les départements
    	pop.firstTimeHours = true; // Popovers dans les horaires d'ouvertures
    	pop.firstTimeHol = true; // Popovers dans les jours fériés et vacances
    	pop.affHourModif = true;
    	pop.affTableDays = true;
+   	
+   	pop.pops = [true, true, true, true, true, true];
 
 	pop.changeFirstTimeEta = function () { 
 		pop.firstTimeEta = false; // Mettre à l'état à false afin de ne plus afficher
@@ -41,7 +43,34 @@ ctrlCCNT.factory('Popover', function ($timeout) {
 	pop.changeAffTableDays = function () {
 		pop.affTableDays = false; // Mettre à l'état à false afin de ne plus afficher
 	}
+	
+	pop.hide = function () {
+		$("div.popover").popover('hide');
+	}
+	
+	pop.show = function(id) {
+		$(id).popover('show');
+	}
+	
+	pop.putListener = function () {
+		$("div.popover").click(function(e) {
+			$(e.currentTarget).popover('hide');
+		});
+	}
 
+	function showPops(tab) {
+		for (var i = 0; i < tab.length; i++) {
+			pop.show(tab[i]);
+		}
+		pop.putListener();
+	}
+	
+	pop.showPop = function (index, tab) {
+		$timeout(pop.hide, 0);
+		$timeout(function () {
+			if (pop.pops[index]) {showPops(tab);pop.pops[index] = false;}
+		}, 200);
+	}
 	return pop;
 })
 
