@@ -64,15 +64,8 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 			$promise.then(function (message) {
 				/* Si l'utilisateur essaye d'accéder sur une route qui n'est pas besoin de */
 				if (routeAvecLogin.indexOf($location.path()) != -1 && !message.data) {
-<<<<<<< HEAD
-					//$location.path('/connexion');
-					return;
-				};
-
-=======
 					$location.path('/connexion');
 				}
->>>>>>> appCCNT
 				if (routeSansLogin.indexOf($location.path()) != -1 && message.data) {
 					$location.path('/home');
 				}

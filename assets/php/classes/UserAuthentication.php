@@ -145,7 +145,7 @@ class UserAuthentication {
 		$db = MySQLManager::get(); 
 		$query = "SELECT per_token FROM ccn_personne WHERE per_token = ?";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param("s", $token);
+			$stmt->bind_param("s", $token['token']);
 			$stmt->execute();
 			$stmt->store_result();
 			if ($stmt->num_rows == 1) {
