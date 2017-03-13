@@ -234,9 +234,10 @@ class EmployeeDAO {
 	public static function insertEmployee ($data) {
 		$db = MySQLManager::get();
 		/* Insertion dans la table ccn_personne */
-		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, NULL, NULL, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
+		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssissss', $data['nom'], $data['prenom'], $data['mail'], $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
+			$accountToken = uniqid() . uniqid() . uniqid();
+			$stmt->bind_param('ssssssissss', $data['nom'], $data['prenom'], $data['mail'], $accountToken, $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
 		  	$stmt->execute();
 		  	$per_id = $stmt->insert_id;
 		  	$data['id'] = $per_id;

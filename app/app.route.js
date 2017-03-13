@@ -47,7 +47,7 @@ ctrlCCNT.config(['$routeProvider',
 			controller: 'employeFormController',
 			activetab: 'emp' // Contrôleur de la page home
 		})
-		.when('/employe/password', { // Chemin vers la page d'initialisation du password
+		.when('/employe/password/:t', { // Chemin vers la page d'initialisation du password
 			templateUrl: 'app/components/configuration-employe/employePassword.html',
 			controller: 'employePassword',
 			activetab: 'emp' // Contrôleur de la page home

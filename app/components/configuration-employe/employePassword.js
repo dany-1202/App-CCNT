@@ -1,8 +1,18 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employePassword', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State, $route) {
+ctrlCCNT.controller('employePassword', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State, $route,$routeParams) {
 			$scope.$route = $route;
 			$scope.valide = true;
+
+			//Récupère le token de l'utilisateur
+			var self = this;
+  			self.token = $routeParams.t;
+			console.log(self.token);
+			//vérification dans la base de données si le token existe
+			var checkToken = {'token': self.token };
+			var $res = $http.post("assets/php/checkAccount.php", checkToken);
+			$res.then(function (message) { console.log(message); });
+
 			/* Validation des mots de passes */
 			$scope.enregistrer = function () {
 
