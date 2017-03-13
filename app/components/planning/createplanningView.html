@@ -5,12 +5,13 @@
     <span
       class="pull-right"
       data-cal-date
-      ng-click="vm.calendarCtrl.dateClicked(day.date)"
+      ng-click="vm.calendarCtrl.dateClicked(day.date);console.log(day);"
       ng-bind="day.label">
     </span>
 
-    <small style="position: absolute; bottom: 10px; left: 5px">
-      
+    <small style="position: absolute; bottom: 10px; left: 5px" ng-if="true">
+     {{day.date}}
+
     </small>
   </div>
 </script>
@@ -308,7 +309,9 @@
 					cell-modifier="vm.modifyCell(calendarCell)"
 					cell-auto-open-disabled="true"
 					on-timespan-click="vm.timespanClicked(calendarDate, calendarCell)"
-					> <!--custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}-->
+					>
+					<!-- custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" -->
+
 				</mwl-calendar>
 
 				<br><br><br>
