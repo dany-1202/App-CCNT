@@ -230,19 +230,42 @@ class EmployeeDAO {
 			per_telFixe, per_telMobile, per_dep_id, per_genre
 
 		Contrainte BDD : l'attribut per_dep_id doit être > 0 et doit exister dans la bdd
-	*/	
+	*/
 	public static function insertEmployee ($data) {
 		$db = MySQLManager::get();
 		/* Insertion dans la table ccn_personne */
 		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-			$accountToken = uniqid() . uniqid() . uniqid();
-			$stmt->bind_param('ssssssissss', $data['nom'], $data['prenom'], $data['mail'], $accountToken, $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
+
+			$token = uniqid() . uniqid() . uniqid();
+			$stmt->bind_param('sssssssissss', $data['nom'], $data['prenom'], $data['mail'], $token, $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
+
 		  	$stmt->execute();
 		  	$per_id = $stmt->insert_id;
 		  	$data['id'] = $per_id;
+
 		  	$stmt->close();
 		  	MySQLManager::close();
+		  	
+		  	//$to = $data['mail'];
+		  	$to = "dany.gomes.ifa@gmail.com";
+		  	$subject = "Validation du compte";
+		  	$contents = '
+		  		<html>
+		  			<body>
+		  				<div align = "center">
+		  					<p>
+		  						Bonjour, <br/>
+		  						Votre compte vient tout juste d\'être créé. <br/> 
+		  						Veuillez l\'activer en cliquant sur le lien suivant : <br/>
+		  						<a href="http://localhost:8888/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
+		  					</p>
+		  				</div>
+		  			</body>
+		  		</html>
+		  	';
+		  	mail($to, $subject, $contents, 'Content-Type: text/html;charset=utf-8');
+
 		  	if (PossedeDAO::insertPossede($data)) { // Appelle la méthode static de PossedeDAO qui insére le département à une personne
 		  		return ContratDAO::insertContrat($data); // Appelle la méthode static de ContratDAO qui permet d'insérer un contrat à une personne
 		  	}
@@ -256,11 +279,13 @@ class EmployeeDAO {
 		Met à jours le mot de passe d'un employé
 	*/	
 	public static function updatePasswordEmploye ($data) {
-		$db = MySQLManager::get();
-		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_id = ?";
+		$db = MySQLManager::get(); 
+		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_token = ?";
 		if ($stmt = $db->prepare($query)) {
-			$pwdCrypted = hash('sha512', $data['password']);
-			$stmt->bind_param('si', $pwdCrypted, $data['user_id']);
+
+			$pwdCrypted = sha512($data['password']);
+			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
+
 		  	$stmt->execute();
 	  		MySQLManager::close();
 			return true;
