@@ -285,6 +285,10 @@ class EmployeeDAO {
 
 			$pwdCrypted = sha512($data['password']);
 			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/DanyG
 		  	$stmt->execute();
 	  		MySQLManager::close();
 			return true;
