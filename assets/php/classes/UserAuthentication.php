@@ -131,6 +131,34 @@ class UserAuthentication {
 		return false;
 	}
 
+
+
+	/**
+	 * Checks if the accout is activated.
+	 *
+	 * @access public
+	 * @static
+	 * @return boolean true if the account is not activated
+	 */
+	public static function checkActivationAccount($token) {
+		// get a database handle-- 
+		$db = MySQLManager::get(); 
+		$query = "SELECT per_token FROM ccn_personne WHERE per_token = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param("s", $token['token']);
+			$stmt->execute();
+			$stmt->store_result();
+			if ($stmt->num_rows == 1) {
+				$stmt->bind_result($per_token);
+				$stmt->fetch();
+				MySQLManager::close();
+				return true; // a trouver la personne
+			}
+		}
+		MySQLManager::close();
+		return false;
+	}
+
 	/**
 	 * Disconnect the user removing the token that was distributed
 	 *
