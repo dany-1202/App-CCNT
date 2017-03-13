@@ -43,7 +43,7 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	}
 	
 	$scope.envoyerMail = function () {
-		console.log('ici');
+		console.log('envoyerMail');
 		var $promise = $http.post('assets/php/sendEmailAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), 'email' : 'vincent.jalley@gmail.com'});
 	
 		$promise.then(function (message) {
@@ -53,7 +53,7 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	}
 	
 	if (SessionService.get('user_configured') == false) {
-		console.log('ici');
+		console.log('test');
 		$scope.confEmp = false;
 	} else {
 		$scope.confEmp = SessionService.get('user_configured');
