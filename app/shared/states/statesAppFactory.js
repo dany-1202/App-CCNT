@@ -11,27 +11,20 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	state.freq = null; // Choix sur la fréquence des coupures
 	state.selectedD = []; // Choix des jours avec coupures
   	
-      	state.postaux = undefined // NoPostaux
-      	state.tutoStart = false;
-      	/*****************************************************************************************\
-	          * Récupération des localités avec les numéros postaux *
- 	\*****************************************************************************************/
-      	state.getAllInfos = function () {
-      		//getJsonData(); // Récupérer les numéros postaux depuis le fichiers JSON
-      	}
-      	/*///////////////////////////////////////////////////////////////////////////////////////*/
+  	state.postaux = undefined // NoPostaux
+  	state.tutoStart = false;
 
-     	state.hours = [
-	           	{id: 1, day: 'Lundi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
-	            	{id: 2, day: 'Mardi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END},  pause:{existe : false}, nbHours : 0},
-	            	{id: 3, day: 'Mercredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END},  pause: {existe : false}, nbHours : 0},
-	            	{id: 4, day: 'Jeudi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause:{existe : false}, nbHours : 0},
-	            	{id: 5, day: 'Vendredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
-	            	{id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
-	            	{id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
-     	]
+ 	state.hours = [
+       	{id: 1, day: 'Lundi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
+    	{id: 2, day: 'Mardi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END},  pause:{existe : false}, nbHours : 0},
+    	{id: 3, day: 'Mercredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END},  pause: {existe : false}, nbHours : 0},
+    	{id: 4, day: 'Jeudi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause:{existe : false}, nbHours : 0},
+    	{id: 5, day: 'Vendredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
+    	{id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
+    	{id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
+ 	]
 
-      	state.configTuto = [
+  	state.configTuto = [
 		{id: 1, title: Const.TITLEESTA, src: Const.PATH1},
 		{id: 2, title: Const.TITLEDEPS, src: Const.PATH2},
 		{id: 3, title: Const.TITLEHOURS, src: Const.PATH3},
@@ -42,7 +35,7 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		{id: 8, title: Const.TITLEHOURS, src: Const.PATH8},
 		{id: 9, title: Const.TITLEHOLI, src: Const.PATH9},
 		{id: 10, title: Const.TITLEHOLI, src: Const.PATH10},
-     	]
+ 	]
 
 	state.getConfigTuto = function () {
 		return angular.copy(state.configTuto);
@@ -58,7 +51,17 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		return angular.copy(state.hours);
 	}
 
-	state.tabCalendars = [{id: 0, name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet", errorName: false, errorPeriod:true}];
+	state.tabCalendars = [{id: 0, name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet", errorName: false, errorPeriod:true, choix: null}];
+
+	state.getTabCalPrec = function (pos) {
+		var hours = angular.copy(state.tabCalendars[pos].hours);
+		console.log(hours);
+		var cal = state.getTabCalDefault();
+		for (var i = 0; i < hours.length; i++) {
+			cal[i].pause.existe = hours[i].pause.existe;
+		}
+		return cal;
+	}
 
 	state.changeChoix = function (idChoix) {
 		state.choix = idChoix == 0 ? {id: idChoix, nom:"En Continue", color: "#27ae60"} : {id: idChoix, nom:"Avec Coupures", color: "#428bca"};
@@ -91,5 +94,5 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		return item.substring(0, 4);
 	}
  
-       	return state; // Retourne l'état de l'application
+   	return state; // Retourne l'état de l'application
 });

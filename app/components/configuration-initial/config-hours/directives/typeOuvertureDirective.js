@@ -10,7 +10,7 @@
 				*                  Gestion de l'affichage de la question du type d'ouverture              *
 				\*****************************************************************************************/
 
-		      		/* Affiche le calendrier et cache la question */
+	      		/* Affiche le calendrier et cache la question */
 		  		$scope.afficherCalendar = function () {
 		  			$scope.affChoiceOpenning = false;
 		  			$scope.affCalendar = true;

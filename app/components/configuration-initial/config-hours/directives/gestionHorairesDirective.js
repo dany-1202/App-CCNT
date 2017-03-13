@@ -12,12 +12,12 @@
 
 				$scope.closeAddOtherHours = function () {
 					if ($scope.isCurrentInfoCalCorrect()) {
-		    				$scope.affOtherHours = false;
+	    				$scope.affOtherHours = false;
 						$scope.affModifOtherHours1 = false;
 						$scope.affModifOtherHours2 = false;
-			    		} else {
-			    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
-			    		}
+		    		} else {
+		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+		    		}
 				}
 
 				$scope.showAffModifOtherHours = function () {
@@ -26,8 +26,9 @@
 					$scope.affModifOtherHours2 = true;
 					$scope.affCalendar = false;
 					var pos = $scope.tabCalendars.length;
-		    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true});
-		    			$scope.cal = $scope.tabCalendars[pos];
+	    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: false, errorPeriod: true, choix: angular.copy($scope.tabCalendars[0].choix)});
+	    			$scope.cal = $scope.tabCalendars[pos];
+	    			$scope.affCalendar = true;
 				}
 
 				$scope.showDivOtherHours = function () {
