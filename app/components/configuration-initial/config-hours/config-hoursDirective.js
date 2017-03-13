@@ -20,16 +20,17 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  		
 	  		$scope.modifCCNT = false; // Doit afficher la modification des heures soumis CCNT
 	  		$scope.modifHours = false; // Doit afficher les valeurs à modifier pour les heures soumis CCNT
-	  		$scope.choix = State.choix; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
-			$scope.freq = State.freq; // Choix sur la fréquence des coupures
+	  		//$scope.choix = State.choix; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
+			//$scope.freq = State.freq; // Choix sur la fréquence des coupures
 			$scope.selectedD = State.selectedD; // Contient les jours ou des coupures ont lieu
 			$scope.affOtherHours = false;
 			$scope.affModifOtherHours1 = false;
-			$scope.affModifOtherHours2 = false
-
+			$scope.affModifOtherHours2 = false;
+			$scope.fabModifType = false;
+			
 			$scope.tabCalendars = $scope.$parent.tabCalendars;
 			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
-			
+			console.log($scope.cal);
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
 		  	/*****************************************************************************************\
@@ -44,7 +45,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				return (objDay.matin.debut == Const.OPEN || objDay.soir.fin == Const.END);
 			}
 
-			$scope. isHoursCompleted = function () { // Toutes les heures ont été configurées
+			$scope.isHoursCompleted = function () { // Toutes les heures ont été configurées
 				for (var i = 0; i < $scope.cal.hours.length; i++) {
 					var obj = $scope.cal.hours[i];
 					if (obj.pause.existe) {
@@ -65,9 +66,15 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			/*****************************************************************************************\
 			*                           Gestion de l'affichage des popovers                           *
 			\*****************************************************************************************/
-
+			
+			$scope.hidePopovers = function () {
+				$timeout(function () {
+					$("div.popover").popover('hide');
+				}, 0);
+			}
+			
 			$scope.showHourModif = function () {
-				Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
+				Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.cal.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
 			}
 			
 			Popover.showPop(2, ['#choiceOpenning']);
@@ -79,20 +86,20 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			\*****************************************************************************************/
 
 			$scope.toggle = function (item, list) {
-			        	var idx = list.indexOf(item);
-			        	var pos = $scope.cal.hours.indexOf(item);
-			        	if (idx > -1) {
-				          	list.splice(idx, 1);
-				          	$scope.cal.hours[pos].pause.existe = false;
-		        		} else {
-				          	list.push(item);
-				          	$scope.cal.hours[pos].pause.existe = true;
-		       		}
-		    	};
+	        	var idx = list.indexOf(item);
+	        	var pos = $scope.cal.hours.indexOf(item);
+	        	if (idx > -1) {
+		          	list.splice(idx, 1);
+		          	$scope.cal.hours[pos].pause.existe = false;
+        		} else {
+		          	list.push(item);
+		          	$scope.cal.hours[pos].pause.existe = true;
+       			}
+	    	};
 
 			$scope.exists = function (item, list) {
-			        	return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
-		      	};
+	        	return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
+	      	};
 
 	  		/*****************************************************************************************\
 			*                                 Gestion des coupures                                    *
@@ -118,7 +125,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 	  		$scope.choiceOpenning = function (idChoix) {
 	  			$timeout(Popover.hide, 0);
-	  			$scope.choix = State.changeChoix(idChoix);
+	  			$scope.cal.choix = State.changeChoix(idChoix);
+	  			
 	  			if (idChoix != 1) {
 	  				$scope.afficherCalendar();
 	  				if (Popover.affHourModif) {
@@ -129,7 +137,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  		}
 
 	  		$scope.choiceFrequencyCoup = function (idFreq) {
-	  			$scope.choix.freq = State.changeFreq(idFreq);
+	  			$scope.cal.choix.freq = State.changeFreq(idFreq);
 	  			$timeout(Popover.hide, 0);
 	  			if (idFreq != 1) {
 	  				$scope.putAllDayPause();
@@ -143,7 +151,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 	  		$scope.modifChoiceOpenning = function () {
 	  			$timeout(Popover.hide, 0);
-	  			$scope.choix = null;
+	  			$scope.cal.choix = null;
 	  			$scope.removeAllDayPause();
 	  			$scope.affChoiceOpenning = true;
 	  			$scope.affCalendar = false;
@@ -159,38 +167,40 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			function DialogController($scope, $mdDialog) {
 			  	$scope.days = [ //{day: 'Tous les jours', chosen : false},
 					{day: 'Lundi', chosen : false},
-			                    	{day: 'Mardi', chosen : false},
-			                    	{day: 'Mercredi', chosen : false},
-			                    	{day: 'Jeudi', chosen : false},
-			                    	{day: 'Vendredi', chosen : false},
-			                   	{day: 'Samedi', chosen : false},
-			                    	{day: 'Dimanche', chosen : false}
+                	{day: 'Mardi', chosen : false},
+                	{day: 'Mercredi', chosen : false},
+                	{day: 'Jeudi', chosen : false},
+                	{day: 'Vendredi', chosen : false},
+                   	{day: 'Samedi', chosen : false},
+                	{day: 'Dimanche', chosen : false}
 				];
 
-			    	$scope.hide = function() {
-			      		$mdDialog.hide();
-			    	};
+		    	$scope.hide = function() {
+		      		$mdDialog.hide();
+		    	};
 
-			    	$scope.cancel = function() {
-			      		$mdDialog.cancel();
-			    	};
+		    	$scope.cancel = function() {
+		      		$mdDialog.cancel();
+		    	};
 
-			    	$scope.answer = function() {
-			    		$mdDialog.hide($scope.days);
-			    	}
+		    	$scope.answer = function() {
+		    		$mdDialog.hide($scope.days);
+		    	}
 			};
 
 			var fillTimeDays = function (days, objHour) {
+				
+				console.log(objHour);
 				for (var i = days.length - 1; i >= 0; i--) {
-			     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
-			     			$scope.cal.hours[i].matin.debut = moment(objHour.matin.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-			     			$scope.cal.hours[i].soir.fin = moment(objHour.soir.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-			     			if (objHour.pause.existe) {
-			     				$scope.cal.hours[i].matin.fin = moment(objHour.matin.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-			     				$scope.cal.hours[i].soir.debut = moment(objHour.soir.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();;
-			     			}
-			     		}
-		     		};
+		     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
+		     			$scope.cal.hours[i].matin.debut = moment(objHour.matin.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+		     			$scope.cal.hours[i].soir.fin = moment(objHour.soir.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+		     			if (objHour.pause.existe) {
+		     				$scope.cal.hours[i].matin.fin = moment(objHour.matin.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+		     				$scope.cal.hours[i].soir.debut = moment(objHour.soir.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();;
+		     			}
+		     		}
+	     		};
 			}
 
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
@@ -248,13 +258,14 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    	$scope.addHour = function () {
 	    		if ($scope.isCurrentInfoCalCorrect()) {
 	    			var pos = $scope.tabCalendars.length;
-	    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true});
+	    			console.log($scope.tabCalendars[0].choix);
+	    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: angular.copy($scope.tabCalendars[pos-1].choix)});
 	    			$scope.cal = $scope.tabCalendars[pos];
+	    			$scope.affCalendar = true;
 	    		} else {
 	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 	    		}
 	    	}
-
 
 	    	$scope.addHoursToTab = function () {
 	    		if ($scope.isCurrentInfoCalCorrect()) {
@@ -266,6 +277,16 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 	    		}
 	    		
+	    	}
+	    	
+	    	$scope.supCal = function (item, index) {
+    			UIkit.modal.confirm("Voulez-vous vraiment supprimer l'horaire nomée : <strong>"+ $scope.tabCalendars[index].name + "</strong> ?", {center: true}).then(function() {
+			    	$timeout(function () {
+			    		$scope.tabCalendars.splice(index, 1);
+	    				$scope.cal = $scope.tabCalendars[index-1];
+	    				NotifService.success('Suppression Horaires', "L'horaire a été supprimé avec succès !");
+			    	}, 0);
+				});
 	    	}
 	
 	    	$scope.changeCal = function (item, index) {

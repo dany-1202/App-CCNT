@@ -21,13 +21,13 @@
 							 </td>
 						</tr>
 						<tr>
-							 <td ng-if="data.pause.existe" ng-repeat="data in cal.hours track by $index" style="background-color: white!important">
+						 	<td ng-if="data.pause.existe" ng-repeat="data in cal.hours track by $index" style="background-color: white!important">
 								<md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
-									 <strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
-									 <i class="espace-avant fa fa-clock-o"></i>
+									<strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
+								 	<i class="espace-avant fa fa-clock-o"></i>
 								</md-button>
 								<span class="centrer"></span>
-							 </td>
+						 	</td>
 						</tr>
 
 						<tr class="ligne">

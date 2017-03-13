@@ -4,7 +4,10 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
-
+.tabCalActive {
+    background-color: black;
+    color : white;
+}
 
 
 .tout {
@@ -46,6 +49,11 @@ Description : Feuille de style pour l'ensemble de l'application
 
 .table--listhours tr:hover td {
     background-color: #ecf0f1!important;
+}
+
+.table--listhours tr.active td {
+    background-color: #ecf0f1!important;
+    font-weight: bold!important;
 }
 
 th {

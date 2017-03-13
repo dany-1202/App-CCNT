@@ -8,7 +8,6 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 		controller: 'postauxController',
 		link: function(scope, element, attrs) {
 				$timeout(function () {
-					Popover.showPop(0, ['#btnSuivant'])
 					/*****************************************************************************************\
 					* Gestion du contrôleur == link ici *                        
 					\*****************************************************************************************/
@@ -60,7 +59,8 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 						};
 						if(err == false){scope.$parent.ctrl.next(2);}
 					}
-				}, 0);
+					$timeout(Popover.showPop(0, ['#btnSuivant']), 1000);
+				}, 500);
     		}, // Fin Link
 	}; // Fin Return
 }); // Fin Directive

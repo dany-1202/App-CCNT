@@ -29,40 +29,40 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 				        	if (authenData.user_nom === undefined) { // Connexion refusé
 				        		NotifService.errorCon();
 				      	} else {
-					        	/* Stocke les données dans la session grâce à la méthode set du SessionService */
-					        	var data = {'user_id': authenData.user_id, 'user_token': authenData.user_token};
-						var $res = $http.post("assets/php/checkConfiguration.php", data);
-						$res.then(function (message) {
-							SessionService.set('user_id', authenData.user_id);
-						        	SessionService.set('user_nom', authenData.user_nom);
-						        	SessionService.set('user_prenom', authenData.user_prenom);
-						        	SessionService.set('user_type', authenData.user_type);
-						        	SessionService.set('user_token', authenData.user_token);
+				        	/* Stocke les données dans la session grâce à la méthode set du SessionService */
+				        	var data = {'user_id': authenData.user_id, 'user_token': authenData.user_token};
+							var $res = $http.post("assets/php/checkConfiguration.php", data);
+							$res.then(function (message) {
+								SessionService.set('user_id', authenData.user_id);
+					        	SessionService.set('user_nom', authenData.user_nom);
+					        	SessionService.set('user_prenom', authenData.user_prenom);
+					        	SessionService.set('user_type', authenData.user_type);
+					        	SessionService.set('user_token', authenData.user_token);
 						    	SessionService.set('user_configured', message.data);
 
 						    	/* Définit les éléments du user */
 						    	$rootScope.user = {};
 						    	$rootScope.user.id = authenData.user_id;
-						        	$rootScope.user.nom = authenData.user_nom;
-						        	$rootScope.user.prenom = authenData.user_prenom;
-						        	$rootScope.user.type = authenData.user_type;
-						        	$rootScope.user.token = authenData.user_token;
-						        	$rootScope.user.config = message.data;
-					        		var $res = $http.post("assets/php/checkConfigurationEmp.php", data);
-							$res.then(function (message) {
-								console.log(message);
-								
-								SessionService.set('user_confEmp', message.data > 0 ? true : false);
-								$rootScope.user.configEmp = message.data;
-						        		State.getAllInfos();
-							        	/* Connexion réussi*/
-							        	NotifService.successCon();
-							        	$location.path('/home');
-							        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé*/
-							});
+					        	$rootScope.user.nom = authenData.user_nom;
+					        	$rootScope.user.prenom = authenData.user_prenom;
+					        	$rootScope.user.type = authenData.user_type;
+					        	$rootScope.user.token = authenData.user_token;
+					        	$rootScope.user.config = message.data;
+				        		var $res = $http.post("assets/php/checkConfigurationEmp.php", data);
+								$res.then(function (message) {
+									console.log(message);
+									
+									SessionService.set('user_confEmp', message.data > 0 ? true : false);
+									$rootScope.user.configEmp = message.data;
+							        	
+						        	/* Connexion réussi*/
+						        	NotifService.successCon();
+						        	$location.path('/home');
+						        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé*/
+								});
 
-						});
-				        	}
+							});
+			        	}
 	     			}
 			});
 		},
@@ -76,7 +76,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 			var $promise = $http.post("assets/php/disconnectAuthentication.php", data); // Lange la promesse
 			$promise.then(function (message) {
 				SessionService.destroyAll(); //Destruction de toutes les données stockées dans la session
-				$location.path('/login'); // Redirection sur la page de login
+				$location.path('/connexion'); // Redirection sur la page de login
 				$rootScope.$broadcast("connectionStateChanged"); // Applique dans l'évennement connectionStateChanged sa déconnexion
 			});
 		},

@@ -53,9 +53,9 @@
 			<h2 class="card-header">Ouverture de l'établissement</h2><hr>
 			<div class="card-block">
 				<!-- Choix entre les deux -->
-				<type-q1 ng-hide="choix.id == 1"></type-q1>
-				<type-q2 ng-show="choix.id == 1 && choix.freq.id != 1"></type-q2>
-				<type-q3 ng-show="choix.id == 1 && choix.freq.id == 1"></type-q3>
+				<type-q1 ng-hide="cal.choix.id == 1"></type-q1>
+				<type-q2 ng-show="cal.choix.id == 1 && cal.choix.freq.id != 1"></type-q2>
+				<type-q3 ng-show="cal.choix.id == 1 && cal.choix.freq.id == 1"></type-q3>
 			</div>
 		</div>
 	</div>
@@ -141,9 +141,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in tabCalendars">
-					<td style="line-height:53px!important">{{item.name}} <div  ng-if="item.errorName" style="width: 10px;height: 10px;border-radius:10px; display:inline-block;line-height:53px!important; background-color: red"></div></td>
-					<td style="line-height:53px!important">
+				<tr ng-repeat="item in tabCalendars" ng-class="{active: cal.name == item.name}">
+					<td style="line-height:55px!important"><div  ng-if="cal.name == item.name" style="width: 10px;height: 10px;border-radius:10px; display:inline-block;line-height:55px!important; background-color: #34495e"></div> {{item.name}} <div ng-if="item.errorName" style="width: 10px;height: 10px;border-radius:10px; display:inline-block;line-height:55px!important; background-color: red"></div></td>
+					<td style="line-height:55px!important">
 						<span ng-if="$index == 0" >Tous les jours</span>
 						<span ng-if="$index > 0"> {{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</span>
 					</td>
@@ -151,9 +151,12 @@
 							<p ng-if="item.state == 'Complet'"><span style="margin-top: 10px!important" class="w3-tag completed w3-round">{{item.state}}</span></p>
 							<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>
 					</td>
-					<td style="line-height:53px!important">
+					<td style="line-height:55px!important">
 						<button md-whiteframe="1" class="btn btn-primary" ng-click="changeCal(item, $index)">
 							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button>
+						<button ng-hide="$index == 0" md-whiteframe="1" class="btn btn-primary" ng-click="supCal(item, $index)">
+							<i class="fa fa-trash" aria-hidden="true"></i>
 						</button>
 					</td>
 				</tr>
@@ -165,7 +168,7 @@
 <div class="row" ng-show="affCalendar || tabCalendars[0].state == 'Complet'">
 	<div class="col-lg-12">
 		<h3> Ouverture de l'établissement :
-			<span style="color: {{choix.color}}">{{choix.nom}}</span>
+			<span style="color: {{cal.choix.color}}">{{cal.choix.nom}}</span>
 			<button md-whiteframe="1" id="hourModif" data-title="Modifier type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer pour modifier le type d'ouverture de l'établissement" class="btn btn-secondary btn-modif" ng-click="modifChoiceOpenning()">
 				<i class="fa fa-pencil" aria-hidden="true"></i>
 			</button>
@@ -175,16 +178,16 @@
 	
 <div class="row" ng-show="affCalendar">
 	<div class="col-lg-12">
-		<hr><h3>Horaires: {{cal.name}}</h3>
+		<hr><h3>Horaires: <strong>{{cal.name}}</strong></h3>
 	</div>
 	<!-- Affichage En continue -->
-	<cal-continue ng-show="choix.id == 0"></cal-continue>
+	<cal-continue ng-show="cal.choix.id == 0"></cal-continue>
 	<!-- Affichage Avec coupures -->
-	<cal-coupure ng-show="choix.id == 1"></cal-coupure>
+	<cal-coupure ng-show="cal.choix.id == 1"></cal-coupure>
 </div>
 
 <!-- Affichage de l'information * jours avec coupures -->
-<div class="right" ng-show="choix.id == 1 && affCalendar"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
+<div class="right" ng-show="cal.choix.id == 1 && affCalendar"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
 
 <!-- Actions de l'étape -->
 <div class="row">
