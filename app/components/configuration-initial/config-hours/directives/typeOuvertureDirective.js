@@ -40,11 +40,14 @@
 		  		}
 
 		  		$scope.endCoupures = function () {
-		  			$scope.afficherCalendar();
-		  			if (Popover.affHourModif) {
-						$timeout($scope.showHourModif, 400);
-						Popover.changeAffHourModif();
-					}
+					$timeout(function (){
+						$scope.afficherCalendar();
+			  			if (Popover.affHourModif) {
+							$timeout($scope.showHourModif, 400);
+							Popover.changeAffHourModif();
+						}
+						//$('#dropOppening').addClass('none');
+					}, 0);
 		  		}
 
 				/*///////////////////////////////////////////////////////////////////////////////////////*/

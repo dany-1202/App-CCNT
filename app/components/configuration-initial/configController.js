@@ -13,6 +13,7 @@ ctrlCCNT.controller('configController', function ($route, $timeout, $rootScope, 
 	$scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
 	$scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
+	$scope.textStep = (window.innerWidth >= 700) ? "Étape: " : "";
 	
 	if (angular.isUndefined($scope.postaux)) {
 		Postaux.query(function(data) {$scope.postaux = data;});

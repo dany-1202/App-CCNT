@@ -55,9 +55,14 @@ ctrlCCNT.constant("Const", {
             "END": "Fermeture",
             "PAUSED": "Début",
             "PAUSEF": "Fin",
+            "HORAIREBASE" : "Semaine de base",
+            "TOUSLESJOURS" : "Tous les jours",
+            "CERTAINSJOURS" : "Certains jours",
             "COMP" : "Complet",
             "INCOMP" : "Incomplet",
             "NEWHOR" : "Nouveau horaire",
+            "CONTINUE" : "En Continue",
+            "COUPURE" : "Avec Coupures",
 
             /* Constantes utilisé dans Config des jours fériés et vacances*/
             "ADDDAY": "Ajouter un jour férié",
@@ -81,5 +86,10 @@ ctrlCCNT.constant("Const", {
             "ERRORURL" : "Url incorrect!",
             "ERRORPOST" : "Code Postal invalide!",
             "ERRORLOCATION" : "La Localité est incorrecte!",
+            
+            /* Couleurs */
+            "COLORCONTINUE" : "#27ae60",
+            "COLORCOUPURE" : "#428bca",
+            
 
 })
