@@ -10,6 +10,11 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	state.choix = null; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
 	state.freq = null; // Choix sur la fréquence des coupures
 	state.selectedD = []; // Choix des jours avec coupures
+	state.affDefinitif = true;
+  	
+  	state.changeAffDefinitif = function () {
+  		state.affDefinitif = false;
+  	}
   	
   	state.postaux = undefined // NoPostaux
   	state.tutoStart = false;
@@ -51,7 +56,7 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 		return angular.copy(state.hours);
 	}
 
-	state.tabCalendars = [{id: 0, name: "Semaine de base", period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: "Incomplet", errorName: false, errorPeriod:true, choix: null}];
+	state.tabCalendars = [{id: 0, name: Const.HORAIREBASE, period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod:true, choix: null}];
 
 	state.getTabCalPrec = function (pos) {
 		var hours = angular.copy(state.tabCalendars[pos].hours);
@@ -64,12 +69,12 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	}
 
 	state.changeChoix = function (idChoix) {
-		state.choix = idChoix == 0 ? {id: idChoix, nom:"En Continue", color: "#27ae60"} : {id: idChoix, nom:"Avec Coupures", color: "#428bca"};
+		state.choix = idChoix == 0 ? {id: idChoix, nom:Const.CONTINUE, color: Const.COLORCONTINUE} : {id: idChoix, nom:Const.COUPURE, color: Const.COLORCOUPURE};
 		return state.choix;
 	}
 
 	state.changeFreq = function (idFreq) {
-		state.choix.freq = idFreq == 0 ? {id: idFreq, nom:"Tous les jours"} : {id: idFreq, nom:"Certains jours"};
+		state.choix.freq = idFreq == 0 ? {id: idFreq, nom:Const.TOUSLESJOURS} : {id: idFreq, nom:Const.CERTAINSJOURS};
 		return state.choix.freq;
 	}
 	

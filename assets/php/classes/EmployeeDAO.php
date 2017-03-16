@@ -27,7 +27,7 @@ class EmployeeDAO {
 			    	$dep = [];
 			    	$dep['id'] = $dep_id;
 			    	$dep['nom'] = $dep_nom;
-				$dep['img'] = $dep_img_no;	
+					$dep['img'] = $dep_img_no;	
 			    	/* Stocker le type de contrat */
 			    	$typ_contrat = [];
 			    	$typ_contrat['id'] = $typ_id;
@@ -51,18 +51,18 @@ class EmployeeDAO {
 			      	$person['nom'] = $per_nom;
 			      	$person['prenom'] = $per_prenom;
 			     	$person['adresse'] = $per_adresse;
-		        		$person['codePostal'] = $per_codePostal;
-		        		$person['ville'] = $per_ville;
-			        	$person['mail'] = $per_mail;
-			        	$person['genre'] = $per_genre;
-			        	$person['dateNaissance'] = $per_dateNaissance;
-			        	$person['adresseSup'] = $per_InfoSuppAdresse;
-			        	$person['telFixe'] = $per_telFixe;
-				$person['telMobile'] = $per_telMobile;
-				$person['dep'] = $dep;
-				$person['contrat'] = $contrat;
+	        		$person['codePostal'] = $per_codePostal;
+	        		$person['ville'] = $per_ville;
+		        	$person['mail'] = $per_mail;
+		        	$person['genre'] = $per_genre;
+		        	$person['dateNaissance'] = $per_dateNaissance;
+		        	$person['adresseSup'] = $per_InfoSuppAdresse;
+		        	$person['telFixe'] = $per_telFixe;
+					$person['telMobile'] = $per_telMobile;
+					$person['dep'] = $dep;
+					$person['contrat'] = $contrat;
 
-				$array[] = $person; // L'ajouter au tableau d'objet
+					$array[] = $person; // L'ajouter au tableau d'objet
 		    	}
 		  	$stmt->close();
 		  	MySQLManager::close();
@@ -285,7 +285,6 @@ class EmployeeDAO {
 
 			$pwdCrypted = sha512($data['password']);
 			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
-
 		  	$stmt->execute();
 	  		MySQLManager::close();
 			return true;

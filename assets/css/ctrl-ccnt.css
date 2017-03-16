@@ -9,6 +9,9 @@ Description : Feuille de style pour l'ensemble de l'application
     color : white;
 }
 
+.none{
+    display: none!important;
+}
 
 .tout {
     text-align: center!important;
@@ -570,7 +573,69 @@ div#carre-8:hover {
         text-align: center!important;
     }
 }
+/* Bar de progrès dans la configuration initiale avec l'ajustement du titre */
+.barProgress {
+    right: 28px;
+    width: 45%;
+}
+.titleConfig {
+    margin-top:0px;
+}
 
+.barSpan {
+        
+}
+
+.divSpan {
+    line-height: 40px;
+}
+
+
+@media(max-width:1245px) {
+    .barProgress {
+        width: 75%;
+        text-align: center!important;
+    }
+    .titleConfig {
+        text-align:center;
+        margin-top:50px;
+    }
+}
+
+@media(max-width:1118px) {
+     .barProgress {
+        width: 70%;
+        text-align: center!important;
+    }
+}
+
+@media(max-width:938px) {
+     .barProgress {
+        width: 66%;
+        text-align: center!important;
+    }
+}
+
+@media(max-width:769px) {
+    .barProgress {
+        text-align: center!important;
+        left: 0;
+        height: 22px;
+        width: 100%;
+    }
+    .divSpan{
+        line-height: 22px!important;
+    }
+    .barSpan {
+        font-size: 14px!important;
+        font-weight: bold;
+    }
+    .titleConfig {
+        text-align:center;
+        margin-top:50px;
+    }
+}
+/***************************************/
 @media(max-width:1140px) {
     .div#grand-carre {
         width: 250px!important;
@@ -735,6 +800,7 @@ div#carre-8:hover {
 }
 
 .hours-ccnt {
+    width: 250px!important;
     padding: 25px!important;
     border-top: 0 solid #212121;
     font-size: 18px;

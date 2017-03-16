@@ -13,6 +13,8 @@
 				$scope.closeAddOtherHours = function () {
 					if ($scope.isCurrentInfoCalCorrect()) {
 	    				$scope.affOtherHours = false;
+	    				$scope.affDefinitif = false;
+	    				State.changeAffDefinitif();
 						$scope.affModifOtherHours1 = false;
 						$scope.affModifOtherHours2 = false;
 		    		} else {

@@ -15,11 +15,24 @@
 						<h2>Veuillez choisir les jours qui reprendront les mêmes horaires :</h2>
 					</div>
 					<div class="panel-body">
-						<div class="row" ng-repeat="item in days">
+						<div class="row">
 							<div class="col-md-5"></div>
 							<div class="col-md-6">
-								<md-checkbox aria-label="{{item.day}}" ng-model="item.chosen" class="md-primary">
-									{{item.day}}
+					            <md-checkbox aria-label="Tous les jours"
+					                         ng-checked="isChecked()"
+					                         md-indeterminate="isIndeterminate()"
+					                         ng-click="toggleAll()"
+					                         class="md-primary">
+					              <span><strong ng-if="isChecked()">Tous les jours</strong><span ng-if="!isChecked()">Tous les jours</span></span>
+					            </md-checkbox>
+				            </div>
+			          	</div>
+			          	
+						<div class="row" ng-repeat="item in days" layout-wrap flex>
+							<div class="col-md-5"></div>
+							<div class="col-md-6">
+								<md-checkbox style="margin-left:25px" aria-label="{{item.day}}" ng-model="item.chosen" class="md-primary">
+									<span><strong ng-if="item.chosen">{{item.day}}</strong><span ng-if="!item.chosen">{{item.day}}</span></span>
 								</md-checkbox>
 							</div>
 						</div>
