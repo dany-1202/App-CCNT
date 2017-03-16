@@ -20,6 +20,7 @@ class HoraireEmployeeDAO {
 		  	$stmt->execute();
 		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin, $hop_pauseDebut, $hop_pauseFin);
 		  	$array = array();
+<<<<<<< Updated upstream
 		    	$horaire = [];
 		    	while($stmt->fetch()) {
 			    	$horaire['id'] = $hop_id;
@@ -30,6 +31,18 @@ class HoraireEmployeeDAO {
 			        	$horaire['pauseFin'] = $hop_pauseFin;
 			        	$array[] = $horaire;
 		    	}
+=======
+		    $horaire = [];
+		    while($stmt->fetch()) {
+		    	$horaire['id'] = $hop_id;
+		        $horaire['date'] = $hop_date;
+		        $horaire['heureDebut'] = $hop_heureDebut;
+		        $horaire['heureFin'] = $hop_heureFin;
+		        $horaire['pauseDebut'] = $hop_pauseDebut;
+		        $horaire['pauseFin'] = $hop_pauseFin;
+		        $array[] = $horaire;
+		    }
+>>>>>>> Stashed changes
 		  	$stmt->close();
 		  	MySQLManager::close();
 	  		return $array;
@@ -64,7 +77,11 @@ class HoraireEmployeeDAO {
 	}
 
 	/* N'insére pas encore de pause */
+<<<<<<< Updated upstream
 	public static function deleteHoraire ($horaire) {
+=======
+	public static function supprimerHoraire ($horaire) {
+>>>>>>> Stashed changes
 		$db = MySQLManager::get();
 		
 		$query = "SELECT hop_id FROM ccn_horairepersonne WHERE hop_date = ? AND hop_heureDebut = ? AND hop_heureFin = ?";

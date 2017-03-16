@@ -334,15 +334,29 @@ mwl-calendar .cal-day-selected {
 mwl-calendar .event {
   display: block;
   background-color: #c3c3c3;
-  width: 12px;
-  height: 12px;
+  width: 30px;
+  height: 30px;
   margin-right: 2px;
   margin-bottom: 2px;
   -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
+  border-radius: 30px;
   border: 1px solid #ffffff;
+  
 }
+
+mwl-calendar .event:after {
+    color: black;
+    content : "jv";
+    text-align: center;
+    /*padding: 0px 0px 0px 4px;*/
+    top: 0px;
+    left: 8px;
+    position:relative;
+    font-weight: bold;
+    font-size: 13px;
+}
+
 mwl-calendar .event-block {
   display: block;
   background-color: #c3c3c3;

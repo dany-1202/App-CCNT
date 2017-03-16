@@ -11,4 +11,6 @@ ctrlCCNT.controller('planningController', function($timeout, $scope, moment, cal
 	$scope.$on('$destroy', function() {
 	     	calendarConfig.dateFormats.hour = originalFormat; // reset for other demos
     	});
+
+	
 });
