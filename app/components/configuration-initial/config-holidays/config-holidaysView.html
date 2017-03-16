@@ -60,7 +60,7 @@
 					<md-input-container class="centrer" style="margin-bottom:-4px">
 						<label>Date de fin</label>
 
-						<md-datepicker ng-model="dateDay.dateFin" name="dateFieldFin" md-min-date="dateDay.dateDebut">
+						<md-datepicker ng-model="dateDay.dateFin" name="dateFieldFin" md-min-date="dateValide">
 						</md-datepicker>
 
 						<div ng-messages="formPlageFin.dateFieldFin.$error">
@@ -114,7 +114,7 @@
 						</td>
 					</tr>
 					<tr ng-repeat="item in plagesEvents" ng-class="{ligne : ($index == 0)}" >
-						<td>Plage</td>
+						<td>Période</td>
 						<td>{{item.title}}</td>
 						<td>{{item.date}}</td>
 						<td>{{item.dateDebut}}</td>

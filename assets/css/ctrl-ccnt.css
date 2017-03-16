@@ -9,6 +9,10 @@ Description : Feuille de style pour l'ensemble de l'application
     color : white;
 }
 
+.md-button:disabled {
+    cursor:not-allowed;
+}
+
 .none{
     display: none!important;
 }

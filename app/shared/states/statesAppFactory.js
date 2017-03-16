@@ -11,6 +11,13 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	state.freq = null; // Choix sur la fréquence des coupures
 	state.selectedD = []; // Choix des jours avec coupures
 	state.affDefinitif = true;
+  	state.cal = null;
+  	state.affHoraire = true;
+  	
+  	state.changeCal = function (cal, index) {
+  		state.cal = angular.copy(cal);
+  		state.affHoraire = (index == 0) ? false : true;
+  	}
   	
   	state.changeAffDefinitif = function () {
   		state.affDefinitif = false;

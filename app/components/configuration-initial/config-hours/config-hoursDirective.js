@@ -33,6 +33,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
 			console.log($scope.cal);
 			
+			
 			$scope.affInfos = false;
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -189,7 +190,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			/*****************************************************************************************\
 			*              Affichage de la fenêtre modale avec tous les jours de la semaine           *
 			\*****************************************************************************************/
-
+			
 			/* Controleur de la modale */
 			function chooseDaysController($scope, $mdDialog) {
 			  	$scope.days = [
@@ -290,6 +291,50 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			    	// Ici il annule ça ne fait rien 
 				});
 		  	}
+		  	/*****************************************************************************************\
+		  			* Gestion de la modal modification des horaires *                        
+		  	\*****************************************************************************************/
+		  	
+		  	/* Controleur de la modale */
+			function modifCalController($scope, $mdDialog, State) {
+				$scope.cal = State.cal;
+				$scope.affHoraire = State.affHoraire;
+		    	$scope.hide = function() {
+		      		$mdDialog.hide();
+		    	};
+
+		    	$scope.cancel = function() {
+		      		$mdDialog.cancel();
+		    	};
+
+		    	$scope.answer = function() {
+		    		$mdDialog.hide($scope.cal);
+		    	}
+			};
+			
+		  	$scope.modifCal = function (ev, index) {
+		  		$scope.cal = $scope.tabCalendars[index];
+		  		State.changeCal($scope.cal, index);
+		  		$mdDialog.show({
+			      controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
+			      templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
+			      parent: angular.element(document.body), // Son parent (très important) - position, enfants, etc...
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: true // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(cal) {
+			    	$timeout(function () {
+						$scope.cal = angular.copy(cal);
+						$scope.tabCalendars[index] = angular.copy($scope.cal);
+						console.log($scope.tabCalendars);
+						State.changeCal($scope.cal, index);
+			    	}, 0);
+			    }, function() {
+			    	// Ici il annule ça ne fait rien 
+				});
+		  	}
+		  	/*///////////////////////////////////////////////////////////////////////////////////////*/
 		  	
 			/*****************************************************************************************\
 			*                                  Validations des horaires                               *
@@ -374,7 +419,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    		if (nb == 0) {
 	    			$timeout($scope.ctrl.next(4), 2);
 	    		} else {
-	    			NotifService.error('Configuration Non Terminé', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
+	    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
 	    		}
 	    	}
 
