@@ -23,11 +23,13 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			scope.messageEnlever = Const.STOPADD;
 			scope.messageAjoutPlage = Const.ADDPERIOD;
 			scope.btnAdd = Const.ADD;
-			scope.btnModif = Const.MODIFY; 
+			scope.btnModif = Const.MODIFY;
 
 			/* Définir un listener qui est appelé quand la date de début dans une plage change */
 			scope.$watch('dateDay.dateDebut', function(newValue, oldValue) {
 				if (scope.dateDay.dateDebut != '' && !scope.modifPlage) {
+					var obj = angular.copy(scope.dateDay.dateDebut);
+					scope.dateValide = new Date(obj.setDate(obj.getDate() + 1));
 					scope.dateDay.dateFin = angular.copy(newValue);
 					scope.dateDay.dateFin.setDate(scope.dateDay.dateFin.getDate() + 7)
 				}
