@@ -282,8 +282,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      vm.viewDate = newDay;
 	    };
 
-	    vm.dateClicked = function(date) {
-
+	    vm.dateClicked = function(date, day) {
+	    		console.log(day);
 	      var rawDate = moment(date).toDate();
 
 	      var nextView = {

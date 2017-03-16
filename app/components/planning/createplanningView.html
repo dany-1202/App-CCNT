@@ -1,15 +1,17 @@
+<<<<<<< Updated upstream
 <script id="customMonthCell.html" type="text/ng-template">
   <div class="cal-month-day">
 
     <span
       class="pull-right"
       data-cal-date
-      ng-click="vm.calendarCtrl.dateClicked(day.date)"
+      ng-click="vm.calendarCtrl.dateClicked(day.date);console.log(day);"
       ng-bind="day.label">
     </span>
 
-    <small style="position: absolute; bottom: 10px; left: 5px">
-      
+    <small style="position: absolute; bottom: 10px; left: 5px" ng-if="true">
+     {{day.date}}
+
     </small>
   </div>
 </script>
@@ -160,6 +162,92 @@
 				<br class="visible-xs visible-sm">
 				 
 				<div class="col-md-12 text-center">
+=======
+
+<div id="wrapper">
+	<ng-menu></ng-menu>
+	<div id="page-wrapper" ng-controller="CalendarCtrl as vm">
+	
+<div class="row">
+  <div class="col-md-12"><h3 class="centrer">Filtres</h3></div>
+</div>
+<div class="row">
+  
+  <div class="col-md-12">
+	<div class="col-md-6">
+	  <div class="centrer">
+		<table class="table table-responsive table--listhours">
+		  <thead>
+			<th colspan="8" class="centrer">Départements</th>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <td class="searchable-container" ng-repeat="dep in departments track by $index">
+				<div class="items col-xs-12">
+					<div class="info-block block-info clearfix">
+						<div data-toggle="buttons" ng-click="majAffDep(dep)" class="btn-group bizmoduleselect">
+							<label id="{{dep.id}}" class="btn btn-default{{dep.img}} active">
+								<div class="bizcontent">
+									<input type="checkbox" name="var_id[]" autocomplete="off" value="">
+									<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+									<h5>{{dep.name}}</h5>
+								</div>
+							</label>
+						</div>
+					</div>
+				</div>
+			  </td>
+			  <td ng-if="departments.length == 0"> Aucun département</td>
+			</tr>
+		  </tbody>
+		</table>
+	  </div>
+	</div>
+   
+	<div class="col-md-6">
+	  <table class="table table-responsive table--listhours">
+		  <thead>
+			<th colspan="8" class="centrer">Employés</th>
+		  </thead>
+		  <tbody>
+			<tr>
+			   <td class="searchable-container" ng-repeat="person in personsDeps track by $index">
+				<div class="items col-xs-12">
+					<div class="info-block block-info clearfix">
+						
+						<div data-toggle="buttons" ng-click="majAffPers(person)" class="btn-group bizmoduleselect">
+							<label class="btn btn-default active">
+								<div class="bizcontent">
+									<input type="checkbox" name="var_id[]" autocomplete="off" value="">
+									<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+									<h5>{{person.nom}}</h5>
+								</div>
+							</label>
+						</div>
+					</div>
+				</div>
+			  </td>
+			</tr>
+		  </tbody>
+		</table>
+	</div>
+  </div>
+</div>
+
+<hr>
+	
+	
+	
+		<div class="row" style="margin-top:50px">
+			<br class="visible-xs visible-sm">
+			 
+			<div class="col-md-12 text-center">
+				<div class="col-md-6 margin-bottom">
+					<button type="button" class="uk-button uk-button-secondary" data-toggle="collapse" data-target="#addHoraire">Ajouter Horaire  <span class="glyphicon glyphicon-time" aria-hidden="true"> </span></button>
+				</div>
+			 
+				<div class="col-md-6">
+>>>>>>> Stashed changes
 				   	<div class="uk-button-group">
 				        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'year'" ng-click="vm.cellIsOpen = false">Année</button>
 				        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'month'" ng-click="vm.cellIsOpen = false">Mois</button>
@@ -167,6 +255,7 @@
 				        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'day'" ng-click="vm.cellIsOpen = false">Jour</button>
 				    	</div>
 				</div>
+<<<<<<< Updated upstream
 				
 			</div>
 				<br>
@@ -217,10 +306,143 @@
 					cell-modifier="vm.modifyCell(calendarCell)"
 					cell-auto-open-disabled="true"
 					on-timespan-click="vm.timespanClicked(calendarDate, calendarCell)"
-					> <!--custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}-->
+					>
+					<!-- custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" -->
+
 				</mwl-calendar>
 
 				<br><br><br>
 				</div>
+=======
+			</div>
+
+		</div>
+
+
+		<div id="addHoraire" class="collapse">
+			<hr>
+				<table class="table table-responsive table--listhours">
+
+				<thead>
+					<tr>
+						<th>Département</th>
+						<th>Employé</th>
+						<th>Date</th>
+						<th>Service 1</th>
+						<th>Service 2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<i class="fa fa-circle" style="font-size:25px" ng-style="styleDep"></i><span style="font-size: 15px;margin-left: 8px;font-weight: bold">{{depSel}}</span>
+						</td>
+						<td>  
+							<select class="form-control" ng-change="majPerson()" ng-model="myPerson" style="width: 200px">
+								<option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
+							</select>
+							<span ng-if="myPerson == null" style="color:red">Veuillez choisir un employé !</span>
+						</td>
+						<td>
+							<p class="input-group" style="max-width: 250px">
+								<input
+									type="text"
+									class="form-control"
+									readonly
+									uib-datepicker-popup="dd MMMM yyyy"
+									ng-model="event.startsAt"
+									is-open="event.startOpen"
+									close-text="Close" >
+								<span class="input-group-btn">
+									<button
+										type="button"
+										class="btn btn-default"
+										ng-click="vm.toggle($event, 'startOpen', event)">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</button>
+								</span>
+							</p>
+						</td>
+						<td>
+							<div
+								uib-timepicker
+								ng-model="event.startsAt"
+								hour-step="1"
+								minute-step="15"
+								show-meridian="false">
+							</div>
+						</td>
+						<td>
+							<div
+								uib-timepicker
+								ng-model="event.endsAt"
+								hour-step="1"
+								minute-step="15"
+								show-meridian="false">
+							</div>
+						</td>
+					</tr>
+				</tbody>
+				
+			</table>
+
+			<div class="centrer">
+					<button type="button" class="btn btnGris" ng-click="addHoraire()">Ajouter</button>
+				</div>
+		</div>
+
+		<hr>
+			
+			<div class="row">
+				<div class="col-lg-5">
+					<button
+						class="btn bouton-np margin-left"
+						mwl-date-modifier
+						date="vm.viewDate"
+						decrement="vm.calendarView"
+						ng-click="vm.cellIsOpen = false">
+						<
+					</button>
+				</div>
+				<div class="col-lg-2">
+					<h2 class="text-center" style="margin:auto">{{ vm.calendarTitle }}</h2>
+				</div>
+				<div class="col-lg-5 ">
+					<button
+						class="btn bouton-np margin-right"
+						mwl-date-modifier
+						date="vm.viewDate"
+						increment="vm.calendarView"
+						ng-click="vm.cellIsOpen = false"
+						style="float:right">
+						>
+					</button>
+				</div>
+			</div>
+			<div>
+				
+
+			</div>
+
+			<br>
+
+			<mwl-calendar
+				events="vm.events"
+				view="vm.calendarView"
+				view-title="vm.calendarTitle"
+				view-date="vm.viewDate"
+				on-event-click="vm.eventClicked(calendarEvent)"
+				on-event-times-changed="vm.eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+				cell-is-open="vm.cellIsOpen"
+				day-view-start="00:00"
+				day-view-end="23:59"
+				day-view-split="30"
+				cell-modifier="vm.modifyCell(calendarCell)"
+				cell-auto-open-disabled="true"
+				on-timespan-click="vm.timespanClicked(calendarDate, calendarCell)">
+			</mwl-calendar>
+
+			<br><br><br>
+>>>>>>> Stashed changes
 			</div>
 </div>

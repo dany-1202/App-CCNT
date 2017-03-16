@@ -14,7 +14,7 @@ var ctrlCCNT = angular.module('ctrlCCNT'); // Importe les dépendances du parent
 
 ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService, $timeout, Popover){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
-	var routeSansLogin = ['/connexion'];
+	var routeSansLogin = ['/connexion','/employe/password'];
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
 	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition'];
@@ -53,7 +53,12 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 		//next.$$route.originalPath);
 		$timeout(Popover.hide, 0);
 		if (SessionService.get('user_token') == null) { // Si le service ne trouve aucune donnée pour le token
-			$location.path('/connexion'); // Redirection sur connexion
+			// Test si l'utilisateur doit se diriger vers la connexion ou vers le mot de passe
+			if((next.$$route.originalPath.indexOf(routeSansLogin[0]) != -1) || (next.$$route.originalPath.indexOf(routeSansLogin[1]) != -1)){
+				return ;
+			}else{
+				$location.path('/connexion');
+			}
 		} else {
 			/* Stocke les données nécessaires : 'token' et 'id' */
 			var data = {'user_id' : SessionService.get('user_id'), 'user_token' : SessionService.get('user_token')};
