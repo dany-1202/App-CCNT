@@ -45,6 +45,18 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 		  {primary: '#33691E', secondary: '#33691E'}, 
 		  {primary: '#212121', secondary: '#212121'}
   	];
+  	
+  	$scope.absences = [
+  		{name: 'Maladie'},
+  		{name: 'Congé'}, 
+  		{name: 'Vacance'}, 
+  		{name: 'Militaire'}, 
+  		{name: 'Formation'}, 
+  		{name: 'Maternité'}, 
+  		{name: 'Décès'}, 
+  		{name: 'Déménagement'},
+  	];
+  	
   	$scope.persons = [];
   	$scope.myPerson = null;
   	$scope.depSel = "";
@@ -52,7 +64,11 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 
   	$scope.personsDeps = [];
   	$scope.personsSel = [];
-	  
+  	$scope.absencesSel = [];
+
+	$scope.pauseService1 = $scope.nbPause[0];
+	$scope.pauseService2 = $scope.nbPause[0];
+	
   	var actions = [{
 	  	label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
 	  	onClick: function(args) {
@@ -192,6 +208,21 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 			}
 	  	});
 	}
+	
+	$scope.majAffDep = function(dep) {
+	  	var pos = searchDepID(dep.id);
+
+	  	if (pos != -1) {
+			$scope.departmentsSel.splice(pos, 1);
+			virerEmployeDep(dep);
+	  	} else {
+			$scope.departmentsSel.push(dep);
+			ajouterEmployeDep(dep);
+	  	}
+
+	  	vm.events.splice(0, vm.events.length); // Supprimer l'affichage
+	}
+	
 
 	$scope.majAffPers = function (person) {
 	  	var pos = searchPersonID(person.id);
@@ -290,9 +321,6 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 					  	cssClass: 'custom-event'
 					};
 					vm.events.push(horaire);
-			  	}
-			  	for (var i = 0; i < vm.events.length; i++) {
-			  		console.log($('#cal'+ vm.events[i].calendarEventId));
 			  	}
 			}
 	  	});

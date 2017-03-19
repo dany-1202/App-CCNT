@@ -40,7 +40,7 @@
 						  		<div class="centrer">
 									<table class="table table-responsive table--listhours">
 							  			<thead>
-											<th colspan="8" class="centrer">Départements</th>
+											<th colspan="8" class="centrer">Départements <i class="fa fa-home" style="font-size:2em" aria-hidden="true"></i></th>
 							  			</thead>
 							  			<tbody>
 											<tr>
@@ -69,7 +69,7 @@
 					<div class="col-md-6">
 				  		<table class="table table-responsive table--listhours">
 					  		<thead>
-								<th colspan="8" class="centrer">Employés</th>
+								<th colspan="8" class="centrer">Employés <i class="fa fa-users" style="font-size:2em" aria-hidden="true"></i></th>
 					 		</thead>
 					  		<tbody>
 								<tr>
@@ -81,7 +81,7 @@
 														<div class="bizcontent">
 															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
 															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
-															<h5>{{person.nom}}</h5>
+															<h5>{{person.nom}} (<strong>42 heures</strong>)</h5>
 														</div>
 													</label>
 												</div>
@@ -93,13 +93,50 @@
 						</table>
 					</div>
 			  	</div>
+			  	<div class="col-xs-12">
+				  		<table class="table table-responsive table--listhours">
+					  		<thead>
+								<th colspan="8" class="centrer">Absences <i class="fa fa-question-circle" style="font-size:2em"  aria-hidden="true"></i></th>
+					 		</thead>
+					  		<tbody>
+								<tr>
+						   			<td class="searchable-container animate-repeat" ng-repeat="abs in absences track by $index">
+										<div class="items col-xs-12">
+											<div class="info-block block-info clearfix">
+												<div data-toggle="buttons" ng-click="majAffAbs(abs)" class="btn-group bizmoduleselect">
+													<label class="btn btn-default active">
+														<div class="bizcontent">
+															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
+															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+															<h5>{{abs.name}}</h5>
+														</div>
+													</label>
+												</div>
+											</div>
+										</div>
+						  			</td>
+								</tr>
+					  		</tbody>
+						</table>
+					</div>
 			</div>
 					<button type="button" class="uk-button uk-button-secondary uk-margin-bottom" uk-toggle="target: #addHoraire; animation: uk-animation-fade">Ajouter Horaire  <span class="glyphicon glyphicon-time" aria-hidden="true"> </span></button>
 				</div>
 			</div>
+			<!--
+			<div id="offcanvas" uk-offcanvas>
+			    <div class="uk-offcanvas-bar">
+
+			        <h3>Gestion des</h3>
+
+			        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+			        <button class="uk-button uk-button-default uk-offcanvas-close uk-width-1-1 uk-margin" type="button">Fermer</button>
+
+			    </div>
+			</div>-->
 			
-			
-			<div id="addHoraire" hidden>
+			<div id="addHoraire" hidden style="overflow-x:auto;">
 				<hr>
 					<table class="table table-responsive table--listhours">
 
@@ -115,10 +152,10 @@
 					<tbody>
 						<tr>
 							<td>
-								<i class="fa fa-circle" style="font-size:25px" ng-style="styleDep"></i><span style="font-size: 15px;margin-left: 8px;font-weight: bold">{{depSel}}</span>
+								<i class="fa fa-circle" style="font-size:30px;margin-top:10px" ng-style="styleDep"></i><span style="font-size: 15px;margin-left: 8px;font-weight: bold;">{{depSel}}</span>
 							</td>
 							<td>  
-								<select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 200px">
+								<select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 200px; margin-top:5px">
 									<option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
 								</select>
 								<span ng-if="myPerson == null" style="color:red; display: block">Veuillez choisir un employé !</span>
@@ -129,22 +166,42 @@
 								</p>
 							</td>
 							<td>
-								<div
-									uib-timepicker
-									ng-model="event.startsAt"
-									hour-step="1"
-									minute-step="15"
-									show-meridian="false">
-								</div>
+								<md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
+									 <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<md-button ng-model="heureFin2"class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
+									 <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
+									 <i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<div class="uk-margin">
+							        <label class="uk-form-label" for="form-stacked-select">Pause</label>
+							        <div class="uk-form-controls">
+							    		<select class="uk-select" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"/>
+							        </div>
+							    </div>
+							 	<div class="uk-margin" >
+						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent1"> Absent</label>
+						        </div>
 							</td>
 							<td>
-								<div
-									uib-timepicker
-									ng-model="event.endsAt"
-									hour-step="1"
-									minute-step="15"
-									show-meridian="false">
-								</div>
+								<md-button ng-model="heureDebut2" class="btnS md-raised" ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
+								 	<strong>{{ heureDebut2 | date:'HH:mm' }}</strong>
+								 	<i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
+								 	<strong>{{ heureFin2 | date:'HH:mm' }}</strong>
+								 	<i class="espace-avant fa fa-clock-o"></i>
+								</md-button>
+								<div class="uk-margin">
+							        <label class="uk-form-label" for="form-stacked-select">Pause</label>
+							        <div class="uk-form-controls">
+							    		<select class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause"/>
+							        </div>
+							    </div>
+								<div class="uk-margin" >
+						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent2"> Absent</label>
+						        </div>
 							</td>
 						</tr>
 					</tbody>
