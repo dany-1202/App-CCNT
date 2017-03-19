@@ -248,7 +248,7 @@ class EmployeeDAO {
 		  	MySQLManager::close();
 		  	
 		  	//$to = $data['mail'];
-		  	$to = "dany.gomes.ifa@gmail.com";
+		  	$to = "joel.marquesd@gmail.com";
 		  	$subject = "Validation du compte";
 		  	$contents = '
 		  		<html>

@@ -31,8 +31,6 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			
 			$scope.tabCalendars = $scope.$parent.tabCalendars;
 			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
-			console.log($scope.cal);
-			
 			
 			$scope.affInfos = false;
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
@@ -86,7 +84,6 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			}
 
 	  		var res = $scope.isHoursCompleted();
-	  		console.log($scope.tabCalendars[0]);
   			$scope.affChoiceOpenning = ($scope.tabCalendars[0].state !== Const.INCOMP ? false : true); // Afficher la question du type d'ouverture
   			$scope.affCalendar = (res && $scope.tabCalendars[0].state !== Const.INCOMP? true : false); // Afficher le calendrier
 	  		
@@ -296,9 +293,12 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		  	\*****************************************************************************************/
 		  	
 		  	/* Controleur de la modale */
-			function modifCalController($scope, $mdDialog, State) {
+			function modifCalController($scope, $mdDialog, State, NotifService) {
 				$scope.cal = State.cal;
+				$scope.tabCalendars = angular.copy(State.tabCalendars);
+				console.log($scope.tabCalendars);
 				$scope.affHoraire = State.affHoraire;
+				
 		    	$scope.hide = function() {
 		      		$mdDialog.hide();
 		    	};
@@ -308,8 +308,13 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    	};
 
 		    	$scope.answer = function() {
-		    		$mdDialog.hide($scope.cal);
+		    		if ($scope.cal.errorName || $scope.cal.errorPeriod) {
+		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+		    		} else {
+		    			$mdDialog.hide($scope.cal);
+		    		}
 		    	}
+		    	
 			};
 			
 		  	$scope.modifCal = function (ev, index) {
@@ -348,7 +353,6 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				return nb;
 			}
 
-
 	    	$scope.validationHours = function () {
 	    		if (isHoursCompleted()) { // Ces heures sont toutes configurées
 	    			$scope.affOtherHours = true;
@@ -360,10 +364,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    		}
 	    	}
 	    	
-	    	
-	    	$scope.dayConfigured = function () {
-	    	}
-
+	    	$scope.dayConfigured = function () {}
 
 	    	$scope.isCurrentInfoCalCorrect = function () {
 	    		if ($scope.cal.errorName == true || $scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
@@ -422,52 +423,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
 	    		}
 	    	}
-
-	    	$scope.isNameValid = function () {
-	    		$scope.cal.errorName = false;
-	    		if ($scope.cal.name == "" || angular.isUndefined($scope.cal.name)) {
-	    			$scope.cal.errorName = true;
-	    		} else {
-	    			var nb = 0;
-	    			for (var i = 0; i < $scope.tabCalendars.length; i++) {
-	    				if ($scope.tabCalendars[i].name == $scope.cal.name) {
-	    					nb++;
-	    					if (nb > 1) {
-				    			$scope.cal.errorName = true;
-				    			NotifService.error('Nom période existant', "Le nom : <span class='uk-label uk-label-default'>" + $scope.cal.name+ "</span> existe déjà !");
-				    			return;
-	    					}
-	    				}
-	    			}
-	    		}
-	    	}
-	    	
-	    	var findOtherPeriods = function (dateDebut, dateFin) {
-	    		for (var i = 1; i < $scope.tabCalendars.length; i++) {
-	    			var per = $scope.tabCalendars[i].period;
-	    			if ($scope.tabCalendars[i].id != $scope.cal.id)  {
-		    			if ((dateDebut >= per.debut && dateDebut <= per.fin) || (dateFin >= per.debut && dateFin <= per.fin)) {
-		    				NotifService.error('Période déjà couverte', "La période choisi : <span class='uk-label uk-label-default'>" + moment($scope.cal.period.debut).format('D/MM/YYYY') + "</span> au <span class='uk-label uk-label-default'>" + moment($scope.cal.period.fin).format('D/MM/YYYY') + "</span> est déjà couverte par une autre période!");
-		    				return true;
-		    			}
-	    			}
-	    		}
-	    		return false;
-	    	}
-
-	    	$scope.isPeriodValid = function () {
-	    		$scope.cal.errorPeriod = false;
-	    		var dateDebut = $scope.cal.period.debut;
-	    		var dateFin = $scope.cal.period.fin;
-	    		if (dateDebut == "" || dateFin == "" || DateFactory.isPeriodValid(dateDebut, dateFin) || DateFactory.calculateNbDays(dateDebut, dateFin).day < 7) {
-				$scope.cal.errorPeriod = true;
-	    		} else {
-	    			if ($scope.tabCalendars.length > 2) {
-	    				$scope.cal.errorPeriod = findOtherPeriods(dateDebut, dateFin);
-	    			}
-	    		}
-	    	}
-
+	   	 	
     } // Fin du link
   } // Fin du return
 }); // Fin de la directive
