@@ -194,7 +194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 18 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"events-list\" ng-show=\"day.events.length > 0\">\n  <a\n    ng-repeat=\"event in day.events | orderBy:'startsAt' track by event.calendarEventId\"\n    href=\"javascript:;\"\n    ng-click=\"$event.stopPropagation(); vm.onEventClick({calendarEvent: event})\"\n    class=\"pull-left event\"\n    ng-class=\"event.cssClass\"\n    ng-style=\"{backgroundColor: event.color.primary}\"\n    ng-mouseenter=\"vm.highlightEvent(event, true)\"\n    ng-mouseleave=\"vm.highlightEvent(event, false)\"\n    tooltip-append-to-body=\"true\"\n    uib-tooltip-html=\"vm.calendarEventTitle.monthViewTooltip(event) | calendarTrustAsHtml\"\n    mwl-draggable=\"event.draggable === true\"\n    drop-data=\"{event: event, draggedFromDate: day.date.toDate()}\">\n  </a>\n</div>\n";
+	module.exports = "<div class=\"events-list\" ng-show=\"day.events.length > 0\">\n  <a\n  id='cal{{event.calendarEventId}}' event-data-after ng-repeat=\"event in day.events | orderBy:'startsAt' track by event.calendarEventId\"\n    href=\"javascript:;\"\n    ng-click=\"$event.stopPropagation(); vm.onEventClick({calendarEvent: event})\"\n    class=\"pull-left event\"\n    ng-class=\"event.cssClass\"\n    ng-style=\"{backgroundColor: event.color.primary}\"\n    ng-mouseenter=\"vm.highlightEvent(event, true)\"\n    ng-mouseleave=\"vm.highlightEvent(event, false)\"\n    tooltip-append-to-body=\"true\"\n    uib-tooltip-html=\"vm.calendarEventTitle.monthViewTooltip(event) | calendarTrustAsHtml\"\n    mwl-draggable=\"event.draggable === true\"\n    drop-data=\"{event: event, draggedFromDate: day.date.toDate()}\">\n  </a>\n</div>\n";
 
 /***/ },
 /* 19 */
@@ -2388,13 +2388,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    $scope.$on('calendar.refreshView', function() {
-
+	    	
 	      vm.weekDays = calendarHelper.getWeekDayNames();
-
+	      
 	      var monthView = calendarHelper.getMonthView(vm.events, vm.viewDate, vm.cellModifier);
 	      vm.view = monthView.days;
 	      vm.monthOffsets = monthView.rowOffsets;
-
 	      if (vm.cellAutoOpenDisabled) {
 	        toggleCell();
 	      } else if (!vm.cellAutoOpenDisabled && vm.cellIsOpen && vm.openRowIndex === null) {
@@ -2445,7 +2444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    vm.highlightEvent = function(event, shouldAddClass) {
-
+	    	console.log(event);
 	      vm.view.forEach(function(day) {
 	        delete day.highlightClass;
 	        delete day.backgroundColor;
@@ -2897,6 +2896,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    $element.bind('click', onClick);
+	    
+	    console.log($element);
 
 	    $scope.$on('$destroy', function() {
 	      $element.unbind('click', onClick);
@@ -3165,7 +3166,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  .controller('MwlDynamicDirectiveTemplateCtrl', ["$compile", "$scope", "$attrs", "$element", "$templateCache", "$log", "calendarConfig", function($compile, $scope, $attrs, $element, $templateCache, $log, calendarConfig) {
 
 	    $scope.$watch($attrs.overrides, function(overrides) {
-
 	      var templateName = calendarConfig.templates[$attrs.name];
 	      if (
 	        overrides &&
@@ -3181,10 +3181,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            'via a tool such as https://www.npmjs.com/package/gulp-angular-templatecache');
 	        }
 	      }
-	      var template = $templateCache.get(templateName);
-	      $element.html(template);
-	      $compile($element.contents())($scope);
-
+	      	var template = $templateCache.get(templateName);
+	 	
+	 		
+	      	$element.html(template);
+	      	$compile($element.contents())($scope);
 	    });
 
 	  }])
@@ -3219,7 +3220,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var win = angular.element($window);
-
+	    console.log(win);
 	    win.bind('resize', setDimensions);
 
 	    setDimensions();

@@ -15,15 +15,13 @@ ctrlCCNT.controller('configController', function ($route, $timeout, $rootScope, 
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
 	$scope.textStep = (window.innerWidth >= 700) ? "Étape: " : "";
 	
-	if (angular.isUndefined($scope.postaux)) {
-		Postaux.query(function(data) {$scope.postaux = data;});
-    }
+	/* Regarde si les nopostaux ont déjà été chargé ou pas */
+	if (angular.isUndefined($scope.postaux)) {Postaux.query(function(data) {$scope.postaux = data;});}
 
 	/* Savoir si c'est la première visite pour les afficher ou non les popovers : p
 		 - Si c'est la première fois les popovers sont à true sinon il passe à false
 	*/
 	$scope.tabCalendars = State.tabCalendars;
-
 	$scope.nbHoursChosen = null;
 
 	/* Définition des horaires de la semaine */
@@ -42,7 +40,7 @@ ctrlCCNT.controller('configController', function ($route, $timeout, $rootScope, 
 		{ id: 1, name: 'Cuisine', carre: 'carre-1', format: 'label-carre-100', error: false },
 		{ id: 2, name: 'Salle', carre: 'carre-2', format: 'label-carre-100', error: false },
 		{ id: 3, name: 'Bar', carre: 'carre-3', format: 'label-carre-50', error: false }
-	]; //Tableau contenant les departement
+	];
 
 	/* Définition des informations nécessaires pour l'établissement */
 	$scope.infoEtablissement = [
@@ -55,7 +53,7 @@ ctrlCCNT.controller('configController', function ($route, $timeout, $rootScope, 
 		{ id: 7, type: 'tel', name: Const.PHONEDIR, value: "", min: 10, max: 10, error: false, message: Const.ERRORPHONE, icon: Const.IPHONEDIR},
 		{ id: 8, type: 'email', name: Const.EMAIL, value: "", min: 6, max: 30, error: false, message: Const.ERROREMAIL, icon:Const.IEMAIL },
 		{ id: 9, type: 'text', name: Const.URL, value: "", min: 0, max: 30, error: false, message: Const.ERRORURL, icon:Const.IURL },
-	]; // Tableau contenant les noms des champs de l'établissement
+	];
 
 	$scope.ccntHeure = [
 		{ id: 1, name: "42 Heures", value: Const.CCNT1 },

@@ -55,6 +55,10 @@
 			return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 		}
 		
+		date.getDateBDD = function (date) {
+			return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+		}
+		
 		
 		date.getTimeStr = function (date) {
 			var d = moment(date);

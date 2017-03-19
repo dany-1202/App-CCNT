@@ -77,7 +77,7 @@
 				</h4>
 				<hr>
 				<div class="col-lg-12 centrer margin-bottom-xs">
-					<input type="text" ng-blur="isNameValid()" ng-class="{error: cal.errorName}" class="uk-input centrer" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
+					<input validator-name type="text" ng-blur="isNameValid(cal, tabCalendars, 1)" ng-class="{error: cal.errorName}" class="uk-input centrer" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
 					<div class="centrer">
 						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
 					</div>
@@ -101,18 +101,24 @@
 			<!-- Quand l'utilisateur clique sur oui -->
 			<div class="w3-container" style="min-height:50px!important" ng-show="affModifOtherHours2">
 				<div class="col-lg-3 centrer margin-bottom-xs">
-					<input type="text" class="uk-input centrer" ng-blur="isNameValid()" ng-class="{error: cal.errorName}" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
+					<input validator-name type="text" class="uk-input centrer" ng-blur="isNameValid(cal, tabCalendars, 1)" ng-class="{error: cal.errorName}" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
 					<div class="centrer">
 						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
 					</div>
 				</div>
 				<div class="col-lg-6 centrer margin-bottom-xs">
-					<div class="centrer" style="margin-top:-15px">
+					<div class="centrer">
 						<span class="red errorDep" ng-show="cal.errorPeriod">La période saisi n'est pas valide (minimum 1 semaine)</span>
 					</div>
-					Du <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de début"></md-datepicker>
-					au <md-datepicker ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid()" md-placeholder="Date de fin">
 					
+					<div ng-if="tabCalendars[0] !== cal" style="margin-top:0px" validator-period>
+						Du <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid(cal, tabCalendars)" md-placeholder="Date de début"></md-datepicker>
+						au <md-datepicker ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid(cal, tabCalendars)" md-placeholder="Date de fin">
+					</div>
+					
+					<div ng-if="tabCalendars[0] === cal" >
+						<h5 style="line-height:65px!important">Période : <strong>Tous les jours</strong></h5>
+					</div>
 				</div>
 				<button class="btn btn-primary" ng-click="addHour()">
 					Ajouter horaire
@@ -150,14 +156,14 @@
 						<span ng-if="$index > 0"> {{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</span>
 					</td>
 					<td>
-							<p ng-if="item.state == 'Complet'"><span style="margin-top: 10px!important" class="w3-tag completed w3-round">{{item.state}}</span></p>
-							<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>
+						<p ng-if="item.state == 'Complet'"><span style="margin-top: 10px!important" class="w3-tag completed w3-round">{{item.state}}</span></p>
+						<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>
 					</td>
 					<td style="line-height:55px!important">
-						<button md-whiteframe="1" class="btn btn-primary" ng-click="modifCal($event, $index)">
+						<button ng-if="!item.errorPeriod && !item.errorName && !affDefinitif" md-whiteframe="1" class="btn btn-primary" ng-click="modifCal($event, $index)">
 							<i class="fa fa-pencil" aria-hidden="true"></i>
 						</button>
-						<button ng-hide="$index == 0" md-whiteframe="1" class="btn btn-primary" ng-click="supCal(item, $index)">
+						<button ng-if="!item.errorPeriod && !item.errorName && !affDefinitif" ng-hide="$index == 0" md-whiteframe="1" class="btn btn-primary" ng-click="supCal(item, $index)">
 							<i class="fa fa-trash" aria-hidden="true"></i>
 						</button>
 					</td>

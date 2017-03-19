@@ -344,7 +344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var vm = this;
 
 	    vm.calendarEventTitle = calendarEventTitle;
-
+	    console.log(calendarEventTitle);
 	    function refreshView() {
 	      vm.dayViewSplit = vm.dayViewSplit || 30;
 	      vm.dayViewHeight = calendarHelper.getDayViewHeight(
@@ -462,9 +462,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  .module('ctrlCCNT')
 	  .controller('MwlCalendarHourListCtrl', ["$scope", "moment", "calendarHelper", "calendarConfig", function($scope, moment, calendarHelper, calendarConfig) {
 	    var vm = this;
-
 	    function updateDays() {
-
+	    	
 	      vm.dayViewSplit = parseInt(vm.dayViewSplit);
 	      var dayStart = (vm.dayViewStart || '00:00').split(':');
 	      var dayEnd = (vm.dayViewEnd || '23:59').split(':');
@@ -532,7 +531,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    vm.eventDropped = function(event, date) {
 	      var newStart = moment(date);
 	      var newEnd = calendarHelper.adjustEndDateFromStartDiff(event.startsAt, newStart, event.endsAt);
-
+	      
 	      vm.onEventTimesChanged({
 	        calendarEvent: event,
 	        calendarDate: date,
@@ -1012,6 +1011,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var startOfView = __WEBPACK_IMPORTED_MODULE_15_date_fns_set_minutes___default()(__WEBPACK_IMPORTED_MODULE_14_date_fns_set_hours___default()(__WEBPACK_IMPORTED_MODULE_3_date_fns_start_of_day___default()(viewDate), dayStart.hour), dayStart.minute);
 	    var endOfView = __WEBPACK_IMPORTED_MODULE_15_date_fns_set_minutes___default()(__WEBPACK_IMPORTED_MODULE_14_date_fns_set_hours___default()(__WEBPACK_IMPORTED_MODULE_16_date_fns_start_of_minute___default()(__WEBPACK_IMPORTED_MODULE_0_date_fns_end_of_day___default()(viewDate)), dayEnd.hour), dayEnd.minute);
 	    var previousDayEvents = [];
+	    console.log(_a);
 	    var dayViewEvents = getEventsInPeriod({
 	        events: events.filter(function (event) { return !event.allDay; }),
 	        periodStart: startOfView,
@@ -2290,7 +2290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    vm.calendarConfig = calendarConfig;
 	    vm.calendarEventTitle = calendarEventTitle;
 	    vm.openRowIndex = null;
-
+	  
 	    function toggleCell() {
 	      vm.openRowIndex = null;
 	      vm.openDayIndex = null;
@@ -2363,7 +2363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    vm.highlightEvent = function(event, shouldAddClass) {
-
+	    	console.log(event);
 	      vm.view.forEach(function(day) {
 	        delete day.highlightClass;
 	        delete day.backgroundColor;
