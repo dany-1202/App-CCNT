@@ -230,6 +230,7 @@ CREATE TABLE `ccnt`.`ccn_horairepersonne` (
   `hop_date` DATE NOT NULL , 
   `hop_heureDebut` TIME NOT NULL , 
   `hop_heureFin` TIME NOT NULL ,
+  `hop_pause` INT NOT NULL ,
 PRIMARY KEY (`hop_id`)) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
