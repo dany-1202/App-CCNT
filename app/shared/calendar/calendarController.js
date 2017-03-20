@@ -56,6 +56,9 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
   		{name: 'Décès'}, 
   		{name: 'Déménagement'},
   	];
+  	$scope.absences1 = angular.copy($scope.absences);
+
+  	$scope.motif = $scope.absences1[0];
   	
   	$scope.persons = [];
   	$scope.myPerson = null;
@@ -247,7 +250,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	var getDeps = function () {
 	  	var $req = $http.post("assets/php/getDepartementsAPI.php",{user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token')});
 	  	$req.then(function (message) {
-	  		console.log(message);
+	  		//console.log(message);
 			$scope.departments = message.data;
 			$scope.departmentsSel = angular.copy($scope.departments);
 	  	});
@@ -301,7 +304,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	var getHoraires = function (personne) {
 	  	var $req = $http.post("assets/php/getHorairesEmployeeAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token'), per_id: personne.id});
 	  	$req.then(function (message) {
-	  		console.log(message);
+	  		//console.log(message);
 			tabHoraires = message.data;
 			if (tabHoraires != 'false' || tabHoraires.length > 0 || angular.isUndefined(tabHoraires)) { // Si l'employé n'a pas d'horaires n'ajoute rien au calendrier
 			 	 for (var i = 0; i < tabHoraires.length; i++) {
@@ -329,10 +332,53 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 
 	$scope.addHoraire = function () {
 	  	if ($scope.event.title != "") {
-			var dateDebut = $scope.event.startsAt;
-			var heureDebut = getTimeDate(dateDebut);
+	  		var horaireDeuxJours = false;
+	  		var dateFin;
+	  		if(angular.isDate($scope.heureDebut1) && angular.isDate($scope.heureFin1)){
+	  			var dateDebut = $scope.event.startsAt;
+	  			var heureDebutS1 = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
+	  			var heureFinS1 = $scope.heureFin1.getHours()+":"+$scope.heureFin1.getMinutes()+":00";
+	  			var heureDebutS2 = $scope.heureDebut2.getHours()+":"+$scope.heureDebut2.getMinutes()+":00";
+	  			var heureFinS2 = $scope.heureFin2.getHours()+":"+$scope.heureFin2.getMinutes()+":00";
+	  			/*if($scope.heureFin2.getDay() != $scope.heureDebut2.getDay()){
+	  				horaireDeuxJours = true;
+	  				var heureInterFinS2 = "23:59:59";
+	  				var heureInterDebutS2 = "00:00:00";
+	  				var dateFin = moment(dateDebut).add(1, 'days').toDate();
+	  			}*/
+	  			var pos = searchDepNom($scope.depSel);
+				if (pos != -1) {vm.events.push($scope.event);}
+
+				// Insérer l'horaire' pour le premier service
+				var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1,'pause':$scope.pauseService1.value}); // Envoie de la requête en 'POST'
+				$res.then(function (message) {
+				});
+				//si le service est sur 2 jours 
+				/*if(horaireDeuxJours){
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureInterFinS2,'pause':0}); // Envoie de la requête en 'POST'
+					$res.then(function (message) {});
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateFin), 'heureDebut': heureInterDebutS2, 'heureFin': heureFinS2,'pause':0}); // Envoie de la requête en 'POST'
+					$res.then(function (message) {});
+				}else{*/
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value}); // Envoie de la requête en 'POST'
+					$res.then(function (message) {
+					});
+				/*};*/
+				
+
+				NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
+				reinitEvent();
+	  		}else{
+	  			var message = "Les heures ne sont pas correcte !";
+   				var titre = "Erreur de configuration";
+   				NotifService.error(titre, message);
+	  		}
+	  		
+
+			/*var dateDebut = $scope.event.startsAt;
+			var heureDebut = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
 			var heureFin = getTimeDate($scope.event.endsAt);
-			var dateFin = moment(new Date(dateDebut.getFullYear() + "-" + dateDebut.getMonth() + 1 + "-" + dateDebut.getDate())).subtract(1, 'hours').toDate();
+			
 			moment(dateFin).subtract(1, 'hours');
 			if (heureDebut > heureFin) {
 			  	//console.log(dateDebut.getFullYear() + "-" + dateDebut.getMonth() + "-" + dateDebut.getDay());
@@ -345,13 +391,13 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 			var pos = searchDepNom($scope.depSel);
 			if (pos != -1) {vm.events.push($scope.event);}
 
-			/* Insérer le département */
+			// Insérer l'horaire' 
 			var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebut, 'heureFin': heureFin}); // Envoie de la requête en 'POST'
 			$res.then(function (message) {
 			});
 
 			NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
-			reinitEvent();
+			reinitEvent();*/
 	  	}
 	}
 
@@ -444,6 +490,14 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  	}
 	};
 
+	$scope.validationAbsence = function(){
+		if ($scope.absent1 == true|| $scope.absent2 == true) {
+			$scope.motifAfficher = true;
+		}else{
+			$scope.motifAfficher = false;
+		};
+		console.log($scope.motif);
+	};
   });
 
 })();
