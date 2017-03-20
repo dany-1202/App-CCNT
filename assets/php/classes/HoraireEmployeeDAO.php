@@ -12,37 +12,20 @@ class HoraireEmployeeDAO {
 	*/
 	public static function getHorairesEmployee ($per_id) {
 		$db = MySQLManager::get();
-		
-		$query = "SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin, hop_pauseDebut, hop_pauseFin FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ?";
-		
+		$query = "SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ?";
 		if ($stmt=$db->prepare($query)) {
 			$stmt->bind_param('i', $per_id);
 		  	$stmt->execute();
-		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin, $hop_pauseDebut, $hop_pauseFin);
+		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
 		  	$array = array();
-<<<<<<< Updated upstream
-		    	$horaire = [];
-		    	while($stmt->fetch()) {
-			    	$horaire['id'] = $hop_id;
-			        	$horaire['date'] = $hop_date;
-			        	$horaire['heureDebut'] = $hop_heureDebut;
-			        	$horaire['heureFin'] = $hop_heureFin;
-			        	$horaire['pauseDebut'] = $hop_pauseDebut;
-			        	$horaire['pauseFin'] = $hop_pauseFin;
-			        	$array[] = $horaire;
-		    	}
-=======
-		    $horaire = [];
-		    while($stmt->fetch()) {
+	    	$horaire = [];
+	    	while($stmt->fetch()) {
 		    	$horaire['id'] = $hop_id;
-		        $horaire['date'] = $hop_date;
-		        $horaire['heureDebut'] = $hop_heureDebut;
-		        $horaire['heureFin'] = $hop_heureFin;
-		        $horaire['pauseDebut'] = $hop_pauseDebut;
-		        $horaire['pauseFin'] = $hop_pauseFin;
-		        $array[] = $horaire;
-		    }
->>>>>>> Stashed changes
+	        	$horaire['date'] = $hop_date;
+	        	$horaire['heureDebut'] = $hop_heureDebut;
+	        	$horaire['heureFin'] = $hop_heureFin;
+	        	$array[] = $horaire;
+	    	}
 		  	$stmt->close();
 		  	MySQLManager::close();
 	  		return $array;
@@ -51,11 +34,10 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
-	/* N'insére pas encore de pause */
 	public static function insertHoraire ($horaire) {
 		$db = MySQLManager::get();
 		/* Insertion dans la table ccn_personne */
-		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pauseDebut, hop_pauseFin) VALUES (?, ?, ?, NULL, NULL)";
+		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
 		  	$stmt->execute();
@@ -77,11 +59,7 @@ class HoraireEmployeeDAO {
 	}
 
 	/* N'insére pas encore de pause */
-<<<<<<< Updated upstream
 	public static function deleteHoraire ($horaire) {
-=======
-	public static function supprimerHoraire ($horaire) {
->>>>>>> Stashed changes
 		$db = MySQLManager::get();
 		
 		$query = "SELECT hop_id FROM ccn_horairepersonne WHERE hop_date = ? AND hop_heureDebut = ? AND hop_heureFin = ?";

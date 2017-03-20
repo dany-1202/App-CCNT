@@ -20,16 +20,19 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  		
 	  		$scope.modifCCNT = false; // Doit afficher la modification des heures soumis CCNT
 	  		$scope.modifHours = false; // Doit afficher les valeurs à modifier pour les heures soumis CCNT
-	  		$scope.choix = State.choix; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
-			$scope.freq = State.freq; // Choix sur la fréquence des coupures
+	  		//$scope.choix = State.choix; // Choix pour le type d'ouverture : 0 : En Continue ou 1 : Avec Coupure
+			//$scope.freq = State.freq; // Choix sur la fréquence des coupures
 			$scope.selectedD = State.selectedD; // Contient les jours ou des coupures ont lieu
 			$scope.affOtherHours = false;
+			$scope.affDefinitif = State.affDefinitif;
 			$scope.affModifOtherHours1 = false;
-			$scope.affModifOtherHours2 = false
-
+			$scope.affModifOtherHours2 = false;
+			$scope.fabModifType = false;
+			
 			$scope.tabCalendars = $scope.$parent.tabCalendars;
 			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
 			
+			$scope.affInfos = false;
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
 		  	/*****************************************************************************************\
@@ -39,12 +42,34 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			var testWithCoupures = function (objDay) {
 				return (objDay.matin.debut == Const.OPEN || objDay.matin.fin == Const.END || objDay.soir.debut == Const.OPEN || objDay.soir.fin == Const.END);
 			}
-
-			var testWithoutCoupures = function (objDay) {
-				return (objDay.matin.debut == Const.OPEN || objDay.soir.fin == Const.END);
+			
+			$scope.testWithCoupuresFin = function (objDay) {
+				return (objDay.matin.debut != Const.OPEN && (objDay.matin.fin == Const.END || objDay.soir.debut == Const.OPEN || objDay.soir.fin == Const.END));
 			}
 
-			$scope. isHoursCompleted = function () { // Toutes les heures ont été configurées
+			var testWithoutCoupures = function (objDay) {
+				return (objDay.matin.debut == Const.OPEN && objDay.soir.fin == Const.END);
+			}
+			
+			$scope.testWithoutCoupuresFin = function (objDay) {
+				return (objDay.matin.debut != Const.OPEN && objDay.soir.fin == Const.END);
+			}
+
+			$scope.isHoursCompleted = function () { // Toutes les heures ont été configurées
+				for (var i = 0; i < $scope.cal.hours.length; i++) {
+					var obj = $scope.cal.hours[i];
+					if (obj.pause.existe) {
+						// Tester que les 4 dates sont saisies
+						if ($scope.testWithCoupuresFin(obj)) {return false;}
+					} else {
+						// Tester seulement matin début et soir fin
+						if ($scope.testWithoutCoupuresFin(obj)) {return false;}
+					}
+				}
+				return true;
+			}
+			
+			$scope.allDaysCompleted = function () { // Toutes les heures ont été configurées
 				for (var i = 0; i < $scope.cal.hours.length; i++) {
 					var obj = $scope.cal.hours[i];
 					if (obj.pause.existe) {
@@ -59,15 +84,21 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			}
 
 	  		var res = $scope.isHoursCompleted();
-  			$scope.affChoiceOpenning = (res ? false : true); // Afficher la question du type d'ouverture
-  			$scope.affCalendar = (res ? true : false); // Afficher le calendrier
+  			$scope.affChoiceOpenning = ($scope.tabCalendars[0].state !== Const.INCOMP ? false : true); // Afficher la question du type d'ouverture
+  			$scope.affCalendar = (res && $scope.tabCalendars[0].state !== Const.INCOMP? true : false); // Afficher le calendrier
 	  		
 			/*****************************************************************************************\
 			*                           Gestion de l'affichage des popovers                           *
 			\*****************************************************************************************/
-
+			
+			$scope.hidePopovers = function () {
+				$timeout(function () {
+					$("div.popover").popover('hide');
+				}, 0);
+			}
+			
 			$scope.showHourModif = function () {
-				Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
+				Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.cal.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
 			}
 			
 			Popover.showPop(2, ['#choiceOpenning']);
@@ -79,20 +110,20 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			\*****************************************************************************************/
 
 			$scope.toggle = function (item, list) {
-			        	var idx = list.indexOf(item);
-			        	var pos = $scope.cal.hours.indexOf(item);
-			        	if (idx > -1) {
-				          	list.splice(idx, 1);
-				          	$scope.cal.hours[pos].pause.existe = false;
-		        		} else {
-				          	list.push(item);
-				          	$scope.cal.hours[pos].pause.existe = true;
-		       		}
-		    	};
+	        	var idx = list.indexOf(item);
+	        	var pos = $scope.cal.hours.indexOf(item);
+	        	if (idx > -1) {
+		          	list.splice(idx, 1);
+		          	$scope.cal.hours[pos].pause.existe = false;
+        		} else {
+		          	list.push(item);
+		          	$scope.cal.hours[pos].pause.existe = true;
+       			}
+	    	};
 
 			$scope.exists = function (item, list) {
-			        	return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
-		      	};
+	        	return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
+	      	};
 
 	  		/*****************************************************************************************\
 			*                                 Gestion des coupures                                    *
@@ -118,7 +149,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 	  		$scope.choiceOpenning = function (idChoix) {
 	  			$timeout(Popover.hide, 0);
-	  			$scope.choix = State.changeChoix(idChoix);
+	  			$scope.cal.choix = State.changeChoix(idChoix);
+	  			
 	  			if (idChoix != 1) {
 	  				$scope.afficherCalendar();
 	  				if (Popover.affHourModif) {
@@ -129,7 +161,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  		}
 
 	  		$scope.choiceFrequencyCoup = function (idFreq) {
-	  			$scope.choix.freq = State.changeFreq(idFreq);
+	  			$scope.cal.choix.freq = State.changeFreq(idFreq);
 	  			$timeout(Popover.hide, 0);
 	  			if (idFreq != 1) {
 	  				$scope.putAllDayPause();
@@ -143,10 +175,11 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 	  		$scope.modifChoiceOpenning = function () {
 	  			$timeout(Popover.hide, 0);
-	  			$scope.choix = null;
+	  			$scope.affInfos = !$scope.affInfos;
+	  			/*$scope.cal.choix = null;
 	  			$scope.removeAllDayPause();
 	  			$scope.affChoiceOpenning = true;
-	  			$scope.affCalendar = false;
+	  			$scope.affCalendar = false;*/
 	  		}
 
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
@@ -154,49 +187,94 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			/*****************************************************************************************\
 			*              Affichage de la fenêtre modale avec tous les jours de la semaine           *
 			\*****************************************************************************************/
-
+			
 			/* Controleur de la modale */
-			function DialogController($scope, $mdDialog) {
-			  	$scope.days = [ //{day: 'Tous les jours', chosen : false},
+			function chooseDaysController($scope, $mdDialog) {
+			  	$scope.days = [
 					{day: 'Lundi', chosen : false},
-			                    	{day: 'Mardi', chosen : false},
-			                    	{day: 'Mercredi', chosen : false},
-			                    	{day: 'Jeudi', chosen : false},
-			                    	{day: 'Vendredi', chosen : false},
-			                   	{day: 'Samedi', chosen : false},
-			                    	{day: 'Dimanche', chosen : false}
+                	{day: 'Mardi', chosen : false},
+                	{day: 'Mercredi', chosen : false},
+                	{day: 'Jeudi', chosen : false},
+                	{day: 'Vendredi', chosen : false},
+                   	{day: 'Samedi', chosen : false},
+                	{day: 'Dimanche', chosen : false}
 				];
 
-			    	$scope.hide = function() {
-			      		$mdDialog.hide();
-			    	};
+		    	$scope.hide = function() {
+		      		$mdDialog.hide();
+		    	};
 
-			    	$scope.cancel = function() {
-			      		$mdDialog.cancel();
-			    	};
+		    	$scope.cancel = function() {
+		      		$mdDialog.cancel();
+		    	};
 
-			    	$scope.answer = function() {
-			    		$mdDialog.hide($scope.days);
-			    	}
+		    	$scope.answer = function() {
+		    		$mdDialog.hide($scope.days);
+		    	}
+		    	
+		    	$scope.isChecked = function() {
+			    	return allDaysChosen();
+			  	};
+			  	
+		  	  	$scope.isIndeterminate = function() {
+				    return (countDaysChosen() > 0 &&
+				        countDaysChosen() < $scope.days.length);
+				};
+		    	
+		    	var allDaysChosen = function () {
+		    		for (var i = 0; i < $scope.days.length; i++) {
+		    			if (!$scope.days[i].chosen) {
+		    				return false;
+		    			}
+		    		}
+		    		return true;
+		    	}
+		    	
+		    	var countDaysChosen = function () {
+		    		var count = 0;
+		    		for (var i = 0; i < $scope.days.length; i++) {
+		    			if (!$scope.days[i].chosen) {
+		    				count += 1;
+		    			}
+		    		}
+		    		return count;
+		    	}
+		    	
+		    	var changeAllDays = function (val) {
+		    		for (var i = 0; i < $scope.days.length; i++) {
+		    			$scope.days[i].chosen = val;
+		    		}
+		    	}
+		    	
+		    	$scope.toggleAll = function () {
+		    		if (allDaysChosen()) {
+				      	changeAllDays(false);
+				    } else {
+				    	changeAllDays(true);
+				    }
+		    	}
+		    	
 			};
 
 			var fillTimeDays = function (days, objHour) {
+				
+				console.log(objHour);
 				for (var i = days.length - 1; i >= 0; i--) {
-			     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
-			     			$scope.cal.hours[i].matin.debut = moment(objHour.matin.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-			     			$scope.cal.hours[i].soir.fin = moment(objHour.soir.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-			     			if (objHour.pause.existe) {
-			     				$scope.cal.hours[i].matin.fin = moment(objHour.matin.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-			     				$scope.cal.hours[i].soir.debut = moment(objHour.soir.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();;
-			     			}
-			     		}
-		     		};
+		     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
+		     			$scope.cal.hours[i].matin.debut = moment(objHour.matin.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+		     			$scope.cal.hours[i].soir.fin = moment(objHour.soir.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+		     			if (objHour.pause.existe) {
+		     				$scope.cal.hours[i].matin.fin = moment(objHour.matin.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+		     				$scope.cal.hours[i].soir.debut = moment(objHour.soir.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();;
+		     			}
+		     		}
+	     		};
 			}
 
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
 			$scope.showAdvanced = function(ev, objHour) {
 			    $mdDialog.show({
-			      controller: DialogController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
+			      controller: chooseDaysController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
 			      templateUrl: 'app/components/configuration-initial/config-hours/views/chooseDaysView.html',
 			      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
 			      targetEvent: ev,
@@ -204,12 +282,64 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
 			    })
 			    .then(function(days) {
-				fillTimeDays(days, objHour); // Je met à jour les jours respectifs
+					fillTimeDays(days, objHour); // Je met à jour les jours respectifs
 			    	$scope.showDivOtherHours();
 			    }, function() {
 			    	// Ici il annule ça ne fait rien 
 				});
 		  	}
+		  	/*****************************************************************************************\
+		  			* Gestion de la modal modification des horaires *                        
+		  	\*****************************************************************************************/
+		  	
+		  	/* Controleur de la modale */
+			function modifCalController($scope, $mdDialog, State, NotifService) {
+				$scope.cal = State.cal;
+				$scope.tabCalendars = angular.copy(State.tabCalendars);
+				console.log($scope.tabCalendars);
+				$scope.affHoraire = State.affHoraire;
+				
+		    	$scope.hide = function() {
+		      		$mdDialog.hide();
+		    	};
+
+		    	$scope.cancel = function() {
+		      		$mdDialog.cancel();
+		    	};
+
+		    	$scope.answer = function() {
+		    		if ($scope.cal.errorName || $scope.cal.errorPeriod) {
+		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+		    		} else {
+		    			$mdDialog.hide($scope.cal);
+		    		}
+		    	}
+		    	
+			};
+			
+		  	$scope.modifCal = function (ev, index) {
+		  		$scope.cal = $scope.tabCalendars[index];
+		  		State.changeCal($scope.cal, index);
+		  		$mdDialog.show({
+			      controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
+			      templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
+			      parent: angular.element(document.body), // Son parent (très important) - position, enfants, etc...
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: true // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(cal) {
+			    	$timeout(function () {
+						$scope.cal = angular.copy(cal);
+						$scope.tabCalendars[index] = angular.copy($scope.cal);
+						console.log($scope.tabCalendars);
+						State.changeCal($scope.cal, index);
+			    	}, 0);
+			    }, function() {
+			    	// Ici il annule ça ne fait rien 
+				});
+		  	}
+		  	/*///////////////////////////////////////////////////////////////////////////////////////*/
 		  	
 			/*****************************************************************************************\
 			*                                  Validations des horaires                               *
@@ -223,7 +353,6 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				return nb;
 			}
 
-
 	    	$scope.validationHours = function () {
 	    		if (isHoursCompleted()) { // Ces heures sont toutes configurées
 	    			$scope.affOtherHours = true;
@@ -234,7 +363,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    			// Afficher un message d'erreur
 	    		}
 	    	}
-
+	    	
+	    	$scope.dayConfigured = function () {}
 
 	    	$scope.isCurrentInfoCalCorrect = function () {
 	    		if ($scope.cal.errorName == true || $scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
@@ -248,13 +378,14 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    	$scope.addHour = function () {
 	    		if ($scope.isCurrentInfoCalCorrect()) {
 	    			var pos = $scope.tabCalendars.length;
-	    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true});
+	    			console.log($scope.tabCalendars[0].choix);
+	    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: angular.copy($scope.tabCalendars[pos-1].choix)});
 	    			$scope.cal = $scope.tabCalendars[pos];
+	    			$scope.affCalendar = true;
 	    		} else {
 	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 	    		}
 	    	}
-
 
 	    	$scope.addHoursToTab = function () {
 	    		if ($scope.isCurrentInfoCalCorrect()) {
@@ -266,6 +397,16 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 	    		}
 	    		
+	    	}
+	    	
+	    	$scope.supCal = function (item, index) {
+    			UIkit.modal.confirm("Voulez-vous vraiment supprimer l'horaire nomée : <strong>"+ $scope.tabCalendars[index].name + "</strong> ?", {center: true}).then(function() {
+			    	$timeout(function () {
+			    		$scope.tabCalendars.splice(index, 1);
+	    				$scope.cal = $scope.tabCalendars[index-1];
+	    				NotifService.success('Suppression Horaires', "L'horaire a été supprimé avec succès !");
+			    	}, 0);
+				});
 	    	}
 	
 	    	$scope.changeCal = function (item, index) {
@@ -279,55 +420,10 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    		if (nb == 0) {
 	    			$timeout($scope.ctrl.next(4), 2);
 	    		} else {
-	    			NotifService.error('Configuration Non Terminé', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
+	    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
 	    		}
 	    	}
-
-	    	$scope.isNameValid = function () {
-	    		$scope.cal.errorName = false;
-	    		if ($scope.cal.name == "" || angular.isUndefined($scope.cal.name)) {
-	    			$scope.cal.errorName = true;
-	    		} else {
-	    			var nb = 0;
-	    			for (var i = 0; i < $scope.tabCalendars.length; i++) {
-	    				if ($scope.tabCalendars[i].name == $scope.cal.name) {
-	    					nb++;
-	    					if (nb > 1) {
-				    			$scope.cal.errorName = true;
-				    			NotifService.error('Nom période existant', "Le nom : <span class='uk-label uk-label-default'>" + $scope.cal.name+ "</span> existe déjà !");
-				    			return;
-	    					}
-	    				}
-	    			}
-	    		}
-	    	}
-	    	
-	    	var findOtherPeriods = function (dateDebut, dateFin) {
-	    		for (var i = 1; i < $scope.tabCalendars.length; i++) {
-	    			var per = $scope.tabCalendars[i].period;
-	    			if ($scope.tabCalendars[i].id != $scope.cal.id)  {
-		    			if ((dateDebut >= per.debut && dateDebut <= per.fin) || (dateFin >= per.debut && dateFin <= per.fin)) {
-		    				NotifService.error('Période déjà couverte', "La période choisi : <span class='uk-label uk-label-default'>" + moment($scope.cal.period.debut).format('D/MM/YYYY') + "</span> au <span class='uk-label uk-label-default'>" + moment($scope.cal.period.fin).format('D/MM/YYYY') + "</span> est déjà couverte par une autre période!");
-		    				return true;
-		    			}
-	    			}
-	    		}
-	    		return false;
-	    	}
-
-	    	$scope.isPeriodValid = function () {
-	    		$scope.cal.errorPeriod = false;
-	    		var dateDebut = $scope.cal.period.debut;
-	    		var dateFin = $scope.cal.period.fin;
-	    		if (dateDebut == "" || dateFin == "" || DateFactory.isPeriodValid(dateDebut, dateFin) || DateFactory.calculateNbDays(dateDebut, dateFin).day < 7) {
-				$scope.cal.errorPeriod = true;
-	    		} else {
-	    			if ($scope.tabCalendars.length > 2) {
-	    				$scope.cal.errorPeriod = findOtherPeriods(dateDebut, dateFin);
-	    			}
-	    		}
-	    	}
-
+	   	 	
     } // Fin du link
   } // Fin du return
 }); // Fin de la directive

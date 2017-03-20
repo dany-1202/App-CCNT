@@ -16,6 +16,10 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover) {
 				var self = scope;
 				var CARRE = "carre-"; // Constante pour les objets du département (div#carre-id)
 
+				for (var i = 1; i <= scope.$parent.depart.length; i++) {
+					$('#' + CARRE + i).removeClass('transparence');
+				}
+				
 				/*****************************************************************************************\
 						* Gestion de l'affichage des popovers leur position en fonction de la largeur  *                        
 				\*****************************************************************************************/

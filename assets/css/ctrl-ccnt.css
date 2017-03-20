@@ -4,8 +4,18 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
+.tabCalActive {
+    background-color: black;
+    color : white;
+}
 
+.md-button:disabled {
+    cursor:not-allowed;
+}
 
+.none{
+    display: none!important;
+}
 
 .tout {
     text-align: center!important;
@@ -46,6 +56,11 @@ Description : Feuille de style pour l'ensemble de l'application
 
 .table--listhours tr:hover td {
     background-color: #ecf0f1!important;
+}
+
+.table--listhours tr.active td {
+    background-color: #ecf0f1!important;
+    font-weight: bold!important;
 }
 
 th {
@@ -562,7 +577,83 @@ div#carre-8:hover {
         text-align: center!important;
     }
 }
+/* Bar de progrès dans la configuration initiale avec l'ajustement du titre */
+.barProgress {
+    right: 28px;
+    width: 45%;
+}
+.titleConfig {
+    margin-top:0px;
+}
 
+.barSpan {
+        
+}
+
+.divSpan {
+    line-height: 40px;
+}
+
+
+@media(max-width:1245px) {
+    .barProgress {
+        width: 75%;
+        text-align: center!important;
+    }
+    .titleConfig {
+        text-align:center;
+        margin-top:50px;
+    }
+    
+    .navigation-cal {
+        background-color: red!important;
+        display: inline!important;
+        width: 100%;
+    }
+}
+
+@media(max-width:1118px) {
+     .barProgress {
+        width: 70%;
+        text-align: center!important;
+    }
+}
+
+@media(max-width:938px) {
+     .barProgress {
+        width: 66%;
+        text-align: center!important;
+    }
+}
+
+.title-planning {
+    margin-top:0px;
+}
+
+@media(max-width:769px) {
+    .barProgress {
+        text-align: center!important;
+        left: 0;
+        height: 22px;
+        width: 100%;
+    }
+    .divSpan{
+        line-height: 22px!important;
+    }
+    .barSpan {
+        font-size: 14px!important;
+        font-weight: bold;
+    }
+    .titleConfig {
+        text-align:center;
+        margin-top:50px;
+    }
+    .title-planning {
+        text-align:center;
+        margin-top:50px;
+    }
+}
+/***************************************/
 @media(max-width:1140px) {
     .div#grand-carre {
         width: 250px!important;
@@ -573,6 +664,31 @@ div#carre-8:hover {
         border: 2px solid black !important;
         border-radius: 1%!important;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.16) ,0 17px 50px 0 rgba(0,0,0,0.16) !important;
+    }
+}
+
+@media(max-width: 500px) {
+    .btngroup-viewcal {
+        display: grid!important;
+        margin-top: -25px!important;
+    }
+    .btngroup-viewcal:before {
+        content: "Vue - calendrier";
+        line-height: 10px!important;
+        font-size: 12px!important;
+        font-weight: bold;
+        width: 100%;
+        height: 10px;
+        margin-left:-1px;
+        color:black;
+        background-color: #27ae60!important;
+    }
+    .btngroup-viewcal button {
+        width: 100%!important;
+        text-align: center!important;
+    }
+    .btngroup-viewcal button:first-child {
+        margin-left:-1px!important;
     }
 }
 
@@ -727,6 +843,7 @@ div#carre-8:hover {
 }
 
 .hours-ccnt {
+    width: 250px!important;
     padding: 25px!important;
     border-top: 0 solid #212121;
     font-size: 18px;

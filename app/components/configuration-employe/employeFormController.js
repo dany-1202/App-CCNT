@@ -188,6 +188,7 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		var getHoraires = function () {
 			var $promise = $http.post('assets/php/getHorairesContratAPI.php', data);
 			$promise.then(function (message) {
+				console.log(message);
 				var tab = message.data;
 				$scope.horaire = tab;
 				$scope.monHoraire = $scope.horaire[0]; // Défini le premier horaire contrat par défaut

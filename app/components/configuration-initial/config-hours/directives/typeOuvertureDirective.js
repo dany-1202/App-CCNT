@@ -10,7 +10,7 @@
 				*                  Gestion de l'affichage de la question du type d'ouverture              *
 				\*****************************************************************************************/
 
-		      		/* Affiche le calendrier et cache la question */
+	      		/* Affiche le calendrier et cache la question */
 		  		$scope.afficherCalendar = function () {
 		  			$scope.affChoiceOpenning = false;
 		  			$scope.affCalendar = true;
@@ -40,11 +40,14 @@
 		  		}
 
 		  		$scope.endCoupures = function () {
-		  			$scope.afficherCalendar();
-		  			if (Popover.affHourModif) {
-						$timeout($scope.showHourModif, 400);
-						Popover.changeAffHourModif();
-					}
+					$timeout(function (){
+						$scope.afficherCalendar();
+			  			if (Popover.affHourModif) {
+							$timeout($scope.showHourModif, 400);
+							Popover.changeAffHourModif();
+						}
+						//$('#dropOppening').addClass('none');
+					}, 0);
 		  		}
 
 				/*///////////////////////////////////////////////////////////////////////////////////////*/
