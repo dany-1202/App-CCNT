@@ -35,26 +35,78 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
+	private static function validationPlage($db, $horaire) {
+		$req = "
+			SELECT *
+			FROM ccn_horairepersonne
+			JOIN ccn_travail ON tra_per_id = hop_id
+			WHERE tra_per_id = ? 
+			AND hop_date = ? 
+		";
+		
+		if ($stmt=$db->prepare($req)) {
+			$stmt->bind_param('is', $horaire['user_id'], $horaire['date']);
+		  	$stmt->execute();
+		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
+
+		  	if ($horaire['heureFin'] < $horaire['heureDebut']) {
+		  		$nbHeureParam = 24-$horaire['heureDebut'];
+		  		$nbHeureParam += $horaire['heureFin'];
+		  	} else {
+		  		$nbHeureParam = $horaire['heureFin'] - $horaire['heureDebut'];
+		  	}
+
+		  	while($stmt->fetch()) {
+		  		if ($hop_heureFin < $hop_heureDebut) {
+			  		$nbHeures = 24-$hop_heureDebut;
+			  		$nbHeures += $hop_heureFin;
+			  	} else {
+			  		$nbHeures = $hop_heureFin - $hop_heureDebut;
+			  	}
+			  	
+			  	if ($horaire['heureDebut'] >= $hop_heureDebut) {
+			  		if ($nbHeures >= $nbHeuresParam) {
+			  			return false
+			  		}
+			  	} else {
+			  		$diff = $hop_heureDebut - $horaire['heureDebut'];
+			  		if ($diff <= $nbHeuresParam) {
+			  			return false; // Conflit
+			  		}
+			  	}
+		  	}
+		  	return true; // Si pas de conflit
+		}
+	}
+
+
 	public static function insertHoraire ($horaire) {
 		$db = MySQLManager::get();
-		/* Insertion dans la table ccn_personne */
-		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause) VALUES (?, ?, ?,?)";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sssi', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'],$horaire['pause']);
-		  	$stmt->execute();
-		  	$hop_id = $stmt->insert_id;
-		  	$horaire['id'] = $hop_id;
-		  	$stmt->close();
 
-		  	$req = "INSERT INTO ccn_travail (tra_per_id, tra_hop_id) VALUES (?, ?)";
-		  	if ($stmtTra = $db->prepare($req)) {
-				$stmtTra->bind_param('ii', $horaire['per_id'], $horaire['id']);
-			  	$stmtTra->execute();
-			  	$stmtTra->close();
-			  	MySQLManager::close();
-		  		return $horaire;
+		if (validationPlage($db, $horaire)) {
+			/* Insertion dans la table ccn_personne */
+			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
+			if ($stmt = $db->prepare($query)) {
+				$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
+			  	$stmt->execute();
+			  	$hop_id = $stmt->insert_id;
+			  	$horaire['id'] = $hop_id;
+			  	$stmt->close();
+
+			  	$req = "INSERT INTO ccn_travail (tra_per_id, tra_hop_id) VALUES (?, ?)";
+			  	if ($stmtTra = $db->prepare($req)) {
+					$stmtTra->bind_param('ii', $horaire['per_id'], $horaire['id']);
+				  	$stmtTra->execute();
+				  	$stmtTra->close();
+				  	MySQLManager::close();
+			  		return $horaire;
+				}
 			}
 		}
+
+
+
+		
 		MySQLManager::close();
 		return -1;
 	}
