@@ -181,7 +181,10 @@
 							        </div>
 							    </div>
 							 	<div class="uk-margin" >
-						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent1"> Absent</label>
+						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()">Absent</label>
+						        </div>
+						        <div ng-show="motifAfficher" class="uk-margin">
+						            <label>Motif de l'absence :</label>
 						        </div>
 							</td>
 							<td>
@@ -200,7 +203,12 @@
 							        </div>
 							    </div>
 								<div class="uk-margin" >
-						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent2"> Absent</label>
+						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"> Absent</label>
+						        </div>
+						        <div ng-show="motifAfficher" class="uk-margin" >
+						            <label> 
+						            	<select class="uk-select" id="form-stacked-select" ng-model="motif" ng-options="p.name for p in absences1"/>
+						            </label>
 						        </div>
 							</td>
 						</tr>
