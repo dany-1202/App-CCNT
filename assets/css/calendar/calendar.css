@@ -32,10 +32,13 @@
 	background-color: #212121!important;
 }
 
+<<<<<<< Updated upstream
 .bouton-np:hover {
 	color: white!important;
 }
 
+=======
+>>>>>>> Stashed changes
 #tabFiltres td {
 	font-size: 18px!important;
 }
@@ -56,13 +59,20 @@
 		margin-top: -20px!important;
 		margin-bottom: 20px!important;
 	}
+<<<<<<< Updated upstream
 	.searchable-container{margin:-20px 0 0 0!important; display:inline!important;}
+=======
+>>>>>>> Stashed changes
 }
 
 .searchable-container{margin:20px 0 0 0}
 
 .searchable-container label.btn-default.active{background-color:#007ba7;color:#FFF}
+<<<<<<< Updated upstream
 .searchable-container label.btn-default{width:100%;height: 60px;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
+=======
+.searchable-container label.btn-default{width:100%;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
+>>>>>>> Stashed changes
 
 .searchable-container label.btn-default1.active{background-color:#00695c;color:#FFF}
 .searchable-container label.btn-default1{width:100%;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
@@ -89,7 +99,11 @@
 .searchable-container label.btn-default8{width:100%;border:1px solid #efefef; box-shadow:5px 8px 8px 0 #ccc;color:#FFF}
 
 
+<<<<<<< Updated upstream
 .searchable-container label .bizcontent{width:100%; height: 50px}
+=======
+.searchable-container label .bizcontent{width:100%;}
+>>>>>>> Stashed changes
 .searchable-container .btn-group{width:90%; margin:5px;}
 .searchable-container .btn span.glyphicon{
     	opacity: 0;
@@ -102,6 +116,7 @@
     	color:white!important;
 }
 
+<<<<<<< Updated upstream
 .searchable-container label h5 {
 	margin-top: 5px;
 }
@@ -114,3 +129,9 @@
 /*
 .custom-event a{
 }*/
+=======
+.btnGris {
+	background-color: #212121!important;
+	color: white!important;
+}
+>>>>>>> Stashed changes

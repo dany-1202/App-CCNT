@@ -236,8 +236,10 @@ class EmployeeDAO {
 		/* Insertion dans la table ccn_personne */
 		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
+
 			$token = uniqid() . uniqid() . uniqid();
 			$stmt->bind_param('sssssssissss', $data['nom'], $data['prenom'], $data['mail'], $token, $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
+
 		  	$stmt->execute();
 		  	$per_id = $stmt->insert_id;
 		  	$data['id'] = $per_id;
@@ -280,8 +282,10 @@ class EmployeeDAO {
 		$db = MySQLManager::get(); 
 		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_token = ?";
 		if ($stmt = $db->prepare($query)) {
+
 			$pwdCrypted = sha512($data['password']);
 			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
+
 		  	$stmt->execute();
 	  		MySQLManager::close();
 			return true;
