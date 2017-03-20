@@ -203,6 +203,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  	vm.events.splice(0, vm.events.length); // Supprimer l'affichage
 	  	var $req = $http.post("assets/php/getPersonnesFiltreDepAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'deps' : $scope.departmentsSel});
 	  	$req.then(function (message) {
+	  		
 			var tabPerson = message.data;
 			if (message.data.length > 0) { // Si il y a des données
 			  	for (var i = 0; i < tabPerson.length; i++) {
@@ -251,6 +252,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  	var $req = $http.post("assets/php/getDepartementsAPI.php",{user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token')});
 	  	$req.then(function (message) {
 	  		//console.log(message);
+	  		console.log(message);
 			$scope.departments = message.data;
 			$scope.departmentsSel = angular.copy($scope.departments);
 	  	});
@@ -306,6 +308,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  	$req.then(function (message) {
 	  		//console.log(message);
 			tabHoraires = message.data;
+			console.log(message);
 			if (tabHoraires != 'false' || tabHoraires.length > 0 || angular.isUndefined(tabHoraires)) { // Si l'employé n'a pas d'horaires n'ajoute rien au calendrier
 			 	 for (var i = 0; i < tabHoraires.length; i++) {
 					var hor = tabHoraires[i];
@@ -404,7 +407,6 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	/* Récupère les personnes avec leurs horaires et initialise le calendrier */
 	$scope.getPersons = function () {
 	  	var $res = $http.post("assets/php/getEmployeesAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')}); // Envoie de la requête en 'POST'
-	  
 	  	$res.then(function (message) { // Réponse de la promesse
 			var tabPerson = message.data; // Stocke le tableau d'objet
 			if (tabPerson.length > 0) { // Si il y a des données
