@@ -12,11 +12,11 @@ class HoraireEmployeeDAO {
 	*/
 	public static function getHorairesEmployee ($per_id) {
 		$db = MySQLManager::get();
-		$query = "SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ?";
+		$query = "SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin, hop_pause FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ?";
 		if ($stmt=$db->prepare($query)) {
 			$stmt->bind_param('i', $per_id);
 		  	$stmt->execute();
-		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
+		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin,$hop_pause);
 		  	$array = array();
 	    	$horaire = [];
 	    	while($stmt->fetch()) {
@@ -24,6 +24,7 @@ class HoraireEmployeeDAO {
 	        	$horaire['date'] = $hop_date;
 	        	$horaire['heureDebut'] = $hop_heureDebut;
 	        	$horaire['heureFin'] = $hop_heureFin;
+	        	$horaire['pause'] = $hop_pause;
 	        	$array[] = $horaire;
 	    	}
 		  	$stmt->close();
@@ -37,9 +38,9 @@ class HoraireEmployeeDAO {
 	public static function insertHoraire ($horaire) {
 		$db = MySQLManager::get();
 		/* Insertion dans la table ccn_personne */
-		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
+		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause) VALUES (?, ?, ?,?)";
 		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
+			$stmt->bind_param('sssi', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'],$horaire['pause']);
 		  	$stmt->execute();
 		  	$hop_id = $stmt->insert_id;
 		  	$horaire['id'] = $hop_id;
