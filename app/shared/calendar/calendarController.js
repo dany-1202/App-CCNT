@@ -91,7 +91,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 		  	$req.then(function (message) {
 			  	if (message.data != null) {
 			  		UIkit.modal.confirm('Voulez vous vraiment supprimer cet horaire de ' + person.nom, {center: true}).then(function() {
-					    	vm.events.splice(args.calendarEvent.calendarEventId, 1);
+				    	vm.events.splice(args.calendarEvent.calendarEventId, 1);
 						NotifService.success('Suppression Horaire', "L'horaire : " + dateDebut + " de l'employé : " + person.nom + " " + person.prenom + " a été supprimé avec succès");
 					}, function () {return;});
 					
@@ -341,34 +341,30 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  			var dateDebut = $scope.event.startsAt;
 	  			var heureDebutS1 = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
 	  			var heureFinS1 = $scope.heureFin1.getHours()+":"+$scope.heureFin1.getMinutes()+":00";
-	  			var heureDebutS2 = $scope.heureDebut2.getHours()+":"+$scope.heureDebut2.getMinutes()+":00";
-	  			var heureFinS2 = $scope.heureFin2.getHours()+":"+$scope.heureFin2.getMinutes()+":00";
-	  			/*if($scope.heureFin2.getDay() != $scope.heureDebut2.getDay()){
-	  				horaireDeuxJours = true;
-	  				var heureInterFinS2 = "23:59:59";
-	  				var heureInterDebutS2 = "00:00:00";
-	  				var dateFin = moment(dateDebut).add(1, 'days').toDate();
-	  			}*/
 	  			var pos = searchDepNom($scope.depSel);
 				if (pos != -1) {vm.events.push($scope.event);}
 
 				// Insérer l'horaire' pour le premier service
 				var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1,'pause':$scope.pauseService1.value}); // Envoie de la requête en 'POST'
 				$res.then(function (message) {
+					if (message.data == false) {
+						NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
+						return;
+					}
 				});
-				//si le service est sur 2 jours 
-				/*if(horaireDeuxJours){
-					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureInterFinS2,'pause':0}); // Envoie de la requête en 'POST'
-					$res.then(function (message) {});
-					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateFin), 'heureDebut': heureInterDebutS2, 'heureFin': heureFinS2,'pause':0}); // Envoie de la requête en 'POST'
-					$res.then(function (message) {});
-				}else{*/
+				if(angular.isDate($scope.heureDebut2) && angular.isDate($scope.heureFin2)){
+					var heureDebutS2 = $scope.heureDebut2.getHours()+":"+$scope.heureDebut2.getMinutes()+":00";
+	  				var heureFinS2 = $scope.heureFin2.getHours()+":"+$scope.heureFin2.getMinutes()+":00";
+	  				var pos = searchDepNom($scope.depSel);
+					if (pos != -1) {vm.events.push($scope.event);}
 					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value}); // Envoie de la requête en 'POST'
 					$res.then(function (message) {
+						if (message.data == false) {
+							NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
+							return;
+						}
 					});
-				/*};*/
-				
-
+				}
 				NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
 				reinitEvent();
 	  		}else{
@@ -376,7 +372,15 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
    				var titre = "Erreur de configuration";
    				NotifService.error(titre, message);
 	  		}
-	  		
+				//si le service est sur 2 jours 
+				/*if(horaireDeuxJours){
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureInterFinS2,'pause':0}); // Envoie de la requête en 'POST'
+					$res.then(function (message) {});
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateFin), 'heureDebut': heureInterDebutS2, 'heureFin': heureFinS2,'pause':0}); // Envoie de la requête en 'POST'
+					$res.then(function (message) {});
+				}else{*/
+					
+				/*};*/
 
 			/*var dateDebut = $scope.event.startsAt;
 			var heureDebut = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
