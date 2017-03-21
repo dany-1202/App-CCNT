@@ -2896,8 +2896,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    $element.bind('click', onClick);
-	    
-	    console.log($element);
 
 	    $scope.$on('$destroy', function() {
 	      $element.unbind('click', onClick);
