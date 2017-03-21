@@ -341,8 +341,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  			var dateDebut = $scope.event.startsAt;
 	  			var heureDebutS1 = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
 	  			var heureFinS1 = $scope.heureFin1.getHours()+":"+$scope.heureFin1.getMinutes()+":00";
-	  			var heureDebutS2 = $scope.heureDebut2.getHours()+":"+$scope.heureDebut2.getMinutes()+":00";
-	  			var heureFinS2 = $scope.heureFin2.getHours()+":"+$scope.heureFin2.getMinutes()+":00";
+	  			
 	  			/*if($scope.heureFin2.getDay() != $scope.heureDebut2.getDay()){
 	  				horaireDeuxJours = true;
 	  				var heureInterFinS2 = "23:59:59";
@@ -355,6 +354,11 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 				// Insérer l'horaire' pour le premier service
 				var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1,'pause':$scope.pauseService1.value}); // Envoie de la requête en 'POST'
 				$res.then(function (message) {
+					console.log(message);
+					if (message.data == false) {
+						NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
+						return;
+					}
 				});
 				//si le service est sur 2 jours 
 				/*if(horaireDeuxJours){
@@ -363,12 +367,20 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateFin), 'heureDebut': heureInterDebutS2, 'heureFin': heureFinS2,'pause':0}); // Envoie de la requête en 'POST'
 					$res.then(function (message) {});
 				}else{*/
-					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value}); // Envoie de la requête en 'POST'
-					$res.then(function (message) {
-					});
+					if(angular.isDate($scope.heureDebut2) && angular.isDate($scope.heureFin2)){
+						var heureDebutS2 = $scope.heureDebut2.getHours()+":"+$scope.heureDebut2.getMinutes()+":00";
+		  				var heureFinS2 = $scope.heureFin2.getHours()+":"+$scope.heureFin2.getMinutes()+":00";
+						var pos = searchDepNom($scope.depSel);
+						if (pos != -1) {vm.events.push($scope.event);}
+						var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value}); // Envoie de la requête en 'POST'
+						$res.then(function (message) {
+							if (message.data == false) {
+								NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
+								return;
+							}
+						});
+					}
 				/*};*/
-				
-
 				NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
 				reinitEvent();
 	  		}else{

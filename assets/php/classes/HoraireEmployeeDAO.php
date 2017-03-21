@@ -12,11 +12,11 @@ class HoraireEmployeeDAO {
 	*/
 	public static function getHorairesEmployee ($per_id) {
 		$db = MySQLManager::get();
-		$query = "SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ?";
+		$query = "SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin, hop_pause FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ?";
 		if ($stmt=$db->prepare($query)) {
 			$stmt->bind_param('i', $per_id);
 		  	$stmt->execute();
-		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
+		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin,$hop_pause);
 		  	$array = array();
 	    	$horaire = [];
 	    	while($stmt->fetch()) {
@@ -24,6 +24,7 @@ class HoraireEmployeeDAO {
 	        	$horaire['date'] = $hop_date;
 	        	$horaire['heureDebut'] = $hop_heureDebut;
 	        	$horaire['heureFin'] = $hop_heureFin;
+	        	$horaire['pause'] = $hop_pause;
 	        	$array[] = $horaire;
 	    	}
 		  	$stmt->close();
@@ -36,7 +37,6 @@ class HoraireEmployeeDAO {
 
 	private static function validationPlage($db, $horaire) {
 		$req = "
-<<<<<<< HEAD
 			SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin
 			FROM ccn_horairepersonne
 			JOIN ccn_travail ON tra_hop_id = hop_id
@@ -48,68 +48,30 @@ class HoraireEmployeeDAO {
 		  	$stmt->execute();
 		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
 		  	
-=======
-			SELECT *
-			FROM ccn_horairepersonne
-			JOIN ccn_travail ON tra_per_id = hop_id
-			WHERE tra_per_id = ? 
-			AND hop_date = ? 
-		";
-		
-		if ($stmt=$db->prepare($req)) {
-			$stmt->bind_param('is', $horaire['user_id'], $horaire['date']);
-		  	$stmt->execute();
-		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
-
->>>>>>> refs/remotes/origin/appCCNT
-		  	if ($horaire['heureFin'] < $horaire['heureDebut']) {
-		  		$nbHeureParam = 24-$horaire['heureDebut'];
-		  		$nbHeureParam += $horaire['heureFin'];
-		  	} else {
-		  		$nbHeureParam = $horaire['heureFin'] - $horaire['heureDebut'];
+		  	$dateDebut = new DateTime($horaire['heureDebut']);
+		  	$dateFin = new DateTime($horaire['heureFin']);
+		  	
+		  	if ($dateDebut > $dateFin) {
+		  		$dateFin->add(new DateInterval('P1D')); // Ajoute un jour à la date
 		  	}
-<<<<<<< HEAD
+		  	
+		  	$nbHeureParam = $dateFin->diff($dateDebut, true);
 		  	
 		  	while($stmt->fetch()) {
-		  		$nbHeures = 0;
-=======
-
-		  	while($stmt->fetch()) {
->>>>>>> refs/remotes/origin/appCCNT
-		  		if ($hop_heureFin < $hop_heureDebut) {
-			  		$nbHeures = 24-$hop_heureDebut;
-			  		$nbHeures += $hop_heureFin;
-			  	} else {
-			  		$nbHeures = $hop_heureFin - $hop_heureDebut;
-			  	}
-<<<<<<< HEAD
-			  	$dateA = date_create_from_format("H:i:s", $horaire['heureDebut']);
-			  	$dateB = date_create_from_format("H:i:s", $hop_heureDebut);
-			  	$dateF = date_create_from_format("H:i:s", $hop_heureFin);
-			  	if ($dateA->format('H:i:s') >= $dateB->format('H:i:s')) {
-			  		if ($dateA->format('H:i:s') < $dateF->format('H:i:s')) {
-			  			$dif = $horaire['heureDebut'] - $hop_heureDebut;
-				  		if ($dif >= $nbHeureParam) {
-				  			return false; // Conflit
-				  		}
+		  		$dateDebutComp = new DateTime($hop_heureDebut);
+		  		$dateFinComp = new DateTime($hop_heureFin);
+		  		
+		  		if ($dateDebutComp > $dateFinComp) {
+		  			$dateFinComp->add(new DateInterval('P1D')); // Ajoute un jour à la date
+		  		}
+		  		
+			  	if ($dateDebut >= $dateDebutComp) {
+			  		if ($dateDebut <= $dateFinComp) {
+			  			return false;
 			  		}
 			  	} else {
-			  		if ($dateA->format('H:i:s') < $dateF->format('H:i:s')) {
-			  			$diff = $hop_heureDebut - $horaire['heureDebut'];
-				  		if ($diff <= $nbHeureParam) {
-				  			return false; // Conflit
-				  		} 
-=======
-			  	
-			  	if ($horaire['heureDebut'] >= $hop_heureDebut) {
-			  		if ($nbHeures >= $nbHeuresParam) {
-			  			return false
-			  		}
-			  	} else {
-			  		$diff = $hop_heureDebut - $horaire['heureDebut'];
-			  		if ($diff <= $nbHeuresParam) {
-			  			return false; // Conflit
->>>>>>> refs/remotes/origin/appCCNT
+			  		if ($dateFin >= $dateDebutComp) {
+			  			return false;
 			  		}
 			  	}
 		  	}
@@ -120,7 +82,6 @@ class HoraireEmployeeDAO {
 
 	public static function insertHoraire ($horaire) {
 		$db = MySQLManager::get();
-<<<<<<< HEAD
 		if (HoraireEmployeeDAO::validationPlage($db, $horaire)) {
 			/* Insertion dans la table ccn_personne */
 			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
@@ -130,20 +91,6 @@ class HoraireEmployeeDAO {
 			  	$hop_id = $stmt->insert_id;
 			  	$horaire['id'] = $hop_id;
 			  	$stmt->close();
-
-=======
-
-		if (validationPlage($db, $horaire)) {
-			/* Insertion dans la table ccn_personne */
-			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
-			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
-			  	$stmt->execute();
-			  	$hop_id = $stmt->insert_id;
-			  	$horaire['id'] = $hop_id;
-			  	$stmt->close();
-
->>>>>>> refs/remotes/origin/appCCNT
 			  	$req = "INSERT INTO ccn_travail (tra_per_id, tra_hop_id) VALUES (?, ?)";
 			  	if ($stmtTra = $db->prepare($req)) {
 					$stmtTra->bind_param('ii', $horaire['per_id'], $horaire['id']);
@@ -154,10 +101,6 @@ class HoraireEmployeeDAO {
 				}
 			}
 		}
-
-
-
-		
 		MySQLManager::close();
 		return 0;
 	}
