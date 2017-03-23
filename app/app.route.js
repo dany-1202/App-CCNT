@@ -13,8 +13,8 @@ var ctrlCCNT = angular.module('ctrlCCNT');
  * La configuration des routes de l'applications est faites dans la procédures suivante.
  * Si le chemin n'est pas trouvé l'application redirige l'utilisateur vers la page connexion.
 **/
-ctrlCCNT.config(['$routeProvider',
-  	function($routeProvider) {
+ctrlCCNT.config(['$routeProvider','$locationProvider',
+  	function($routeProvider, $locationProvider) {
         // $routeProvider essentiel pour la configuration des routes
     	$routeProvider
 
@@ -60,7 +60,7 @@ ctrlCCNT.config(['$routeProvider',
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
 		})
-		
+		$locationProvider.html5Mode(true);
  	}
 ]);
 

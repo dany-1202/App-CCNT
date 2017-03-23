@@ -2290,7 +2290,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    vm.calendarConfig = calendarConfig;
 	    vm.calendarEventTitle = calendarEventTitle;
 	    vm.openRowIndex = null;
-	  
 	    function toggleCell() {
 	      vm.openRowIndex = null;
 	      vm.openDayIndex = null;
@@ -2476,7 +2475,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var vm = this;
 	    vm.calendarConfig = calendarConfig;
 	    vm.calendarEventTitle = calendarEventTitle;
-
 	    vm.isCollapsed = true;
 	    $scope.$watch('vm.isOpen', function(isOpen) {
 	      //events must be populated first to set the element height before animation will work
@@ -3568,11 +3566,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  .factory('calendarEventTitle', ["calendarDateFilter", "calendarTruncateEventTitleFilter", function(calendarDateFilter, calendarTruncateEventTitleFilter) {
 
 	    function yearView(event) {
-	      return event.title + ' (' + calendarDateFilter(event.startsAt, 'datetime', true) + ')';
+	      return event.title + ' (' + calendarDateFilter(event.startsAt, 'datetime', true) + ')' + ' (' + calendarDateFilter(event.endsAt, 'datetime', true) + ')';
 	    }
 
 	    function monthView(event) {
-	      return event.title + ' (' + calendarDateFilter(event.startsAt, 'time', true) + ')';
+	      return event.title + ' (' + calendarDateFilter(event.startsAt, 'time', true) + ')' + ' (' + calendarDateFilter(event.endsAt, 'datetime', true) + ')';
 	    }
 
 	    function monthViewTooltip(event) {
