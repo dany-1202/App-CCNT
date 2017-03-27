@@ -84,9 +84,9 @@ class HoraireEmployeeDAO {
 		$db = MySQLManager::get();
 		if (HoraireEmployeeDAO::validationPlage($db, $horaire)) {
 			/* Insertion dans la table ccn_personne */
-			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
+			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause) VALUES (?, ?, ?, ?)";
 			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
+				$stmt->bind_param('sssi', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'], $horaire['pause']);
 			  	$stmt->execute();
 			  	$hop_id = $stmt->insert_id;
 			  	$horaire['id'] = $hop_id;

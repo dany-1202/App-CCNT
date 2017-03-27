@@ -20,7 +20,7 @@
 				</div>
 				<div  ng-if="item.id == 4" ng-class="{autocompleteError : item.error}">
 					
-					<md-autocomplete ng-blur="verification(item.id, $index)"
+					<md-autocomplete ng-blur="verificationDateNaissance(item.id)"
 						ng-disabled="isDisabled"
 						md-no-cache="noCache"
 						md-selected-item="selectedItem"

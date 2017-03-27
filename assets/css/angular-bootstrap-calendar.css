@@ -403,6 +403,7 @@ mwl-calendar .cal-row-fluid:hover {
 mwl-calendar .cal-month-day {
   height: 100px;
 }
+
 mwl-calendar [class*="cal-cell"]:hover,
 mwl-calendar .cell-focus,
 mwl-calendar [class*="cal-cell"] .drop-active,
@@ -524,7 +525,7 @@ mwl-calendar .cal-slide-content a.event-item {
 mwl-calendar a.event-item-edit,
 mwl-calendar a.event-item-delete,
 mwl-calendar a.event-item-action {
-  padding-left: 5px;
+  padding-left: 3px;
 }
 mwl-calendar .cal-year-box .cal-slide-content a.event-item,
 mwl-calendar .cal-year-box a.event-item-edit,

@@ -1,0 +1,44 @@
+<md-dialog aria-label="Informations Horaire" style="width:500px">
+  <md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
+  	<div class="spectre-card">
+      <div class="spectre-card-header">
+        <h4 class="spectre-card-title">{{event.title}}
+          <figure class="avatar avatar-xl right">
+            <img src="assets/images/bande{{event.personne.dep.img}}.jpg" />
+            <div style="background-color: {{event.color.primary}};" class="avatar-icon" />
+          </figure>
+        </h4>
+        <h6 class="spectre-card-subtitle">{{event.personne.dep.nom}}</h6>
+      </div>
+      <div class="spectre-card-body">
+        <div class="row">
+          <div class="col-lg-12">
+            
+            <span>Commence à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.startsAt | date:'HH:mm'}}</span></span> <br>
+            <span>Fini à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.endsAt | date:'HH:mm'}}</span></span> <br>
+            <span>Pause : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.pause}} minutes</span></span> <hr>
+            <h4 style="margin-top:-5px">Jour : {{event.startsAt | date:datetime}}</h4>
+            <div class="cal-day-info">
+              <mwl-calendar
+                events="events"
+                view="calendarView"
+                view-date="event.startsAt"
+                day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
+              </mwl-calendar>
+              <mwl-calendar ng-if="isTwoDays"
+                events="events"
+                view="calendarView"
+                view-date="event.endsAt"
+                day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
+              </mwl-calendar>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('')">
+      Fermer
+    </button>
+  </md-content>
+</md-dialog>

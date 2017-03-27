@@ -60,7 +60,7 @@ ctrlCCNT.config(['$routeProvider','$locationProvider',
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
 		})
-		$locationProvider.html5Mode(true);
+		//$locationProvider.html5Mode(true);
  	}
 ]);
 
