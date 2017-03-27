@@ -46,7 +46,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 		  {primary: '#212121', secondary: '#212121'}
   	];
   	
-  	$scope.absences = [
+  	/*$scope.absences = [
   		{name: 'Maladie'},
   		{name: 'Congé'}, 
   		{name: 'Vacance'}, 
@@ -55,10 +55,9 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
   		{name: 'Maternité'}, 
   		{name: 'Décès'}, 
   		{name: 'Déménagement'},
-  	];
-  	$scope.absences1 = angular.copy($scope.absences);
+  	];*/
 
-  	$scope.motif = $scope.absences1[0];
+  	$scope.absences = [];
   	
   	$scope.persons = [];
   	$scope.myPerson = null;
@@ -329,7 +328,6 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  	});
 	}
 
-
 	$scope.addHoraire = function () {
 	  	if ($scope.event.title != "") {
 	  		var horaireDeuxJours = false;
@@ -348,9 +346,14 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  			}*/
 	  			var pos = searchDepNom($scope.depSel);
 				if (pos != -1) {vm.events.push($scope.event);}
+				var absenceMotif = null;
+				if(motifAfficher == true){
+					absenceMotif = $scope.motif.id;
+					console.log(absenceMotif);
+				}
 
 				// Insérer l'horaire' pour le premier service
-				var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1,'pause':$scope.pauseService1.value}); // Envoie de la requête en 'POST'
+				var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1,'pause':$scope.pauseService1.value, 'absid':absenceMotif}); // Envoie de la requête en 'POST'
 				$res.then(function (message) {
 				});
 				//si le service est sur 2 jours 
@@ -360,7 +363,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateFin), 'heureDebut': heureInterDebutS2, 'heureFin': heureFinS2,'pause':0}); // Envoie de la requête en 'POST'
 					$res.then(function (message) {});
 				}else{*/
-					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value}); // Envoie de la requête en 'POST'
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value, 'absid':absenceMotif}); // Envoie de la requête en 'POST'
 					$res.then(function (message) {
 					});
 				/*};*/
@@ -420,6 +423,21 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 
 	$scope.getPersons(); // Initialiser le calendrier avec les données des horaires
 	
+	$scope.getAbsences = function(){
+		var $res = $http.post("assets/php/getAbsenceAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')}); // Envoie de la requête en 'POST'
+		$res.then(function (message){
+			var abs = message.data;
+			if(abs.length > 0){
+				for (var i = 0; i < abs.length; i++) {
+					$scope.absences.push(abs[i]);
+				};
+				$scope.absences1 = angular.copy($scope.absences);
+				$scope.motif = $scope.absences1[0];
+			}
+		});
+	};
+
+	$scope.getAbsences();
 	
 
 	vm.addEvent = function() {
@@ -491,12 +509,11 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	};
 
 	$scope.validationAbsence = function(){
-		if ($scope.absent1 == true|| $scope.absent2 == true) {
+		if ($scope.absent1 == true || $scope.absent2 == true) {
 			$scope.motifAfficher = true;
 		}else{
 			$scope.motifAfficher = false;
 		};
-		console.log($scope.motif);
 	};
   });
 
