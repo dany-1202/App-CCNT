@@ -376,10 +376,10 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		var insertionEmploye = function() {
 			var $promise = $http.post('assets/php/insertEmployeeAPI.php', $scope.myEmp);
 			$promise.then(function (message) {
-				
+				console.log(message);
 				var id = message.data;
 				if (id != -1) {
-				             SessionService.set('user_confEmp', true);
+	             	SessionService.set('user_confEmp', true);
 					NotifService.success('Insertion employé', "L'employé " + $scope.myEmp.nom + " a été inséré avec succès.");
 					$scope.retour();
 				} else {
