@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('planningController', function($timeout, $scope, moment, calendarConfig, $http, NotifService, $mdpTimePicker) {
+ctrlCCNT.controller('planningController', function($timeout, $scope, moment, calendarConfig, $http, NotifService, $mdpTimePicker, $mdDialog) {
 	$scope.affFiltre = false;
 	$scope.affAddHoraire = false;
 	var originalFormat = calendarConfig.dateFormats.hour;
@@ -15,7 +15,11 @@ ctrlCCNT.controller('planningController', function($timeout, $scope, moment, cal
     $scope.absent1 = false;
     $scope.absent2 = false;
     $scope.nbPause = [];
-
+	$scope.fabIsOpen = false;
+	$scope.hidden = true;
+	$scope.selectedMode = 'md-fling';
+	$scope.selectedDirection = 'up';
+	
 	
 	for (var nb = 0; nb <= 60; nb+=5) {
 		$scope.nbPause.push({name: nb + ' minutes', value:nb});

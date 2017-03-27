@@ -5,7 +5,6 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	$scope.user = {};
 	$scope.user.configuration = angular.copy(SessionService.get('user_configured'));
 	
-	
 	var user_confEmp = SessionService.get('user_confEmp');
 	if (angular.isString($scope.user.configuration)) {
 		if ($scope.user.configuration == 'false') {
