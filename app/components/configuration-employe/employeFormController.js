@@ -9,10 +9,13 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		$scope.user.configuration = SessionService.get('user_configured');
 		
 		var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token')};
-
+		var date = new Date();
+		date.setFullYear(1992);
+		var dateIn = new Date();
+		dateIn.setFullYear(2005);
 		/* Récupération de l'employé courant */
 		if($rootScope.myEmp == null){
-			$scope.myEmp = {id:'',nom:'',prenom:'',adresse:'',code:'',localite:'',mail:'',dep:'',dateIn:null,dateOut:null,horaire:'',particularite:null,contrat:'', dateNaissance: '', telFixe: '', telMobile: '', genre: '', adresseSup: ''};
+			$scope.myEmp = {id:'',nom:'',prenom:'',adresse:'',code:'',localite:'',mail:'',dep:'',dateIn:dateIn,dateOut:null,horaire:'',particularite:null,contrat:'', dateNaissance: date, telFixe: '', telMobile: '', genre: '', adresseSup: ''};
 			$scope.selectedItem = "";
 		} else {
 			$scope.myEmp = angular.copy($rootScope.myEmp);
@@ -78,10 +81,14 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 
 		function selectedItemChange(item) {
 			//$log.info('Item changed to ' + JSON.stringify(item));
+			console.log(item);
 			if (!angular.isUndefined(item)) {
 				var obj = angular.copy(item.display);
 				$scope.myEmp.code = State.getCode(obj);
 				$scope.myEmp.localite = State.capitalize(State.getVille(obj));
+			} else {
+				$scope.myEmp.code = null;
+				$scope.myEmp.localite = null;
 			}
 		}
 
@@ -252,16 +259,16 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 			};
 		}
 
-		$scope.validationCodePost = function () {
-			/*if ($scope.myEmp.code < 1000 || $scope.myEmp.code > 99999 ) {
+		$scope.validationCodePost = function (id) {
+			if ($scope.myEmp.code == null || $scope.myEmp.localite == null) {
 				$scope.validations[3].valide = false;
 			} else {
 				$scope.validations[3].valide = true;
-			};*/
+			}
 		}
 
 		$scope.validationLocalite = function () {
-			if ($scope.myEmp.localite.trim().length == 0) {
+			if ($scope.myEmp.localite == '' || $scope.myEmp.localite == null) {
 				$scope.validations[4].valide = false;
 			} else {
 				$scope.validations[4].valide = true;
@@ -418,6 +425,8 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 				} else { // Lancer la modification de l'employé 
 					modificationEmploye();
 				}
+			} else {
+				NotifService.error('Champs invalides', 'Tous les champs ne sont pas valides, veuillez les compléter ou modifier');
 			}
 		}
 

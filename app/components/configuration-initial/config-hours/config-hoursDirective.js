@@ -323,7 +323,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		  		$mdDialog.show({
 			      controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
 			      templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
-			      parent: angular.element(document.body), // Son parent (très important) - position, enfants, etc...
+			      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
 			      targetEvent: ev,
 			      clickOutsideToClose:true,
 			      fullscreen: true // Only for -xs, -sm breakpoints.

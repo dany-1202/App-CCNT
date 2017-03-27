@@ -4,6 +4,18 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
+.depSup {
+    text-align: center!important;
+    float: left!important;
+}
+
+@media(max-width: 991px) {
+    .depSup {
+        text-align: center!important;
+        float: initial!important;
+    }
+}
+
 .tabCalActive {
     background-color: black;
     color : white;
@@ -672,6 +684,16 @@ div#carre-8:hover {
         display: grid!important;
         margin-top: -25px!important;
     }
+    
+    .btngroup-filtrescal {
+        display: grid!important;
+        margin-top: -25px!important;
+    }
+    .btngroup-filtrescal button{
+        width: 100%!important;
+        text-align: center!important;
+    }
+    
     .btngroup-viewcal:before {
         content: "Vue - calendrier";
         line-height: 10px!important;

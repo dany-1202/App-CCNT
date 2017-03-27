@@ -54,6 +54,17 @@ INSERT INTO `ccnt`.`ccn_possede` (`pos_dep_id`, `pos_per_id`) VALUES ('2', '7');
 INSERT INTO `ccnt`.`ccn_possede` (`pos_dep_id`, `pos_per_id`) VALUES ('1', '8');
 INSERT INTO `ccnt`.`ccn_possede` (`pos_dep_id`, `pos_per_id`) VALUES ('3', '9');
 
+INSERT INTO `ccn_absence` (`abs_id`, `abs_nom`) VALUES
+(1, 'Maladie'),
+(2, 'Congé'),
+(3, 'Vacances'),
+(4, 'Militaire'),
+(5, 'Formation'),
+(6, 'Maternité'),
+(7, 'Décès'),
+(8, 'Déménagement'),
+(9, 'Autre');
+
 
 INSERT INTO `ccnt`.`ccn_typecontrat` (`typ_id`, `typ_nom`) VALUES ('1', 'Normal');
 INSERT INTO `ccnt`.`ccn_typecontrat` (`typ_id`, `typ_nom`) VALUES ('2', 'Apprentissage');

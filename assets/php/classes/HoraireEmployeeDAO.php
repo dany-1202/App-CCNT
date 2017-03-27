@@ -35,43 +35,52 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
+<<<<<<< HEAD
+	public static function insertHoraire ($horaire) {
+		$db = MySQLManager::get();
+		/* Insertion dans la table ccn_personne */
+		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause, hop_abs_id) VALUES (?, ?, ?,?, ?)";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('sssii', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'],$horaire['pause'],$horaire['absid']);
+=======
 	private static function validationPlage($db, $horaire) {
 		$req = "
-			SELECT *
+			SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin
 			FROM ccn_horairepersonne
-			JOIN ccn_travail ON tra_per_id = hop_id
+			JOIN ccn_travail ON tra_hop_id = hop_id
 			WHERE tra_per_id = ? 
 			AND hop_date = ? 
 		";
-		
 		if ($stmt=$db->prepare($req)) {
-			$stmt->bind_param('is', $horaire['user_id'], $horaire['date']);
+			$stmt->bind_param('is', $horaire['per_id'], $horaire['date']);
+>>>>>>> appCCNT
 		  	$stmt->execute();
 		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
-
-		  	if ($horaire['heureFin'] < $horaire['heureDebut']) {
-		  		$nbHeureParam = 24-$horaire['heureDebut'];
-		  		$nbHeureParam += $horaire['heureFin'];
-		  	} else {
-		  		$nbHeureParam = $horaire['heureFin'] - $horaire['heureDebut'];
+		  	
+		  	$dateDebut = new DateTime($horaire['heureDebut']);
+		  	$dateFin = new DateTime($horaire['heureFin']);
+		  	
+		  	if ($dateDebut > $dateFin) {
+		  		$dateFin->add(new DateInterval('P1D')); // Ajoute un jour à la date
 		  	}
-
+		  	
+		  	$nbHeureParam = $dateFin->diff($dateDebut, true);
+		  	
 		  	while($stmt->fetch()) {
-		  		if ($hop_heureFin < $hop_heureDebut) {
-			  		$nbHeures = 24-$hop_heureDebut;
-			  		$nbHeures += $hop_heureFin;
-			  	} else {
-			  		$nbHeures = $hop_heureFin - $hop_heureDebut;
-			  	}
-			  	
-			  	if ($horaire['heureDebut'] >= $hop_heureDebut) {
-			  		if ($nbHeures >= $nbHeuresParam) {
-			  			return false
+		  		$dateDebutComp = new DateTime($hop_heureDebut);
+		  		$dateFinComp = new DateTime($hop_heureFin);
+		  		
+		  		if ($dateDebutComp > $dateFinComp) {
+		  			$dateFinComp->add(new DateInterval('P1D')); // Ajoute un jour à la date
+		  		}
+		  		
+			  	if ($dateDebut >= $dateDebutComp) {
+			  		if ($dateDebut <= $dateFinComp) {
+			  			return false;
 			  		}
 			  	} else {
-			  		$diff = $hop_heureDebut - $horaire['heureDebut'];
-			  		if ($diff <= $nbHeuresParam) {
-			  			return false; // Conflit
+			  		if ($dateFin >= $dateDebutComp) {
+			  			return false;
 			  		}
 			  	}
 		  	}
@@ -82,17 +91,15 @@ class HoraireEmployeeDAO {
 
 	public static function insertHoraire ($horaire) {
 		$db = MySQLManager::get();
-
-		if (validationPlage($db, $horaire)) {
+		if (HoraireEmployeeDAO::validationPlage($db, $horaire)) {
 			/* Insertion dans la table ccn_personne */
-			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin) VALUES (?, ?, ?)";
+			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause) VALUES (?, ?, ?, ?)";
 			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
+				$stmt->bind_param('sssi', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'], $horaire['pause']);
 			  	$stmt->execute();
 			  	$hop_id = $stmt->insert_id;
 			  	$horaire['id'] = $hop_id;
 			  	$stmt->close();
-
 			  	$req = "INSERT INTO ccn_travail (tra_per_id, tra_hop_id) VALUES (?, ?)";
 			  	if ($stmtTra = $db->prepare($req)) {
 					$stmtTra->bind_param('ii', $horaire['per_id'], $horaire['id']);
@@ -103,12 +110,8 @@ class HoraireEmployeeDAO {
 				}
 			}
 		}
-
-
-
-		
 		MySQLManager::close();
-		return -1;
+		return 0;
 	}
 
 	/* N'insére pas encore de pause */
