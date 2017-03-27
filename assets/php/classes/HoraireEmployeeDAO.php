@@ -35,6 +35,14 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
+<<<<<<< HEAD
+	public static function insertHoraire ($horaire) {
+		$db = MySQLManager::get();
+		/* Insertion dans la table ccn_personne */
+		$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause, hop_abs_id) VALUES (?, ?, ?,?, ?)";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('sssii', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'],$horaire['pause'],$horaire['absid']);
+=======
 	private static function validationPlage($db, $horaire) {
 		$req = "
 			SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin
@@ -45,6 +53,7 @@ class HoraireEmployeeDAO {
 		";
 		if ($stmt=$db->prepare($req)) {
 			$stmt->bind_param('is', $horaire['per_id'], $horaire['date']);
+>>>>>>> appCCNT
 		  	$stmt->execute();
 		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
 		  	
