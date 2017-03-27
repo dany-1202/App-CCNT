@@ -247,8 +247,8 @@ class EmployeeDAO {
 		  	$stmt->close();
 		  	MySQLManager::close();
 		  	
-		  	//$to = $data['mail'];
-		  	$to = "joel.marquesd@gmail.com";
+		  	$to = $data['mail'];
+		  	//$to = "joel.marquesd@gmail.com";
 		  	$subject = "Validation du compte";
 		  	$contents = '
 		  		<html>
@@ -258,7 +258,7 @@ class EmployeeDAO {
 		  						Bonjour, <br/>
 		  						Votre compte vient tout juste d\'être créé. <br/> 
 		  						Veuillez l\'activer en cliquant sur le lien suivant : <br/>
-		  						<a href="http://localhost:8888/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
+		  						<a href="http://localhost/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
 		  					</p>
 		  				</div>
 		  			</body>
@@ -282,12 +282,18 @@ class EmployeeDAO {
 		$db = MySQLManager::get(); 
 		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_token = ?";
 		if ($stmt = $db->prepare($query)) {
-
-			$pwdCrypted = sha512($data['password']);
+			$pwdCrypted = hash('sha512', $data['password']);
 			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
 		  	$stmt->execute();
-	  		MySQLManager::close();
-			return true;
+		  	$stmt->close();
+		  	$query1 = "UPDATE ccn_personne SET per_token = NULL WHERE per_token = ?";
+		  	if ($stmt1 = $db->prepare($query1)) {
+		  		$stmt1->bind_param('s', $data['user_token']);
+		  		$stmt1->execute();
+		  		$stmt1->close();
+		  		MySQLManager::close();
+				return true;
+		  	}
 		}
 		MySQLManager::close();
 		return false;
