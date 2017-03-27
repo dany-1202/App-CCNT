@@ -13,10 +13,14 @@
       <div class="spectre-card-body">
         <div class="row">
           <div class="col-lg-12">
-            
-            <span>Commence à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.startsAt | date:'HH:mm'}}</span></span> <br>
-            <span>Fini à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.endsAt | date:'HH:mm'}}</span></span> <br>
-            <span>Pause : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.pause}} minutes</span></span> <hr>
+            <span ng-if="event.absence.absence" style="color:#2c3e50;font-size: 2em"> Absent <br> </span>
+            <span ng-if="event.absence.absence" style="color:#2c3e50;font-size: 1.2em"> Raison : {{event.absence.objet.nom}} <br><hr> </span>
+            <span ng-if="!event.absence.absence">Commence à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.startsAt | date:'HH:mm'}}</span><br></span> 
+            <span ng-if="event.absence.absence">À partir de : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.startsAt | date:'HH:mm'}}</span> <br></span>
+            <span ng-if="!event.absence.absence">Fini à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.endsAt | date:'HH:mm'}}</span><br></span> 
+            <span ng-if="event.absence.absence">Jusqu'à : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.endsAt | date:'HH:mm'}}</span><br></span> 
+            <span ng-hide="event.absence.absence">Pause : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.pause}} minutes</span><hr></span> 
+            <span ng-if="event.absence.absence">Durée : <span style="position: absolute;left: 150px!important;font-weight: bold">{{event.endsAt - event.startsAt | date:'H'}} heures</span><hr></span> 
             <h4 style="margin-top:-5px">Jour : {{event.startsAt | date:datetime}}</h4>
             <div class="cal-day-info">
               <mwl-calendar

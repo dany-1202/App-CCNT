@@ -28,7 +28,9 @@
                   <md-datepicker ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
                   <div ng-show="motifAfficher" class="uk-margin" >
                       <label for="form-stacked-select">Motif absence</label>
-                      <select class="uk-select" id="form-stacked-select" ng-model="motif" ng-options="p.name for p in absences1"></select>
+                      <select id="selMotif" class="uk-select" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+                        <option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+                      </select>
                   </div>
               </p>
           </div>
@@ -37,7 +39,7 @@
         <div class="row">
           <div class="col-lg-12">
           
-            <h3>Service 1 
+            <h3 style="border-bottom: 3px solid cadetblue;">Service 1 
               <label class="right" style="font-size: 1em">
                 <input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()"/> 
                 Absent
@@ -58,7 +60,7 @@
             <div class="text-center">
               <label class="uk-form-label" for="form-stacked-select">Pause</label>
               <div class="uk-form-controls">
-                <select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"></select>
+                <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"></select>
               </div>
             </div>
           </div>
@@ -66,7 +68,7 @@
         <hr class="uk-divider-icon">
         <div class="row">
           <div class="col-lg-12">
-              <h3>Service 2  
+              <h3 style="border-bottom: 3px solid lightgray;">Service 2  
                   <label class="right" style="font-size: 1em"><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"/> Absent</label>
               </h3>
               <div class="text-center">
@@ -82,7 +84,7 @@
               <div class="text-center">
                   <label class="uk-form-label" for="form-stacked-select">Pause</label>
                   <div class="uk-form-controls">
-                    <select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause"></select>
+                    <select style="font-size:1.2em" id="selPause2" class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause2"></select>
                   </div>
               </div>
           </div>

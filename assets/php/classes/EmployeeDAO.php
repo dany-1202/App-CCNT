@@ -92,35 +92,35 @@ class EmployeeDAO {
 				$i += 1;
 			}
 			$query = $query . ")";
-		}
-
+		}		
+		
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('i', $data['eta_id']);
 			/* Exécution de la requête */
-		    	$stmt->execute();
-		    	/* Lecture des variables résultantes */
-		    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
-		    	/* Récupération des valeurs */
-		    	$array = array();
-		    	$person = [];
-		    	$dep = [];
-		    	while($stmt->fetch()) {
-			    	$person['id'] = $per_id;
-			        	$person['nom'] = $per_nom;
-			        	$person['prenom'] = $per_prenom;
-			        	$person['admin'] = $per_admin;
-			        	$person['genre'] = $per_genre;
-			        	$person['dep_id'] = $dep_id;
-			        	$person['dep_nom'] = $dep_nom;
-			        	$dep['id'] = $dep_id;
-			        	$dep['nom'] = $dep_nom;
-			        	$dep['img'] = $dep_img;
-			        	$person['dep'] = $dep;
+	    	$stmt->execute();
+	    	/* Lecture des variables résultantes */
+	    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+	    	/* Récupération des valeurs */
+	    	$array = array();
+	    	$person = [];
+	    	$dep = [];
+	    	while($stmt->fetch()) {
+		    	$person['id'] = $per_id;
+	        	$person['nom'] = $per_nom;
+	        	$person['prenom'] = $per_prenom;
+	        	$person['admin'] = $per_admin;
+	        	$person['genre'] = $per_genre;
+	        	$person['dep_id'] = $dep_id;
+	        	$person['dep_nom'] = $dep_nom;
+	        	$dep['id'] = $dep_id;
+	        	$dep['nom'] = $dep_nom;
+	        	$dep['img'] = $dep_img;
+	        	$person['dep'] = $dep;
 				$array[] = $person;
-		    	}
+	    	}
 			$stmt->close();
-		    	MySQLManager::close();
-	  		return $array;
+	    	MySQLManager::close();
+  			return $array;
 		}
 		MySQLManager::close();
 		return null;

@@ -3649,11 +3649,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  .factory('calendarEventTitle', ["calendarDateFilter", "calendarTruncateEventTitleFilter", function(calendarDateFilter, calendarTruncateEventTitleFilter) {
 
 	    function yearView(event) {
-	      return '<span style="color:white;margin-bottom:5px">' + '<i class="fa fa-circle" style="color:' + event.color.primary + ';margin-right:8px"></i> <span style="font-size:1.2em;margin-right:5px">' + event.title + '</span> | <span style="color:#27ae60;font-weight:bold;font-size:1em;margin-right:5px;float:right;"> (' + calendarDateFilter(event.startsAt, 'datetime', true) + ')<span> ' + '<span style="color:#d35400;font-weight:bold;font-size:1em;margin-left:5px;float:right;">  (' + calendarDateFilter(event.endsAt, 'datetime', true) + ')' + '</span>' +' </span>';
+	    	if (event.absence.absence) {
+	      		return '<span style="color:white;margin-bottom:5px">' + '<i class="fa fa-circle" style="color:' + event.color.primary + ';margin-right:8px"></i> <span style="font-size:1.2em;margin-right:5px">' + event.title + '</span> | <span> Absent : ' + event.absence.objet.nom + ' </span><span style="color:#27ae60;font-weight:bold;font-size:1em;margin-right:5px;float:right;"> (' + calendarDateFilter(event.startsAt, 'datetime', true) + ')<span> ' + '<span style="color:#d35400;font-weight:bold;font-size:1em;margin-left:5px;float:right;">  (' + calendarDateFilter(event.endsAt, 'datetime', true) + ')' + '</span>' +' </span>';
+	    	} else {
+	      		return '<span style="color:white;margin-bottom:5px">' + '<i class="fa fa-circle" style="color:' + event.color.primary + ';margin-right:8px"></i> <span style="font-size:1.2em;margin-right:5px">' + event.title + '</span> | <span style="color:#27ae60;font-weight:bold;font-size:1em;margin-right:5px;float:right;"> (' + calendarDateFilter(event.startsAt, 'datetime', true) + ')<span> ' + '<span style="color:#d35400;font-weight:bold;font-size:1em;margin-left:5px;float:right;">  (' + calendarDateFilter(event.endsAt, 'datetime', true) + ')' + '</span>' +' </span>';
+	    	}
 	    }
 
 	    function monthView(event) {
-	      return '<span style="color:white;margin-bottom:5px">' + '<i class="fa fa-circle" style="color:' + event.color.primary + ';margin-right:8px"></i> <span style="font-size:1.2em;margin-right:5px">' + event.title + '</span> | <span style="color:#27ae60;font-weight:bold;font-size:1em;margin-left:5px">  (' + calendarDateFilter(event.startsAt, 'time', true) + ')' + '</span><span style="color:#d35400;font-weight:bold;font-size:1em;"> (' + calendarDateFilter(event.endsAt, 'time', true) + ')<span></span>';
+	    	if (event.absence.absence) {
+	    		return '<span style="color:white;margin-bottom:5px">' + '<i class="fa fa-circle" style="color:' + event.color.primary + ';margin-right:8px"></i> <span style="font-size:1.2em;margin-right:5px">' + event.title + '</span> | <span> Absent : ' + event.absence.objet.nom + '</span> | <span style="color:#27ae60;font-weight:bold;font-size:1em;margin-left:5px">  (' + calendarDateFilter(event.startsAt, 'time', true) + ')' + '</span><span style="color:#d35400;font-weight:bold;font-size:1em;"> (' + calendarDateFilter(event.endsAt, 'time', true) + ')<span></span>';
+	    	} else {
+	    		return '<span style="color:white;margin-bottom:5px">' + '<i class="fa fa-circle" style="color:' + event.color.primary + ';margin-right:8px"></i> <span style="font-size:1.2em;margin-right:5px">' + event.title + '</span> | <span style="color:#27ae60;font-weight:bold;font-size:1em;margin-left:5px">  (' + calendarDateFilter(event.startsAt, 'time', true) + ')' + '</span><span style="color:#d35400;font-weight:bold;font-size:1em;"> (' + calendarDateFilter(event.endsAt, 'time', true) + ')<span></span>';
+	    	}	    	
 	    }
 
 	    function monthViewTooltip(event) {
