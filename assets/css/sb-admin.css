@@ -62,6 +62,7 @@ html {
 
 .top-nav {
     padding: 0 15px;
+    display: inline;
 }
 
 .top-nav>li {

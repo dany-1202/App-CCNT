@@ -11,7 +11,7 @@ appCal.config(['calendarConfig', function(calendarConfig) {
 * Paramètres : $scope, moment (pour les dates), alert (pour les fenêres modales), calendarConfig (Objet du calendrier), $http (Requêtes HTTP)
 * Gère le calendrier
 */
-appCal.controller('calendarController', function($timeout, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory) {
+appCal.controller('calendarController', function($timeout, $mdDialog,SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory) {
 
 	var vm = this; // Je prend la référence de moi-même et je la stocke
 	/*****************************************************************************/
@@ -32,6 +32,9 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  }
 	  return person;
 	}
+	
+	
+	
  	$scope.departments = [];
   	$scope.departmentsSel = [];
   	$scope.deps = [ // Stocke les codes couleurs nécessaires pour les départements
@@ -75,7 +78,7 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
   	var actions = [{
 	  	label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
 	  	onClick: function(args) {
-		  	
+		  	alert.show(args);
 	  	}
   	}, {
 	 	label: '<i class=\'glyphicon glyphicon-remove\'></i>',
@@ -275,21 +278,21 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 	  	}
 	  	return null;
 	}
+	
+	var getPersonWithName = function (name) {
+	  	for (var i = 0; i < $scope.persons.length; i++) {
+			if (($scope.persons[i].nom + " " + $scope.persons[i].prenom) == name) {
+		  		return $scope.persons[i];
+			}
+	  	}
+	  	return null;
+	}
+
 
 	/* Récupère l'objet couleur selon l'id du départements */
 	$scope.getColor = function (id) {
 	  	return $scope.deps[id];
 	};
-
-	$scope.majPerson = function() {
-	  	var person = rechercherPersonne($scope.myPerson);
-	  	if (person != null) {
-			$scope.depSel = person.dep.nom;
-			$scope.styleDep = {'color' : $scope.getColor(person.dep.img).primary}
-			$scope.event.title = person.nom + " " + person.prenom;
-			$scope.event.color = $scope.getColor(person.dep.img);
-	  	}
-	}
 
 	var getDateFin = function (heureDebut, heureFin, date) {
 	  	var dateFin;
@@ -315,6 +318,8 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 					var dateDebut = moment(new Date(hor.date)).subtract(1, 'hours'); // On enleve une heure, car GMT+1
 					var dateFin = getDateFin(hor.heureDebut, hor.heureFin, hor.date);
 					var horaire = {
+						pause: hor.pause,
+						personne: personne,
 					  	title: personne.nom + " " + personne.prenom,
 					  	color: $scope.getColor(personne.dep.img),
 					  	startsAt: dateDebut.add(heureDebut.heures, 'hours').add(heureDebut.minutes, 'minutes').add(heureDebut.secondes, 'seconds').toDate(),
@@ -473,14 +478,303 @@ appCal.controller('calendarController', function($timeout, SessionService, $scop
 		actions : actions,
 	  });
 	};
-
+	/*****************************************************************************************\
+			* Gestion de la modale afficher informations de l'horaire *                        
+	\*****************************************************************************************/
 	vm.eventClicked = function(event) {
-
-	  var res = alert.show('Clicked', event);
+		vm.eventCurrent = event;
+		$mdDialog.show({
+	      controller: DialogController,
+	      templateUrl: 'app/shared/calendar/modalInfoPlanning.html',
+	      parent: angular.element(document.body.parentElement),
+	      targetEvent: event,
+	      clickOutsideToClose:true,
+	      fullscreen: true,
+	    })
+	    .then(function(answer) {
+	      $scope.status = 'You said the information was "' + answer + '".';
+	    }, function() {
+	      $scope.status = 'You cancelled the dialog.';
+	    });
 	};
+	function DialogController($scope, $mdDialog) {
+		$scope.event = angular.copy(vm.eventCurrent);
+		$scope.events = [];
+		$scope.events.push($scope.event);
+		$scope.calendarView = 'day';
+		$scope.isTwoDays = ($scope.event.endsAt.getDate() > $scope.event.startsAt.getDate()) ? true : false;
+		
+		$scope.hide = function() {
+      		$mdDialog.hide();
+    	};
 
+	    $scope.cancel = function() {
+	      	$mdDialog.cancel();
+	    };
+
+	    $scope.answer = function(answer) {
+	      	$mdDialog.hide(answer);
+	    };
+	   
+  	}
+  	
+  	/*****************************************************************************************\
+  			* Gestion de la modale ajouter horaire *                        
+  	\*****************************************************************************************/
+ 	$scope.showAddHoraire = function () {
+		vm.styleDep = $scope.styleDep;
+		vm.myPerson = $scope.myPerson;
+		vm.persons = $scope.persons;
+		vm.deps = $scope.deps;
+		vm.event = $scope.event;
+		vm.absences1 = $scope.absences1;
+		vm.motif = $scope.motif;
+		vm.nbPause = $scope.nbPause;
+		vm.pauseService1 = $scope.pauseService1;
+		vm.pauseService2 = $scope.pauseService2;
+		$mdDialog.show({
+	      controller: CreatePlanningController,
+	      templateUrl: 'app/shared/calendar/modalPlanning.html',
+	      parent: angular.element(document.body),
+	      targetEvent: event,
+	      clickOutsideToClose:true,
+	      fullscreen: true,
+	    })
+	    .then(function(answer) {
+	      $scope.status = 'You said the information was "' + answer + '".';
+	    }, function() {
+	      $scope.status = 'You cancelled the dialog.';
+	    });
+	}
+	
+	function CreatePlanningController($scope, $mdDialog, $mdpTimePicker) {
+		$scope.styleDep = {'background-color': 'white'};
+		$scope.depSel = "";
+		$scope.imgDep = {'background-color': 'white'};
+		$scope.person = null;
+		$scope.heureDebut1 = 'Heure début';
+	    $scope.heureFin1 = 'Heure fin';
+	    $scope.heureDebut2 = 'Heure début';
+	    $scope.heureFin2 = 'Heure fin';
+	    $scope.motifAfficher = false
+	    $scope.absent1 = false;
+	    $scope.absent2 = false;
+	    $scope.nbPause = [];
+		$scope.myPerson = vm.myPerson;
+		$scope.persons = vm.persons;
+		$scope.deps = vm.deps;
+		$scope.event = vm.event;
+	    $scope.absences1 = vm.absences1;
+		$scope.nbPause = vm.nbPause;
+	    $scope.motif = vm.motif;
+	    $scope.pauseService1 = vm.pauseService1;
+	    $scope.pauseService2 = vm.pauseService2;
+	    
+	    
+		console.log($scope.event)
+		var rechercherPersonne = function (id) {
+		  	for (var i = 0; i < $scope.persons.length; i++) {
+				if ($scope.persons[i].id == id) {
+			  		return $scope.persons[i];
+				}
+		  	}
+		  	return null;
+		}
+		
+		$scope.showHeureDebutSer1 = function(ev, index) {
+		 	$mdpTimePicker($scope.heureDebut1, {
+		 		targetEvent: ev,
+		 		parent: angular.element(document.body.parentElement)
+		 	}).then(function(selectedDate) {
+		 		if(selectedDate > $scope.heureFin1){
+		 			var message = "L'heure d'ouverture est après celle de fermeture !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		 		}else{
+					$scope.heureDebut1 = selectedDate;
+		 		};
+		 	});
+		};
+		
+		$scope.showHeureFinSer1 = function(ev, index) {
+			
+		 	$mdpTimePicker($scope.heureFin1, {
+		 		targetEvent: ev,
+		 		parent: angular.element(document.body.parentElement)
+		 	}).then(function(selectedDate) {
+		 		if(selectedDate < $scope.heureDebut1){
+		 			var message = "L'heure de fermeture est avant celle d'ouverture !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		 		}else if(selectedDate > $scope.heureDebut2){
+		 			var message = "L'heure de fin de ce service est après la début du service suivant !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		 		}else{
+					$scope.heureFin1 = selectedDate;
+		 		};
+		 	});
+		};
+		$scope.showHeureDebutSer2 = function(ev, index) {
+		 	$mdpTimePicker($scope.heureDebut2, {
+		 		targetEvent: ev,
+		 		parent: angular.element(document.body.parentElement)
+		 	}).then(function(selectedDate) {
+		 		if(selectedDate > $scope.heureFin2){
+		 			var message = "L'heure d'ouverture est après celle de fermeture !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		 		}else if(selectedDate < $scope.heureFin1){
+		 			var message = "L'heure de début est avant la fermeture du service précédent !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		 		}else{
+					$scope.heureDebut2 = selectedDate;
+		 		};
+		 	});
+		};
+		$scope.showHeureFinSer2 = function(ev, index) {
+		 	$mdpTimePicker($scope.heureFin2, {
+		 		targetEvent: ev,
+		 		parent: angular.element(document.body.parentElement)
+		 	}).then(function(selectedDate) {
+		 		if(selectedDate < $scope.heureDebut2){
+		 			var message = "L'heure de fermeture est avant celle d'ouverture !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		 		}else{
+					$scope.heureFin2 = selectedDate;
+		 		};
+		 		
+		 	});
+		};
+		
+		$scope.getColor = function (id) {
+	  		return $scope.deps[id];
+		}
+		
+		$scope.majPerson = function () {
+			var person = rechercherPersonne($scope.myPerson);
+		  	if (person != null) {
+				$scope.depSel = person.dep.nom;
+				$scope.styleDep = {'background-color' : $scope.getColor(person.dep.img).primary}
+				$scope.event.title = person.nom + " " + person.prenom;
+				$scope.event.color = $scope.getColor(person.dep.img);
+				$scope.person = person;
+				$scope.event.person = angular.copy(person);
+		  	}
+		}
+		
+		$scope.changeAb1 = function(){
+			if($scope.absent1){$scope.absent1 = false;}else{$scope.absent1 = true;}
+		};
+		$scope.changeAb2 = function(){
+			if($scope.absent2){$scope.absent2 = false;}else{$scope.absent2 = true;}
+		};
+		
+		$scope.validationAbsence = function(){
+			
+			console.log($scope.motif);
+			if ($scope.absent1 == true|| $scope.absent2 == true) {
+				$scope.motifAfficher = true;
+			}else{
+				$scope.motifAfficher = false;
+			};
+			
+		};
+
+		$scope.addHoraire = function (answer) {
+		  	if ($scope.event.title != "") {
+		  		var horaireDeuxJours = false;
+		  		var dateFin;
+		  		if(angular.isDate($scope.heureDebut1) && angular.isDate($scope.heureFin1)){
+		  			var dateDebut = $scope.event.startsAt;
+		  			var heureDebutS1 = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
+		  			var heureFinS1 = $scope.heureFin1.getHours()+":"+$scope.heureFin1.getMinutes()+":00";
+		  		
+					var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1,'pause':$scope.pauseService1.value}); // Envoie de la requête en 'POST'
+					$res.then(function (message) {
+						console.log(message);
+						if (message.data == false) {
+							NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
+							return;
+						}
+						var dateDebutS1 = angular.copy(dateDebut);
+						var dateDebutS1F = moment(angular.copy(dateDebutS1)).add($scope.heureDebut1.getHours() , 'hours').add($scope.heureDebut1.getMinutes(), 'minutes').toDate();
+						var dateFinS1 = moment(angular.copy(dateDebutS1)).add($scope.heureFin1.getHours() , 'hours').add($scope.heureFin1.getMinutes(), 'minutes').toDate();
+						if (dateDebutS1F > dateFinS1) {
+							dateFinS1 = moment(dateFinS1).add(1 , 'days').toDate();
+						}
+						$scope.event.startsAt = dateDebutS1F;
+						$scope.event.endsAt = dateFinS1;
+						$scope.event.personne = $scope.person;
+						$scope.event.pause = $scope.pauseService1.value;
+						var pos = searchDepNom($scope.depSel);
+						if (pos != -1) {vm.events.push($scope.event);} else {
+							NotifService.error('Problème Insertion', "Une erreur est survenue veuillez raffraîchir votre page afin de corriger ce problème !");
+							return;
+						}
+						NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
+						reinitEvent();
+						$mdDialog.hide(answer);
+					});
+					if(angular.isDate($scope.heureDebut2) && angular.isDate($scope.heureFin2)){
+						var heureDebutS2 = $scope.heureDebut2.getHours()+":"+$scope.heureDebut2.getMinutes()+":00";
+		  				var heureFinS2 = $scope.heureFin2.getHours()+":"+$scope.heureFin2.getMinutes()+":00";
+						var pos = searchDepNom($scope.depSel);
+						if (pos != -1) {vm.events.push($scope.event);}
+						var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value}); // Envoie de la requête en 'POST'
+						$res.then(function (message) {
+							if (message.data == false) {
+								NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
+								return;
+							}
+							var dateDebutS2 = angular.copy(dateDebut);
+							var dateDebutS2F = moment(angular.copy(dateDebutS2)).add($scope.heureDebut2.getHours() , 'hours').add($scope.heureDebut2.getMinutes(), 'minutes').toDate();
+							var dateFinS1 = moment(angular.copy(dateDebutS2)).add($scope.heureFin2.getHours() , 'hours').add($scope.heureFin2.getMinutes(), 'minutes').toDate();
+							if (dateDebutS2F > dateFinS2) {
+								dateFinS2 = moment(dateFinS3).add(1 , 'days').toDate();
+							}
+							$scope.event.startsAt = dateDebutS2F;
+							$scope.event.endsAt = dateFinS2;
+							$scope.event.personne = $scope.person;
+							$scope.event.pause = $scope.pauseService2.value;
+							var pos = searchDepNom($scope.depSel);
+							if (pos != -1) {vm.events.push($scope.event);} else {
+								NotifService.error('Problème Insertion', "Une erreur est survenue veuillez raffraîchir votre page afin de corriger ce problème !");
+								return;
+							}
+							NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
+							reinitEvent();
+						});
+					}
+		  		}else{
+		  			var message = "Les heures ne sont pas correcte !";
+	   				var titre = "Erreur de configuration";
+	   				NotifService.error(titre, message);
+		  		}
+		  	}
+		}
+		
+		$scope.hide = function() {
+      		$mdDialog.hide();
+    	};
+
+	    $scope.cancel = function() {
+	      	$mdDialog.cancel();
+	    };
+
+	    $scope.answer = function(answer) {
+	    	$scope.addHoraire(answer);
+	    	
+	      	//$mdDialog.hide(answer);
+	    };
+	}
+	/*///////////////////////////////////////////////////////////////////////////////////////*/
+	
 	vm.eventEdited = function(event) {
-	  	alert.show('Edited', event);
+		
+	  	
 	};
 
 	vm.eventDeleted = function(event) {

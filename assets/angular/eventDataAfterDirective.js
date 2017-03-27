@@ -8,7 +8,7 @@
 				var getInitialTitle = function() {
 					return scope.event.title.split(' ');
 				}
-				var obj = getInitialTitle();
+				var obj = getInitialTitle(); // Récupérer le titre
 				
 				if (scope.$parent.$parent.$parent.day.nbTime == null) {
 					scope.$parent.$parent.$parent.day.nbTime = [];

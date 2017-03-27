@@ -10,16 +10,18 @@
 
     <small style="position: absolute; bottom: 10px; left: 5px" ng-if="true">
      {{day.date}}
-
     </small>
   </div>
 </script>
 <div id="wrapper">
 	<ng-menu></ng-menu>
 	
-	<div id="page-wrapper" ng-controller="calendarController as vm">
 	
-		<div class="container-fluid">
+	<div id="page-wrapper" ng-controller="calendarController as vm">
+	<!-- uk-toggle="target: #addHoraire; animation: uk-animation-fade -->
+		<button style="position: fixed!important;z-index: 999999999!important;right: 50px;top: 125px;" type="button" title="Ajouter un horaire" uk-tooltip ng-click="showAddHoraire()" class="spectre-btn spectre-btn-primary spectre-btn-action circle" "><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></button>
+
+		<div class="container-fluid" ng-cloak>
 			<div class="row" style="margin-top: 60px">
 				<div class="col-md-12">
 					<h1 class="uk-heading-line title-planning"><span>Gestion des plannings</span></h1>
@@ -30,200 +32,170 @@
 				</div>
 			</div>
 			<br>
+
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<button class="uk-button uk-button-default uk-margin-bottom" uk-toggle="target: #filtres;animation: uk-animation-fade" >Filtres</button>
+					<button class="uk-button uk-button-default uk-margin-bottom" uk-toggle="target: #filtres;animation: uk-animation-fade" >Gestion Filtres</button>
+					
 					<div class="row" id="filtres" hidden>
 						<br class="visible-xs visible-sm">
 					  	<div class="col-md-12">
-							<div class="col-md-6">
-						  		<div class="centrer">
-									<table class="table table-responsive table--listhours">
-							  			<thead>
-											<th colspan="8" class="centrer">Départements <i class="fa fa-home" style="font-size:2em" aria-hidden="true"></i></th>
-							  			</thead>
-							  			<tbody>
-											<tr>
-								  				<td class="searchable-container animate-repeat" ng-repeat="dep in departments track by $index">
-													<div class="items col-xs-12">
-														<div class="info-block block-info clearfix">
-															<div data-toggle="buttons" ng-click="majAffDep(dep)" class="btn-group bizmoduleselect">
-																<label id="{{dep.id}}" class="btn btn-default{{dep.img}} active">
-																	<div class="bizcontent">
-																		<input type="checkbox" name="var_id[]" autocomplete="off" value="">
-																		<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
-																		<h5>{{dep.name}}</h5>
-																	</div>
-																</label>
-															</div>
+					  		<div class="uk-button-group btngroup-filtrescal">
+						  		<!-- Gestion des filtres départements -->
+							    <button class="uk-button uk-button-default" type="button">Départements <i class="fa fa-chevron-down" style="margin-left:5px; margin-right: -5px" aria-hidden="true"></i></button>
+							    <div uk-dropdown="mode: click;pos: bottom-justify">
+								    <div class="searchable-container animate-repeat" ng-repeat="dep in departments track by $index">
+										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px">
+											<div class="info-block block-info clearfix">
+												<div data-toggle="buttons" ng-click="majAffDep(dep)" class="btn-group bizmoduleselect">
+													<label id="{{dep.id}}" class="btn btn-default{{dep.img}} active">
+														<div class="bizcontent">
+															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
+															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+															<span class="glyphicon glyphicon-remove glyphicon-lg"></span>
+															<h5>{{dep.name}}</h5>
 														</div>
-													</div>
-								  				</td>
-								  				
-											</tr>
-							  			</tbody>
-									</table>
-						 		</div>
-							</div>
-					   
-					<div class="col-md-6">
-				  		<table class="table table-responsive table--listhours">
-					  		<thead>
-								<th colspan="8" class="centrer">Employés <i class="fa fa-users" style="font-size:2em" aria-hidden="true"></i></th>
-					 		</thead>
-					  		<tbody>
-								<tr>
-						   			<td class="searchable-container animate-repeat" ng-repeat="person in personsDeps track by $index">
-										<div class="items col-xs-12">
+													</label>
+												</div>
+											</div>
+										</div>
+					  				</div>
+							    </div>
+    					  		<!-- Gestion des filtres employés -->
+							    <button class="uk-button uk-button-default" type="button">Employés <i class="fa fa-chevron-down" style="margin-left:5px;margin-right: -5px" aria-hidden="true"></i></button>
+							    <div uk-dropdown="mode: click;pos: bottom-justify" style="min-width: 300px!important">
+							    	<div ng-if="personsDeps.length == 0"><h4 style="margin-top:5px">Aucun employé</h4><h6 style="margin-top:-20px;color:grey">(Réactiver les filtres départements)</h6></div>
+								    <div class="searchable-container animate-repeat" ng-repeat="person in personsDeps track by $index">
+										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px;">
 											<div class="info-block block-info clearfix">
 												<div data-toggle="buttons" ng-click="majAffPers(person)" class="btn-group bizmoduleselect">
 													<label class="btn btn-default active">
 														<div class="bizcontent">
 															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
 															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+															<span class="glyphicon glyphicon-remove glyphicon-lg"></span>
 															<h5>{{person.nom}} (<strong>42 heures</strong>)</h5>
 														</div>
 													</label>
 												</div>
 											</div>
 										</div>
-						  			</td>
-								</tr>
-					  		</tbody>
-						</table>
-					</div>
-			  	</div>
-			  	<div class="col-xs-12">
-				  		<table class="table table-responsive table--listhours">
-					  		<thead>
-								<th colspan="8" class="centrer">Absences <i class="fa fa-question-circle" style="font-size:2em"  aria-hidden="true"></i></th>
-					 		</thead>
-					  		<tbody>
-								<tr>
-						   			<td class="searchable-container animate-repeat" ng-repeat="abs in absences track by $index">
-										<div class="items col-xs-12">
+						  			</div>
+							    </div>
+						  		<!-- Gestion des filtres absences -->
+							    <button class="uk-button uk-button-default" type="button">Absences <i class="fa fa-chevron-down" style="margin-left:5px;margin-right: -5px" aria-hidden="true"></i></button>
+							    <div uk-dropdown="mode: click;pos: bottom-justify">
+							    	
+							    	<div class="searchable-container animate-repeat" ng-repeat="abs in absences track by $index">
+										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px">
 											<div class="info-block block-info clearfix">
 												<div data-toggle="buttons" ng-click="majAffAbs(abs)" class="btn-group bizmoduleselect">
-													<label class="btn btn-default active">
-														<div class="bizcontent">
+													<label class="btn btn-default-emp active" style="height:35px">
+														<div class="bizcontent" style="display: inline;">
 															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
-															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
-															<h5>{{abs.name}}</h5>
+															
+															<h5 style="margin-top:-1px">{{abs.name}} <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+															<span style="margin-top:8px;margin-left:-15px" class="glyphicon glyphicon-remove glyphicon-lg"></span></h5>
 														</div>
 													</label>
 												</div>
 											</div>
 										</div>
-						  			</td>
-								</tr>
-					  		</tbody>
-						</table>
+							    	</div>
+								</div>
+								
+							</div>
+							<hr>
+						</div>
 					</div>
-			</div>
-					<button type="button" class="uk-button uk-button-secondary uk-margin-bottom" uk-toggle="target: #addHoraire; animation: uk-animation-fade">Ajouter Horaire  <span class="glyphicon glyphicon-time" aria-hidden="true"> </span></button>
-				</div>
-			</div>
-			<!--
-			<div id="offcanvas" uk-offcanvas>
-			    <div class="uk-offcanvas-bar">
-
-			        <h3>Gestion des</h3>
-
-			        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-			        <button class="uk-button uk-button-default uk-offcanvas-close uk-width-1-1 uk-margin" type="button">Fermer</button>
-
-			    </div>
-			</div>-->
 			
-			<div id="addHoraire" hidden style="overflow-x:auto;">
-				<hr>
-					<table class="table table-responsive table--listhours">
+				<div id="addHoraire" hidden style="overflow-x:auto;">
+						<table class="table table-responsive table--listhours">
 
-					<thead>
-						<tr>
-							<th>Département</th>
-							<th>Employé</th>
-							<th>Date</th>
-							<th>Service 1</th>
-							<th>Service 2</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<i class="fa fa-circle" style="font-size:30px;margin-top:10px" ng-style="styleDep"></i><span style="font-size: 15px;margin-left: 8px;font-weight: bold;">{{depSel}}</span>
-							</td>
-							<td>  
-								<select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 200px; margin-top:5px">
-									<option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
-								</select>
-								<span ng-if="myPerson == null" style="color:red; display: block">Veuillez choisir un employé !</span>
-							</td>
-							<td>
-								<p class="uk-input-group" style="max-width: 250px">
-									<md-datepicker ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
-								</p>
-							</td>
-							<td>
-								<md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
-									 <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
-									 <i class="espace-avant fa fa-clock-o"></i>
-								</md-button>
-								<md-button ng-model="heureFin2"class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
-									 <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
-									 <i class="espace-avant fa fa-clock-o"></i>
-								</md-button>
-								<div class="uk-margin">
-							        <label class="uk-form-label" for="form-stacked-select">Pause</label>
-							        <div class="uk-form-controls">
-							    		<select class="uk-select" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"/>
+						<thead>
+							<tr>
+								<th>Département</th>
+								<th>Employé</th>
+								<th>Date</th>
+								<th>Service 1</th>
+								<th>Service 2</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<i class="fa fa-circle" style="font-size:30px;margin-top:10px" ng-style="styleDep"></i><span style="font-size: 15px;margin-left: 8px;font-weight: bold;">{{depSel}}</span>
+								</td>
+								<td>  
+									<select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 200px; margin-top:5px">
+										<option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
+									</select>
+									<span ng-if="myPerson == null" style="color:red; display: block">Veuillez choisir un employé !</span>
+								</td>
+								<td>
+									<p class="uk-input-group" style="max-width: 250px">
+										<md-datepicker ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
+									</p>
+								</td>
+								<td>
+									<md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
+										 <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
+										 <i class="espace-avant fa fa-clock-o"></i>
+									</md-button>
+									<md-button ng-model="heureFin2"class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
+										 <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
+										 <i class="espace-avant fa fa-clock-o"></i>
+									</md-button>
+									<div class="uk-margin">
+								        <label class="uk-form-label" for="form-stacked-select">Pause</label>
+								        <div class="uk-form-controls">
+								    		<select class="uk-select" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"/>
+								        </div>
+								    </div>
+								 	<div class="uk-margin" >
+							            <label><input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()">Absent</label>
 							        </div>
-							    </div>
-							 	<div class="uk-margin" >
-						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()">Absent</label>
-						        </div>
-						        <div ng-show="motifAfficher" class="uk-margin">
-						            <label>Motif de l'absence :</label>
-						        </div>
-							</td>
-							<td>
-								<md-button ng-model="heureDebut2" class="btnS md-raised" ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
-								 	<strong>{{ heureDebut2 | date:'HH:mm' }}</strong>
-								 	<i class="espace-avant fa fa-clock-o"></i>
-								</md-button>
-								<md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
-								 	<strong>{{ heureFin2 | date:'HH:mm' }}</strong>
-								 	<i class="espace-avant fa fa-clock-o"></i>
-								</md-button>
-								<div class="uk-margin">
-							        <label class="uk-form-label" for="form-stacked-select">Pause</label>
-							        <div class="uk-form-controls">
-							    		<select class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause"/>
+							        <div ng-show="motifAfficher" class="uk-margin">
+							            <label>Motif de l'absence :</label>
 							        </div>
-							    </div>
-								<div class="uk-margin" >
-						            <label><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"> Absent</label>
-						        </div>
-						        <div ng-show="motifAfficher" class="uk-margin" >
-						            <label> 
-						            	<select class="uk-select" id="form-stacked-select" ng-model="motif" ng-options="p.name for p in absences1"/>
-						            </label>
-						        </div>
-							</td>
-						</tr>
-					</tbody>
-					
-				</table>
+								</td>
+								<td>
+									<md-button ng-model="heureDebut2" class="btnS md-raised" ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
+									 	<strong>{{ heureDebut2 | date:'HH:mm' }}</strong>
+									 	<i class="espace-avant fa fa-clock-o"></i>
+									</md-button>
+									<md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
+									 	<strong>{{ heureFin2 | date:'HH:mm' }}</strong>
+									 	<i class="espace-avant fa fa-clock-o"></i>
+									</md-button>
+									<div class="uk-margin">
+								        <label class="uk-form-label" for="form-stacked-select">Pause</label>
+								        <div class="uk-form-controls">
+								    		<select class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause"/>
+								        </div>
+								    </div>
+									<div class="uk-margin" >
+							            <label><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"> Absent</label>
+							        </div>
+							        <div ng-show="motifAfficher" class="uk-margin" >
+							            <label> 
+							            	<select class="uk-select" id="form-stacked-select" ng-model="motif" ng-options="p.name for p in absences1"/>
+							            </label>
+							        </div>
+								</td>
+							</tr>
+						</tbody>
+						
+					</table>
 
-				<div class="centrer">
-					<button type="button" class="uk-button uk-button-secondary" ng-click="addHoraire()">Ajouter</button>
+					<div class="centrer">
+						<button type="button" class="uk-button uk-button-secondary" ng-click="addHoraire()">Ajouter</button>
+					</div>
 				</div>
 			</div>
-		
-			<hr>
 			<div class="row">
 				<br class="visible-xs visible-sm">
+				
 				<div class="col-md-12 text-center">
 				   	<div class="uk-button-group btngroup-viewcal">
 		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'year'" ng-click="vm.cellIsOpen = false">Année</button>
@@ -231,7 +203,7 @@
 		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'week'" ng-click="vm.cellIsOpen = false">Semaine</button>
 		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'day'" ng-click="vm.cellIsOpen = false">Jour</button>
 		    		</div>
-				</div>				
+				</div>		
 			</div>
 			<br>
 			<div class="row navigation-cal">
