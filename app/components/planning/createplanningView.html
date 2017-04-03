@@ -78,15 +78,26 @@
 											<div class="info-block block-info clearfix">
 												<div data-toggle="buttons" ng-click="majAffPers(person)" class="btn-group bizmoduleselect">
 													<label class="btn btn-default active">
-														<div class="bizcontent">
+														<div class="bizcontent2">
 															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
+<<<<<<< HEAD
 															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
 															<h5>{{person.nom}} (<strong>42 heures</strong>)</h5>
+=======
+															<figure class="avatar avatar-xs" data-initial="{{person.initiales}}" style="background-color: {{person.color.primary}};position: absolute;left: 10px;">
+															</figure>
+															<h5 style="display: inline;position: absolute;left: 50px;line-height: -5px;top: 2px;">{{person.nom}} <strong>{{person.contrat.particularitestring}}</strong></h5>
+														 	<span style="position:absolute;right: 5px;top:2px" class="glyphicon glyphicon-ok glyphicon-lg"></span>
+															<span style="position:absolute;right: 5px;top:-3px" class="glyphicon glyphicon-remove glyphicon-lg"></span>
+															<!--<p></p>-->
+
+>>>>>>> appCCNT
 														</div>
 													</label>
 												</div>
 											</div>
 										</div>
+<<<<<<< HEAD
 						  			</td>
 								</tr>
 					  		</tbody>
@@ -102,13 +113,27 @@
 								<tr>
 						   			<td class="searchable-container animate-repeat" ng-repeat="abs in absences track by $index">
 										<div class="items col-xs-12">
+=======
+						  			</div>
+							    </div>
+						  		<!-- Gestion des filtres absences -->
+							    <button class="uk-button uk-button-default" type="button">Absences <i class="fa fa-chevron-down" style="margin-left:5px;margin-right: -5px" aria-hidden="true"></i></button>
+							    <div uk-dropdown="mode: click;pos: bottom-justify">
+							    	<div class="searchable-container animate-repeat" ng-repeat="abs in absences track by $index">
+										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px">
+>>>>>>> appCCNT
 											<div class="info-block block-info clearfix">
 												<div data-toggle="buttons" ng-click="majAffAbs(abs)" class="btn-group bizmoduleselect">
 													<label class="btn btn-default active">
 														<div class="bizcontent">
 															<input type="checkbox" name="var_id[]" autocomplete="off" value="">
+<<<<<<< HEAD
 															<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
 															<h5>{{abs.name}}</h5>
+=======
+															<h5 style="margin-top:-1px">{{abs.name}} <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+															<span style="margin-top:8px;margin-left:-15px" class="glyphicon glyphicon-remove glyphicon-lg"></span></h5>
+>>>>>>> appCCNT
 														</div>
 													</label>
 												</div>
@@ -119,6 +144,7 @@
 					  		</tbody>
 						</table>
 					</div>
+<<<<<<< HEAD
 			</div>
 					<button type="button" class="uk-button uk-button-secondary uk-margin-bottom" uk-toggle="target: #addHoraire; animation: uk-animation-fade">Ajouter Horaire  <span class="glyphicon glyphicon-time" aria-hidden="true"> </span></button>
 				</div>
@@ -222,6 +248,11 @@
 			</div>
 		
 			<hr>
+=======
+				</div>	
+			</div>
+			
+>>>>>>> appCCNT
 			<div class="row">
 				<br class="visible-xs visible-sm">
 				<div class="col-md-12 text-center">
@@ -260,9 +291,7 @@
 					</button>
 				</div>
 			</div>
-
 				<br>
-
 				<mwl-calendar
 					events="vm.events"
 					view="vm.calendarView"

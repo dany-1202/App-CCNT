@@ -19,8 +19,6 @@ ctrlCCNT.controller('planningController', function($timeout, $scope, moment, cal
 	$scope.hidden = true;
 	$scope.selectedMode = 'md-fling';
 	$scope.selectedDirection = 'up';
-	
-	
 	for (var nb = 0; nb <= 60; nb+=5) {
 		$scope.nbPause.push({name: nb + ' minutes', value:nb});
 	}
