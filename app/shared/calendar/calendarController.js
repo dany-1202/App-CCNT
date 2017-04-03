@@ -129,7 +129,8 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
   	}, {
 	 	label: '<i class=\'glyphicon glyphicon-remove\'></i>',
 	  	onClick: function(args, event) {
-		  //alert.show('Deleted', args.calendarEvent);
+		  	//alert.show('Deleted', args.calendarEvent);
+		  	
 		  	var person = getInfoEvent(args.calendarEvent.title);
 		  	var objDate = args.calendarEvent;
 		  	var heureDebut = getTimeDate(objDate.startsAt);
@@ -554,7 +555,17 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		}
 		
 		if ($scope.modif) {$scope.majPerson();}
-				
+		
+		
+		$scope.getPauseById = function (id) {
+			for (var i = 0; i < $scope.nbPause.length; i++) {
+				if (nb + ' minutes' == id) {
+					return $scope.nbPause[i];
+				}
+			}
+			return null;
+		}
+					
 		$scope.showHeureDebutSer1 = function(ev, index) {
 		 	$mdpTimePicker($scope.heureDebut1, {
 		 		targetEvent: ev,
@@ -571,15 +582,6 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		 		$scope.heureDebut1 = date;
 		 	});
 		};
-		
-		$scope.getPauseById = function (id) {
-			for (var i = 0; i < $scope.nbPause.length; i++) {
-				if (nb + ' minutes' == id) {
-					return $scope.nbPause[i];
-				}
-			}
-			return null;
-		}
 		
 		$scope.showHeureFinSer1 = function(ev, index) {
 		 	$mdpTimePicker($scope.heureFin1, {
@@ -640,11 +642,14 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		 		if ($scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
 		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
 		 			if (date <= dateFin) {
-			 			NotifService.error("L'heure de fermeture est avant celle d'ouverture !", "Erreur de configuration");
-		   				return;
+		 				if (dateFin.getHours() >= $scope.heureDebut1.getHours()) {
+		 					NotifService.error("L'heure de fermeture est avant celle d'ouverture !", "Erreur de configuration");
+		   					return;
+		 				}
+		 				date = moment(dateF
 		 			}
 		 		}
-				$scope.heureFin2 = selectedDate;
+				$scope.heureFin2 = date;
 		 	});
 		};
 		

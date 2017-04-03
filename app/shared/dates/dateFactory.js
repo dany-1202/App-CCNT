@@ -98,6 +98,7 @@
     	        
 			return diff;
 		};
+		
         /* Comment */
     	date.isHourEndValid = function (objHour, index, tab) {
     		return true;
