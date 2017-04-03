@@ -14,13 +14,9 @@
 		require_once("classes/EmployeeDAO.php");
 		require_once("classes/EtatInitial.php");
 		$authData['eta_id']  = EtatInitial::getEstablishmentPerson($authData);
-<<<<<<< HEAD
-		$res = EmployeeDAO::getEmployeesAbsences($authData); // Récupère le résulat obtenu
-=======
 		$res = EmployeeDAO::getPersonneEmp($authData); // Récupère le résulat obtenu
 		$resFiltres = EmployeeDAO::getHoraireFiltreAbs($res); // Récupère le résulat obtenu
 
->>>>>>> appCCNT
 		echo(json_encode($res)); // Retourner le résultat sous format json
 	}
 ?>

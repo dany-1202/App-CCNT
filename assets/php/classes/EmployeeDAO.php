@@ -77,38 +77,6 @@ class EmployeeDAO {
 		$db = MySQLManager::get();
 		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND eta_id = ?";
 		/* Construction de la requête*/
-		if ($data['abs'] == null) {
-			$query = $query . " AND abs_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['abs']);
-			foreach ($data['abs'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "abs_id = " . $val['id'];
-				} else {
-					$query = $query . "abs_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
-		if ($data['deps'] == null) {
-			$query = $query . " AND dep_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['deps']);
-			foreach ($data['deps'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "dep_id = " . $val['id'];
-				} else {
-					$query = $query . "dep_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
 		if ($data['emps'] == null) {
 			$query = $query . " AND per_id = 0";
 		} else {
@@ -213,28 +181,8 @@ class EmployeeDAO {
 	
 	public static function getEmployeesDeps ($data) {
 		$db = MySQLManager::get();
-<<<<<<< HEAD
-		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no, tra_hop_id FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id JOIN ccn_travail ON tra_per_id = per_id JOIN ccn_horairepersonne ON hop_id = tra_hop_id JOIN ccn_absence ON hop_abs_id = abs_id  WHERE per_admin = 0 AND eta_id = ?";
-=======
 		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND per_inactif = 0 AND eta_id = ?";
->>>>>>> appCCNT
 
-		if ($data['abs'] == null) {
-			$query = $query . " AND abs_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['abs']);
-			foreach ($data['abs'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "abs_id = " . $val['id'];
-				} else {
-					$query = $query . "abs_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
 		if ($data['deps'] == null) {
 			$query = $query . " AND dep_id = 0";
 		} else {
@@ -246,22 +194,6 @@ class EmployeeDAO {
 					$query = $query . "dep_id = " . $val['id'];
 				} else {
 					$query = $query . "dep_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
-		if ($data['emps'] == null) {
-			$query = $query . " AND per_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['emps']);
-			foreach ($data['emps'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "per_id = " . $val['id'];
-				} else {
-					$query = $query . "per_id = " . $val['id'] . " OR ";	
 				}
 				$i += 1;
 			}
@@ -297,92 +229,8 @@ class EmployeeDAO {
 		}
 		MySQLManager::close();
 		return null;
-	} // getPersonneDepse
+	} // getPersonneDeps
 
-
-	public static function getEmployeesAbsences ($data) {
-		$db = MySQLManager::get();
-		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND eta_id = ?";
-
-		if ($data['abs'] == null) {
-			$query = $query . " AND abs_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['abs']);
-			foreach ($data['abs'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "abs_id = " . $val['id'];
-				} else {
-					$query = $query . "abs_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
-		if ($data['deps'] == null) {
-			$query = $query . " AND dep_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['deps']);
-			foreach ($data['deps'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "dep_id = " . $val['id'];
-				} else {
-					$query = $query . "dep_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
-		if ($data['emps'] == null) {
-			$query = $query . " AND per_id = 0";
-		} else {
-			$query = $query . " AND (";
-			$i = 0;
-			$count = count($data['emps']);
-			foreach ($data['emps'] as $key => $val) {
-				if ($i == $count-1) {
-					$query = $query . "per_id = " . $val['id'];
-				} else {
-					$query = $query . "per_id = " . $val['id'] . " OR ";	
-				}
-				$i += 1;
-			}
-			$query = $query . ")";
-		}
-
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('i', $data['eta_id']);
-
-			/* Exécution de la requête */
-		    	$stmt->execute();
-		    	/* Lecture des variables résultantes */
-		    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
-		    	/* Récupération des valeurs */
-		    	$array = array();
-		    	$person = [];
-		    	$dep = [];
-		    	while($stmt->fetch()) {
-			    	$person['id'] = $per_id;
-			       	$person['nom'] = $per_nom;
-			        	$person['prenom'] = $per_prenom;
-			        	$person['admin'] = $per_admin;
-			        	$person['genre'] = $per_genre;
-			        	$dep['id'] = $dep_id;
-			        	$dep['nom'] = $dep_nom;
-			        	$dep['img'] = $dep_img;
-			        	$person['dep'] = $dep;
-				$array[] = $person;
-		    	}
-		   	$stmt->close();
-		    	MySQLManager::close();
-	  		return $array;
-		}
-		MySQLManager::close();
-		return null;
-	} // getPersonneDepse
 	/*
 		Permet de modififier certaines données d'une personne :
 			Nom 	Prenom  	Mail

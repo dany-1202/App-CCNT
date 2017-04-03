@@ -71,12 +71,7 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
-<<<<<<< HEAD
-
-	private static function validationPlage($db, $horaire) {
-=======
 	private static function validationPlage($db, $horaire, $modif) {
->>>>>>> appCCNT
 		$req = "
 			SELECT hop_id, hop_date, hop_heureDebut, hop_heureFin
 			FROM ccn_horairepersonne
@@ -90,16 +85,12 @@ class HoraireEmployeeDAO {
 		}
 		
 		if ($stmt=$db->prepare($req)) {
-<<<<<<< HEAD
-			$stmt->bind_param('is', $horaire['per_id'], $horaire['date']);
-=======
 			if ($modif) {
 				$stmt->bind_param('isi', $horaire['per_id'], $horaire['date'], $horaire['hop_id']);
 			} else {
 				$stmt->bind_param('is', $horaire['per_id'], $horaire['date']);
 			}
 			
->>>>>>> appCCNT
 		  	$stmt->execute();
 		  	$stmt->bind_result($hop_id, $hop_date, $hop_heureDebut, $hop_heureFin);
 		  	
@@ -172,9 +163,6 @@ class HoraireEmployeeDAO {
 			/* Insertion dans la table ccn_personne */
 			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause, hop_abs_id) VALUES (?, ?, ?, ?, ?)";
 			if ($stmt = $db->prepare($query)) {
-<<<<<<< HEAD
-				$stmt->bind_param('sssii', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'], $horaire['pause'], $horaire['absid']);
-=======
 				
 				$val;
 				if ($horaire['absid'] == '') {
@@ -184,7 +172,6 @@ class HoraireEmployeeDAO {
 				}
 				
 				$stmt->bind_param('sssis', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin'], $horaire['pause'], $val);
->>>>>>> appCCNT
 			  	$stmt->execute();
 			  	$hop_id = $stmt->insert_id;
 			  	$horaire['id'] = $hop_id;
