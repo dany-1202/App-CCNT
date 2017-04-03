@@ -91,5 +91,16 @@ ctrlCCNT.constant("Const", {
             "COLORCONTINUE" : "#27ae60",
             "COLORCOUPURE" : "#428bca",
             
+            /* Création de planning */
+            "HOUR_OPEN" : "Heure début",
+            "HOUR_END" : "Heure fin",
+            
+            /* Erreurs choix des heures création de planning */
+            "TITLE_ERROR_CONFIG" : "Erreur de configuration",
+            "MSG_OPEN_AFTER_END" : "L'heure d'ouverture est après celle de fermeture !",
+            "MSG_END_BEFORE_OPEN" : "L'heure de fermeture est avant celle d'ouverture !",
+            "MSG_FIN1_AFTER_OPEN2" : "L'heure de fin de ce service est après la début du service suivant !",
+            "MSG_OPEN2_BEFORE_END1" : "L'heure de début est avant la fermeture du service précédent !",
+            
 
 })

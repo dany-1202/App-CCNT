@@ -98,7 +98,7 @@
     	        
 			return diff;
 		};
-                	
+        /* Comment */
     	date.isHourEndValid = function (objHour, index, tab) {
     		return true;
     	}
@@ -109,6 +109,11 @@
 			}
 			return true;
 		};
+		
+		
+		date.newDate = function (date, dateHours) {
+			return moment(date).startOf('day').add(dateHours.getHours(), 'hours').add(dateHours.getMinutes(), 'minutes').toDate();
+		}
 		
 		date.getDayPrec = function (index, tab) {
 			return tab[index == 0 ? 6 : index-1];
