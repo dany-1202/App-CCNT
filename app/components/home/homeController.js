@@ -1,3 +1,4 @@
+(function(){
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State, $route) {
@@ -110,3 +111,4 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	
 	
 });
+})();

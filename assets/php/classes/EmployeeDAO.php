@@ -126,9 +126,62 @@ class EmployeeDAO {
 		return null;
 	} // getPersonneEmp
 	
-	public static function getEmployeesDeps ($data) {
+		public static function getHoraireFiltreAbs ($data) {
 		$db = MySQLManager::get();
 		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND eta_id = ?";
+		/* Construction de la requête*/
+		if ($data['abs'] == null) {
+			$query = $query . " AND per_id = 0";
+		} else {
+			$query = $query . " AND (";
+			$i = 0;
+			$count = count($data['emps']);
+			foreach ($data['emps'] as $key => $val) {
+				if ($i == $count-1) {
+					$query = $query . "per_id = " . $val['id'];
+				} else {
+					$query = $query . "per_id = " . $val['id'] . " OR ";	
+				}
+				$i += 1;
+			}
+			$query = $query . ")";
+		}		
+		
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['eta_id']);
+			/* Exécution de la requête */
+	    	$stmt->execute();
+	    	/* Lecture des variables résultantes */
+	    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+	    	/* Récupération des valeurs */
+	    	$array = array();
+	    	$person = [];
+	    	$dep = [];
+	    	while($stmt->fetch()) {
+		    	$person['id'] = $per_id;
+	        	$person['nom'] = $per_nom;
+	        	$person['prenom'] = $per_prenom;
+	        	$person['admin'] = $per_admin;
+	        	$person['genre'] = $per_genre;
+	        	$person['dep_id'] = $dep_id;
+	        	$person['dep_nom'] = $dep_nom;
+	        	$dep['id'] = $dep_id;
+	        	$dep['nom'] = $dep_nom;
+	        	$dep['img'] = $dep_img;
+	        	$person['dep'] = $dep;
+				$array[] = $person;
+	    	}
+			$stmt->close();
+	    	MySQLManager::close();
+  			return $array;
+		}
+		MySQLManager::close();
+		return null;
+	} // getPersonneEmp
+	
+	public static function getEmployeesDeps ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND per_inactif = 0 AND eta_id = ?";
 
 		if ($data['deps'] == null) {
 			$query = $query . " AND dep_id = 0";

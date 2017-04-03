@@ -419,6 +419,8 @@ code {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   z-index: 1;
+  color: white;
+  font-weight: 500;
 }
 .spectre-badge {
   position: relative;
@@ -1132,7 +1134,7 @@ code {
 .loading::after {
   -webkit-animation: loading 500ms infinite linear;
   animation: loading 500ms infinite linear;
-  border: .2rem solid #5764c6;
+  border: .2rem solid #fff;
   border-radius: .8rem;
   border-right-color: transparent;
   border-top-color: transparent;

@@ -15,6 +15,7 @@
       <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
       <link rel="stylesheet" type="text/css" href="assets/css/uikit.min.css">
       <link rel="stylesheet" type="text/css" href="assets/css/spectre.min.css">
+      <link rel="stylesheet" type="text/css" href="assets/css/select/cs-select.css">
       
       <link rel="stylesheet" type="text/css" href="assets/css/sb-admin.css">
       <link rel="stylesheet" type="text/css" href="assets/css/animations.css">
@@ -37,11 +38,14 @@
       <link rel="stylesheet" type="text/css" href="assets/css/angular-bootstrap-calendar.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="assets/css/bic_calendar.css">
       <link rel="stylesheet" type="text/css" href="assets/css/modaal.min.css">
+      <link rel="stylesheet" type="text/css" href="assets/css/select/cs-skin-slide.css">
 
       <!-- Custom Fonts -->
       <link rel="stylesheet" type="text/css" href="assets/css/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" type="text/css" href="assets/fonts/gloria.css" >
       <link rel="stylesheet" type="text/css" href="assets/fonts/roboto.css">
+     
+      
 
       <!-- Import Librairies Angular -->
       <!-- Version 1.6.2
@@ -123,24 +127,26 @@
       <script type="text/javascript" src="assets/libs/bootstrap-colorpicker-module.min.js"></script>
       <script src='assets/libs/jquery-ui.min.js'></script>
       <script src='assets/libs/modaal.min.js'></script>
+      <script src="assets/libs/select/classie.js"></script>
+      <script src="assets/libs/select/selectFx.js"></script>
       <script type="text/javascript" src="app/shared/calendar/modalFactory.js"></script>
 
       <script language="javascript" type="text/javascript">
-            /* Prévien le raffraîchissement de la page avec F5 */
-            document.onkeydown = function(){
-                  switch (event.keyCode){
-                    case 116 : //F5 button
-                        event.returnValue = false;
-                        event.keyCode = 0;
-                        return false;
-                    case 82 : //R button
-                        if (event.ctrlKey){
-                            event.returnValue = false;
-                            event.keyCode = 0;
-                            return false;
-                        }
-                }
-            }
+		/* Prévien le raffraîchissement de la page avec F5 */
+		document.onkeydown = function(){
+			  switch (event.keyCode){
+				case 116 : //F5 button
+					event.returnValue = false;
+					event.keyCode = 0;
+					return false;
+				case 82 : //R button
+					if (event.ctrlKey){
+						event.returnValue = false;
+						event.keyCode = 0;
+						return false;
+					}
+			}
+		}
       </script>
 </head>
 <body ng-app="ctrlCCNT" class="conteneur" ng-controller="appController as vm">

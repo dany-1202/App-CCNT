@@ -81,7 +81,7 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 \*****************************************************************************************/
 ctrlCCNT.filter('age', function(DateFactory) {
       	return function(date) {
-            	return DateFactory.age(date) + " ans";
+            	return DateFactory.getAge(date) + " ans";
       	};
 })
 
