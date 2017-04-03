@@ -28,7 +28,6 @@ ctrlCCNT.controller('employePassword', function($timeout, $rootScope, $scope, $h
 		if($("#newPass").val() == $("#confPass").val() && $("#newPass").val().trim() != "" && $("#newPass").val().length >= 8){
 			$scope.valide = true;
 			
-			
 			var data = {
 				'password': $("#newPass").val(),
 				'user_id': $scope.user_id,
