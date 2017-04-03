@@ -482,7 +482,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	    });
 	}
 	
-	function CreatePlanningController($scope, $mdDialog, $mdpTimePicker, $filter) {
+	function CreatePlanningController($scope, $mdDialog, $mdpTimePicker, $filter, Const) {
 		$scope.scope = $scope;
 		$scope.modif = vm.modif;
 		$scope.event = angular.copy(vm.event);
@@ -560,13 +560,15 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		 		targetEvent: ev,
 		 		parent: angular.element(document.body.parentElement)
 		 	}).then(function(selectedDate) {
-		 		if(selectedDate > $scope.heureFin1){
-		 			var message = "L'heure d'ouverture est après celle de fermeture !";
-	   				var titre = "Erreur de configuration";
-	   				NotifService.error(titre, message);
-		 		}else{
-					$scope.heureDebut1 = selectedDate;
-		 		};
+		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+		 		if ($scope.heureFin1 != Const.HOUR_END) {
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
+		 			if(date >= dateFin){
+	   					NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN_AFTER_END);
+	   					return;
+		 			}
+		 		}
+		 		$scope.heureDebut1 = date;
 		 	});
 		};
 		
@@ -584,17 +586,22 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		 		targetEvent: ev,
 		 		parent: angular.element(document.body.parentElement)
 		 	}).then(function(selectedDate) {
-		 		if(selectedDate < $scope.heureDebut1){
-		 			var message = "L'heure de fermeture est avant celle d'ouverture !";
-	   				var titre = "Erreur de configuration";
-	   				NotifService.error(titre, message);
-		 		}else if(selectedDate > $scope.heureDebut2){
-		 			var message = "L'heure de fin de ce service est après la début du service suivant !";
-	   				var titre = "Erreur de configuration";
-	   				NotifService.error(titre, message);
-		 		}else{
-					$scope.heureFin1 = selectedDate;
-		 		};
+
+		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+		 		if ($scope.heureDebut1 != Const.HOUR_OPEN && date <= $scope.heureDebut1) { // Comparer la première heure
+	   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_END_BEFORE_OPEN);
+	   				return;
+		 		}
+		 		
+		 		if ($scope.heureDebut2 != Const.HOUR_OPEN) {
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
+ 					if(date >= dateFin){
+		   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_FIN1_AFTER_OPEN2);
+		   				return;
+		 			}
+		 		}
+		 		
+				$scope.heureFin1 = date;
 		 	});
 		};
 		
@@ -603,17 +610,24 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		 		targetEvent: ev,
 		 		parent: angular.element(document.body.parentElement)
 		 	}).then(function(selectedDate) {
-		 		if(selectedDate > $scope.heureFin2){
-		 			var message = "L'heure d'ouverture est après celle de fermeture !";
-	   				var titre = "Erreur de configuration";
-	   				NotifService.error(titre, message);
-		 		}else if(selectedDate < $scope.heureFin1){
-		 			var message = "L'heure de début est avant la fermeture du service précédent !";
-	   				var titre = "Erreur de configuration";
-	   				NotifService.error(titre, message);
-		 		}else{
-					$scope.heureDebut2 = selectedDate;
-		 		};
+		 		
+		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+		 		if ($scope.heureFin1 != Const.HOUR_END) { // Comparer la première heure
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
+	   				if (date <= dateFin) {
+		   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN2_BEFORE_END1);
+		   				return;
+		 			}
+		 		}
+		 		
+		 		if ($scope.heureFin2 != Const.HOUR_END) { // Comparer la première heure
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin2);
+	   				if (date >= dateFin) {
+		   				NotifService.error(Const.TITLE_ERROR_CONFIG,  Const.MSG_OPEN_AFTER_END);
+		   				return;
+		 			}
+		 		}
+		 		$scope.heureDebut2 = date;
 		 	});
 		};
 		$scope.showHeureFinSer2 = function(ev, index) {
@@ -621,9 +635,14 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		 		targetEvent: ev,
 		 		parent: angular.element(document.body.parentElement)
 		 	}).then(function(selectedDate) {
-		 		if(selectedDate < $scope.heureDebut2){
-	   				NotifService.error("L'heure de fermeture est avant celle d'ouverture !", "Erreur de configuration");
-	   				return;
+		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+		 		
+		 		if ($scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
+		 			if (date <= dateFin) {
+			 			NotifService.error("L'heure de fermeture est avant celle d'ouverture !", "Erreur de configuration");
+		   				return;
+		 			}
 		 		}
 				$scope.heureFin2 = selectedDate;
 		 	});
