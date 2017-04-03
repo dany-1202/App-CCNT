@@ -1,3 +1,5 @@
+(function(){
+
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux, $route) {
@@ -376,10 +378,12 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		var insertionEmploye = function() {
 			var $promise = $http.post('assets/php/insertEmployeeAPI.php', $scope.myEmp);
 			$promise.then(function (message) {
-				
+				console.log(message);
 				var id = message.data;
+				$('#addEmp').text("Enregistrer");
+				$('#addEmp').removeClass("loading");
 				if (id != -1) {
-				             SessionService.set('user_confEmp', true);
+	             	SessionService.set('user_confEmp', true);
 					NotifService.success('Insertion employé', "L'employé " + $scope.myEmp.nom + " a été inséré avec succès.");
 					$scope.retour();
 				} else {
@@ -392,6 +396,8 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 		var modificationEmploye = function() {
 			var $promise = $http.post('assets/php/updateEmployeeAPI.php', $scope.myEmp);
 			$promise.then(function (message) {
+				$('#addEmp').text("Enregistrer");
+				$('#addEmp').removeClass("loading");
 				var id = message.data;
 				if (id != -1) {
 					NotifService.success('Modification employé', "L'employé n° " + $scope.myEmp.id + " , " + $scope.myEmp.nom + " a été modifié avec succès.");
@@ -404,6 +410,9 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 
 		/* Lance les enregistrements configurés */
 		$scope.enregistrer = function () {
+			console.log($('#addEmp').text());
+			$('#addEmp').text("");
+			$('#addEmp').addClass("loading");
 			/* Récupère les données afin de compléter l'objet myEmp */
 			$scope.myEmp.user_id = SessionService.get('user_id');
 			$scope.myEmp.user_token = SessionService.get('user_token');
@@ -426,6 +435,8 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 					modificationEmploye();
 				}
 			} else {
+				$('#addEmp').text("Enregistrer");
+				$('#addEmp').removeClass("loading");
 				NotifService.error('Champs invalides', 'Tous les champs ne sont pas valides, veuillez les compléter ou modifier');
 			}
 		}
@@ -459,3 +470,4 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 	} 
 
 });
+})();

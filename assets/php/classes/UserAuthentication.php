@@ -130,6 +130,25 @@ class UserAuthentication {
 		MySQLManager::close();
 		return false;
 	}
+	
+	public static function checkAuthenticationLimited($user_id, $token) {
+		// get a database handle-- 
+		$db = MySQLManager::get(); 
+		$query = "SELECT per_token, per_admin FROM ccn_personne WHERE per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param("i", $user_id);
+			$stmt->execute();
+			$stmt->store_result();
+			if ($stmt->num_rows == 1) {
+				$stmt->bind_result($per_token, $per_admin);
+				$stmt->fetch();
+				MySQLManager::close();
+				return $per_token == $token; // Checker que les token correspondent sinon ne peut pas
+			}
+		}
+		MySQLManager::close();
+		return false;
+	}
 
 
 
@@ -143,16 +162,17 @@ class UserAuthentication {
 	public static function checkActivationAccount($token) {
 		// get a database handle-- 
 		$db = MySQLManager::get(); 
-		$query = "SELECT per_token FROM ccn_personne WHERE per_token = ?";
+		$query = "SELECT per_token, per_id FROM ccn_personne WHERE per_token = ?";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param("s", $token['token']);
 			$stmt->execute();
 			$stmt->store_result();
 			if ($stmt->num_rows == 1) {
-				$stmt->bind_result($per_token);
+				$stmt->bind_result($per_token, $per_id);
 				$stmt->fetch();
+				$stmt->close();
 				MySQLManager::close();
-				return true; // a trouver la personne
+				return $per_id; // a trouver la personne
 			}
 		}
 		MySQLManager::close();

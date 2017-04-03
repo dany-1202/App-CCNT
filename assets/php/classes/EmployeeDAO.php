@@ -92,35 +92,88 @@ class EmployeeDAO {
 				$i += 1;
 			}
 			$query = $query . ")";
-		}
-
+		}		
+		
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('i', $data['eta_id']);
 			/* Exécution de la requête */
-		    	$stmt->execute();
-		    	/* Lecture des variables résultantes */
-		    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
-		    	/* Récupération des valeurs */
-		    	$array = array();
-		    	$person = [];
-		    	$dep = [];
-		    	while($stmt->fetch()) {
-			    	$person['id'] = $per_id;
-			        	$person['nom'] = $per_nom;
-			        	$person['prenom'] = $per_prenom;
-			        	$person['admin'] = $per_admin;
-			        	$person['genre'] = $per_genre;
-			        	$person['dep_id'] = $dep_id;
-			        	$person['dep_nom'] = $dep_nom;
-			        	$dep['id'] = $dep_id;
-			        	$dep['nom'] = $dep_nom;
-			        	$dep['img'] = $dep_img;
-			        	$person['dep'] = $dep;
+	    	$stmt->execute();
+	    	/* Lecture des variables résultantes */
+	    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+	    	/* Récupération des valeurs */
+	    	$array = array();
+	    	$person = [];
+	    	$dep = [];
+	    	while($stmt->fetch()) {
+		    	$person['id'] = $per_id;
+	        	$person['nom'] = $per_nom;
+	        	$person['prenom'] = $per_prenom;
+	        	$person['admin'] = $per_admin;
+	        	$person['genre'] = $per_genre;
+	        	$person['dep_id'] = $dep_id;
+	        	$person['dep_nom'] = $dep_nom;
+	        	$dep['id'] = $dep_id;
+	        	$dep['nom'] = $dep_nom;
+	        	$dep['img'] = $dep_img;
+	        	$person['dep'] = $dep;
 				$array[] = $person;
-		    	}
+	    	}
 			$stmt->close();
-		    	MySQLManager::close();
-	  		return $array;
+	    	MySQLManager::close();
+  			return $array;
+		}
+		MySQLManager::close();
+		return null;
+	} // getPersonneEmp
+	
+		public static function getHoraireFiltreAbs ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND eta_id = ?";
+		/* Construction de la requête*/
+		if ($data['abs'] == null) {
+			$query = $query . " AND per_id = 0";
+		} else {
+			$query = $query . " AND (";
+			$i = 0;
+			$count = count($data['emps']);
+			foreach ($data['emps'] as $key => $val) {
+				if ($i == $count-1) {
+					$query = $query . "per_id = " . $val['id'];
+				} else {
+					$query = $query . "per_id = " . $val['id'] . " OR ";	
+				}
+				$i += 1;
+			}
+			$query = $query . ")";
+		}		
+		
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['eta_id']);
+			/* Exécution de la requête */
+	    	$stmt->execute();
+	    	/* Lecture des variables résultantes */
+	    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+	    	/* Récupération des valeurs */
+	    	$array = array();
+	    	$person = [];
+	    	$dep = [];
+	    	while($stmt->fetch()) {
+		    	$person['id'] = $per_id;
+	        	$person['nom'] = $per_nom;
+	        	$person['prenom'] = $per_prenom;
+	        	$person['admin'] = $per_admin;
+	        	$person['genre'] = $per_genre;
+	        	$person['dep_id'] = $dep_id;
+	        	$person['dep_nom'] = $dep_nom;
+	        	$dep['id'] = $dep_id;
+	        	$dep['nom'] = $dep_nom;
+	        	$dep['img'] = $dep_img;
+	        	$person['dep'] = $dep;
+				$array[] = $person;
+	    	}
+			$stmt->close();
+	    	MySQLManager::close();
+  			return $array;
 		}
 		MySQLManager::close();
 		return null;
@@ -128,7 +181,7 @@ class EmployeeDAO {
 	
 	public static function getEmployeesDeps ($data) {
 		$db = MySQLManager::get();
-		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND eta_id = ?";
+		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND per_inactif = 0 AND eta_id = ?";
 
 		if ($data['deps'] == null) {
 			$query = $query . " AND dep_id = 0";
@@ -247,8 +300,8 @@ class EmployeeDAO {
 		  	$stmt->close();
 		  	MySQLManager::close();
 		  	
-		  	//$to = $data['mail'];
-		  	$to = "joel.marquesd@gmail.com";
+		  	$to = $data['mail'];
+		  	//$to = "joel.marquesd@gmail.com";
 		  	$subject = "Validation du compte";
 		  	$contents = '
 		  		<html>
@@ -258,7 +311,7 @@ class EmployeeDAO {
 		  						Bonjour, <br/>
 		  						Votre compte vient tout juste d\'être créé. <br/> 
 		  						Veuillez l\'activer en cliquant sur le lien suivant : <br/>
-		  						<a href="http://localhost:8888/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
+		  						<a href="http://localhost/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
 		  					</p>
 		  				</div>
 		  			</body>
@@ -282,12 +335,18 @@ class EmployeeDAO {
 		$db = MySQLManager::get(); 
 		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_token = ?";
 		if ($stmt = $db->prepare($query)) {
-
-			$pwdCrypted = sha512($data['password']);
+			$pwdCrypted = hash('sha512', $data['password']);
 			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
 		  	$stmt->execute();
-	  		MySQLManager::close();
-			return true;
+		  	$stmt->close();
+		  	$query1 = "UPDATE ccn_personne SET per_token = NULL WHERE per_token = ?";
+		  	if ($stmt1 = $db->prepare($query1)) {
+		  		$stmt1->bind_param('s', $data['user_token']);
+		  		$stmt1->execute();
+		  		$stmt1->close();
+		  		MySQLManager::close();
+				return true;
+		  	}
 		}
 		MySQLManager::close();
 		return false;

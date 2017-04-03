@@ -4,17 +4,17 @@
       <div class="spectre-card-header">
         <h5 class="spectre-card-title">
           {{person.nom}} {{person.prenom}}
-          <figure class="avatar avatar-xl right" ng-if="myPerson != null">
+          <figure class="avatar avatar-xl right" ng-if="scope.myPerson != null">
             <img style="border-radius: 0%!important" ng-style="imgDep" ng-src="assets/images/bande{{person.dep.img}}.jpg" />
             <div ng-style="styleDep" class="avatar-icon" />
           </figure>
           <br>
           <h6 class="spectre-card-subtitle">{{depSel}}</h6>
           <h4 class="text-center">
-            <select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 100%; margin-top:5px">
-              <option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
+            <select class="uk-select" ng-change="majPerson()" ng-model="scope.myPerson" style="width: 100%; margin-top:5px">
+              <option ng-repeat="person in scope.persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
             </select>
-            <span ng-if="myPerson == null" style="color:red; display: block; margin-bottom: 70px;">Veuillez choisir un employé !</span>
+            <span ng-if="scope.myPerson == null" style="color:red; display: block; margin-bottom: 70px;">Veuillez choisir un employé !</span>
           </h4>
         </h5>
       </div>
@@ -26,10 +26,6 @@
               <p class="uk-input-group text-center" style="background-color: beige">
                   <label style="font-size: 1.5em">Date</label>
                   <md-datepicker ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
-                  <div ng-show="motifAfficher" class="uk-margin" >
-                      <label for="form-stacked-select">Motif absence</label>
-                      <select class="uk-select" id="form-stacked-select" ng-model="motif" ng-options="p.name for p in absences1"></select>
-                  </div>
               </p>
           </div>
         </div>
@@ -37,7 +33,7 @@
         <div class="row">
           <div class="col-lg-12">
           
-            <h3>Service 1 
+            <h3 style="border-bottom: 3px solid cadetblue;">Service Matin
               <label class="right" style="font-size: 1em">
                 <input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()"/> 
                 Absent
@@ -54,11 +50,16 @@
                  <i class="espace-avant fa fa-clock-o"></i>
               </md-button>
             </div>
-            
-            <div class="text-center">
+            <div ng-show="motifAfficher" class="uk-margin" >
+                      <label for="form-stacked-select">Motif absence</label>
+                      <select id="selMotif" class="uk-select" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+                        <option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+                      </select>
+                  </div>
+            <div ng-hide="scope.motifAfficher" class="text-center">
               <label class="uk-form-label" for="form-stacked-select">Pause</label>
               <div class="uk-form-controls">
-                <select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"></select>
+                <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
               </div>
             </div>
           </div>
@@ -66,7 +67,7 @@
         <hr class="uk-divider-icon">
         <div class="row">
           <div class="col-lg-12">
-              <h3>Service 2  
+              <h3 style="border-bottom: 3px solid lightgray;">Service Soir  
                   <label class="right" style="font-size: 1em"><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"/> Absent</label>
               </h3>
               <div class="text-center">
@@ -79,10 +80,16 @@
                   <i class="espace-avant fa fa-clock-o"></i>
                 </md-button>
               </div>
-              <div class="text-center">
+              <div ng-show="motifAfficher && scope.absent2" class="uk-margin" >
+                      <label for="form-stacked-select">Motif absence</label>
+                      <select id="selMotif" class="uk-select" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+                        <option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+                      </select>
+                  </div>
+              <div ng-hide="scope.motifAfficher && scope.absent2" class="text-center">
                   <label class="uk-form-label" for="form-stacked-select">Pause</label>
                   <div class="uk-form-controls">
-                    <select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause"></select>
+                    <select style="font-size:1.2em" id="selPause2" class="uk-select" id="form-stacked-select" ng-model="scope.pauseService2" ng-options="p.name for p in nbPause2"></select>
                   </div>
               </div>
           </div>

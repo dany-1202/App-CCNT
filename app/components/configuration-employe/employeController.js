@@ -41,8 +41,8 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 
       /* Ajout d'une personne */
       $scope.ajouterEmploye = function () {
-            	$rootScope.myEmp = null;
-            	$location.url("/employe/edition");
+        	$rootScope.myEmp = null;
+        	$location.url("/employe/edition");
       }
 
       /* Suppression d'un employé (la suppression n'a pas vraiment lieu - le champ per_inactif est mis à 1) */
@@ -81,7 +81,7 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 \*****************************************************************************************/
 ctrlCCNT.filter('age', function(DateFactory) {
       	return function(date) {
-            	return DateFactory.age(date) + " ans";
+            	return DateFactory.getAge(date) + " ans";
       	};
 })
 
