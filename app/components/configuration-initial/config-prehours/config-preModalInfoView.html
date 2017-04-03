@@ -1,8 +1,74 @@
 <md-dialog aria-label="Informations Horaire" style="width:500px">
-  <md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
-  
-    <button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="hide()">
-      Fermer
-    </button>
-  </md-content>
+	<md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
+
+		<div class="spectre-card" time-picker>
+			<div class="spectre-card-header">
+				<h5 class="spectre-card-title text-center">Horaire pré-configurés</h5>
+
+				<!--<md-select placeholder="Choisir un Département" ng-model="user" style="min-width: 200px; max-width: 300px; margin:auto;">
+					<md-option ng-repeat="user in users" ng-value="user.id">
+						{{user.name}}
+					</md-option>
+				</md-select>-->
+				<label style="display:inline;padding-top: 100px!important;">
+					<span style="line-height: 40px;">Libellé</span>
+					<input  class="uk-input"  style="width:350px;float:right;"  type="text" autofocus></input>
+				</label>
+				<div style="clear:right;"></div>
+				<hr class="uk-divider-icon">
+					<div class="row">
+				      <div class="col-lg-12">
+				      
+				        <h3 style="border-bottom: 3px solid cadetblue;">Service Matin</h3>
+				        
+				        <div class="text-center">
+				          <md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
+				           <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
+				           <i class="espace-avant fa fa-clock-o"></i>
+				          </md-button>
+				          <md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
+				             <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
+				             <i class="espace-avant fa fa-clock-o"></i>
+				          </md-button>
+				        </div>
+				        <div class="text-center">
+				          <label class="uk-form-label" for="form-stacked-select">Pause</label>
+				          <div class="uk-form-controls">
+				            <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-change="changePause()" ng-model="pauseService1" ng-options="p.name for p in nbPause"></select>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+			    <hr class="uk-divider-icon">
+		        <div class="row">
+		          <div class="col-lg-12">
+		              <h3 style="border-bottom: 3px solid lightgray;">Service Soir  
+		              </h3>
+		              <div class="text-center">
+		                <md-button ng-model="heureDebut2" class="btnS md-raised" ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
+		                  <strong>{{ heureDebut2 | date:'HH:mm' }}</strong>
+		                  <i class="espace-avant fa fa-clock-o"></i>
+		                </md-button>
+		                <md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
+		                  <strong>{{ heureFin2 | date:'HH:mm' }}</strong>
+		                  <i class="espace-avant fa fa-clock-o"></i>
+		                </md-button>
+		              </div>
+		              <div class="text-center">
+		                  <label class="uk-form-label" for="form-stacked-select">Pause</label>
+		                  <div class="uk-form-controls">
+
+		                    <select style="font-size:1.2em" id="selPause2" class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause2"></select>
+		                  </div>
+		              </div>
+		          </div>
+		        </div>
+        		<hr>
+        
+			</div>
+		</div>	
+		<button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="hide()">
+		Fermer
+		</button>
+	</md-content>
 </md-dialog>
