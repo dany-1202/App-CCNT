@@ -1,6 +1,6 @@
-<md-dialog aria-label="Gestion Horaire" style="width:500px; position: absolute; top:25%px!important;z-index: 999999!important">
+<md-dialog aria-label="Gestion Horaire" style="width:500px">
   <md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
-  	<div class="spectre-card">
+  	<div class="spectre-card" time-picker>
       <div class="spectre-card-header">
         <h5 class="spectre-card-title">
           {{person.nom}} {{person.prenom}}
@@ -50,6 +50,7 @@
                  <i class="espace-avant fa fa-clock-o"></i>
               </md-button>
             </div>
+            
             <div ng-show="motifAfficher" class="uk-margin" >
                       <label for="form-stacked-select">Motif absence</label>
                       <select id="selMotif" class="uk-select" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">

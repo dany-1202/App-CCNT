@@ -92,12 +92,15 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			 		
 			 		if (scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
 			 			var dateFin = DateFactory.newDate(scope.event.startsAt, scope.heureDebut2);
-			 			if (date <= dateFin) {
-				 			NotifService.error("L'heure de fermeture est avant celle d'ouverture !", "Erreur de configuration");
-			   				return;
+			 			if (date < dateFin) {
+			 				if ((date.getHours() == scope.heureDebut1.getHours() && date.getMinutes() >= scope.heureDebut1.getMinutes()) || date.getHours() > scope.heureDebut1.getHours()) {
+			 					NotifService.error(Const.TITLE_ERROR_CONFIG, "L'heure de fermeture est avant celle d'ouverture !");
+		   						return;
+			 				}
+		 					date = moment(date).add(1, 'days').toDate();
 			 			}
 			 		}
-					scope.heureFin2 = selectedDate;
+					scope.heureFin2 = date;
 			 	});
 			};
 		}

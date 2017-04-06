@@ -1,20 +1,105 @@
-<md-dialog aria-label="Informations Horaire" style="width:500px">
+<md-dialog aria-label="Informations Horaire" style="width:80%">
 	<md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
 
 		<div class="spectre-card" time-picker>
 			<div class="spectre-card-header">
 				<h5 class="spectre-card-title text-center">Horaire pré-configurés</h5>
-
-				<!--<md-select placeholder="Choisir un Département" ng-model="user" style="min-width: 200px; max-width: 300px; margin:auto;">
-					<md-option ng-repeat="user in users" ng-value="user.id">
-						{{user.name}}
+				
+				<figure class="avatar avatar-l" ng-if="dep != 0" style="width: 80px;display: block;margin-left: auto;margin-right: auto;">
+	            	<img style="border-radius: 0%!important" ng-style="imgDep" ng-src="assets/images/bande{{dep}}.jpg" />
+	          	</figure>
+				
+				<md-select ng-click="redefFirst()" ng-class="{error : dep==0}" placeholder="Choisir un Département" ng-model="dep" style="min-width: 200px; max-width: 300px; margin:auto;">
+					<md-option ng-repeat="dep in deps" ng-value="dep.id">
+						{{dep.name}}
 					</md-option>
-				</md-select>-->
-				<label style="display:inline;padding-top: 100px!important;">
-					<span style="line-height: 40px;">Libellé</span>
-					<input  class="uk-input"  style="width:350px;float:right;"  type="text" autofocus></input>
+				</md-select>
+				<span ng-if="dep == 0" class="text-center" style="color:red; display: block;">Veuillez choisir un département !</span>
+	          	
+	          	<hr class="uk-divider-icon">
+	          	
+				<label style="display:inline;font-size:1em;padding-top: 100px!important;">
+					<span style="line-height: 40px;font-weight: 600">Libellé horaire</span>
+					<input ng-class="{error : title.length==0}" class="uk-input text-center" ng-model="title" style="width:100%;float:right;display: block;font-size: 1.5em"  type="text" autofocus></input>
+					<span ng-if="title.length == 0" class="text-center" style="color:red; display: block;font-size: 1em!important;font-weight: normal">Veuillez donner un nom à l'horaire !</span>
 				</label>
+				
+				
+				
 				<div style="clear:right;"></div>
+				<br>
+				<div class="row" style="margin-bottom: 100px">
+				
+					<div class="col-lg-12">
+						 <div class="centrer table-responsive">
+							<table md-whiteframe="1" id="cal" class="table flat-table" style="text-align:center; vertical-align: none!important">
+								 <tbody>
+									<tr>
+									 	<th class="darkBrown"></th>
+									 	<th class="darkBrown coup" ng-repeat="data in prehours track by $index">{{data.day}} <span ng-if="data.pause.existe" class="color-Coup">*</span></th>
+									</tr>
+									<tr>
+										<th rowspan="2" id="matin" class="tableau-darkBrownWithC">Matin
+											<i class="fa fa-sun-o" aria-hidden="true"></i>
+										</th>
+										<td ng-repeat="data in prehours track by $index" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+											<md-button id="{{data.id}}debutMatin" data-title="Ajout d'heures" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour ajouter vos horaires de la semaine"  class="btnS md-raised" ng-click="showTimeMatinDebut($event, $index)" aria-label="show picker">
+												<strong>{{ data.matin.debut | date:'HH:mm' }}</strong>
+												<i class="espace-avant fa fa-clock-o"></i>
+											</md-button>
+											<span class="centrer"></span>
+										</td>
+									</tr>
+									<tr>
+									 	<td ng-if="data.pause.existe" ng-repeat="data in prehours track by $index" style="background-color: white!important">
+											<md-button id="{{data.id}}fin" class="btnS md-raised" ng-click="showTimeMatinFin($event, $index)" aria-label="show picker">
+												<strong>{{ data.matin.fin | date:'HH:mm' }}</strong>
+											 	<i class="espace-avant fa fa-clock-o"></i>
+											</md-button>
+											<span class="centrer"></span>
+									 	</td>
+									</tr>
+									<tr>
+										<th rowspan="1" style="line-height: 5px!important" class="tableau-darkBrownWithC">Pause</th>
+										<td ng-repeat="data in prehours track by $index">
+											<select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="data.datapauseMatin" ng-options="p.name for p in nbPause"></select>
+										</td>
+									</tr>
+
+									<tr class="ligne">
+										 <th rowspan="2" class="tableau-darkBrownWithC">Soir
+											<i class="fa fa-moon-o" aria-hidden="true"></i>
+										 </th>
+
+										 <td ng-repeat="data in prehours track by $index" rowspan="{{data.pause.existe ? 1 : 2}}" ng-class="{dayCoup : !data.pause.existe}" style="background-color: white!important">
+											<md-button ng-if="data.pause.existe"  id="{{data.id}}sDebut" class="btnS md-raised" ng-click="showTimeSoirDebut($event, $index)" aria-label="show picker">
+												 <strong>{{ data.soir.debut | date:'HH:mm' }}</strong>
+												 <i class="espace-avant fa fa-clock-o"></i>
+											</md-button>
+										 </td>
+									</tr>
+									<tr>
+										<td ng-repeat="data in prehours track by $index" style="background-color: white!important">
+											<md-button id="{{data.id}}sFin" class="btnS md-raised" ng-click="showTimeSoirFin($event, $index)" aria-label="show picker">
+												<strong>{{ data.soir.fin | date:'HH:mm' }}</strong>
+											 	<i class="espace-avant fa fa-clock-o"></i>
+											</md-button>
+											<span class="centrer"></span>
+									 	</td>
+									</tr>
+									<tr>
+										<th rowspan="1" style="line-height: 5px!important" class="tableau-darkBrownWithC">Pause</th>
+										<td ng-repeat="data in prehours track by $index">
+											<select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="data.datapauseSoir" ng-options="p.name for p in nbPause"></select>
+										</td>
+									</tr>
+								 </tbody>
+							</table>
+						 </div>
+					</div>
+				 </div>
+
+				<!--
 				<hr class="uk-divider-icon">
 					<div class="row">
 				      <div class="col-lg-12">
@@ -64,11 +149,15 @@
 		          </div>
 		        </div>
         		<hr>
-        
+        		-->
 			</div>
 		</div>	
-		<button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="hide()">
-		Fermer
+		<button style="bottom: 0; position: fixed; width: 50%; background-color: #ECF0F1; color:#222" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="hide()">
+			Annuler
 		</button>
+		<button style="bottom: 0; right: 0; position: fixed; width: 50%" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="addHorairePreConfig()">
+			{{textButton}}
+		</button>
+		
 	</md-content>
 </md-dialog>

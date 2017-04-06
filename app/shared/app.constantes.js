@@ -12,6 +12,7 @@ ctrlCCNT.constant("Const", {
             "ADD" : "Ajouter",
             "MODIFY" : "Modifier",
             "DELETE" : "Supprimer",
+            "SAVE" : "Enregistrer",
 
             /* Constantes utilisé dans Config des informations de l'établissement */
             "NAME" : "Nom",
@@ -77,6 +78,11 @@ ctrlCCNT.constant("Const", {
             /* Constantes utilisé pour les messages de notifications */
             "CONFIGINIT" : "Configuration-Initiale",
             "CONFIGSUCCESS" : "Tous vos paramètres ont bien été enregistrés",
+            
+            
+            /* Constantes utilisé pour les messages de notifications */
+            "TITLE_DELETE_HOUR" : "Suppression horaire",
+            "MSG_DELETE_HOUR_SUCCESS" : "L'horaire a été supprimé avec succès",
 
             /* Constantes utilisé pour les messages d'erreur */
             "ERRORNAME" : "Le nom n'est pas correct!",
@@ -101,6 +107,11 @@ ctrlCCNT.constant("Const", {
             "MSG_END_BEFORE_OPEN" : "L'heure de fermeture est avant celle d'ouverture !",
             "MSG_FIN1_AFTER_OPEN2" : "L'heure de fin de ce service est après la début du service suivant !",
             "MSG_OPEN2_BEFORE_END1" : "L'heure de début est avant la fermeture du service précédent !",
+            
+            
+            "TITLE_IMCOMPLETE_FIELDS" : "Champs incomplets",
+            "MSG_FILL_FIELDS" : "Vous avez des champs qui sont incomplets, veuillez les remplir pour continuer !",
+            "MSG_FILL_HOURS" : "Vous n'avez pas configurer votre horaire pour la semaine, veuillez remplir au moins un service (Matin ou Soir)!",
             
 
 })
