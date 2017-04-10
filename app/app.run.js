@@ -17,7 +17,7 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 	var routeSansLogin = ['/connexion','/employe/password'];
 
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
-	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition'];
+	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition', '/parametrage'];
 
 	var onRouteChangeOff = $rootScope.$on('$locationChangeStart', routeChange);
 	var essai = 1;
