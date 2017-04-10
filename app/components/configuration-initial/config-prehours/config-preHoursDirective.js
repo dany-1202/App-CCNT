@@ -1,6 +1,8 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
+
 ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifService, Const, Popover, $mdpTimePicker, DateFactory, ChooseDaysModal) {
+
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
 		templateUrl : 'app/components/configuration-initial/config-prehours/config-preHoursView.html', // Template à utiliser lorsque la balise est utilisé
@@ -40,12 +42,13 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 			    }, function() {$('.side-nav').css('display', '');});
 			}
 			
+
 			scope.showModalHoraire = function () {
 				self.modif = false;
 				self.deps = scope.$parent.depart;
 				self.nbPause = scope.nbPause;
 				$('.side-nav').css('display', 'none');
-				
+
 				$mdDialog.show({
 			      controller: DialogController,
 			      templateUrl: 'app/components/configuration-initial/config-prehours/config-preModalInfoView.html',
@@ -421,11 +424,16 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 			    		});
 			    	}
 			    	
+
 			    	$scope.hide = function () {
 			    		$mdDialog.cancel();
 			    	}
+				    $scope.test = function () {
+				    	console.log($scope.pauseService2);console.log($scope.pauseService1);
+				    }
 			    }
 				
 			} // Fin du link
+			}
 	};
 });

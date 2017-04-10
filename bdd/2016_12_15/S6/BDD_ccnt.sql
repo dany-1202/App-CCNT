@@ -57,6 +57,7 @@ CREATE TABLE `ccn_appartient` (
   `app_per_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 --
 -- Contenu de la table `ccn_appartient`
 --
@@ -82,6 +83,7 @@ CREATE TABLE `ccn_contient` (
 INSERT INTO `ccn_contient` (`con_dep_id`, `con_hor_id`) VALUES
 (1, 1);
 
+
 -- --------------------------------------------------------
 
 --
@@ -97,6 +99,7 @@ CREATE TABLE `ccn_contrat` (
   `con_typ_id` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 --
 -- Contenu de la table `ccn_contrat`
 --
@@ -104,6 +107,7 @@ CREATE TABLE `ccn_contrat` (
 INSERT INTO `ccn_contrat` (`con_dateIn`, `con_dateOut`, `con_particularite`, `con_per_id`, `con_hor_id`, `con_typ_id`) VALUES
 ('2016-12-13', NULL, 15, 3, 3, 2),
 ('2016-12-14', NULL, 0.7, 5, 2, 2);
+
 
 -- --------------------------------------------------------
 
@@ -118,6 +122,7 @@ CREATE TABLE `ccn_departement` (
   `dep_eta_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 --
 -- Contenu de la table `ccn_departement`
 --
@@ -126,6 +131,7 @@ INSERT INTO `ccn_departement` (`dep_id`, `dep_nom`, `dep_img_no`, `dep_eta_id`) 
 (1, 'Cuisine', 1, 1),
 (2, 'Bar', 2, 1),
 (3, 'Service', 3, 1);
+
 
 -- --------------------------------------------------------
 
@@ -201,6 +207,7 @@ CREATE TABLE `ccn_horairepersonne` (
   `hop_pause` int(11) NOT NULL,
   `hop_abs_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Contenu de la table `ccn_horairepersonne`
@@ -314,6 +321,7 @@ CREATE TABLE `ccn_possede` (
   `pos_per_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 --
 -- Contenu de la table `ccn_possede`
 --
@@ -339,6 +347,7 @@ CREATE TABLE `ccn_travail` (
   `tra_hop_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 --
 -- Contenu de la table `ccn_travail`
 --
@@ -353,6 +362,7 @@ INSERT INTO `ccn_travail` (`tra_per_id`, `tra_hop_id`) VALUES
 (5, 8),
 (5, 10);
 
+
 -- --------------------------------------------------------
 
 --
@@ -364,7 +374,6 @@ CREATE TABLE `ccn_typecontrat` (
   `typ_nom` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
 -- Contenu de la table `ccn_typecontrat`
 --
 
@@ -374,6 +383,7 @@ INSERT INTO `ccn_typecontrat` (`typ_id`, `typ_nom`) VALUES
 (3, 'Personne externe');
 
 --
+
 -- Index pour les tables exportées
 --
 
@@ -392,6 +402,7 @@ ALTER TABLE `ccn_appartient`
   ADD KEY `fk_Etablissement_has_Personne_Etablissement_idx` (`app_eta_id`);
 
 --
+
 -- Index pour la table `ccn_contient`
 --
 ALTER TABLE `ccn_contient`
@@ -428,6 +439,7 @@ ALTER TABLE `ccn_etablissement`
 -- Index pour la table `ccn_fermetureinfo`
 --
 ALTER TABLE `ccn_fermetureinfo`
+
   ADD PRIMARY KEY (`fer_id`,`fer_Eta_id`),
   ADD KEY `fk_InfoFermeture_Etablissement1_idx` (`fer_Eta_id`);
 
