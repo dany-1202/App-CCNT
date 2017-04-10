@@ -27,6 +27,23 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
+	public static function getInfosSolde ($per_id, $dateDebut, $dateFin) {
+		$db = MySQLManager::get();
+		$query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND hop_date BETWEEN ? and ?";
+		
+		if ($stmt=$db->prepare($query)) {
+			$stmt->bind_param('i', $per_id, $dateDebut, $dateFin);
+		  	$stmt->execute();
+		  	$stmt->bind_result($nbHeuresMin);
+	    	$stmt->fetch();
+		  	$stmt->close();
+		  	MySQLManager::close();
+	  		return $nbHeuresMin;
+		}
+		MySQLManager::close();
+		return false;
+	}
+
 
 	public static function getHorairesEmployee ($per_id, $absences) {
 		$db = MySQLManager::get();

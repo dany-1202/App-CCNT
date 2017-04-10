@@ -12,6 +12,7 @@ appCal.config(['calendarConfig', function(calendarConfig) {
 * Paramètres : $scope, moment (pour les dates), alert (pour les fenêres modales), calendarConfig (Objet du calendrier), $http (Requêtes HTTP)
 * Gère le calendrier
 */
+
 appCal.controller('calendarController', function($timeout, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory, PromiseDAO, State, Popover, Const, $mdpTimePicker) {
 
 	var vm = this; // Je prend la référence de moi-même et je la stocke
@@ -535,6 +536,9 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			    	var length = vm.events.length;
 			    	
 			    	vm.events.splice(0, length);
+			    	
+			    	var length = $scope.persons.length;
+			    	$scope.persons.splice(0, length);
 			    	$scope.getPersons();
 			    	NotifService.success('Ajout Horaire', "Les horaires ont été ajouté avec succès");
 			    }, function(answer) {
@@ -553,7 +557,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
   	\*****************************************************************************************/
   	$scope.showAddHoraireType = function(event) {
   		vm.event = $scope.event;
-  		vm.personsSel = $scope.personsSel;
+  		vm.persons = $scope.persons;
   		vm.myPerson = $scope.myPerson;
 		vm.persons = $scope.persons;
 		vm.styleDep = $scope.styleDep;
@@ -580,7 +584,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
   			
   		$scope.myHoraireType = null;
   		$scope.myHoraireTypeCal = null;
-  		$scope.personsSel = vm.personsSel;
+  		$scope.persons = vm.persons;
 		$scope.styleDep = {'background-color': 'white'};
 		$scope.depSel = "";
 		$scope.listePreHours = null;
