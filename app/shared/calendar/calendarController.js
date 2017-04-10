@@ -1252,6 +1252,10 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 								
 								if (isFiltered()) {vm.events.push($scope.event)};
 								NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
+
+								console.log($scope.person);
+								//sendPushNouveauPlanning($user_id)
+								var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson});
 							});
 						}
 						$mdDialog.hide(answer);
