@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Horaires des établissements -->
 <div class="row no-margin-bottom-16">
 	<div class="col-lg-12">
@@ -255,4 +256,263 @@
 			 <md-button ng-click="goNextStep()" class="bouton bouton-l">Suivant</md-button>
 		</div>
  	</div>
+=======
+<!-- Horaires des établissements -->
+<div class="row no-margin-bottom-16">
+	<div class="col-lg-12">
+		<div class="right no-margin-top-16">
+
+			<div class="hours-ccnt centrer">CCNT soumis:
+				<span class="border-ellipse-hours">{{hoursCCNTChosen}} H
+					<i class="espace-avant fa fa-clock-o"></i><br>
+					<button id="choiceCCNT" md-whiteframe="1" data-title="Modifier heures CCNT" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Cliquer pour modifier les heures auquelles votre établissement est soumis CCNT" ng-hide="modifCCNT || modifHours" ng-click="affModif()" class="btn btn-secondary btn-modif">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
+				</span>
+			</div>
+			<div style="position:absolute;z-index: 1!important">
+					
+				<div class="popovers" ng-show="modifCCNT" style="width: 250px!important">
+					<div class="popovers popover-title">Voulez-vous modifier les heures CCNT ?</div>
+					<div class="popovers-content" style="background-color: white!important">
+						<div class="centrer">
+							<button class="btn btn-secondary centrer" ng-click="affModifHours()">Oui</button>
+							<button class="btn btn-secondary"  ng-click="modifCCNT = false">Non</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="popovers" ng-show="modifHours" style="width: 250px!important">
+					<div class="popovers popover-title">Choisissez les heures CCNT</div>
+					<div class="popovers-content" style="background-color: white!important">
+						<div class="centrer">
+							<button class="btn btn-secondary" ng-click="modifHoursCCNT(42)">42</button>
+							<button class="btn btn-secondary" ng-click="modifHoursCCNT(43.5)">43.5</button>
+							<button class="btn btn-secondary" ng-click="modifHoursCCNT(45)">45</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 padding-bottom">
+		<h2 class="no-margin-left">Horaires</h2>
+		<div class="alert alert-success" role="alert">
+			<h4 class="alert-heading">Définir les horaires</h4>
+			<p>Définissez l'horaire de base d'une semaine ou de plusieurs semaines pour votre établissement.</p>
+		</div>
+	</div>
+</div>
+
+<div class="row" ng-show="affChoiceOpenning" type-ouverture>
+	<div class="col-lg-12" >
+		<div class="card card-inverse text-center" ng-click="hidePopovers()" id="choiceOpenning" data-title="Question Type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Choisissez si votre établissement est ouvert en continue ou avec des coupures" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
+			<span class="uk-badge" uk-tooltip title="Vous devez répondre à cette question" style="right: 25px;position: absolute;margin-bottom: -20px!important">?</span>
+			<h2 class="card-header">Ouverture de l'établissement</h2><hr>
+			<div class="card-block">
+				<!-- Choix entre les deux -->
+				<type-q1 ng-hide="cal.choix.id == 1"></type-q1>
+				<type-q2 ng-show="cal.choix.id == 1 && cal.choix.freq.id != 1"></type-q2>
+				<type-q3 ng-show="cal.choix.id == 1 && cal.choix.freq.id == 1"></type-q3>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Afficher la question de la fin -->
+<div class="row" ng-show="affOtherHours && affDefinitif" gestion-horaires>
+	<div class="col-lg-12">
+		<div class="card card-inverse text-center" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
+			<h2 class="card-header light-grey">Gestion des horaires</h2><hr>
+
+			<div class="w3-container" ng-show="affModifOtherHours"> <!-- ng-show="affModifOtherHours1" -->
+				<h4 class="card-title">
+					 Votre semaine de base est configuré, veuillez modifier le nom que vous aimeriez donnez à cette horaire.
+				</h4>
+				<hr>
+				<div class="col-lg-12 centrer margin-bottom-xs">
+					<input validator-name type="text" ng-blur="isNameValid(cal, tabCalendars, 1)" ng-class="{error: cal.errorName}" class="uk-input centrer" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
+					</div>
+				</div>
+
+				<button class="uk-button uk-button-primary" ng-click="addHoursToTab()">
+					Enregistrer
+				</button>
+			</div>
+
+			<div class="card-block" ng-show="affModifOtherHours1">
+				<h4 class="card-title">Durant l’année aurez-vous d’autres horaires ? </h4><hr>
+				<button class="btn btn-primary" ng-click="showAffModifOtherHours()">
+					Oui
+				</button>
+				<button class="btn btn-primary" ng-click="affOtherHours = false">
+					Non
+				</button>
+			</div>
+
+			<!-- Quand l'utilisateur clique sur oui -->
+			<div class="w3-container" style="min-height:50px!important" ng-show="affModifOtherHours2">
+				<div class="col-lg-3 centrer margin-bottom-xs">
+					<input validator-name type="text" class="uk-input centrer" ng-blur="isNameValid(cal, tabCalendars, 1)" ng-class="{error: cal.errorName}" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorName">Le nom saisi n'est pas correct</span>
+					</div>
+				</div>
+				<div class="col-lg-6 centrer margin-bottom-xs">
+					<div class="centrer">
+						<span class="red errorDep" ng-show="cal.errorPeriod">La période saisi n'est pas valide (minimum 1 semaine)</span>
+					</div>
+					
+					<div ng-if="tabCalendars[0] !== cal" style="margin-top:0px" validator-period>
+						Du <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid(cal, tabCalendars)" md-placeholder="Date de début"></md-datepicker>
+						au <md-datepicker ng-model="cal.period.fin" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid(cal, tabCalendars)" md-placeholder="Date de fin">
+					</div>
+					
+					<div ng-if="tabCalendars[0] === cal" >
+						<h5 style="line-height:65px!important">Période : <strong>Tous les jours</strong></h5>
+					</div>
+				</div>
+				<button class="btn btn-primary" ng-click="addHour()">
+					Ajouter horaire
+				</button>
+				<div class="col-lg-3"></div>
+				<button class="btn btn-primary" ng-click="closeAddOtherHours()">
+					Finir les horaires
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="row" ng-show="tabCalendars[0].state == 'Complet'">
+	<div class="col-lg-12">
+		<h2 class="card-header">Vos Horaires <i class="fa fa-calendar" style="margin-left:10px" aria-hidden="true"></i></h2><hr>
+
+		<h3 class="left"></h3>
+
+		<table class="table table-responsive table--listhours">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Période</th>
+					<th>État</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in tabCalendars" ng-class="{active: cal.name == item.name}" ng-click="changeCal(item, $index)">
+					<td style="line-height:55px!important"><div  ng-if="cal.name == item.name" title="Horaire courant" uk-tooltip style="width: 10px;height: 10px;margin-right:5px;border-radius:10px; display:inline-block;line-height:65px!important; background-color: #34495e"></div><div ng-if="item.errorName || item.errorPeriod" title="Nom ou période invalide, ou pas encore enregistré" uk-tooltip style="width: 10px;height: 10px;margin-right:5px;border-radius:10px; display:inline-block;line-height:60px!important; background-color: red"></div> {{item.name}} </td>
+					<td style="line-height:55px!important">
+						<span ng-if="$index == 0" >Tous les jours</span>
+						<span ng-if="$index > 0"> {{item.period.debut | date: 'dd MMMM yyyy'}} au {{item.period.fin | date: 'dd MMMM yyyy'}}</span>
+					</td>
+					<td>
+						<p ng-if="item.state == 'Complet'"><span style="margin-top: 10px!important" class="w3-tag completed w3-round">{{item.state}}</span></p>
+						<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>
+					</td>
+					<td style="line-height:55px!important">
+						<button ng-if="!item.errorPeriod && !item.errorName && !affDefinitif" md-whiteframe="1" class="btn btn-primary" ng-click="modifCal($event, $index)">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</button>
+						<button ng-if="!item.errorPeriod && !item.errorName && !affDefinitif" ng-hide="$index == 0" md-whiteframe="1" class="btn btn-primary" ng-click="supCal(item, $index)">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="row" ng-show="affCalendar || tabCalendars[0].state == 'Complet'">
+	<div class="col-lg-12">
+		<h3> Ouverture de l'établissement :
+			<span style="color: {{cal.choix.color}}">{{cal.choix.nom}}</span>
+			<!--ng-click="modifChoiceOpenning()"-->
+			<div class="uk-inline">
+			    <button style="font-size:18px; margin-bottom: 5px" md-whiteframe="1" id="hourModif"  data-title="Modifier type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer pour modifier le type d'ouverture de l'établissement" class="btn btn-secondary btn-modif fa fa-pencil uk-text-lead" ng-click="modifChoiceOpenning()">
+					<span ng-if="affInfos" >Fermer</span>
+				</button>
+				    <div id="dropOppening" uk-drop="mode: click;pos:bottom-center">
+			        	<div class="uk-card uk-card-body uk-card-default">
+				        	<div class="uk-card-title">
+				       			<h4 class="text-center">Modification ouverture<br><strong>{{cal.name}}<strong></h4>
+				       		</div>
+			       			<p class="text-center card-text">
+			       				<button class="btn btn-primary btnCont margin-bottom-xs" ng-click="choiceOpenning(0)"> En Continue
+									<img class="margin-img-left" width="30px" height="30px" src="assets/images/continue.png"/>
+								</button>
+								<button uk-toggle="target: #my-id" type="button" class="btn btn-primary btnCoup margin-bottom-xs" ng-click="choiceOpenning(1)" class="md-raised">Avec Coupures
+									<img class="margin-img-left" width="30px" height="30px" src="assets/images/ciseaux.png">
+								</button>
+								<div id="my-id" class="text-center" hidden>
+									<hr class="uk-divider-small">
+									<button class="btn btn-primary" ng-click="choiceFrequencyCoup(0)">
+										Tous les jours
+									</button>
+									<button class="btn btn-primary" uk-toggle="target: #my-id2" type="button" ng-click="choiceFrequencyCoup(1)" class="md-raised">
+										Certains jours
+									</button>
+								</div>
+								
+								<div id="my-id2" class="text-center" hidden style="font-size: 12px!important;margin-top:15px">
+									<div class="row" ng-repeat="item in cal.hours">
+										<div class="col-lg-12">
+											<div class="col-lg-1"></div>
+											<div class="col-lg-2">
+												<md-checkbox class="md-primary left" style="margin-left:30px!important" ng-model="item.pause.existe">
+													<span ng-class="{bold: item.pause.existe}"> {{ item.day }} </span>
+												</md-checkbox>
+											</div>
+											<div class="col-lg-4"></div>
+										</div>
+									</div>
+								</div>
+			       			</p>
+			       		</div>
+			        </div>
+			   </div>
+			</div>
+			
+		</h3>
+	</div>
+</div>
+
+<div uk-alert class="uk-alert-danger" ng-if="affCalendar && cal.state === 'Incomplet'">
+    <a class="uk-alert-close" style="color:black" uk-close></a>
+    <h3 style="color:#c0392b">Horaire Incomplet</h3>
+    <p style="color:#e74c3c; font-weight: normal">Configurer votre horaire afin de permettre l'enregistrement de ce dernier.</p>
+</div>
+
+<div class="row" ng-show="affCalendar">
+	<div class="col-lg-12">
+		<hr class="uk-divider-icon"><h3>Horaires: <strong>{{cal.name}}</strong></h3>
+	</div>
+	<!-- Affichage En continue -->
+	<cal-continue ng-show="cal.choix.id == 0"></cal-continue>
+	<!-- Affichage Avec coupures -->
+	<cal-coupure ng-show="cal.choix.id == 1"></cal-coupure>
+</div>
+
+<!-- Affichage de l'information * jours avec coupures -->
+<div class="right" ng-show="cal.choix.id == 1 && affCalendar"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
+
+<!-- Actions de l'étape -->
+<div class="row">
+ 	<div class="col-lg-12 padding-top">
+		<div class="centrer">
+			 <md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
+			 <md-button ng-click="goNextStep()" class="bouton bouton-l">Suivant</md-button>
+		</div>
+ 	</div>
+>>>>>>> appCCNT
 </div>
