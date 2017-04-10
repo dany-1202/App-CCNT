@@ -1,7 +1,7 @@
 <?php
-require_once("../classes/MySQLManager.php");
+require_once("MySQLManager.php");
 
-class PushService{
+class PushServiceDAO{
 	// Access key : permet de transmettre le push à FireBase
 	const API_ACCESS_KEY = 'AAAA1J14CpI:APA91bFo_w7chqGn-vZ3avUEFSMbSj7HuSngwKLlTt14uGTQ4S1AIuy8zem6r2_vvdiI6oKx2Hz9Rv-U7QaJ22Viivxo8SLHMWmVaRvZL91XPvWiJ3Xhjl75qy0ncuuRVqYAlp0TC02ZX08A73Ar_5cYLflEHD5zSg';
 	
@@ -82,7 +82,7 @@ class PushService{
 	
 	private function setDeviceToken($user_id){
 		$db = MySQLManager::get();
-		if ($stmt = $db->prepare("SELECT sma_deviceToken FROM ccn_smartphoneinfo WHERE sma_per_id = ?")) {
+		if ($stmt = $db->prepare("SELECT sma_deviceToken FROM ccn_smartphoneInfo WHERE sma_per_id = ?")) {
 			$stmt->bind_param('s', $user_id);
 			$stmt->execute();
 			$stmt->store_result();
@@ -126,18 +126,19 @@ class PushService{
 	// Paramètre: user_id : l'id de l'employé dans la base de données
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushNouveauPlanning($user_id){
-		$ps = new PushService($user_id, self::PUSH_NOUVEAU_PLANNING);
+		$ps = new PushServiceDAO($user_id, self::PUSH_NOUVEAU_PLANNING);
+		return $ps->deviceToken;/*
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	
-		return false;
+		return false;*/
 	}//sendPushNouveauPlanning
 	
 	// Envois le push pour avertir l'employé que son planning a été modifié
 	// Paramètre: user_id : l'id de l'employé dans la base de données
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushModificationPlanning($user_id){
-		$ps = new PushService($user_id, self::PUSH_MOD_PLANNING);
+		$ps = new PushServiceDAO($user_id, self::PUSH_MOD_PLANNING);
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	
@@ -148,7 +149,7 @@ class PushService{
 	// Paramètre: user_id : l'id de l'employé dans la base de données
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushDemandeCongeAcceptee($user_id){
-		$ps = new PushService($user_id, self::PUSH_CONGE_ACCEPTEE);
+		$ps = new PushServiceDAO($user_id, self::PUSH_CONGE_ACCEPTEE);
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	
@@ -159,7 +160,7 @@ class PushService{
 	// Paramètre: user_id : l'id de l'employé dans la base de données
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushDemandeCongeRefusee($user_id){
-		$ps = new PushService($user_id, self::PUSH_CONGE_REFUSEE);
+		$ps = new PushServiceDAO($user_id, self::PUSH_CONGE_REFUSEE);
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	
@@ -170,7 +171,7 @@ class PushService{
 	// Paramètre: user_id : l'id de l'employé dans la base de données
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushDemandeModCongeAcceptee($user_id){
-		$ps = new PushService($user_id, self::PUSH_MOD_CONGE_ACCEPTEE);
+		$ps = new PushServiceDAO($user_id, self::PUSH_MOD_CONGE_ACCEPTEE);
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	
@@ -181,11 +182,11 @@ class PushService{
 	// Paramètre: user_id : l'id de l'employé dans la base de données
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushDemandeModCongeRefusee($user_id){
-		$ps = new PushService($user_id, self::PUSH_MOD_CONGE_REFUSEE);
+		$ps = new PushServiceDAO($user_id, self::PUSH_MOD_CONGE_REFUSEE);
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	
 		return false;	
 	}//sendPushDemandeModCongeRefusee
-}//PushService
+}//PushServiceDAO
 ?>
