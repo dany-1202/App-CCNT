@@ -38,6 +38,14 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	}
 	//console.log($scope.confEmp);
 	
+	$scope.getHeuresBrut = function() {
+		$res.then(function(value){
+			console.log(value);
+		}).then(function(error){
+			console.log(error);
+		});
+	}
+	
 	$scope.lancerConfigEmp = function () {
 		$location.url("/employe");
 	}
