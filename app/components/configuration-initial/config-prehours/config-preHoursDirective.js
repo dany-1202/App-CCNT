@@ -8,7 +8,9 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 		templateUrl : 'app/components/configuration-initial/config-prehours/config-preHoursView.html', // Template à utiliser lorsque la balise est utilisé
 
 		link: function(scope, element, attrs) {
+			$timeout(Popover.hide, 0);
 			/* Controleur se gère ici */
+			
 			var self = scope;
 			console.log(scope);
 			scope.prehours = scope.$parent.prehours;

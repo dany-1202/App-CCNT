@@ -2,7 +2,7 @@
 
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux, $route) {
+ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux, $route, DateFactory) {
 	$scope.$route = $route;
 	function init() {
 		$scope.user = {};
@@ -424,12 +424,11 @@ ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $sco
 			/* Toutes les validations ont été faites */
 			if ($scope.validation()) {
 				if ($rootScope.myEmp == null) { // Lancer l'insertion de l'employé
-					$scope.myEmp.dateIn = moment($scope.myEmp.dateIn).add(1, 'd').toDate(); // Ajouter l'heure pour ajouter correctement
-					$scope.myEmp.dateNaissance = moment($scope.myEmp.dateNaissance).add(1, 'd').toDate();
+					$scope.myEmp.dateIn = DateFactory.toDateTimeBDD($scope.myEmp.dateIn); // Ajouter l'heure pour ajouter correctement
+					$scope.myEmp.dateNaissance = DateFactory.toDateTimeBDD($scope.myEmp.dateNaissance);
 					if ($scope.myEmp.dateOut != null || $scope.myEmp.dateOut != '') {
-						$scope.myEmp.dateOut = moment($scope.myEmp.dateOut).add(1, 'd').toDate();
+						$scope.myEmp.dateOut = DateFactory.toDateTimeBDD($scope.myEmp.dateOut);
 					}
-					console.log($scope.myEmp);
 					insertionEmploye();
 				} else { // Lancer la modification de l'employé 
 					modificationEmploye();

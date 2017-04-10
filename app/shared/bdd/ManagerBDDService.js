@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.service('PromiseDAO', function ($http, $q) {
+ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 
 	return {
 		insertEstablishment: function(dataEtablissement) {
@@ -22,6 +22,21 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q) {
 				deferred.resolve(error);
 			});
 		    return deferred.promise;
+		},
+		getHourPreConfigure: function(tabDeps) {
+			var deferred = $q.defer();
+			
+	  		for (var i = 0; i < tabDeps.length; i++) {
+	  			var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token'), dep_id: tabDeps.id};
+	  			$res = $http.post('assets/php/getHoraireTypePreConfigAPI.php', data);
+	  			$res.then(function(message) {
+	  				if (message.data.length == 1) {deferred.resolve(message);}
+	  			}).then(function(error){
+	  				deferred.resolve(error);
+	  			});
+	  		}
+  			
+	  		return deferred.promise;
 		}
 	}
 	

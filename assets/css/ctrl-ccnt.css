@@ -4,6 +4,14 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
+.vlightgrey {
+    /*background-color: #fdfdfd;*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin:0px;
+}
 
 .avatar-emp {
     
@@ -80,16 +88,16 @@ Description : Feuille de style pour l'ensemble de l'application
     font-weight: bold!important;
 }
 
-th {
+.flat-table th {
     padding: 10px 10px;
     text-align: center;
     font-weight: bold;
     letter-spacing: 1px!important;
     color: white;
-    background-color: #5D4037!important;
+    background-color: #5D4037;
 }
 
-td {
+.flat-table td {
     text-align: center;
     /* padding: 10px 10px; */
     /* border: 1px solid #9E9E9E; */
