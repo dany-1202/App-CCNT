@@ -437,5 +437,4 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 				
 			} // Fin du link
 			}
-	};
 });
