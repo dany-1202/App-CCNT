@@ -36,9 +36,10 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 			}
 		}
 	}
-	//console.log($scope.confEmp);
 	
 	$scope.getHeuresBrut = function() {
+		var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'),per_id : 10, dateDebut: '2017-01-01', dateFin: '2017-12-31'};
+		var $res = $http.post('assets/php/getInfosSoldeHoraireEmployeeAPI.php', data);
 		$res.then(function(value){
 			console.log(value);
 		}).then(function(error){
