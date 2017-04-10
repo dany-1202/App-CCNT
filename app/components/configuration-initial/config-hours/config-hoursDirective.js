@@ -270,7 +270,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		     		}
 	     		};
 			}
-
+			
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
 			$scope.showAdvanced = function(ev, objHour) {
 			    $mdDialog.show({

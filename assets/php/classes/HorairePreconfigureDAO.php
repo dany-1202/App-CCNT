@@ -15,19 +15,21 @@ class HorairePreconfigureDAO {
 	*/
 	public static function insertHorairePreconfigure ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_horairepreconfigure (hor_id, hor_libelle, hor_matinDebut, hor_matinFin, hor_soirDebut, hor_soirFin) 
-				  VALUES (NULL, ?, ?, ?, ?, ?)";
+
+		$query = "INSERT INTO ccn_horairepreconfig (hpr_id, hpr_nom, hpr_dep_id) 
+				  VALUES (NULL, ?, ?)";
 	  	if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('sssss',$data['hor_libelle'], $data['hor_matinDebut'], $data['hor_matinFin'], $data['hor_soirDebut'], $data['hor_soirFin']);
+			$stmt->bind_param('si',$data['hpr_nom'], $data['hpr_dep_id']);
 		  	$stmt->execute();
+		  	$stmt->store_result();
+		  	$hpr_id = $stmt->insert_id;
 		  	$stmt->close();
 		  	MySQLManager::close();
-			return true;
+			return $hpr_id;
 		}
 		MySQLManager::close();
-		return false;
+		return -1;
 	}
-
 }
 
 

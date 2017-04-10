@@ -14,9 +14,39 @@ appCal.config(['calendarConfig', function(calendarConfig) {
 appCal.controller('calendarController', function($timeout, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory) {
 
 	var vm = this; // Je prend la référence de moi-même et je la stocke
+	
+	vm.isOpen = false;
+  	vm.selectedMode = 'md-scale';
+  		
+  	if (window.innerWidth >= 443) {
+  		vm.selectedDirection = 'left';
+  		vm.dir1 = 'top';
+  		vm.dir2 = 'bottom';
+  		vm.dir3 = 'left';
+  	} else {
+  		vm.selectedDirection = 'down';
+  		vm.dir1 = 'left';
+  		vm.dir2 = 'left';
+  		vm.dir3 = 'left';
+  	}  	
+  	
+  	$scope.tooltipVisible = false;
+  	
+  	$scope.$watch('vm.isOpen', function(isOpen) {
+        if (vm.isOpen) {
+	      	$timeout(function() {
+	        	$scope.tooltipVisible = true;
+	      	}, 400);
+	    } else {
+	    	$timeout(function() {
+	        	$scope.tooltipVisible = false;
+	      	}, 0);
+	    }
+  	});
+  	
 	/*****************************************************************************/
 	/* Ces variables doivent être défini sinon le calendrier ne fonctionnera pas */
-
+	
 	vm.viewDate = new Date(); // Défini la date d'aujourd'hui
 	vm.calendarView = 'month'; // Vue par défaut : 'Mois'
 	vm.cellIsOpen = true; // La cellule d'aujourd'hui est ouverte
@@ -429,7 +459,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		$mdDialog.show({
 	      controller: DialogController,
 	      templateUrl: 'app/shared/calendar/modalInfoPlanning.html',
-	      parent: angular.element(document.body.parentElement),
+	      parent: angular.element(document.body),
 	      targetEvent: event,
 	      clickOutsideToClose:true,
 	      fullscreen: true,
@@ -565,93 +595,6 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			}
 			return null;
 		}
-					
-		$scope.showHeureDebutSer1 = function(ev, index) {
-		 	$mdpTimePicker($scope.heureDebut1, {
-		 		targetEvent: ev,
-		 		parent: angular.element(document.body.parentElement)
-		 	}).then(function(selectedDate) {
-		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-		 		if ($scope.heureFin1 != Const.HOUR_END) {
-		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
-		 			if(date >= dateFin){
-	   					NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN_AFTER_END);
-	   					return;
-		 			}
-		 		}
-		 		$scope.heureDebut1 = date;
-		 	});
-		};
-		
-		$scope.showHeureFinSer1 = function(ev, index) {
-		 	$mdpTimePicker($scope.heureFin1, {
-		 		targetEvent: ev,
-		 		parent: angular.element(document.body.parentElement)
-		 	}).then(function(selectedDate) {
-
-		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-		 		if ($scope.heureDebut1 != Const.HOUR_OPEN && date <= $scope.heureDebut1) { // Comparer la première heure
-	   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_END_BEFORE_OPEN);
-	   				return;
-		 		}
-		 		
-		 		if ($scope.heureDebut2 != Const.HOUR_OPEN) {
-		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
- 					if(date >= dateFin){
-		   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_FIN1_AFTER_OPEN2);
-		   				return;
-		 			}
-		 		}
-		 		
-				$scope.heureFin1 = date;
-		 	});
-		};
-		
-		$scope.showHeureDebutSer2 = function(ev, index) {
-		 	$mdpTimePicker($scope.heureDebut2, {
-		 		targetEvent: ev,
-		 		parent: angular.element(document.body.parentElement)
-		 	}).then(function(selectedDate) {
-		 		
-		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-		 		if ($scope.heureFin1 != Const.HOUR_END) { // Comparer la première heure
-		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
-	   				if (date <= dateFin) {
-		   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN2_BEFORE_END1);
-		   				return;
-		 			}
-		 		}
-		 		
-		 		if ($scope.heureFin2 != Const.HOUR_END) { // Comparer la première heure
-		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin2);
-	   				if (date >= dateFin) {
-		   				NotifService.error(Const.TITLE_ERROR_CONFIG,  Const.MSG_OPEN_AFTER_END);
-		   				return;
-		 			}
-		 		}
-		 		$scope.heureDebut2 = date;
-		 	});
-		};
-		$scope.showHeureFinSer2 = function(ev, index) {
-		 	$mdpTimePicker($scope.heureFin2, {
-		 		targetEvent: ev,
-		 		parent: angular.element(document.body.parentElement)
-		 	}).then(function(selectedDate) {
-		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-		 		
-		 		if ($scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
-		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
-		 			if (date <= dateFin) {
-		 				if (dateFin.getHours() >= $scope.heureDebut1.getHours()) {
-		 					NotifService.error("L'heure de fermeture est avant celle d'ouverture !", "Erreur de configuration");
-		   					return;
-		 				}
-		 				date = moment(dateF
-		 			}
-		 		}
-				$scope.heureFin2 = date;
-		 	});
-		};
 		
 		$scope.changeAb1 = function() { if($scope.absent1){$scope.absent1 = false;}else{$scope.absent1 = true;} };
 		$scope.changeAb2 = function() { if($scope.absent2){$scope.absent2 = false;}else{$scope.absent2 = true;} };
@@ -780,6 +723,47 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		  	}
 		}
 		
+		$scope.showModifHeureDebutSer1 = function(ev, index) {
+		 	$mdpTimePicker($scope.heureDebut1, {
+		 		targetEvent: ev,
+		 		parent: angular.element(document.body.parentElement)
+		 	}).then(function(selectedDate) {
+		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+		 		if ($scope.heureFin1 != Const.HOUR_END) {
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
+		 			if(date >= dateFin){
+	   					NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN_AFTER_END);
+	   					return;
+		 			}
+		 		}
+		 		$scope.heureDebut1 = date;
+		 	});
+		};
+		
+		$scope.showModifHeureFinSer1 = function(ev, index) {
+		 	$mdpTimePicker($scope.heureFin1, {
+		 		targetEvent: ev,
+		 		parent: angular.element(document.body.parentElement)
+		 	}).then(function(selectedDate) {
+
+		 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+		 		if ($scope.heureDebut1 != Const.HOUR_OPEN && date <= $scope.heureDebut1) { // Comparer la première heure
+	   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_END_BEFORE_OPEN);
+	   				return;
+		 		}
+		 		
+		 		if ($scope.heureDebut2 != Const.HOUR_OPEN) {
+		 			var dateFin = DateFactory.newDate($scope.event.startsAt, scope.heureDebut2);
+ 					if(date >= dateFin){
+		   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_FIN1_AFTER_OPEN2);
+		   				return;
+		 			}
+		 		}
+		 		
+				$scope.heureFin1 = date;
+		 	});
+		};
+			
 		$scope.modifHoraire = function () {
 			var dateDebut = $scope.event.startsAt;
   			var heureDebutS1 = $scope.heureDebut1.getHours()+":"+$scope.heureDebut1.getMinutes()+":00";
