@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  h2mysql17
--- Généré le :  Mar 11 Avril 2017 à 00:17
+-- Généré le :  Mar 11 Avril 2017 à 00:23
 -- Version du serveur :  5.6.33-log
 -- Version de PHP :  7.0.13
 
@@ -86,7 +86,7 @@ INSERT INTO `ccn_appartient` (`app_eta_id`, `app_per_id`) VALUES
 CREATE TABLE `ccn_contient` (
   `con_hpr_id` int(11) NOT NULL,
   `con_jou_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -541,9 +541,9 @@ INSERT INTO `ccn_horairepersonne` (`hop_id`, `hop_date`, `hop_heureDebut`, `hop_
 
 CREATE TABLE `ccn_horairepreconfig` (
   `hpr_id` int(11) NOT NULL,
-  `hpr_nom` varchar(40) NOT NULL,
+  `hpr_nom` varchar(40) CHARACTER SET latin1 NOT NULL,
   `hpr_dep_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -560,7 +560,7 @@ CREATE TABLE `ccn_jourpreconfig` (
   `jou_heureFinS` datetime NOT NULL,
   `jou_pause` int(11) NOT NULL,
   `jou_pauseS` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
