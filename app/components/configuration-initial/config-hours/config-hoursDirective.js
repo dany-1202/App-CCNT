@@ -270,7 +270,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		     		}
 	     		};
 			}
-
+			
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
 			$scope.showAdvanced = function(ev, objHour) {
 			    $mdDialog.show({
@@ -418,7 +418,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	    		$timeout(Popover.hide, 0);
 	    		var nb = $scope.isAllInfoCalCorrect();
 	    		if (nb == 0) {
-	    			$timeout($scope.ctrl.next(4), 2);
+	    			$timeout($scope.ctrl.next(5), 2);
 	    		} else {
 	    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
 	    		}

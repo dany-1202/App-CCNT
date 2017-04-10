@@ -19,8 +19,30 @@
 	
 	<div id="page-wrapper" ng-controller="calendarController as vm">
 	<!-- uk-toggle="target: #addHoraire; animation: uk-animation-fade -->
-		<button style="position: fixed!important;z-index: 999999999!important;right: 50px;top: 125px;" type="button" title="Ajouter un horaire" uk-tooltip ng-click="showAddHoraire()" class="spectre-btn spectre-btn-primary spectre-btn-action circle" "><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></button>
+		<!--<button style="position: fixed!important;z-index: 999999999!important;right: 50px;top: 125px;" type="button" title="Ajouter un horaire" uk-tooltip ng-click="showAddHoraire()" class="spectre-btn spectre-btn-primary spectre-btn-action circle" "><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></button>-->
+	 	<md-fab-speed-dial md-open="vm.isOpen" md-direction="{{vm.selectedDirection}}" ng-class="vm.selectedMode" style="position: fixed;right: 50px;top: 125px;z-index: 90009999">
+	        
+	        <md-fab-trigger>
+	          	<md-button aria-label="menu" class="md-fab" style="background-color: #222" >
+	            	<i style="color: white;font-size: 2em;position: absolute;top: 24%;left: 27.5%;" class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+		         	<md-tooltip md-direction="{{vm.dir1}}" md-visible="tooltipVisible" md-autohide="false">Créer un horaire</md-tooltip>
+	         	</md-button>
+	        </md-fab-trigger>
 
+	        <md-fab-actions>
+	          	<md-button aria-label="Créer Horaire Type" class="md-fab md-raised md-mini" ng-click="showAddHoraireType($event)">
+	           		<img ng-src="assets/images/type.png" style="margin-top: -4px;" aria-label="Horaire Type"></img>
+	           		<md-tooltip md-direction="{{vm.dir2}}" md-visible="tooltipVisible" md-autohide="false">Créer Horaire Type</md-tooltip>
+	          	</md-button>
+	          	<md-button aria-label="Créer Horaire Simple"  class="md-fab md-raised md-mini" ng-click="showAddHoraire($event)">
+	            	<img ng-src="assets/images/simple.png" md-visible="tooltipVisible" aria-label="Horaire Simple"></img>
+	            	<md-tooltip md-direction="{{vm.dir3}}" md-visible="tooltipVisible" md-autohide="false">Créer Horaire Simple</md-tooltip>
+	          	</md-button>
+	        </md-fab-actions>
+	        
+      	</md-fab-speed-dial>
+		
+      
 		<div class="container-fluid" ng-cloak>
 			<div class="row" style="margin-top: 60px">
 				<div class="col-md-12">
@@ -32,7 +54,7 @@
 				</div>
 			</div>
 			<br>
-
+			
 			<div class="row">
 				<div class="col-md-12 text-center">
 					<button class="uk-button uk-button-default uk-margin-bottom" uk-toggle="target: #filtres;animation: uk-animation-fade" >Gestion Filtres</button>
@@ -124,7 +146,9 @@
 		    		</div>
 				</div>		
 			</div>
+			
 			<br>
+			
 			<div class="row navigation-cal">
 				<div class="col-xs-2">
 					<button
@@ -152,6 +176,7 @@
 				</div>
 			</div>
 				<br>
+			<div class="row">
 				<mwl-calendar
 					events="vm.events"
 					view="vm.calendarView"
@@ -170,7 +195,8 @@
 					<!-- custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" -->
 
 				</mwl-calendar>
-
+			</div>
+			
 				<br><br><br>
 		</div>
 	</div>

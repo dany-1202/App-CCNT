@@ -33,7 +33,17 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
     	{id: 4, day: 'Jeudi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause:{existe : false}, nbHours : 0},
     	{id: 5, day: 'Vendredi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false}, nbHours : 0},
     	{id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
-    	{id: 7, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
+    	{id: 0, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
+ 	]
+ 	
+ 	state.hoursWithPause = [
+       	{id: 1, day: 'Lundi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, pause: {existe : true}, nbHours : 0},
+    	{id: 2, day: 'Mardi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END},  pause:{existe : true}, nbHours : 0},
+    	{id: 3, day: 'Mercredi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END},  pause: {existe : true}, nbHours : 0},
+    	{id: 4, day: 'Jeudi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, pause:{existe : true}, nbHours : 0},
+    	{id: 5, day: 'Vendredi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, pause: {existe : true}, nbHours : 0},
+    	{id: 6, day: 'Samedi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, pause: {existe : true}, nbHours : 0},
+    	{id: 0, day: 'Dimanche', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, pause: {existe : true}, nbHours : 0},
  	]
 
   	state.configTuto = [
@@ -61,6 +71,10 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 
 	state.getTabCalDefault = function () {
 		return angular.copy(state.hours);
+	}
+	
+	state.getTabCalDefaultWithPause = function () {
+		return angular.copy(state.hoursWithPause);
 	}
 
 	state.tabCalendars = [{id: 0, name: Const.HORAIREBASE, period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod:true, choix: null}];

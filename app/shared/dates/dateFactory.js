@@ -98,6 +98,7 @@
     	        
 			return diff;
 		};
+		
         /* Comment */
     	date.isHourEndValid = function (objHour, index, tab) {
     		return true;
@@ -139,12 +140,25 @@
 			birthday = new Date(birthday);
 	  		return new Number((new Date().getTime() - birthday.getTime()) / 31536000000).toFixed(0);
 		}
-
+		
+		date.toDateTimeBDD = function(date) {
+			return angular.copy(moment(date).format('YYYY-MM-DD HH:mm:ss'));
+		}
 
 		date.getMinutesUntilFinalDay = function (hours, minutes) {
 			var nbHours = (24 - hours); // Le nombre d'heures qu'il restent pour arriver à 24
 			return (nbHours * 60) - minutes; // Le nombre de minutes nécessaire pour terminer la journée arrivé jusqu'à 24:00 == 00:00
 		};
+		
+		date.getHoraireDay = function(prehours, day) {
+			var index = -1;
+			for (var i = 0; i < prehours.length; i++) {
+				if (prehours[i].id == day) {
+					index = i;
+				}
+			}
+			return index;
+		}
 
 		return date;
 	})

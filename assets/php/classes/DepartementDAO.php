@@ -19,10 +19,9 @@ class DepartementDAO {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sii', $data['nom'], $data['img'], $data['noEta']);
 		  	$stmt->execute();
-		  	if ($stmt->num_rows == 1) {
-		  		MySQLManager::close();
-		  		return true;
-		  	}
+		  	$dep_id = $stmt->insert_id;
+		  	MySQLManager::close();
+		  	return $dep_id;
 		}
 		MySQLManager::close();
 		return false;

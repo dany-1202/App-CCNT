@@ -1,4 +1,4 @@
-<md-dialog aria-label="Gestion Horaire" style="width:500px; position: absolute; top:25%px!important;z-index: 999999!important">
+<md-dialog aria-label="Gestion Horaire" style="width:500px">
   <md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
   	<div class="spectre-card">
       <div class="spectre-card-header">
@@ -40,11 +40,11 @@
               </label>
             </h3>
             <div class="text-center">
-              <md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
+              <md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showModifHeureDebutSer1($event, $index)" aria-label="show picker">
                <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
                <i class="espace-avant fa fa-clock-o"></i>
               </md-button>
-              <md-button ng-model="heureFin1" class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
+              <md-button ng-model="heureFin1" class="btnS md-raised" ng-click="showModifHeureFinSer1($event, $index)" aria-label="show picker">
                  <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
                  <i class="espace-avant fa fa-clock-o"></i>
               </md-button>

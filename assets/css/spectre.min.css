@@ -65,10 +65,8 @@
   border: 1px solid #222;
   color: #fff;
 }
-.spectre-btn.spectre-btn-primary:hover {
-  background: white;
-  color: #222;
-}
+.spectre-btn.spectre-btn-primary:hover {}
+
 .spectre-btn.spectre-btn-primary.loading::after {
   border-bottom-color: #fff;
   border-left-color: #fff;

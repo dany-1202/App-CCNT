@@ -65,6 +65,7 @@ class EtatInitial {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('si', $data['date'], $data['etaId']);
 		  	$stmt->execute();
+		  	$stmt->store_result();
 		  	if ($stmt->num_rows == 1) {
 		  		MySQLManager::close();
 		  		return true;
@@ -89,6 +90,7 @@ class EtatInitial {
 	  		if ($data['soirDebut'] == "") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}
 			$stmt->bind_param('sssssi', $data['jour'], $data['matinDebut'], $matinFin, $soirDebut, $data['soirFin'], $data['etaId']);
 		  	$stmt->execute();
+		  	$stmt->store_result();
 		  	if ($stmt->num_rows == 1) {
 		  		MySQLManager::close();
 		  		return true;
