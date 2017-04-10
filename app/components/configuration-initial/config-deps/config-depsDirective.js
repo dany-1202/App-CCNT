@@ -142,6 +142,7 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover) {
 				  	var length = scope.$parent.depart.length;
 				  	$('#' + length).focus().select();
 			  	}
+			  	
 		  	
 		  	}, 0);
 		  	

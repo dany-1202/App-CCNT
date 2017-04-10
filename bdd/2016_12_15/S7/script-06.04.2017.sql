@@ -237,7 +237,10 @@ CREATE TABLE IF NOT EXISTS `ccn_jourpreconfig` (
   `jou_sem` int(11) NOT NULL,
   `jou_heureDebut` datetime NOT NULL,
   `jou_heureFin` datetime NOT NULL,
-  `jou_pause` int(11) NOT NULL
+  `jou_heureDebutS` datetime NOT NULL,
+  `jou_heureFinS` datetime NOT NULL,
+  `jou_pause` int(11) NOT NULL,
+  `jou_pauseS` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

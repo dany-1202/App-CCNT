@@ -7,11 +7,11 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory, Popover) {
 	$scope.$route = $route;
-	$scope.nbSteps = 4; // Nombre d'étapes de la configuration initiale
-	$scope.nbPercentage = 25; // Pourcentage en fonction de l'avancement de la configuration
+	$scope.nbSteps = 5; // Nombre d'étapes de la configuration initiale
+	$scope.nbPercentage = 20; // Pourcentage en fonction de l'avancement de la configuration
 	$scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
 	$scope.currentView = 1; // Vue courante (1: Informations de l'établissement)
-	$scope.pourcentage = 25; // Valeur de pourcentage, avancement des étapes
+	$scope.pourcentage = 20; // Valeur de pourcentage, avancement des étapes
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
 	$scope.textStep = (window.innerWidth >= 700) ? "Étape: " : "";
 	
@@ -79,23 +79,50 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 		$scope.currentView = no;
 		$scope.pourcentage -= $scope.nbPercentage;
 	}
-
+	
+	
+	var insertJourPreConfigure = function(hpr_id) {
+		console.log(hpr_id);
+		// Insertion table ccn_jourpreconfigure
+	}
+	
 	var insertHorairePreconfigure = function (nom, id) {
 		for (var cpt = 0; cpt < $scope.prehours.length; cpt++) {
 			var objPreHour = $scope.prehours[cpt];
 			if (objPreHour.dep.name == nom) {
-				var data = { 'hpr_nom': objPreHour.title, 'hpr_dep_id': id, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
+				console.log(objPreHour.prehours);
+				var data = { 'hpr_nom': objPreHour.title, 'hpr_dep_id': id, 'prehours': objPreHour.prehours,'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
 				var $res = $http.post("assets/php/insertHorairePreconfigureAPI.php", data);
 				$res.then(function (msgPre) {
-					console.log(cpt);
-					//insertJourPreConfigure(msgPre.data, );
+					console.log('Insertion jour ');
+					console.log(msgPre);
 				});
 			}
 		};
 	}
+	
+	/*****************************************************************************************\
+			* Formater date en datetime pour la base de données *                        
+	\*****************************************************************************************/
+	
+	var formatDatesPreHour = function() {
+		var formatJour = function(matinOuSoir) {
+			if (matinOuSoir.debut != Const.HOUR_OPEN) {matinOuSoir.debut = DateFactory.toDateTimeBDD(matinOuSoir.debut);}
+			if (matinOuSoir.fin != Const.HOUR_END) {matinOuSoir.fin =DateFactory.toDateTimeBDD(matinOuSoir.fin);}
+		}
+		for (var i = 0; i < $scope.prehours.length; i++) {
+			var obj = $scope.prehours[i].prehours;
+			for (var cpt = 0; cpt < obj.length; cpt++) {
+				formatJour(obj[i].matin);
+				formatJour(obj[i].soir);
+			}
+		}
+	}
 
 	this.saveConfiguration = function () {
 		$timeout(Popover.hide(), 0);
+		
+		formatDatesPreHour(); // Formate dates nécessaires
 		
 		/* Informations de l'établissement */
 		var dataEtablissement = {
@@ -112,110 +139,67 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 			'user_id': SessionService.get('user_id'),
 			'user_token': SessionService.get('user_token')
 		};
-		
-		;
-		
+
 		PromiseDAO.insertEstablishment(dataEtablissement).then(function(value) {
+			console.log("Insertion Etablissement");
 		    console.log(value);
 		    var idEstablishment = value.data;
 		    for (var i = 0; i < $scope.depart.length; i++) {
 		    	var department = $scope.depart[i];
 		    	var dataDep = { 'nom': department.name, 'img': (i + 1), 'noEta': idEstablishment, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
 		    	PromiseDAO.insertDepartment(dataDep).then(function(value) {
+		    		console.log("Insertion Départements");
+		    		console.log(value);
 		    		insertHorairePreconfigure(value.config.data.nom, value.data);
-		    	}).then(function(value) {
-		    		
-		    	});
+		    	}).then(function(value) {});
 		    }
-		}).then(function(value) {});
-		
-		// var $res = $http.post("assets/php/insertEtablissementAPI.php", dataEtablissement);
-		// $res.then(function (msgEta) {
-		//  	/* Insertion des horaires */
-		//  	var idEstablishment = msgEta.data;
-		
-		// /* Insertion des départements */
-		// 	for (var i = 0; i < $scope.depart.length; i++) {
-		// 		var department = $scope.depart[i];
-		// 		
-		// 		var $res = $http.post("assets/php/insertDepartementAPI.php", data);
-		// 		$res.then(function (msgDep) {
-		// 			insertHorairePreconfigure(msgDep.config.data.nom, msgDep.data);
-		// 		});
-		// 	};
-			
-			
-			
-		
-		/* Insertion des horaires types préconfiguré  */
-		/*	for (var i = 0; i < $scope.prehours.length; i++) {
-				var obj = $scope.prehours[i];
-				var data = { 'hpr_libelle': obj.title, 'hpr_dep_id': obj.dep.id, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
-				var $res = $http.post("assets/php/insertHorairePreconfigureAPI.php", data);
-				$res.then(function (message) { console.log(message); });
-				
+		    
+		    var data = {
+				'eta_id': idEstablishment,
+				'user_id': SessionService.get('user_id'),
+				'user_token': SessionService.get('user_token')
 			};
-		*/
-		//});
-		// var $res = $http.post("assets/php/insertEtablissementAPI.php", dataEtablissement);
-		// $res.then(function (message) {
-		// 	console.log(message);
-		// 	/* Insertion des horaires */
-		// 	var idEstablishment = message.data;
-		// 	var data = {
-		// 		'eta_id': idEstablishment,
-		// 		'user_id': SessionService.get('user_id'),
-		// 		'user_token': SessionService.get('user_token')
-		// 	};
-		// 	var $res = $http.post("assets/php/updatePersonneEstablishmentAPI.php", data);
-		// 	$res.then(function (message) { });
-
-		// 	/* Insertion des horaires de l'établissement */
-		// 	for (var i = 0; i < $scope.tabCalendars.length; i++) {
-		// 		var cal = $scope.tabCalendars[i];
-		// 		for (var i = 0; i < cal.hours.length; i++) {
-		// 			var obj = cal.hours[i];
-		// 			var dataInsertOuvertureInfo = {
-		// 				'jour': obj.day,
-		// 				'matinDebut': moment(obj.matin.debut).add(1, 'h').toDate(),
-		// 				'matinFin': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN)  ? moment(obj.matin.fin).add(1, 'h').toDate() : null,
-		// 				'soirDebut': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN)  ? moment(obj.soir.debut).add(1, 'h').toDate() : null,
-		// 				'soirFin': moment(obj.soir.fin).add(1, 'h').toDate(),
-		// 				'etaId': idEstablishment,
-		// 				'user_id': SessionService.get('user_id'),
-		// 				'user_token': SessionService.get('user_token')
-		// 			 };
-		// 			var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
-		// 			$res.then(function (message) {console.log(message)});
-		// 		}
-		// 	}
-		// 	/* Insertion des départements */
-		// 	for (var i = 0; i < $scope.depart.length; i++) {
-		// 		var obj = $scope.depart[i];
-		// 		var data = { 'nom': obj.name, 'img': (i + 1), 'noEta': idEstablishment, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
-		// 		var $res = $http.post("assets/php/insertDepartementAPI.php", data);
-		// 		$res.then(function (message) { console.log(message); });
-		// 	};
+			var $res = $http.post("assets/php/updatePersonneEstablishmentAPI.php", data);
+			$res.then(function (message) { });
+		    
+			/* Insertion des horaires de l'établissement */
+			for (var i = 0; i < $scope.tabCalendars.length; i++) {
+				var cal = $scope.tabCalendars[i];
+				for (var i = 0; i < cal.hours.length; i++) {
+					var obj = cal.hours[i];
+					console.log(obj.soir.fin);
+					var dataInsertOuvertureInfo = {
+						'jour': obj.day,
+						'matinDebut': DateFactory.toDateTimeBDD(obj.matin.debut),
+						'matinFin': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN) ? DateFactory.toDateTimeBDD(obj.matin.fin) : null,
+						'soirDebut': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN) ?  DateFactory.toDateTimeBDD(obj.soir.debut) : null,
+						'soirFin':  DateFactory.toDateTimeBDD(obj.soir.fin),
+						'etaId': idEstablishment,
+						'user_id': SessionService.get('user_id'),
+						'user_token': SessionService.get('user_token')
+					 };
+					var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
+					$res.then(function (message) {console.log(message)});
+				}
+			}
 			
+			/* Insertion des jours fériés et vacances */
+			for (var i = 0; i < $scope.calEvents.length; i++) {
+				var dataFermetureInfo = {
+					'date': DateFactory.toDateTimeBDD(DateFactory.getDateStr($scope.calEvents[i].date)),
+					'etaId': idEstablishment, 'user_id': SessionService.get('user_id'),
+					'user_token': SessionService.get('user_token')
+				};
+				var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
+				$res.then(function (message) { console.log(message); });
+			};
 			
+		}).then(function(value) {});
 			
-
-		// 	/* Insertion des jours fériés et vacances */
-		// 	for (var i = 0; i < $scope.calEvents.length; i++) {
-		// 		var dataFermetureInfo = {
-		// 			'date': moment(DateFactory.getDateStr($scope.calEvents[i].date)).add(1, 'h').toDate(),
-		// 			'etaId': idEstablishment, 'user_id': SessionService.get('user_id'),
-		// 			'user_token': SessionService.get('user_token')
-		// 		};
-		// 		var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
-		// 		$res.then(function (message) { console.log(message); });
-		// 	};
-		// });
-
-		// if ($rootScope.user != null) { $rootScope.user.config = true; }
-		// SessionService.set('user_configured', true);
-		// $location.path('/home?state=1');
-		// NotifService.success(Const.CONFIGINIT, Const.CONFIGSUCCESS);
+		if ($rootScope.user != null) { $rootScope.user.config = true; }
+		SessionService.set('user_configured', true);
+		$location.path('/home?state=1');
+		NotifService.success(Const.CONFIGINIT, Const.CONFIGSUCCESS);
 	}
 
 }); // Fin du controller

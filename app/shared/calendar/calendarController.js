@@ -1,3 +1,4 @@
+
 (function(){
 
 var appCal = angular.module('ctrlCCNT');
@@ -11,7 +12,7 @@ appCal.config(['calendarConfig', function(calendarConfig) {
 * Paramètres : $scope, moment (pour les dates), alert (pour les fenêres modales), calendarConfig (Objet du calendrier), $http (Requêtes HTTP)
 * Gère le calendrier
 */
-appCal.controller('calendarController', function($timeout, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory) {
+appCal.controller('calendarController', function($timeout, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory, PromiseDAO, State, Popover, Const, $mdpTimePicker) {
 
 	var vm = this; // Je prend la référence de moi-même et je la stocke
 	
@@ -65,7 +66,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	
  	$scope.departments = [];
   	$scope.departmentsSel = [];
-  	$scope.deps = [ // Stocke les codes couleurs nécessaires pour les départements
+  	$scope.colorDeps = [ // Stocke les codes couleurs nécessaires pour les départements
 		  {}, // Premier objet vide
 		  {primary: '#00695c', secondary: '#93C8C2', font: '#222'}, 
 		  {primary: '#388e3c', secondary: '#81D285', font: '#222'},
@@ -118,7 +119,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			vm.styleDep = $scope.styleDep;
 			vm.persons = $scope.persons;
 			vm.myPerson = angular.copy(vm.event.personne);
-			vm.deps = $scope.deps;
+			vm.colorDeps = $scope.colorDeps;
 			vm.departmentsSel = $scope.departmentsSel;
 			vm.absences1 = $scope.absences1;
 			vm.motif = $scope.motif;
@@ -367,7 +368,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 
 	/* Récupère l'objet couleur selon l'id du départements */
 	$scope.getColor = function (id) {
-	  	return $scope.deps[id];
+	  	return $scope.colorDeps[id];
 	};
 
 	var getDateFin = function (heureDebut, heureFin, date) {
@@ -419,7 +420,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			var tabPerson = message.data; // Stocke le tableau d'objet
 			if (tabPerson.length > 0) { // Si il y a des données
 			  	for (var i = 0; i < tabPerson.length; i++) {
-			  		tabPerson[i].color = $scope.deps[tabPerson[i].dep.img];
+			  		tabPerson[i].color = $scope.colorDeps[tabPerson[i].dep.img];
 			  		tabPerson[i].initiales = tabPerson[i].nom.charAt(0).toUpperCase() + tabPerson[i].prenom.charAt(0).toUpperCase();
 			  		console.log(tabPerson[i]);
 			  		tabPerson[i].contrat.particularitestring = (tabPerson[i].contrat.particularite != null) ? (tabPerson[i].contrat.horaire.id == 3 ? tabPerson[i].contrat.particularite + " Heures" : tabPerson[i].contrat.particularite * 100 + " %") : "";
@@ -482,17 +483,557 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	    $scope.answer = function(answer) {$mdDialog.hide(answer);};
   	}
   	
+  	
+  	var getListe = function(hour, tableau) {
+  		var liste = [];
+  		for (var i = 0; i < tableau.length; i++) {
+  			var tabdonnees = tableau[i];
+  			for (var cpt = 0; cpt < tabdonnees.length; cpt++) {
+  				if (tabdonnees[cpt].liste && tabdonnees[cpt].hpr_id == hour.id) {
+  					liste.push(tabdonnees[cpt]);
+  				}
+  			}
+  		}
+  		return liste;
+  	}
+
+  	
+  	var insertionHoraireTypePreConfig = function (index, event) {
+  		var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token'), dep_id: $scope.departments[index].id};
+		$res = $http.post('assets/php/getHoraireTypePreConfigAPI.php', data);
+		$res.then(function(message) {
+			$scope.departments[index].prehours = [];
+			
+			var obj = message.data;
+			
+			for (var i = 0; i < obj.length; i++) {
+				var data = obj[i];
+				for (var i = 0; i < data.length; i++) {
+					if (!data[i].liste) {
+						$scope.departments[index].prehours.push({prehour: data[i], liste : getListe(data[i], message.data)});
+					}
+				}
+			}
+			
+			if (index == $scope.departments.length-1){
+				$('.side-nav').css('display', 'none');
+				$('#page-wrapper').css('position', 'absolute');
+				$('#page-wrapper').css('left', '0px');
+
+				$mdDialog.show({
+			      	controller: GestionHoraireTypeController,
+			      	templateUrl: 'app/shared/calendar/modalPlanningType.html',
+			      	parent: angular.element(document.body),
+			      	targetEvent: event,
+			      	clickOutsideToClose:true,
+			      	fullscreen: true,
+			    }).then(function(answer) {
+			    	$('#page-wrapper').css('position', '');
+					$('#page-wrapper').css('left', '');
+			    	$('.side-nav').css('display', '');
+			    	console.log(vm.events);
+			    	var length = vm.events.length;
+			    	
+			    	vm.events.splice(0, length);
+			    	$scope.getPersons();
+			    	NotifService.success('Ajout Horaire', "Les horaires ont été ajouté avec succès");
+			    }, function(answer) {
+			    	$('#page-wrapper').css('position', '');
+					$('#page-wrapper').css('left', '');
+			    	$('.side-nav').css('display', '');
+			    	console.log(answer);
+			    });
+			}
+			
+		}).then(function(error){});
+  	}
+  	
+  	/*****************************************************************************************\
+  			* Gestion de la modale ajouter horaire type préconfiguré *                        
+  	\*****************************************************************************************/
+  	$scope.showAddHoraireType = function(event) {
+  		vm.event = $scope.event;
+  		vm.personsSel = $scope.personsSel;
+  		vm.myPerson = $scope.myPerson;
+		vm.persons = $scope.persons;
+		vm.styleDep = $scope.styleDep;
+		vm.colorDeps = $scope.colorDeps;
+		vm.event = $scope.event;
+		vm.departments = $scope.departments;
+		vm.absences1 = $scope.absences1;
+		vm.motif = $scope.motif;
+		vm.personsSel = $scope.personsSel;
+
+		for (var i = 0; i < $scope.departments.length; i++) {
+			insertionHoraireTypePreConfig(i, event);
+  		}
+  	}
+  	
+  	function GestionHoraireTypeController($scope) {
+  		$scope.scope = $scope;
+  		$scope.nbPause = [];
+  		$scope.event = vm.event;
+  		
+  		$scope.event.endsAt = moment($scope.event.startsAt).add(6, 'days').toDate();
+  		
+  		for (var nb = 0; nb <= 60; nb+=5) {$scope.nbPause.push({name: nb + ' minutes', value:nb});}
+  			
+  		$scope.myHoraireType = null;
+  		$scope.myHoraireTypeCal = null;
+  		$scope.personsSel = vm.personsSel;
+		$scope.styleDep = {'background-color': 'white'};
+		$scope.depSel = "";
+		$scope.listePreHours = null;
+		$scope.imgDep = {'background-color': 'white'};
+		$scope.person = null;
+		$scope.persons = angular.copy(vm.persons);
+  		$scope.departments = angular.copy(vm.departments);
+		$scope.colorDeps = angular.copy(vm.colorDeps);
+  		$scope.prehours = State.getTabCalDefaultWithPause();
+  		
+  		var assignationPause = function() {
+  			for (var i = 0; i < $scope.prehours.length; i++) {
+				$scope.prehours[i].datapauseMatin = $scope.nbPause[0];
+				$scope.prehours[i].datapauseSoir = $scope.nbPause[0];
+			}
+  		}
+  		
+  		assignationPause();
+		
+  		
+  		
+  		//console.log($scope.departments);
+	    $scope.getColor = function (id) {return $scope.colorDeps[id];}
+	    
+		var rechercherPersonne = function (id) {
+		  	for (var i = 0; i < $scope.persons.length; i++) {
+				if ($scope.persons[i].id == id) {
+			  		return $scope.persons[i];
+				}
+		  	}
+		  	return null;
+		}
+		
+		var rechercherDep = function (id) {
+		  	for (var i = 0; i < $scope.departments.length; i++) {
+				if ($scope.departments[i].id == id) {
+			  		return $scope.departments[i];
+				}
+		  	}
+		  	return null;
+		}
+		
+		var getPauseByValue = function(value) {
+			for (var i = 0; i < $scope.nbPause.length; i++) {
+				if ($scope.nbPause[i].value == value) {
+					return $scope.nbPause[i];
+				}
+			}
+			return $scope.nbPause[0];
+		}
+		
+		var insertionHorairePreConfigSemaine = function(jour) {
+			for (var i = 0; i < $scope.prehours.length; i++) {
+				if (jour.jour == $scope.prehours[i].id) {
+					if (moment(jour.heureDebut).format('HH') != 'Invalid date') {
+						$scope.prehours[i].matin.style = {"border" : "1px solid #2980b9"};
+						
+						var heureDebut = new Date(jour.heureDebut);
+						var heureDebutFinal = moment().startOf('day').add(heureDebut.getHours(), 'hours').add(heureDebut.getMinutes(), 'minutes').toDate();
+						var heureFin = new Date(jour.heureFin);
+						var heureFinFinal = moment().startOf('day').add(heureFin.getHours(), 'hours').add(heureFin.getMinutes(), 'minutes').toDate();
+						
+						$scope.prehours[i].matin.debut = heureDebutFinal;
+						$scope.prehours[i].matin.fin = heureFinFinal;
+						$scope.prehours[i].datapauseMatin = getPauseByValue(jour.pause);
+					}
+					if (moment(jour.heureDebutS).format('HH') != 'Invalid date') {
+						$scope.prehours[i].soir.style = {"border" : "1px solid #2980b9"};
+
+						var heureDebut = new Date(jour.heureDebutS);
+						var heureDebutFinal = moment().startOf('day').add(heureDebut.getHours(), 'hours').add(heureDebut.getMinutes(), 'minutes').toDate();
+						var heureFin = new Date(jour.heureFinS);
+						var heureFinFinal = moment().startOf('day').add(heureFin.getHours(), 'hours').add(heureFin.getMinutes(), 'minutes').toDate();
+						
+						$scope.prehours[i].soir.debut = heureDebutFinal;
+						$scope.prehours[i].soir.fin = heureFinFinal;
+						$scope.prehours[i].datapauseSoir = getPauseByValue(jour.pauseS);
+					}
+				}
+			}
+		}
+		
+			 /* Affiche le timePicker pour ouverture du Matin */
+			$scope.showTimeMatinDebut = function(ev, index) {
+				$timeout(Popover.hide, 0);
+				var objHour = $scope.prehours[index];
+				
+				var date = objHour.matin.debut == Const.HOUR_OPEN ? moment(angular.copy($scope.matinDebut)).add(index, 'days').toDate() : objHour.matin.debut;
+				
+			 	$mdpTimePicker(date, {
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
+			 	}).then(function(selectedDate) {
+			 		if (selectedDate == Const.ANNULER) { // (Cliquer sur Supprimer == Annuller)
+						objHour.matin.debut = Const.HOUR_OPEN;
+						objHour.matin.fin = Const.HOUR_END;
+						objHour.soir.debut = Const.HOUR_OPEN;
+						objHour.soir.fin = Const.HOUR_END;
+					} else {
+						if (DateFactory.isHourStartValid(selectedDate, index, $scope.prehours)) {
+							selectedDate = moment(DateFactory.getToday()).add(index, 'days').add(selectedDate.getHours(), 'hours').add(selectedDate.getMinutes(), 'minutes').toDate();
+							objHour.matin.debut = selectedDate; // Changement de l'heure à jour
+						}  else {
+							var dayPrec = DateFactory.getDayPrec(index, $scope.prehours);
+							NotifService.error('Horaire invalide', "L'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(dayPrec.soir.fin) + "</span> du soir de " + dayPrec.day); 
+						}
+					}
+
+			 	});
+			};
+
+			/* Affiche le timePicker pour fermeture du Matin (Affiché seulement si existe une coupure = pause) */
+			$scope.showTimeMatinFin = function(ev, index) {
+				$timeout(Popover.hide, 0);
+				var objHour = $scope.prehours[index];
+				
+				var date = objHour.matin.fin == Const.HOUR_END ? moment(angular.copy($scope.matinFin)).add(index, 'days').toDate() : objHour.matin.fin;
+				console.log(date);
+				
+				if (objHour.matin.debut == Const.HOUR_OPEN) {
+					console.log(objHour);
+					NotifService.error("Heure d'ouverture non configuré", "L'heure d'ouverture doit être indiqué avant !");
+					return;
+				}// Rediriger sur date début
+
+			 	$mdpTimePicker(date, {
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
+			 	}).then(function(selectedDate) {
+
+			 		if (selectedDate == Const.ANNULER) {objHour.matin.fin = Const.HOUR_END; return;} // Si il annule (Clique sur supprimer)
+
+			 		var nbHours = DateFactory.calculateNbHours(objHour.matin.debut, selectedDate);
+
+			 		if (nbHours >= 24) { // Si la date dépasse 24 heures
+			 			var nbJours = Math.round(nbHours/24); // Virer les jours si il en a plus que ce qu'il doit
+			 			selectedDate = moment(selectedDate).subtract(nbJours, 'days').toDate();
+			 		}
+
+			 		if (selectedDate.getDate() != objHour.matin.debut.getDate()) { // Si c'est le jour suivant
+			 			selectedDate = selectedDate.setDate(objHour.matin.debut.getDate());
+			 			selectedDate = new Date(selectedDate);		 		
+			 		}
+
+			 		/****************************************************************************\
+						Contrôler si la date est supérieur à matin début ! Sinon on la rejette 
+					\****************************************************************************/
+			 		if (!DateFactory.validateHour(objHour.matin.debut, selectedDate)) {
+			 			// Date est invalide
+			 			objHour.matin.fin = Const.HOUR_END;
+			 			NotifService.error("Date invalide", "L'heure de fermeture doit être après la date d'ouverture!");
+			 		} else {
+			 			// Date est valide
+			 			objHour.matin.fin = selectedDate;
+			 		}
+
+			 			
+			 	});
+			};
+
+			/* Affiche le timePicker pour la date de début du soir */
+			$scope.showTimeSoirDebut = function(ev, index) {
+				$timeout(Popover.hide, 0);
+				var objHour = $scope.prehours[index];
+				var date = objHour.soir.debut == Const.HOUR_OPEN ? moment(angular.copy(DateFactory.soirDebut)).add(index, 'days').toDate() : objHour.soir.debut;
+				console.log(date);
+				
+				if (objHour.matin.fin == Const.HOUR_END) {
+					console.log(objHour);
+					NotifService.error("Heure d'ouverture non configuré", "L'heure d'ouverture doit être indiqué avant !");
+					return;
+				}// Rediriger sur date début
+				
+			 	$mdpTimePicker(date, {
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
+			 	}).then(function(selectedDate) {
+			 		if (selectedDate == Const.ANNULER) {
+						objHour.soir.debut = Const.HOUR_OPEN;
+						objHour.soir.fin = Const.HOUR_END;
+
+					} else {
+						
+						if (objHour.soir.fin != Const.HOUR_END && !DateFactory.validateHour(selectedDate, objHour.soir.fin)) {
+							/* Date invalide */
+			 				NotifService.error("Horaire invalide", "L'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> du soir doit être avant la date de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.soir.fin) + "</span> du soir !");
+			 				return;
+						}
+						
+				 		var nbHours = DateFactory.calculateNbHours(objHour.matin.fin, selectedDate);
+
+				 		if (nbHours >= 24) { // Si la date dépasse 24 heures
+				 			var nbJours = Math.round(nbHours/24); // Virer les jours si il en a plus que ce qu'il doit
+				 			selectedDate = moment(selectedDate).subtract(nbJours, 'days').toDate();
+				 		}
+
+				 		if (selectedDate.getDate() != objHour.matin.debut.getDate()) { // Si c'est le jour suivant
+				 			selectedDate = selectedDate.setDate(objHour.matin.debut.getDate());
+				 			selectedDate = new Date(selectedDate);		 		
+				 		}
+				 		
+				 		/* Cas spécial si je veux choisir minuit ou autre avant l'heure du matin*/
+				 		if (selectedDate.getHours() >= 0 && selectedDate.getHours() < objHour.matin.debut.getHours()) {
+				 			var objSuiv = DateFactory.getDaySuiv(index, $scope.prehours);
+				 			
+				 			if (objSuiv.matin.debut != Const.HOUR_OPEN) {
+				 				if (selectedDate.getHours() >= objSuiv.matin.debut.getHours()) {
+				 					if (selectedDate.getHours() == objSuiv.matin.debut.getHours()) {
+				 						/* Comparaison des minutes */
+				 						if (selectedDate.getMinutes() >= objSuiv.matin.debut.getMinutes()) {
+				 							NotifService.error("Date invalide", "L'heure d'ouverture du soir doit être après la date de fermeture du matin !");
+			 								return;
+				 						}
+				 					}
+				 				}
+				 			}
+				 			selectedDate = moment(selectedDate).add(1, 'days').toDate();
+			 				selectedDate = new Date(selectedDate);	
+				 		}
+				 		
+						/****************************************************************************\
+							Contrôler si la date est supérieur à matin fin ! Sinon on la rejette 
+						\****************************************************************************/
+						if (!DateFactory.validateHour(objHour.matin.fin, selectedDate)) {
+							/* Date invalide */
+							objHour.soir.debut = Const.HOUR_OPEN;
+			 				NotifService.error("Date invalide", "L'heure d'ouverture du soir doit être après la date de fermeture du matin !");
+						} else {
+							/* Date valide */ 
+							objHour.soir.debut = selectedDate; // Changement de l'heure à jour
+						}
+					}
+
+			 	});
+			};
+
+			/* Affiche le timePicker pour la date de fin du soir */
+			$scope.showTimeSoirFin = function(ev, index) {
+				$timeout(Popover.hide, 0);
+				
+				
+				var objHour = $scope.prehours[index];
+				var objSuiv = DateFactory.getDaySuiv(index, $scope.prehours);
+				var date = objHour.soir.fin == Const.HOUR_END ? moment(angular.copy($scope.soirFin)).add(index, 'days').toDate() : objHour.soir.fin;
+				
+				if (objHour.matin.debut == Const.HOUR_OPEN) {
+					NotifService.error("Heure non configuré", "L'heure d'ouverture du matin de : <strong>" + objHour.day + "</strong> doit être indiqué avant !");
+					return;
+				}
+				
+				if (objHour.matin.fin != Const.HOUR_END && objHour.soir.debut == Const.HOUR_OPEN) {
+					NotifService.error("Heure non configuré", "L'heure d'ouverture du soir de : " + objHour.day + " doit être indiqué avant !");
+					return;
+				}
+
+
+				/* Affiche le timePicker */
+			 	$mdpTimePicker(date, {
+			 		targetEvent: ev,
+			 		parent: angular.element(document.body.parentElement)
+			 	}).then(function(selectedDate) {
+			 		/* Dès que la saisie est faite */
+			 		
+			 		if (selectedDate == Const.ANNULER) { // Si L'utilisateur supprime l'heure saisi
+						objHour.soir.fin = Const.HOUR_END; // Remet l'heure de fin à son état initial.
+						return;
+					} else { // Si l'utilisateur valide son heure
+						
+						
+						/* Vérification que l'heure de pause de fin est valide et peut être rentré */
+						var nbHours = DateFactory.calculateNbHours(objHour.soir.debut, selectedDate);
+
+				 		if (nbHours >= 24) { // Si la date dépasse 24 heures
+				 			var nbJours = Math.round(nbHours/24); // Virer les jours si il en a plus que ce qu'il doit
+				 			selectedDate = moment(selectedDate).subtract(nbJours, 'days').toDate();
+				 		} else {
+				 			
+				 			if (selectedDate.getHours() >= 0 && selectedDate.getHours() <= objHour.matin.debut.getHours()) { // Si c'est le jour suivant
+				 				if (selectedDate.getHours() == objHour.matin.debut.getHours()) { // Si même heure
+				 					if (selectedDate.getMinutes() > objHour.matin.debut.getMinutes()) { // Comparer les minutes
+				 						
+				 						NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.matin.debut) + "</span> du jour même !"); 
+										return;		 						
+				 					}
+				 				}
+				 				selectedDate = selectedDate.setDate(objHour.matin.debut.getDate() + 1); // Je rajoute un jour
+								selectedDate = new Date(selectedDate); 
+			 				} else if (selectedDate.getHours() < 12) { // Si je suis dans le matin et que l'heure que j'ai séléctionné et plus grande que celle du demain
+			 					if (objSuiv.matin.debut != Const.HOUR_OPEN) {
+				 					if (selectedDate.getHours() == objSuiv.matin.debut.getHours()) { // Si même heure
+					 					if (selectedDate.getMinutes() > objSuiv.matin.debut.getMinutes()) { // Comparer les minutes
+					 						NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objSuiv.matin.debut) + "</span> de " + objSuiv.day + " !"); 
+
+											
+											return;	
+					 					}
+					 				} else {
+					 					
+					 					
+					 					NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objSuiv.matin.debut) + "</span> de " + objSuiv.day + " !"); 
+
+										return;			
+					 				}
+				 					selectedDate = selectedDate.setDate(objSuiv.matin.debut.getDate()); // Je rajoute un jour
+									selectedDate = new Date(selectedDate); 
+			 					}
+			 				} else {
+			 					selectedDate = selectedDate.setDate(objHour.matin.debut.getDate()); // Je rajoute un jour
+								selectedDate = new Date(selectedDate); 
+			 				}
+				 		}
+				 		
+				 		
+				 		
+				 		if (objHour.soir.debut != Const.HOUR_OPEN && !DateFactory.validateHour(objHour.soir.debut, selectedDate)) {
+				 			
+				 			NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour le soir doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.soir.debut) + "</span> du soir !"); 
+			 				return;
+				 		}
+				 						 		
+				 		/****************************************************************************\
+							Contrôler si la date est supérieur à matin fin ! Sinon on la rejette 
+						\****************************************************************************/
+						
+						if (index == 6) {
+							if (selectedDate.getHours() >= 0 && selectedDate.getHours() <= objSuiv.matin.debut.getHours()) { // Si c'est le jour suivant
+				 				if (selectedDate.getHours() == objSuiv.matin.debut.getHours()) { // Si même heure
+				 					if (selectedDate.getMinutes() > objSuiv.matin.debut.getMinutes()) { // Comparer les minutes
+				 						NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être inférieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objSuiv.matin.debut) + "</span> de " + objSuiv.day + " !"); 
+
+										return;		 						
+				 					}
+				 				}
+				 			} else {
+				 				if (!DateFactory.validateHour(objHour.matin.debut, selectedDate)) {
+									/* Date invalide */
+									objHour.soir.fin = Const.HOUR_OPEN;
+					 				NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.matin.debut) + "</span> du jour même"); 
+					 				return;
+								}
+				 			}
+						} else {
+							if (objSuiv.matin.debut != Const.HOUR_OPEN) {
+								if (!DateFactory.validateHour(selectedDate, objSuiv.matin.debut)) {
+									/* Date invalide */
+									objHour.soir.fin = Const.HOUR_OPEN;
+					 				NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objSuiv.matin.debut) + "</span> de " + objSuiv.day + " !"); 
+					 				return;
+								}
+							}
+						}
+						/* Date valide */ 
+						objHour.soir.fin = selectedDate; // Changement de l'heure à jour
+						/* Lancement écran qui permet à l'utilisateur de choisir les jours de la semaine qui doivent reprendre les même configurations */
+			 		}
+
+			 	});
+	    	};
+		
+		
+		$scope.majHoraireType = function () {
+			$scope.prehours = State.getTabCalDefaultWithPause();
+			assignationPause();
+			var pos = -1;
+			for (var i = 0; i < $scope.listePreHours.length; i++) {
+				if ($scope.listePreHours[i].prehour.id == $scope.myHoraireType) {
+					pos = i;
+				}
+			}
+			if (pos != -1) {
+				for (var i = 0; i < $scope.listePreHours[pos].liste.length; i++) {
+					insertionHorairePreConfigSemaine($scope.listePreHours[pos].liste[i]);
+				}
+			}
+		}
+		
+		
+		$scope.majPerson = function () {
+			var person = rechercherPersonne($scope.myPerson);
+		  	if (person != null) {
+		  		var dep = rechercherDep(person.dep.id);
+				$scope.depSel = person.dep.nom;
+				$scope.listePreHours = dep.prehours;
+				$scope.styleDep = {'background-color' : $scope.getColor(person.dep.img).primary}
+				$scope.event.title = person.nom + " " + person.prenom;
+				$scope.event.color = $scope.getColor(person.dep.img);
+				$scope.person = person;
+				$scope.event.person = angular.copy(person);
+		  	}
+		}
+  		
+  		
+  		var insertionHoraireBDD = function(pos, dateDebut) {
+  			var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(new Date(dateDebut)), 'heureDebut': moment($scope.prehours[pos].matin.debut).format('HH:mm'), 'heureFin': moment($scope.prehours[pos].matin.fin).format('HH:mm'),'pause':$scope.prehours[pos].datapauseMatin.value, 'absid':null};
+  			var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", data); // Envoie de la requête en 'POST'
+			$res.then(function(value){console.log(value);}).then(function(){});
+  		}
+  		
+  		var insertionHoraireBDDSoir = function(pos, dateDebut) {
+  			var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(new Date(dateDebut)), 'heureDebut': moment($scope.prehours[pos].soir.debut).format('HH:mm'), 'heureFin': moment($scope.prehours[pos].soir.fin).format('HH:mm'),'pause':$scope.prehours[pos].datapauseSoir.value, 'absid':null};
+  			var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", data); // Envoie de la requête en 'POST'
+			$res.then(function(value){
+				console.log(value);
+			}).then(function(error){
+				console.log(error);
+			});
+  		}
+  		
+  		
+  		$scope.insertHoraireType = function() {
+  			console.log($scope.event);
+  			console.log($scope.prehours);
+  			
+  			var dateDebut = moment(angular.copy($scope.event.startsAt)).format('YYYY-MM-DD');
+  			var dateFin = moment(angular.copy($scope.event.endsAt)).add(1, 'days').toDate();
+  			var dateFinal = moment(dateFin).format('YYYY-MM-DD');
+  			
+  			while (!moment(dateDebut).isSame(dateFinal)) {
+  				var pos = DateFactory.getHoraireDay($scope.prehours, new Date(dateDebut).getDay());
+  				
+				if ($scope.prehours[pos].matin.debut != Const.HOUR_OPEN) {
+					insertionHoraireBDD(pos, dateDebut);
+				}
+				if ($scope.prehours[pos].soir.debut != Const.HOUR_OPEN) {
+					insertionHoraireBDDSoir(pos, dateDebut);
+				}
+				
+  				dateDebut = moment(dateDebut).add(1, 'days').format('YYYY-MM-DD'); // Atention si on enleve boucle infini
+  			}
+  			
+  			$mdDialog.hide('');
+  			
+  		}
+  		
+  		// Interactions avec l'utilisateur pour cacher, annuler ou renvoyer un résultat avec la modale 
+  		$scope.hide = function() { $mdDialog.hide(); };
+	    $scope.cancel = function() { $mdDialog.cancel(); };
+	    $scope.answer = function(answer) { $scope.insertHoraireType(); };
+  	}
+  	
+  	
+  	
   	/*****************************************************************************************\
   			* Gestion de la modale ajouter horaire *                        
   	\*****************************************************************************************/
- 	$scope.showAddHoraire = function () {
+ 	$scope.showAddHoraire = function (event) {
  		vm.modif = false;
 		vm.styleDep = $scope.styleDep;
 		vm.myPerson = $scope.myPerson;
 		vm.persons = $scope.persons;
-		vm.deps = $scope.deps;
+		vm.colorDeps = $scope.colorDeps;
 		vm.event = $scope.event;
-		vm.departmentsSel = $scope.departmentsSel;
+		vm.departments = $scope.departments;
 		vm.absences1 = $scope.absences1;
 		vm.motif = $scope.motif;
 		vm.nbPause = $scope.nbPause;
@@ -509,8 +1050,8 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	    })
 	    .then(function(answer) {
 	    	// Faire quelque chose
-	    }, function() {
-	    });
+	    	console.log(answer);
+	    }, function() {});
 	}
 	
 	function CreatePlanningController($scope, $mdDialog, $mdpTimePicker, $filter, Const) {
@@ -536,7 +1077,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 		}
 		
 		$scope.departmentsSel = angular.copy(vm.departmentsSel);
-		$scope.deps = angular.copy(vm.deps);
+		$scope.colorDeps = angular.copy(vm.colorDeps);
 	    
 		$scope.nbPause = [];
 		$scope.nbPause2= [];
@@ -561,7 +1102,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	    $scope.pauseService1 = ($scope.modif && $scope.event.pause > 0) ? getPauseService1() : $scope.nbPause.length > 0 ? $scope.nbPause[0] : undefined;
 	    $scope.pauseService2 = $scope.nbPause2.length > 0 ? $scope.nbPause2[0] : undefined;
 	    
-	    $scope.getColor = function (id) {return $scope.deps[id];}
+	    $scope.getColor = function (id) {return $scope.colorDeps[id];}
 	    
 		var rechercherPersonne = function (id) {
 		  	for (var i = 0; i < $scope.persons.length; i++) {
@@ -655,13 +1196,12 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 							NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
 							return;
 						}
-						var dateDebutS1 = angular.copy(dateDebut);
+						var dateDebutS1 = angular.copy(moment(dateDebut).startOf('day').toDate());
 						var dateDebutS1F = moment(angular.copy(dateDebutS1)).add($scope.heureDebut1.getHours() , 'hours').add($scope.heureDebut1.getMinutes(), 'minutes').toDate();
 						var dateFinS1 = moment(angular.copy(dateDebutS1)).add($scope.heureFin1.getHours() , 'hours').add($scope.heureFin1.getMinutes(), 'minutes').toDate();
 						if (dateDebutS1F > dateFinS1) {
 							dateFinS1 = moment(dateFinS1).add(1 , 'days').toDate();
 						}
-						
 						$scope.event.id = message.data;
 						$scope.event.startsAt = dateDebutS1F;
 						$scope.event.endsAt = dateFinS1;
@@ -670,7 +1210,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 						$scope.event.color = $scope.absent1 ? $scope.getColor(9) : $scope.getColor($scope.person.dep.img);
 						var abs = getMotifById(parseInt($scope.motif));
 						$scope.event.absence = ($scope.absent1 ? {absence: true, objet: {id: abs.id, nom: abs.name}}: {absence: false});
-						
+
 						if (isFiltered()) {vm.events.push($scope.event)};
 						NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
 						
@@ -692,7 +1232,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 									NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
 									return;
 								}
-								var dateDebutS2 = angular.copy(dateDebut);
+								var dateDebutS2 = angular.copy(moment(dateDebut).startOf('day').toDate());
 								var dateDebutS2F = moment(angular.copy(dateDebutS2)).add($scope.heureDebut2.getHours() , 'hours').add($scope.heureDebut2.getMinutes(), 'minutes').toDate();
 								var dateFinS2 = moment(angular.copy(dateDebutS2)).add($scope.heureFin2.getHours() , 'hours').add($scope.heureFin2.getMinutes(), 'minutes').toDate();
 								
@@ -811,7 +1351,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	    	if (answer == 'modif') {
 				$scope.modifHoraire();
 			} else {
-	    		$scope.addHoraire(answer);
+	    		$scope.addHoraire();
 	    	}
 	      	//$mdDialog.hide(answer);
 	    };

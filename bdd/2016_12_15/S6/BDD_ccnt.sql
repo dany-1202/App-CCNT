@@ -5,6 +5,7 @@
 -- Client :  127.0.0.1
 -- Généré le :  Mer 05 Avril 2017 à 21:21
 -- Version du serveur :  10.1.21-MariaDB
+
 -- Version de PHP :  7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -74,7 +75,7 @@ INSERT INTO `ccn_appartient` (`app_eta_id`, `app_per_id`) VALUES
 CREATE TABLE `ccn_contient` (
   `con_dep_id` int(11) NOT NULL,
   `con_hor_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `ccn_contient`
@@ -242,7 +243,7 @@ CREATE TABLE `ccn_horairepreconfigure` (
   `hor_soirDebut` datetime NOT NULL,
   `hor_soirFin` datetime NOT NULL,
   `hor_pause` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `ccn_horairepreconfigure`

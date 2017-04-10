@@ -22,6 +22,7 @@ ctrlCCNT.controller('planningController', function($timeout, $scope, moment, cal
 	for (var nb = 0; nb <= 60; nb+=5) {
 		$scope.nbPause.push({name: nb + ' minutes', value:nb});
 	}
+	/*
 	
 	$scope.showHeureDebutSer1 = function(ev, index) {
 	 	$mdpTimePicker($scope.heureDebut1, {
@@ -74,7 +75,11 @@ ctrlCCNT.controller('planningController', function($timeout, $scope, moment, cal
 	 		};
 	 	});
 	};
-	$scope.showHeureFinSer2 = function(ev, index) {
+	$scope.showHeureFinSer2 = function(ev, index, hour) {
+		console.log(hour);
+		
+		
+		
 	 	$mdpTimePicker($scope.heureFin2, {
 	 		targetEvent: ev,
 	 		parent: angular.element(document.body.parentElement)
@@ -89,7 +94,7 @@ ctrlCCNT.controller('planningController', function($timeout, $scope, moment, cal
 	 		
 	 	});
 	};
-	
+	*/
 	
 	$scope.$on('$destroy', function() {
      	calendarConfig.dateFormats.hour = originalFormat; // reset for other demos
