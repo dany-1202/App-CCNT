@@ -1191,6 +1191,7 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 		}
 
 		$scope.addHoraire = function (answer) {
+			console.log("addHoraire");
 		  	if ($scope.event.title != "") {
 		  		var horaireDeuxJours = false;
 		  		var dateFin;
@@ -1268,9 +1269,8 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 								
 								if (isFiltered()) {vm.events.push($scope.event)};*/
 								NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
-							
-								console.log($scope.person);
 							});
+
 						}
 						var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.person.id, type_push: 'new'});
 						$res2.then(function (message) {

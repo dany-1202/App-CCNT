@@ -57,6 +57,11 @@ ctrlCCNT.config(['$routeProvider','$locationProvider',
 			controller: 'planningController',
 			activetab: 'planning'
 		})
+		.when('/parametrage', {
+			templateUrl: 'app/components/parametrage/parametrageView.html',
+			controller: 'parametrageController',
+			activetab: 'parametrage'
+		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
 		})
