@@ -12,8 +12,11 @@
 		/* Utilisateur autorisé */
 		require_once("classes/Sanitizer.php");
 		require_once("classes/HoraireEmployeeDAO.php");
-		$res = HoraireEmployeeDAO::getInfosSolde($authData['per_id'], $authData['dateDebut'], $authData['dateFin']); // Récupère le résulat obtenu
-		echo(json_encode($res)); // Retourner le résultat sous format json
+		$tab = [];
+		$tab['infoSolde'] = HoraireEmployeeDAO::getInfosSolde($authData['per_id'], $authData['dateDebut'], $authData['dateFin']); // Récupère le résulat obtenu
+		$tab['infoSoldeMois'] = HoraireEmployeeDAO::getInfosHeuresMois($authData['per_id'], $authData['mois'], $authData['annee'], $authData['eta_id']); // Récupère le résulat obtenu
+		
+		echo(json_encode($tab)); // Retourner le résultat sous format json
 	}
 	
 ?>

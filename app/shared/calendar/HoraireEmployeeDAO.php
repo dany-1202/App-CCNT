@@ -150,13 +150,12 @@ class HoraireEmployeeDAO {
 		$db = MySQLManager::get();
 		$queryHeureCCNT = "SELECT eta_nbHeure FROM ccn_etablissement WHERE eta_id = ?";
 		if ($stmt=$db->prepare($queryHeureCCNT)) {
-
 			$stmt->bind_param('i', $eta_id);
 		  	$stmt->execute();
-			
 		  	$stmt->bind_result($heuresCCNT);
-    		$stmt->fetch();
-    		$stmt->close();
+	    	$stmt->fetch();
+	    	$stmt->close();
+		
 		
 			$query = "SELECT SUM(hop_abs_freq) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE tra_per_id = ? AND MONTH(hop_date) = ? AND hop_abs_id NOT LIKE NULL AND hop_abs_id <> 9";
 			if ($stmt=$db->prepare($query)) {

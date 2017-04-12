@@ -51,13 +51,13 @@
               </md-button>
             </div>
             
-            <div ng-show="motifAfficher" class="uk-margin" >
+            <div ng-show="motifAfficher && scope.absent1" class="uk-margin" >
                       <label for="form-stacked-select">Motif absence</label>
                       <select id="selMotif" class="uk-select" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
                         <option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
                       </select>
                   </div>
-            <div ng-hide="scope.motifAfficher" class="text-center">
+            <div ng-hide="scope.motifAfficher && scope.absent1" class="text-center">
               <label class="uk-form-label" for="form-stacked-select">Pause</label>
               <div class="uk-form-controls">
                 <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
@@ -98,8 +98,11 @@
         <hr>
         </div>
     </div>
-    <button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('')">
+    <button style="bottom: 0; position: fixed; width: 50%" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('')">
       Ajouter
+    </button>
+    <button style="bottom: 0; right: 0;position: fixed; width: 50%; background-color: #ECF0F1; color:#222" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="cancel()">
+      Annuler
     </button>
  </md-content>
 </md-dialog>

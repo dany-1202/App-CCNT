@@ -13,7 +13,7 @@ appCal.config(['calendarConfig', function(calendarConfig) {
 * Gère le calendrier
 */
 
-appCal.controller('calendarController', function($timeout, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory, PromiseDAO, State, Popover, Const, $mdpTimePicker) {
+appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory, PromiseDAO, State, Popover, Const, $mdpTimePicker) {
 
 	var vm = this; // Je prend la référence de moi-même et je la stocke
 	
@@ -137,7 +137,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			      fullscreen: true,
 		    })
 		    .then(function(answer) {
-		    	vm.events.splice(answer.calendarEventId, 1);
+		    	/*vm.events.splice(answer.calendarEventId, 1);
 		    	
 		    	$timeout(function() {
 		    		var obj = {
@@ -155,7 +155,9 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 					  	cssClass: 'custom-event'
 		    		};
 			      	if (isFiltered(answer.personne)) {vm.events.push(obj)};
-		      	}, 10);
+		      	}, 10);*/
+		      	NotifService.success('Moditication Réussi', 'L\'horaire a été modifié avec succès !');
+		      	$scope.majEvents();
 		    }, function() {/* Annulation */});
 	  	}
   	}, {
@@ -176,6 +178,10 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 				  	if (message.data != null) {
 				  		vm.events.splice(args.calendarEvent.calendarEventId, 1);
 						NotifService.success('Suppression Horaire', "L'horaire : " + dateDebut + " de l'employé : " + person.nom + " " + person.prenom + " a été supprimé avec succès");
+						var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': person.id, type_push: 'modif'});
+						$res2.then(function (message) {
+							console.log(message);
+						});
 				  	} else {
 						NotifService.success('Suppression Horaire', "L'horaire n'a pas pu être supprimé");
 				  	}
@@ -303,11 +309,14 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	  	} else {
 			$scope.personsSel.push(person);
 	  	}
-	  	vm.events.splice(0, vm.events.length); // Supprimer l'affichage
+	  	$scope.majEvents();
+	}
+	
+	$scope.majEvents = function() {
+		vm.events.splice(0, vm.events.length); // Supprimer l'affichage
 	  	var $req = $http.post("assets/php/getPersonnesFiltreEmpAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'deps' : $scope.departmentsSel, 'emps' : $scope.personsSel});
 	  	$req.then(function (message) {
 			var tabPerson = message.data;
-			
 			if (message.data.length > 0) { // Si il y a des données
 			  	for (var i = 0; i < tabPerson.length; i++) {
 					getHoraires(tabPerson[i]);
@@ -315,7 +324,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			}
 	  	});
 	}
-
+	
 
 	$scope.majAffAbs = function (absence) {
 	  	var pos = searchAbsenceID(absence.id);
@@ -416,6 +425,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 
 	/* Récupère les personnes avec leurs horaires et initialise le calendrier */
 	$scope.getPersons = function () {
+		$rootScope.loading = true;
 	  	var $res = $http.post("assets/php/getEmployeesAPI.php", {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')}); // Envoie de la requête en 'POST'
 	  	$res.then(function (message) { // Réponse de la promesse
 			var tabPerson = message.data; // Stocke le tableau d'objet
@@ -429,9 +439,15 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 					$scope.personsDeps.push(tabPerson[i]);
 					$scope.personsSel.push(tabPerson[i]);
 					getHoraires(tabPerson[i]);
-			  	}
+			  	}			  	
 			}
+			
 	  	});
+	  	var majLoading = function() {
+	  		$rootScope.loading = false;
+	  	}
+	  	$timeout(majLoading, 500);
+	  	
 	} // Fin getPerson()
 
 	$scope.getPersons(); // Initialiser le calendrier avec les données des horaires
@@ -532,14 +548,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 			    	$('#page-wrapper').css('position', '');
 					$('#page-wrapper').css('left', '');
 			    	$('.side-nav').css('display', '');
-			    	console.log(vm.events);
-			    	var length = vm.events.length;
-			    	
-			    	vm.events.splice(0, length);
-			    	
-			    	var length = $scope.persons.length;
-			    	$scope.persons.splice(0, length);
-			    	$scope.getPersons();
+			    	$scope.majEvents();
 			    	NotifService.success('Ajout Horaire', "Les horaires ont été ajouté avec succès");
 			    }, function(answer) {
 			    	$('#page-wrapper').css('position', '');
@@ -1014,9 +1023,12 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 				
   				dateDebut = moment(dateDebut).add(1, 'days').format('YYYY-MM-DD'); // Atention si on enleve boucle infini
   			}
+			var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.person.id, type_push: 'new'});
+			$res2.then(function (message) {
+				console.log(message);
+			});
   			
-  			$mdDialog.hide('');
-  			
+			$mdDialog.hide('');
   		}
   		
   		// Interactions avec l'utilisateur pour cacher, annuler ou renvoyer un résultat avec la modale 
@@ -1053,8 +1065,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 	      	fullscreen: true,
 	    })
 	    .then(function(answer) {
-	    	// Faire quelque chose
-	    	//console.log(answer);
+	    	$scope.majEvents();
 	    }, function() {});
 	}
 	
@@ -1207,7 +1218,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 						if (dateDebutS1F > dateFinS1) {
 							dateFinS1 = moment(dateFinS1).add(1 , 'days').toDate();
 						}
-						$scope.event.id = message.data;
+						/*$scope.event.id = message.data;
 						$scope.event.startsAt = dateDebutS1F;
 						$scope.event.endsAt = dateFinS1;
 						$scope.event.personne = angular.copy($scope.person);
@@ -1217,9 +1228,10 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 						$scope.event.absence = ($scope.absent1 ? {absence: true, objet: {id: abs.id, nom: abs.name}}: {absence: false});
 
 						if (isFiltered()) {vm.events.push($scope.event)};
+						*/
 						NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
 						
-						$scope.reinitEvent();
+						//$scope.reinitEvent();
 						/*****************************************************************************************\
 								* Insertion du deuxième service *                        
 						\*****************************************************************************************/
@@ -1232,7 +1244,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 							
 							var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(dateDebut), 'heureDebut': heureDebutS2, 'heureFin': heureFinS2,'pause':$scope.pauseService2.value, 'absid': absenceMotif}); // Envoie de la requête en 'POST'
 							$res.then(function (message) {
-								console.log(message);
+								/*console.log(message);
 								if (message.data == false) {
 									NotifService.error('Conflit Horaire', "L'horaire que vous essayé de configuré entre en conflit avec un autre horaire");
 									return;
@@ -1255,14 +1267,12 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 								$scope.event.absence = ($scope.absent2 ? {absence: true, objet: {id: abs.id, nom: abs.name}}: {absence: false});
 								$scope.event.color = $scope.absent2 ? $scope.getColor(9) : $scope.getColor($scope.person.dep.img);
 								
-								if (isFiltered()) {vm.events.push($scope.event)};
+								if (isFiltered()) {vm.events.push($scope.event)};*/
 								NotifService.success('Ajout Horaire', "L'horaire pour l'employé : " + $scope.event.title + " a été ajouté avec succès");
-
-								
 							});
 
 						}
-						var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.person.id});
+						var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.person.id, type_push: 'new'});
 						$res2.then(function (message) {
 							console.log(message);
 						});
@@ -1333,7 +1343,7 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 					NotifService.error('Modification Horaire', "L'horaire n'a pas pu être assigné à l'employé !");
 					return;
 				}
-				var dateDebutS1 =  moment(message.data.date).startOf('day').add($scope.heureDebut1.getHours() , 'hours').add($scope.heureDebut1.getMinutes(), 'minutes').toDate();
+				/*var dateDebutS1 =  moment(message.data.date).startOf('day').add($scope.heureDebut1.getHours() , 'hours').add($scope.heureDebut1.getMinutes(), 'minutes').toDate();
 				var dateFinS1 =  moment(message.data.date).startOf('day').add($scope.heureFin1.getHours() , 'hours').add($scope.heureFin1.getMinutes(), 'minutes').toDate();
 				if (dateDebutS1 > dateFinS1) {
 					dateFinS1 = moment(dateFinS1).add(1 , 'days').toDate();
@@ -1346,8 +1356,12 @@ appCal.controller('calendarController', function($timeout, $mdDialog, SessionSer
 				$scope.event.color = $scope.absent1 ? $scope.getColor(9) : $scope.getColor($scope.person.dep.img);
 				var abs = getMotifById(parseInt(message.data.absid));
 				$scope.event.absence = ($scope.absent1 ? {absence: true, objet: {id: abs.id, nom: abs.name}}: {absence: false});
-	
-				$mdDialog.hide($scope.event);
+				*/
+				var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.person.id, type_push: 'modif'});
+				$res2.then(function (msg) {
+					console.log(msg);
+				});
+				$mdDialog.hide('');
 			});
 		}
 		
