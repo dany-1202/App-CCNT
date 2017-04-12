@@ -142,9 +142,7 @@
 				<div class="row margin-bottom-10">
 					<div class="col-lg-3">Département : </div>
 					<div class="col-lg-7">
-						<div>
-							<select class="uk-select" id="form-horizontal-select" ng-model="monDep" ng-options="d.name for d in deps"></select>
-						</div>
+						<select class="uk-select" id="form-horizontal-select" ng-model="monDep" ng-options="d.name for d in deps"></select>
 					</div>
 				</div>
 				<div class="row margin-bottom-10">
@@ -178,8 +176,8 @@
 			<div class="row margin-bottom-10">
 				<div class="col-lg-12 text-center">
 					<hr>
-					<md-button ng-click="retour()" class="bouton" >Annuler</md-button>
-					<md-button id="addEmp" ng-click="enregistrer()" class="bouton" >Enregistrer</md-button>
+					<md-button id="addEmp" ng-click="enregistrer()" class="bouton bouton-l" >Enregistrer</md-button>
+					<md-button ng-click="retour()" class="bouton-prec bouton-l" >Annuler</md-button>
 				</div>
 			</div>
 
