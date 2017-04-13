@@ -1,0 +1,7 @@
+{
+	"settings": {
+		"Autoprefixer": {
+			"browsers": ["last 1 version"]
+		}
+	}
+}
