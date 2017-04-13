@@ -27,7 +27,7 @@ class HoraireEmployeeDAO {
 		return false;
 	}
 
-	public static function seconds($time){
+	public static function seconds($time) {
 		$time = explode(':', $time);
 		return ($time[0]*3600) + ($time[1]*60) + $time[2];
 	}
@@ -107,7 +107,12 @@ class HoraireEmployeeDAO {
 				  	$stmt->bind_result($pauseTotal);
 			    	$stmt->fetch();
 			    	
+			    	if ($nbHeuresMin == NULL) {$nbHeuresMin = '00:00:00';}
+			    	if ($nbHeuresPos == NULL) {$nbHeuresPos = '00:00:00';}
+			    	
 			    	$res = HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos);
+		    		
+		    		return $res;
 		    		$infos['brut'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds($res));
 			    	$infos['totalPause'] = HoraireEmployeeDAO::timeToObject($pauseTotal);
 			    	
@@ -147,6 +152,7 @@ class HoraireEmployeeDAO {
 			- tot/semaine : 3
 	*/
 	public static function getInfosHeuresMois ($per_id, $mois, $annee, $eta_id) {
+
 		$db = MySQLManager::get();
 		$queryHeureCCNT = "SELECT eta_nbHeure FROM ccn_etablissement WHERE eta_id = ?";
 		if ($stmt=$db->prepare($queryHeureCCNT)) {
@@ -157,7 +163,7 @@ class HoraireEmployeeDAO {
 		  	$stmt->bind_result($heuresCCNT);
     		$stmt->fetch();
     		$stmt->close();
-		
+			return $heuresCCNT;
 			$query = "SELECT SUM(hop_abs_freq) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE tra_per_id = ? AND MONTH(hop_date) = ? AND hop_abs_id NOT LIKE NULL AND hop_abs_id <> 9";
 			if ($stmt=$db->prepare($query)) {
 				$stmt->bind_param('ii', $per_id, $mois);
@@ -245,6 +251,50 @@ class HoraireEmployeeDAO {
 		MySQLManager::close();
 		return false;
 	}
+	
+	public static function getDateEntreeEmp ($per_id) {
+		$db = MySQLManager::get();
+		$queryDateIn = "SELECT con_dateIn FROM ccn_contrat WHERE con_per_id = ?";		
+		if ($stmt= $db->prepare($queryDateIn)) {
+			$stmt->bind_param('i', $per_id);
+			$stmt->execute();
+			$stmt->bind_result($dateIn);
+			$stmt->fetch();
+			$stmt->close();
+			MySQLManager::close();
+			return $dateIn;
+		}
+		MySQLManager::close();
+		return 0;
+	}
+	
+	
+	public static function calculerSoldeEmployee($per_id, $mois, $annee) {
+		$dateIn = HoraireEmployeeDAO::getDateEntreeEmp($per_id);
+
+		$db = MySQLManager::get();
+		$queryHeuresEffectives = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";		
+		if ($stmt= $db->prepare($query)) {
+			$stmt->bind_param('iis', $per_id, $mois, $annee);
+			$stmt->execute();
+			$stmt->bind_result($nbHeuresNeg);
+			$stmt->fetch();
+			$stmt->close();
+			$queryHeuresEffectives = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureDebut, hop_heureFin)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut >= hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
+			if ($stmt= $db->prepare($query)) {
+				$stmt->bind_param('iis', $per_id, $mois, $annee);
+				$stmt->execute();
+				$stmt->bind_result($nbHeuresPos);
+				$stmt->fetch();
+				$stmt->close();
+				$nbHeureEffectives = $nbHeuresNeg + $nbHeuresPos; // Heures effectives qu'il a fait
+				
+				return $nbHeureEffectives;
+			}
+		}
+		MySQLManager::close();
+		return 0;
+	}
 
 	public static function getHorairesEmployee ($per_id, $absences) {
 		$db = MySQLManager::get();
@@ -288,6 +338,146 @@ class HoraireEmployeeDAO {
 		MySQLManager::close();
 		return false;
 	}
+	
+	public static function heuresInPlage($dateDebut, $dateFin, $oui_debut, $oui_fin) {
+		$dateDebutComp = new DateTime($oui_debut);
+  		$dateFinComp = new DateTime($oui_fin);
+  		
+  		if ($dateDebutComp > $dateFinComp) {
+  			$dateFinComp->add(new DateInterval('P1D')); // Ajoute un jour à la date
+  		}
+  		
+		return $dateDebut >= $dateDebutComp && $dateFin <= $dateFinComp; // Retourne false si ça déborde 
+	}
+	
+	
+	public static function validationPlageOuverture($horaire) {
+		$db = MySQLManager::get();
+		$msgInvalide = "Attention les heures que vous essayé d'entrer ne correspondent pas aux heures d'ouvertures de votre établissement !";
+		
+		$req = "
+			SELECT oui_matinDebut, oui_matinFin, oui_soirDebut, oui_soirFin  
+			FROM ccn_ouvertureinfo 
+			JOIN ccn_lienouverture ON lie_oui_id = oui_id 
+			JOIN ccn_ouverture ON lie_ouv_id = ouv_id 
+			WHERE oui_jour = ? AND ouv_base = 0 AND ouv_eta_id = ? AND ? BETWEEN ouv_dateDebut AND ouv_dateFin
+		";
+		$reqBase = "
+			SELECT oui_matinDebut, oui_matinFin, oui_soirDebut, oui_soirFin  
+			FROM ccn_ouvertureinfo 
+			JOIN ccn_lienouverture ON lie_oui_id = oui_id 
+			JOIN ccn_ouverture ON lie_ouv_id = ouv_id 
+			WHERE oui_jour = ? AND ouv_base = 1 AND ouv_eta_id = ?
+		";
+		
+		$date = new DateTime($horaire['date']);
+		$eta_id = 3;
+		if ($stmt=$db->prepare($req)) {
+			$erreur = [];
+			$stmt->bind_param('iis', $date->format('w'), $eta_id, $horaire['date']);			
+		  	$stmt->execute();
+		  	$stmt->bind_result($oui_matinDebut, $oui_matinFin, $oui_soirDebut, $oui_soirFin);
+		  	$stmt->fetch();
+		  	$stmt->close();
+		  	if ($oui_matinDebut == null || $oui_matinFin == null || $oui_soirDebut == null || $oui_soirFin == null) {
+		  		if ($stmt=$db->prepare($reqBase)) {
+		  			$stmt->bind_param('ii', $date->format('w'), $eta_id);			
+				  	$stmt->execute();
+				  	$stmt->bind_result($oui_matinDebutBase, $oui_matinFinBase, $oui_soirDebutBase, $oui_soirFinBase);
+				  	$stmt->fetch();
+				  	$stmt->close();
+				  	$dateDebut = new DateTime($horaire['heureDebut']);
+				  	$dateFin = new DateTime($horaire['heureFin']);
+				  	
+				  	if ($dateDebut > $dateFin) { 
+				  		$dateFin->add(new DateInterval('P1D')); // Ajoute un jour à la date
+				  	}
+				  	
+				  	if ($oui_matinFinBase == NULL && $oui_soirDebutBase == NULL) {
+			  			if (HoraireEmployeeDAO::heuresInPlage($dateDebut, $dateFin, $oui_matinDebutBase, $oui_soirFinBase)) {
+			  				$erreur['valide'] = true;
+			  				MySQLManager::close();
+			  				return $erreur;
+			  			} else {
+			  				$erreur['valide'] = false;
+			  				$erreur['type'] = 1;
+			  				$erreur['coupures'] = 0;
+			  				$erreur['jour'] = $date->format('w');
+			  				$erreur['message'] = $msgInvalide;
+			  				$erreur['heureDebut'] = $oui_matinDebutBase;
+			  				$erreur['heureFin'] = $oui_soirFinBase;
+			  				MySQLManager::close();
+			  				return $erreur;
+			  			}
+			  		} else {
+			  			if (HoraireEmployeeDAO::heuresInPlage($dateDebut, $dateFin, $oui_matinDebutBase, $oui_matinFinBase) || HoraireEmployeeDAO::heuresInPlage($dateDebut, $dateFin, $oui_soirDebutBase, $oui_soirFinBase)) {
+			  				$erreur['valide'] = true;
+			  				MySQLManager::close();
+			  				return $erreur;
+			  			} else {
+			  				$erreur['valide'] = false;
+			  				$erreur['type'] = 1;
+			  				$erreur['coupures'] = 1;
+			  				$erreur['jour'] = $date->format('w');
+			  				$erreur['message'] = $msgInvalide;
+			  				$erreur['matinDebut'] = $oui_matinDebutBase;
+			  				$erreur['matinFin'] = $oui_matinFinBase;
+			  				$erreur['soirDebut'] = $oui_soirDebutBase;
+			  				$erreur['soirFin'] = $oui_soirFinBase;
+			  				MySQLManager::close();
+			  				return $erreur;
+			  			}
+			  		}
+		  		}
+		  	} else {
+		  		$dateDebut = new DateTime($horaire['heureDebut']);
+			  	$dateFin = new DateTime($horaire['heureFin']);
+			  	
+			  	if ($dateDebut > $dateFin) { 
+			  		$dateFin->add(new DateInterval('P1D')); // Ajoute un jour à la date
+			  	}
+			  	if ($oui_matinFin == NULL && $oui_soirDebut == NULL) {
+			  		if (HoraireEmployeeDAO::heuresInPlage($dateDebut, $dateFin, $oui_matinDebut, $oui_soirFin)) {
+		  				$erreur['valide'] = true;
+		  				MySQLManager::close();
+		  				return $erreur;
+		  			} else {
+		  				$erreur['valide'] = false;
+		  				$erreur['type'] = 1;
+		  				$erreur['coupures'] = 0;
+		  				$erreur['jour'] = $date->format('w');
+		  				$erreur['message'] = $msgInvalide;
+		  				$erreur['heureDebut'] = $oui_matinDebutBase;
+		  				$erreur['heureFin'] = $oui_soirFinBase;
+		  				MySQLManager::close();
+		  				return $erreur;
+		  			}
+			  	} else {
+			  		if (HoraireEmployeeDAO::heuresInPlage($dateDebut, $dateFin, $oui_matinDebut, $oui_matinFin) || HoraireEmployeeDAO::heuresInPlage($dateDebut, $dateFin, $oui_soirDebut, $oui_soirFin)) {
+		  				$erreur['valide'] = true;
+		  				MySQLManager::close();
+		  				return $erreur;
+		  			} else {
+		  				$erreur['valide'] = false;
+		  				$erreur['type'] = 0;
+		  				$erreur['coupures'] = 1;
+		  				$erreur['jour'] = $date->format('w');
+		  				$erreur['message'] = $msgInvalide;
+		  				$erreur['matinDebut'] = $oui_matinDebut;
+		  				$erreur['matinFin'] = $oui_matinFin;
+		  				$erreur['soirDebut'] = $oui_soirDebut;
+		  				$erreur['soirFin'] = $oui_soirFin;
+		  				MySQLManager::close();
+		  				return $erreur;
+		  			}
+			  	}
+			  	
+		  	}
+		}
+		MySQLManager::close();
+		return -1; // Requête pas passé
+	}
+	
 
 	private static function validationPlage($db, $horaire, $modif) {
 		$req = "
@@ -345,6 +535,7 @@ class HoraireEmployeeDAO {
 	
 	public static function updateHoraire ($horaire) {
 		$db = MySQLManager::get();
+		
 		if (HoraireEmployeeDAO::validationPlage($db, $horaire, true)) {
 			$query = "UPDATE ccn_horairepersonne SET hop_date = ?, hop_heureDebut = ?, hop_heureFin = ?, hop_pause = ?, hop_abs_id = ? WHERE hop_id = ?";
 			if ($stmt = $db->prepare($query)) {
@@ -376,7 +567,7 @@ class HoraireEmployeeDAO {
 
 	public static function insertHoraire ($horaire) {
 		$db = MySQLManager::get();
-
+		//return HoraireEmployeeDAO::validationPlageOuverture($db, $horaire, false);
 		if (HoraireEmployeeDAO::validationPlage($db, $horaire, false)) {
 			/* Insertion dans la table ccn_personne */
 			$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause, hop_abs_id) VALUES (?, ?, ?, ?, ?)";
