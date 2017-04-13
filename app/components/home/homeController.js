@@ -38,7 +38,7 @@ ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $ht
 	}
 	
 	$scope.getHeuresBrut = function() {
-		var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'),per_id : 10, dateDebut: '2017-01-01', dateFin: '2017-12-31', mois: 4, annee: 2017, eta_id: 2};
+		var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'),per_id : 11, dateDebut: '2017-01-01', dateFin: '2017-12-31', mois: 5, annee: 2017, eta_id: 2};
 		var $res = $http.post('assets/php/getInfosSoldeHoraireEmployeeAPI.php', data);
 		$res.then(function(value){
 			console.log(value);
