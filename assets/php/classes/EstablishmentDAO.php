@@ -17,9 +17,10 @@ class EstablishmentDAO {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sssssssisi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
 			$stmt->execute();
+			$id = $stmt->insert_id;
 			$stmt->close();
 			MySQLManager::close();
-			return $stmt->insert_id;
+			return $id;
 		}
 		MySQLManager::close();
 		return -1;

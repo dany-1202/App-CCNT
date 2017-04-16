@@ -1,5 +1,5 @@
 <md-dialog aria-label="Gestion Horaire" style="width:80%">
-	<md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
+	<md-content id="scrollbar" md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
 	
 		<div class="spectre-card" time-picker>
 			
@@ -26,13 +26,14 @@
 			<div class="spectre-card-body" ng-if="myPerson != null">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="x_panel">
-							<div class="x_title">
-								<h3>Date</h3>
+						<div class="x_panel" md-whiteframe="1" style="border: 1px solid #222;">
+							<div class="x_title text-center"  style="color: black; font-weight: 600; border-bottom: 1px solid #222">
+								<h3 style="height: 20px;padding-bottom:0px">Date <i style="margin-left:20px" class="fa fa-calendar-o" aria-hidden="true"></i></h3>
 								<div class="clearfix"></div>
 							</div>
-							<div class="x_content">
-								<md-datepicker ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
+							<div class="x_content text-center">
+								<md-datepicker style="color:white" ng-model="event.startsAt" ng-change="checkHoursInOpenning()" md-placeholder="Choisir date"></md-datepicker>
+								<button style="margin-left: 50px" class="uk-button uk-button-default">Options <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
 							</div>
 						</div>
 					</div>
@@ -52,21 +53,21 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 col-sm-6 col-xs-6">
-						<div class="x_panel">
-							<div class="x_title">
-								<h3 style="display: inline">Service Matin</h3>
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<div class="x_panel" md-whiteframe="1" style="border: 1px solid #0f5d4d;">
+							<div class="x_title" style="border-bottom: 1px solid #0f5d4d;">
+								<h3 style="display: inline; color: #0f5d4d; font-weight: 600">Service Matin</h3>
 								<label class="right" style="font-size: 1.3em;font-weight: 500;margin-top: 6px;"><input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()"/> Absent</label>
 								<div class="clearfix"></div>
 							</div>
 							<div class="x_content">
 								<div class="text-center">
-									<md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
-										<strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
+									<md-button ng-model="heureDebut1" class="btnS md-raised" style="background-color: #16a085;color: white;width: 150px!important;" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
+										{{ heureDebut1 | date:'HH:mm' }}
 										<i class="espace-avant fa fa-clock-o"></i>
 									</md-button>
-									<md-button ng-model="heureFin1" class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
-										<strong>{{ heureFin1 | date:'HH:mm' }}</strong>
+									<md-button ng-model="heureFin1" class="btnS md-raised" style="background-color: #16a085;color: white;width: 150px!important;" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
+										{{ heureFin1 | date:'HH:mm' }}
 										<i class="espace-avant fa fa-clock-o"></i>
 									</md-button>
 								</div>
@@ -86,21 +87,21 @@
 						</div>
 					</div>
 
-					<div class="col-md-6 col-sm-6 col-xs-6">
-						<div class="x_panel">
-							<div class="x_title">
-								<h3 style="display: inline">Service Soir</h3>
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<div class="x_panel margin-bottom-xss" md-whiteframe="1" style="border: 1px solid #2c3e50;">
+							<div class="x_title" style="border-bottom: 1px solid #34495e;">
+								<h3 style="display: inline;color: #2c3e50; font-weight: 600"">Service Soir</h3>
 								<label class="right" style="font-size: 1.3em;font-weight: 500;margin-top: 6px;"><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"/> Absent</label>
 								<div class="clearfix"></div>
 							</div>
 							<div class="x_content">
 								<div class="text-center">
-									<md-button ng-model="heureDebut2" class="btnS md-raised" ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
-										<strong>{{ heureDebut2 | date:'HH:mm' }}</strong>
+									<md-button ng-model="heureDebut2" class="btnS md-raised" style="background-color: #34495e;color: white;width: 150px!important;"  ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
+										{{ heureDebut2 | date:'HH:mm' }}
 										<i class="espace-avant fa fa-clock-o"></i>
 									</md-button>
-									<md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
-										<strong>{{ heureFin2 | date:'HH:mm' }}</strong>
+									<md-button ng-model="heureFin2" class="btnS md-raised" style="background-color: #34495e;color: white;width: 150px!important;"  ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
+										{{ heureFin2 | date:'HH:mm' }}
 										<i class="espace-avant fa fa-clock-o"></i>
 									</md-button>
 								</div>

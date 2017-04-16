@@ -68,75 +68,64 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	$scope.departments = [];
 	$scope.departmentsSel = [];
   	$scope.colorDeps = [ // Stocke les codes couleurs nécessaires pour les départements
-		  {}, // Premier objet vide
-		  {primary: '#00695c', secondary: '#93C8C2', font: '#222'}, 
-		  {primary: '#388e3c', secondary: '#81D285', font: '#222'},
-		  {primary: '#039be5', secondary: '#8AC6E4', font: '#222'},
-		  {primary: '#f57c00', secondary: '#F4BF8A', font: '#222'},
-		  {primary: '#6d4c41', secondary: '#6d4c41', font: '#222'},
-		  {primary: '#512da8', secondary: '#512da8', font: '#222'},
-		  {primary: '#33691E', secondary: '#33691E', font: '#222'}, 
-		  {primary: '#212121', secondary: '#212121', font: '#222'},
-		  {primary: '#2c3e50', secondary: '#2c3e50', font: '#fff'}
-		  ];
-		  
-  	/*$scope.absences = [
-  		{name: 'Maladie'},
-  		{name: 'Congé'}, 
-  		{name: 'Vacance'}, 
-  		{name: 'Militaire'}, 
-  		{name: 'Formation'}, 
-  		{name: 'Maternité'}, 
-  		{name: 'Décès'}, 
-  		{name: 'Déménagement'},
-  		];*/
+	  	{}, // Premier objet vide
+	  	{primary: '#00695c', secondary: '#93C8C2', font: '#222'}, 
+	  	{primary: '#388e3c', secondary: '#81D285', font: '#222'},
+	  	{primary: '#039be5', secondary: '#8AC6E4', font: '#222'},
+	  	{primary: '#f57c00', secondary: '#F4BF8A', font: '#222'},
+	  	{primary: '#6d4c41', secondary: '#6d4c41', font: '#222'},
+	  	{primary: '#512da8', secondary: '#512da8', font: '#222'},
+	  	{primary: '#33691E', secondary: '#33691E', font: '#222'}, 
+	  	{primary: '#212121', secondary: '#212121', font: '#222'},
+	  	{primary: '#2c3e50', secondary: '#2c3e50', font: '#fff'}
+  	];
 
-  		$scope.absences = [];
-  		
-  		$scope.persons = [];
-  		$scope.myPerson = null;
-  		$scope.depSel = "";
-  		$scope.styleDep = {'color': 'black'};
+  	$scope.absences = [];
+	  	
+  	$scope.persons = [];
+  	$scope.myPerson = null;
+  	$scope.depSel = "";
+  	$scope.styleDep = {'color': 'black'};
 
-  		$scope.personsDeps = [];
-  		$scope.personsSel = [];
-  		$scope.absencesSel = [];
+  	$scope.personsDeps = [];
+  	$scope.personsSel = [];
+  	$scope.absencesSel = [];
 
-  		$scope.pauseService1 = $scope.nbPause[0];
-  		$scope.pauseService2 = $scope.nbPause[0];
-  		
-  		var isFiltered = function (personne) {
-  			for (var i = 0; i < $scope.personsSel.length; i++) {
-  				if ($scope.personsSel[i].id == personne.id) {return true}
-  			}
+  	$scope.pauseService1 = $scope.nbPause[0];
+  	$scope.pauseService2 = $scope.nbPause[0];
+  	
+  	var isFiltered = function (personne) {
+  		for (var i = 0; i < $scope.personsSel.length; i++) {
+  			if ($scope.personsSel[i].id == personne.id) {return true}
+  		}
   		return false;
   	}
-  	
-  	var actions = [{
-  		label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
-  		onClick: function(args) {
-  			vm.modif = true;
-  			vm.event = args.calendarEvent;
-  			vm.styleDep = $scope.styleDep;
-  			vm.persons = $scope.persons;
-  			vm.myPerson = angular.copy(vm.event.personne);
-  			vm.colorDeps = $scope.colorDeps;
-  			vm.departmentsSel = $scope.departmentsSel;
-  			vm.absences1 = $scope.absences1;
-  			vm.motif = $scope.motif;
-  			vm.nbPause = $scope.nbPause;
-  			vm.pauseService1 = $scope.pauseService1;
-  			vm.pauseService2 = $scope.pauseService2;
-  			vm.personsSel = $scope.personsSel;
-  			$mdDialog.show({
-  				controller: CreatePlanningController,
-  				templateUrl: 'app/shared/calendar/modalModifPlanning.html',
-  				parent: angular.element(document.body),
-  				targetEvent: event,
-  				clickOutsideToClose:true,
-  				fullscreen: true,
-  			})
-  			.then(function(answer) {
+	  
+	  var actions = [{
+	  	label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
+	  	onClick: function(args) {
+	  		vm.modif = true;
+	  		vm.event = args.calendarEvent;
+	  		vm.styleDep = $scope.styleDep;
+	  		vm.persons = $scope.persons;
+	  		vm.myPerson = angular.copy(vm.event.personne);
+	  		vm.colorDeps = $scope.colorDeps;
+	  		vm.departmentsSel = $scope.departmentsSel;
+	  		vm.absences1 = $scope.absences1;
+	  		vm.motif = $scope.motif;
+	  		vm.nbPause = $scope.nbPause;
+	  		vm.pauseService1 = $scope.pauseService1;
+	  		vm.pauseService2 = $scope.pauseService2;
+	  		vm.personsSel = $scope.personsSel;
+	  		$mdDialog.show({
+	  			controller: CreatePlanningController,
+	  			templateUrl: 'app/shared/calendar/modalModifPlanning.html',
+	  			parent: angular.element(document.body),
+	  			targetEvent: event,
+	  			clickOutsideToClose:true,
+	  			fullscreen: true,
+	  		})
+	  		.then(function(answer) {
 		    	/*vm.events.splice(answer.calendarEventId, 1);
 		    	
 		    	$timeout(function() {
@@ -159,10 +148,10 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 			      NotifService.success('Moditication Réussi', 'L\'horaire a été modifié avec succès !');
 			      $scope.majEvents();
 			  }, function() {/* Annulation */});
-  		}
-  	}, {
-  		label: '<i class=\'glyphicon glyphicon-remove\'></i>',
-  		onClick: function(args, event) {
+	  	}
+	  }, {
+	  	label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+	  	onClick: function(args, event) {
 		  	//alert.show('Deleted', args.calendarEvent);
 		  	
 		  	var person = getInfoEvent(args.calendarEvent.title);
@@ -948,43 +937,43 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 					}
 
 				});
-			};
+};
 
 
-			$scope.majHoraireType = function () {
-				$scope.prehours = State.getTabCalDefaultWithPause();
-				assignationPause();
-				var pos = -1;
-				for (var i = 0; i < $scope.listePreHours.length; i++) {
-					if ($scope.listePreHours[i].prehour.id == $scope.myHoraireType) {
-						pos = i;
-					}
-				}
-				if (pos != -1) {
-					for (var i = 0; i < $scope.listePreHours[pos].liste.length; i++) {
-						insertionHorairePreConfigSemaine($scope.listePreHours[pos].liste[i]);
-					}
-				}
-			}
+$scope.majHoraireType = function () {
+	$scope.prehours = State.getTabCalDefaultWithPause();
+	assignationPause();
+	var pos = -1;
+	for (var i = 0; i < $scope.listePreHours.length; i++) {
+		if ($scope.listePreHours[i].prehour.id == $scope.myHoraireType) {
+			pos = i;
+		}
+	}
+	if (pos != -1) {
+		for (var i = 0; i < $scope.listePreHours[pos].liste.length; i++) {
+			insertionHorairePreConfigSemaine($scope.listePreHours[pos].liste[i]);
+		}
+	}
+}
 
 
-			$scope.majPerson = function () {
-				var person = rechercherPersonne($scope.myPerson);
-				if (person != null) {
-					var dep = rechercherDep(person.dep.id);
-					$scope.depSel = person.dep.nom;
-					$scope.listePreHours = dep.prehours;
-					$scope.styleDep = {'background-color' : $scope.getColor(person.dep.img).primary}
-					$scope.event.title = person.nom + " " + person.prenom;
-					$scope.event.color = $scope.getColor(person.dep.img);
-					$scope.person = person;
-					$scope.event.person = angular.copy(person);
-				}
-			}
+$scope.majPerson = function () {
+	var person = rechercherPersonne($scope.myPerson);
+	if (person != null) {
+		var dep = rechercherDep(person.dep.id);
+		$scope.depSel = person.dep.nom;
+		$scope.listePreHours = dep.prehours;
+		$scope.styleDep = {'background-color' : $scope.getColor(person.dep.img).primary}
+		$scope.event.title = person.nom + " " + person.prenom;
+		$scope.event.color = $scope.getColor(person.dep.img);
+		$scope.person = person;
+		$scope.event.person = angular.copy(person);
+	}
+}
 
 
-			var insertionHoraireBDD = function(pos, dateDebut) {
-				var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(new Date(dateDebut)), 'heureDebut': moment($scope.prehours[pos].matin.debut).format('HH:mm'), 'heureFin': moment($scope.prehours[pos].matin.fin).format('HH:mm'),'pause':$scope.prehours[pos].datapauseMatin.value, 'absid':null};
+var insertionHoraireBDD = function(pos, dateDebut) {
+	var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD(new Date(dateDebut)), 'heureDebut': moment($scope.prehours[pos].matin.debut).format('HH:mm'), 'heureFin': moment($scope.prehours[pos].matin.fin).format('HH:mm'),'pause':$scope.prehours[pos].datapauseMatin.value, 'absid':null};
 	  			var $res = $http.post("assets/php/insertHoraireEmployeeAPI.php", data); // Envoie de la requête en 'POST'
 	  			$res.then(function(value){console.log(value);}).then(function(){});
 	  		}
@@ -1033,155 +1022,155 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	  		$scope.cancel = function() { $mdDialog.cancel(); };
 	  		$scope.answer = function(answer) { $scope.insertHoraireType(); };
 	  	}
-  	
-  	
-  	
+	  	
+	  	
+	  	
 	  		/*****************************************************************************************\
 	  			* Gestion de la modale ajouter horaire *                        
-			\*****************************************************************************************/
-  			$scope.showAddHoraire = function (event) {
-  				vm.modif = false;
-  				vm.styleDep = $scope.styleDep;
-  				vm.myPerson = $scope.myPerson;
-  				vm.persons = $scope.persons;
-  				vm.colorDeps = $scope.colorDeps;
-  				vm.event = $scope.event;
-  				vm.departments = $scope.departments;
-  				vm.absences1 = $scope.absences1;
-  				vm.motif = $scope.motif;
-  				vm.nbPause = $scope.nbPause;
-  				vm.pauseService1 = $scope.pauseService1;
-  				vm.pauseService2 = $scope.pauseService2;
-  				vm.personsSel = $scope.personsSel;
-  				$('.side-nav').css('display', 'none');
-  				$('#page-wrapper').css('position', 'absolute');
-  				$('#page-wrapper').css('left', '0px');
-  				$mdDialog.show({
-  					controller: CreatePlanningController,
-  					templateUrl: 'app/shared/calendar/modalPlanning.html',
-  					parent: angular.element(document.body),
-  					targetEvent: event,
-  					clickOutsideToClose:true,
-  					fullscreen: true,
-  				})
-  				.then(function(answer) {
-  					$('#page-wrapper').css('position', '');
-  					$('#page-wrapper').css('left', '');
-  					$('.side-nav').css('display', '');
-  					$scope.majEvents();
-  				}, function(error) {
-  					$('#page-wrapper').css('position', '');
-  					$('#page-wrapper').css('left', '');
-  					$('.side-nav').css('display', '');}
-  					);
-  			}
-  			
-  			function CreatePlanningController($scope, $mdDialog, $mdpTimePicker, $filter, Const) {
-  				$scope.scope = $scope;
-  				$scope.modif = vm.modif;
-  				$scope.event = angular.copy(vm.event);
-  				$scope.personsSel = vm.personsSel;
-  				$scope.styleDep = {'background-color': 'white'};
-  				$scope.depSel = "";
-  				$scope.imgDep = {'background-color': 'white'};
-  				$scope.person = null;
-  				$scope.heureDebut1 = $scope.modif ? $scope.event.startsAt : Const.HOUR_OPEN;
-  				$scope.heureFin1 = $scope.modif ? $scope.event.endsAt : Const.HOUR_END;
-  				$scope.heureDebut2 = Const.HOUR_OPEN;
-  				$scope.heureFin2 = Const.HOUR_END;
-  				$scope.motifAfficher = $scope.modif ? $scope.event.absence.absence : false;
-  				$scope.absent1 = $scope.modif ? $scope.event.absence.absence : false;
-  				$scope.absent2 = false;
-  				$scope.persons = angular.copy(vm.persons);
-  				if ($scope.modif) {
-  					$scope.myPerson = vm.myPerson.id.toString();
-  					$scope.person = vm.myPerson;
-  				}
-  				
-  				$scope.departmentsSel = angular.copy(vm.departmentsSel);
-  				$scope.colorDeps = angular.copy(vm.colorDeps);
-  				
-  				$scope.nbPause = [];
-  				$scope.nbPause2= [];
-  				
-  				$scope.absences1 = angular.copy(vm.absences1);
-  				$scope.motif = $scope.motifAfficher ? $scope.event.absence.objet.id.toString() : $scope.absences1[0].id.toString();
-  				
-  				$scope.isHoraireValide = function() {
-  					
-  				}
-  				
-  				for (var nb = 0; nb <= 60; nb+=5) {
-  					$scope.nbPause.push({name: nb + ' minutes', value:nb});
-  					$scope.nbPause2.push({name: nb + ' minutes', value:nb});
-  				}
+	  			\*****************************************************************************************/
+	  			$scope.showAddHoraire = function (event) {
+	  				vm.modif = false;
+	  				vm.styleDep = $scope.styleDep;
+	  				vm.myPerson = $scope.myPerson;
+	  				vm.persons = $scope.persons;
+	  				vm.colorDeps = $scope.colorDeps;
+	  				vm.event = $scope.event;
+	  				vm.departments = $scope.departments;
+	  				vm.absences1 = $scope.absences1;
+	  				vm.motif = $scope.motif;
+	  				vm.nbPause = $scope.nbPause;
+	  				vm.pauseService1 = $scope.pauseService1;
+	  				vm.pauseService2 = $scope.pauseService2;
+	  				vm.personsSel = $scope.personsSel;
+	  				$('.side-nav').css('display', 'none');
+	  				$('#page-wrapper').css('position', 'absolute');
+	  				$('#page-wrapper').css('left', '0px');
+	  				$mdDialog.show({
+	  					controller: CreatePlanningController,
+	  					templateUrl: 'app/shared/calendar/modalPlanning.html',
+	  					parent: angular.element(document.body),
+	  					targetEvent: event,
+	  					clickOutsideToClose:true,
+	  					fullscreen: true,
+	  				})
+	  				.then(function(answer) {
+	  					$('#page-wrapper').css('position', '');
+	  					$('#page-wrapper').css('left', '');
+	  					$('.side-nav').css('display', '');
+	  					$scope.majEvents();
+	  				}, function(error) {
+	  					$('#page-wrapper').css('position', '');
+	  					$('#page-wrapper').css('left', '');
+	  					$('.side-nav').css('display', '');}
+	  					);
+	  			}
+	  			
+	  			function CreatePlanningController($scope, $mdDialog, $mdpTimePicker, $filter, Const) {
+	  				$scope.scope = $scope;
+	  				$scope.modif = vm.modif;
+	  				$scope.event = angular.copy(vm.event);
+	  				$scope.personsSel = vm.personsSel;
+	  				$scope.styleDep = {'background-color': 'white'};
+	  				$scope.depSel = "";
+	  				$scope.imgDep = {'background-color': 'white'};
+	  				$scope.person = null;
+	  				$scope.heureDebut1 = $scope.modif ? $scope.event.startsAt : Const.HOUR_OPEN;
+	  				$scope.heureFin1 = $scope.modif ? $scope.event.endsAt : Const.HOUR_END;
+	  				$scope.heureDebut2 = Const.HOUR_OPEN;
+	  				$scope.heureFin2 = Const.HOUR_END;
+	  				$scope.motifAfficher = $scope.modif ? $scope.event.absence.absence : false;
+	  				$scope.absent1 = $scope.modif ? $scope.event.absence.absence : false;
+	  				$scope.absent2 = false;
+	  				$scope.persons = angular.copy(vm.persons);
+	  				if ($scope.modif) {
+	  					$scope.myPerson = vm.myPerson.id.toString();
+	  					$scope.person = vm.myPerson;
+	  				}
+	  				
+	  				$scope.departmentsSel = angular.copy(vm.departmentsSel);
+	  				$scope.colorDeps = angular.copy(vm.colorDeps);
+	  				
+	  				$scope.nbPause = [];
+	  				$scope.nbPause2= [];
+	  				
+	  				$scope.absences1 = angular.copy(vm.absences1);
+	  				$scope.motif = $scope.motifAfficher ? $scope.event.absence.objet.id.toString() : $scope.absences1[0].id.toString();
+	  				
+	  				$scope.isHoraireValide = function() {
+	  					
+	  				}
+	  				
+	  				for (var nb = 0; nb <= 60; nb+=5) {
+	  					$scope.nbPause.push({name: nb + ' minutes', value:nb});
+	  					$scope.nbPause2.push({name: nb + ' minutes', value:nb});
+	  				}
 
-  				var getPauseService1 = function () {
-  					for (var i = 0; i < $scope.nbPause.length; i++) {
-  						if ($scope.nbPause[i].value == vm.event.pause) {
-  							return $scope.nbPause[i];
-  						}
-  					}
-  					return $scope.nbPause[0];
-  				}
-  				
-  				$scope.pauseService1 = ($scope.modif && $scope.event.pause > 0) ? getPauseService1() : $scope.nbPause.length > 0 ? $scope.nbPause[0] : undefined;
-  				$scope.pauseService2 = $scope.nbPause2.length > 0 ? $scope.nbPause2[0] : undefined;
-  				
-  				$scope.getColor = function (id) {return $scope.colorDeps[id];}
-  				
-  				var rechercherPersonne = function (id) {
-  					for (var i = 0; i < $scope.persons.length; i++) {
-  						if ($scope.persons[i].id == id) {
-  							return $scope.persons[i];
-  						}
-  					}
-  					return null;
-  				}
-  				
-  				$scope.majPerson = function () {
-  					var person = rechercherPersonne($scope.myPerson);
-  					if (person != null) {
-  						$scope.depSel = person.dep.nom;
-  						$scope.styleDep = {'background-color' : $scope.getColor(person.dep.img).primary}
-  						$scope.event.title = person.nom + " " + person.prenom;
-  						$scope.event.color = $scope.getColor(person.dep.img);
-  						$scope.person = person;
-  						$scope.event.person = angular.copy(person);
-  					}
-  				}
-  				
-  				if ($scope.modif) {$scope.majPerson();}
-  				
-  				
-  				$scope.getPauseById = function (id) {
-  					for (var i = 0; i < $scope.nbPause.length; i++) {
-  						if (nb + ' minutes' == id) {
-  							return $scope.nbPause[i];
-  						}
-  					}
-  					return null;
-  				}
-  				
-  				$scope.changeAb1 = function() { if($scope.absent1){$scope.absent1 = false;}else{$scope.absent1 = true;} };
-  				$scope.changeAb2 = function() { if($scope.absent2){$scope.absent2 = false;}else{$scope.absent2 = true;} };
-  				
-  				$scope.validationAbsence = function() { $scope.motifAfficher = ($scope.absent1 == true || $scope.absent2 == true) };
-  				
-  				var getMotifById = function (id) {
-  					for (var i = 0; i < $scope.absences1.length; i++) {
-  						if ($scope.absences1[i].id == id) {
-  							return $scope.absences1[i];
-  						}
-  					}
-  					return null;
-  				}
-  				
-  				$scope.changeMotif = function (index) {
-  					console.log($scope.motif);
-  				}
-  				
-  				$scope.reinitEvent = function () {
+	  				var getPauseService1 = function () {
+	  					for (var i = 0; i < $scope.nbPause.length; i++) {
+	  						if ($scope.nbPause[i].value == vm.event.pause) {
+	  							return $scope.nbPause[i];
+	  						}
+	  					}
+	  					return $scope.nbPause[0];
+	  				}
+	  				
+	  				$scope.pauseService1 = ($scope.modif && $scope.event.pause > 0) ? getPauseService1() : $scope.nbPause.length > 0 ? $scope.nbPause[0] : undefined;
+	  				$scope.pauseService2 = $scope.nbPause2.length > 0 ? $scope.nbPause2[0] : undefined;
+	  				
+	  				$scope.getColor = function (id) {return $scope.colorDeps[id];}
+	  				
+	  				var rechercherPersonne = function (id) {
+	  					for (var i = 0; i < $scope.persons.length; i++) {
+	  						if ($scope.persons[i].id == id) {
+	  							return $scope.persons[i];
+	  						}
+	  					}
+	  					return null;
+	  				}
+	  				
+	  				$scope.majPerson = function () {
+	  					var person = rechercherPersonne($scope.myPerson);
+	  					if (person != null) {
+	  						$scope.depSel = person.dep.nom;
+	  						$scope.styleDep = {'background-color' : $scope.getColor(person.dep.img).primary}
+	  						$scope.event.title = person.nom + " " + person.prenom;
+	  						$scope.event.color = $scope.getColor(person.dep.img);
+	  						$scope.person = person;
+	  						$scope.event.person = angular.copy(person);
+	  					}
+	  				}
+	  				
+	  				if ($scope.modif) {$scope.majPerson();}
+	  				
+	  				
+	  				$scope.getPauseById = function (id) {
+	  					for (var i = 0; i < $scope.nbPause.length; i++) {
+	  						if (nb + ' minutes' == id) {
+	  							return $scope.nbPause[i];
+	  						}
+	  					}
+	  					return null;
+	  				}
+	  				
+	  				$scope.changeAb1 = function() { if($scope.absent1){$scope.absent1 = false;}else{$scope.absent1 = true;} };
+	  				$scope.changeAb2 = function() { if($scope.absent2){$scope.absent2 = false;}else{$scope.absent2 = true;} };
+	  				
+	  				$scope.validationAbsence = function() { $scope.motifAfficher = ($scope.absent1 == true || $scope.absent2 == true) };
+	  				
+	  				var getMotifById = function (id) {
+	  					for (var i = 0; i < $scope.absences1.length; i++) {
+	  						if ($scope.absences1[i].id == id) {
+	  							return $scope.absences1[i];
+	  						}
+	  					}
+	  					return null;
+	  				}
+	  				
+	  				$scope.changeMotif = function (index) {
+	  					console.log($scope.motif);
+	  				}
+	  				
+	  				$scope.reinitEvent = function () {
 		  	$scope.event = { // Réinitialiser l'objet
 		  	title: '',
 		  	startsAt: moment().startOf('day').toDate(),

@@ -4,6 +4,47 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
+.white-box {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 5px;
+    /*border: 1px solid beige;*/
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+.white-box .box-title {
+    margin: 0 0 12px!important;
+    font-weight: 600!important;
+    color:rgb(51, 51, 51);
+    text-transform: uppercase!important;
+    font-size: 16px!important;
+}
+
+#scrollbar::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f5f5f5;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+    background-color: #222;
+    border-radius: 5px;
+}
+
+#scrollbar::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+}
+
+.margin-bottom-xss {
+    margin-bottom: 0px;
+}
+
+@media(max-width: 767px) {
+    .margin-bottom-xss {
+        margin-bottom: 90px!important;
+    }
+    
+}
+
 .vlightgrey {
     /*background-color: #fdfdfd;*/
     padding-top: 20px;
