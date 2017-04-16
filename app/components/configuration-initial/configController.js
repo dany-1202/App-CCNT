@@ -141,9 +141,9 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 		};
 
 		PromiseDAO.insertEstablishment(dataEtablissement).then(function(value) {
-			console.log("Insertion Etablissement");
-		    console.log(value);
-		    var idEstablishment = value.data;
+			// console.log("Insertion Etablissement");
+		 	//    console.log(value);
+	     	var idEstablishment = value.data;
 		    for (var i = 0; i < $scope.depart.length; i++) {
 		    	var department = $scope.depart[i];
 		    	var dataDep = { 'nom': department.name, 'img': (i + 1), 'noEta': idEstablishment, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
@@ -159,28 +159,48 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 				'user_id': SessionService.get('user_id'),
 				'user_token': SessionService.get('user_token')
 			};
+			
+			for (var i = 0; i < $scope.tabCalendars.length; i++) {
+				var cal = $scope.tabCalendars[i];
+				if (i != 0) {
+					cal.period.debut = DateFactory.toDateTimeBDD(cal.period.debut);
+					cal.period.fin = DateFactory.toDateTimeBDD(cal.period.fin);
+				}
+				for (var cpt = 0; cpt < cal.hours.length; cpt++) {
+					var obj = cal.hours[cpt];
+					if (obj.matin.fin == Const.END || obj.soir.debut == Const.OPEN) {
+						obj.matin.debut = DateFactory.toDateTimeBDD(obj.matin.debut);
+						obj.soir.fin = DateFactory.toDateTimeBDD(obj.soir.fin);
+					} else {
+						obj.matin.debut = DateFactory.toDateTimeBDD(obj.matin.debut);
+						obj.matin.fin = DateFactory.toDateTimeBDD(obj.matin.fin);
+						obj.soir.debut = DateFactory.toDateTimeBDD(obj.soir.debut);
+						obj.soir.fin = DateFactory.toDateTimeBDD(obj.soir.fin);
+					}
+				}
+			}
+
 			var $res = $http.post("assets/php/updatePersonneEstablishmentAPI.php", data);
 			$res.then(function (message) { });
-		    
+		    console.log($scope.tabCalendars);
 			/* Insertion des horaires de l'établissement */
 			for (var i = 0; i < $scope.tabCalendars.length; i++) {
 				var cal = $scope.tabCalendars[i];
-				for (var i = 0; i < cal.hours.length; i++) {
-					var obj = cal.hours[i];
-					console.log(obj.soir.fin);
-					var dataInsertOuvertureInfo = {
-						'jour': obj.day,
-						'matinDebut': DateFactory.toDateTimeBDD(obj.matin.debut),
-						'matinFin': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN) ? DateFactory.toDateTimeBDD(obj.matin.fin) : null,
-						'soirDebut': (obj.matin.fin != Const.END || obj.soir.debut != Const.OPEN) ?  DateFactory.toDateTimeBDD(obj.soir.debut) : null,
-						'soirFin':  DateFactory.toDateTimeBDD(obj.soir.fin),
-						'etaId': idEstablishment,
-						'user_id': SessionService.get('user_id'),
-						'user_token': SessionService.get('user_token')
-					 };
-					var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
-					$res.then(function (message) {console.log(message)});
-				}
+				var type = (i == 0 ? 1 : 0);
+				var dataInsertOuvertureInfo = {
+					'nom': cal.name,
+					'base': type,
+					'hours': cal.hours,
+					'dateDebut': cal.period.debut,
+					'dateFin': cal.period.fin,
+					'etaId': idEstablishment,
+					'user_id': SessionService.get('user_id'),
+					'user_token': SessionService.get('user_token')
+			 	};
+				var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
+				$res.then(function (message) {
+					console.log(message)
+				});
 			}
 			
 			/* Insertion des jours fériés et vacances */

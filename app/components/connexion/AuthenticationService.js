@@ -33,6 +33,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 				        	var data = {'user_id': authenData.user_id, 'user_token': authenData.user_token};
 							var $res = $http.post("assets/php/checkConfiguration.php", data);
 							$res.then(function (message) {
+								console.log(message);
 								SessionService.set('user_id', authenData.user_id);
 					        	SessionService.set('user_nom', authenData.user_nom);
 					        	SessionService.set('user_prenom', authenData.user_prenom);

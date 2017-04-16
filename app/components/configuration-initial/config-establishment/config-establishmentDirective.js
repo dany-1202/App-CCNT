@@ -52,6 +52,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 					/* Valide si l'étape est validé */
 					scope.verificationSuivant = function(){
 						$timeout(Popover.hide, 0);
+
 						var err = false;
 						for (var i = scope.infoEtablissement.length - 1; i >= 0; i--) {
 							scope.verification(scope.infoEtablissement[i].id,i);

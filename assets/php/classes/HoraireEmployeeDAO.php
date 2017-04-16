@@ -1,6 +1,7 @@
 ﻿<?php
 
 require_once("MySQLManager.php");
+require_once("EstablishmentDAO.php");
 
 define("DROITCONGE", 2);
 define("DROITFERIE", 0.5);
@@ -257,7 +258,7 @@ class HoraireEmployeeDAO {
 									  	if ($nbHeuresMin == NULL) {$nbHeuresMin = '00:00:00';}
 				    					if ($nbHeuresPos == NULL) {$nbHeuresPos = '00:00:00';}
 
-									  	$infos['heureseffectives'] = HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos);
+									  	$infos['heureseffectives'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos)));
 									  	
 									  	//$infos['solde'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(($res - ($infos['heures_mois'] * 3600))));
 									  	
@@ -308,7 +309,9 @@ class HoraireEmployeeDAO {
 			$res = HoraireEmployeeDAO::getInfosHeuresMois($per_id, $dateDep->format('m'), $dateDep->format('Y'), $eta_id);
 			$resDec = json_decode($res);
 			
-			$soldeHeures = (($resDec->heureseffectives + $soldeHeures) - $resDec->heures_mois);
+			/* Attention je dois décortiquer les heures effectives afin de déduire complétement 
+			les minutes et les secondes (bon secondes c'est factultatif mais au moins les secondes) */
+			$soldeHeures = (($resDec->heureseffectives->time + $soldeHeures) - $resDec->heures_mois);
 			$soldeConges += (($soldeConges + $resDec->droitconges) - 8);
 			$soldeVacances += (($soldeVacances + $resDec->droitvacances_mois->time) - $resDec->jourprisvacances);
 			$soldeFeries += (($soldeFeries + $resDec->droitjoursferies_mois) - $resDec->jourprisferies);
@@ -379,6 +382,7 @@ class HoraireEmployeeDAO {
 	
 	
 	public static function validationPlageOuverture($horaire) {
+		$eta_id = EstablishmentDAO::getEtablissement($horaire['user_id']);
 		$db = MySQLManager::get();
 		$msgInvalide = "Attention les heures que vous essayé d'entrer ne correspondent pas aux heures d'ouvertures de votre établissement !";
 		
@@ -398,7 +402,8 @@ class HoraireEmployeeDAO {
 		";
 		
 		$date = new DateTime($horaire['date']);
-		$eta_id = 3;
+		
+		
 		if ($stmt=$db->prepare($req)) {
 			$erreur = [];
 			$stmt->bind_param('iis', $date->format('w'), $eta_id, $horaire['date']);			
@@ -629,15 +634,6 @@ class HoraireEmployeeDAO {
 	/* N'insére pas encore de pause */
 	public static function deleteHoraire ($horaire) {
 		$db = MySQLManager::get();
-		
-		// $query = "SELECT hop_id FROM ccn_horairepersonne WHERE hop_date = ? AND hop_heureDebut = ? AND hop_heureFin = ?";
-		// if ($stmt = $db->prepare($query)) {
-		// 	$stmt->bind_param('sss', $horaire['date'], $horaire['heureDebut'], $horaire['heureFin']);
-		//   	$stmt->execute();
-		//   	$stmt->bind_result($hop_id);
-		//   	$stmt->fetch();
-		//   	$stmt->close();
-		//   	/* Suppression de l'horaire */
 	  	$reqSup = "DELETE FROM ccn_travail WHERE tra_per_id = ? AND tra_hop_id = ?";
 	  	if ($req = $db->prepare($reqSup)) {
 	  		$req->bind_param('ii', $horaire['per_id'], $horaire['hor_id']);
@@ -652,7 +648,6 @@ class HoraireEmployeeDAO {
 		  		return $horaire['hor_id'];
 		  	}
 	  	}
-		//}
 		MySQLManager::close();
 		return -1;
 	}

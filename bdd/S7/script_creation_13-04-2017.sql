@@ -360,6 +360,171 @@ INSERT INTO `ccn_etablissement` (`eta_id`, `eta_nom`, `eta_adresse`, `eta_telRes
 (50, 'fsda', 'fdsa', '0789978987', '0789779889', 'j@gmail.com', '', '', 1226, 'Thônex', 45);
 
 -- --------------------------------------------------------
+--
+-- Index pour la table `ccn_etablissement`
+--
+ALTER TABLE `ccn_etablissement`
+  ADD PRIMARY KEY (`eta_id`);
+
+--
+-- AUTO_INCREMENT pour la table `ccn_etablissement`
+--
+ALTER TABLE `ccn_etablissement`
+  MODIFY `eta_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  
+--
+-- Structure de la table `ccn_ouverture`
+--
+
+CREATE TABLE IF NOT EXISTS `ccn_ouverture` (
+  `ouv_id` int(11) NOT NULL,
+  `ouv_nom` varchar(80) NOT NULL,
+  `ouv_dateDebut` date DEFAULT NULL,
+  `ouv_dateFin` date DEFAULT NULL,
+  `ouv_base` int(11) NOT NULL,
+  `ouv_eta_id` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `ccn_ouverture`
+--
+
+INSERT INTO `ccn_ouverture` (`ouv_id`, `ouv_nom`, `ouv_dateDebut`, `ouv_dateFin`, `ouv_base`, `ouv_eta_id`) VALUES
+(1, 'Semaine de base', NULL, NULL, 1, 1),
+(2, 'Période été', '2017-06-01', '2017-09-01', 0, 1);
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `ccn_ouverture`
+--
+ALTER TABLE `ccn_ouverture`
+  ADD PRIMARY KEY (`ouv_id`),
+  ADD KEY `ouv_eta_id` (`ouv_eta_id`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `ccn_ouverture`
+--
+ALTER TABLE `ccn_ouverture`
+  MODIFY `ouv_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `ccn_ouverture`
+--
+ALTER TABLE `ccn_ouverture`
+  ADD CONSTRAINT `fk_etablissemnet_ouv` FOREIGN KEY (`ouv_eta_id`) REFERENCES `ccn_etablissement` (`eta_id`);
+
+
+--
+-- Structure de la table `ccn_ouvertureinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `ccn_ouvertureinfo` (
+  `oui_id` int(11) NOT NULL,
+  `oui_jour` int(20) DEFAULT NULL,
+  `oui_matinDebut` time NULL DEFAULT NULL,
+  `oui_matinFin` time NULL DEFAULT NULL,
+  `oui_soirDebut` time NULL DEFAULT NULL,
+  `oui_soirFin` time NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `ccn_ouvertureinfo`
+--
+
+INSERT INTO `ccn_ouvertureinfo` (`oui_id`, `oui_jour`, `oui_matinDebut`, `oui_matinFin`, `oui_soirDebut`, `oui_soirFin`) VALUES
+(1, 1, '2017-04-09 05:00:00', NULL, NULL, '2017-04-09 21:30:59'),
+(2, 2, '2017-04-10 05:00:00', NULL, NULL, '2017-04-10 21:30:59'),
+(3, 3, '2017-04-12 05:00:00', NULL, NULL, '2017-04-12 21:30:59'),
+(4, 4, '2017-04-11 05:00:00', NULL, NULL, '2017-04-11 21:30:59'),
+(5, 5, '2017-04-13 05:00:00', NULL, NULL, '2017-04-13 21:30:59'),
+(6, 6, '2017-04-15 05:00:00', NULL, NULL, '2017-04-15 21:30:59'),
+(7, 0, '2017-04-14 05:00:00', NULL, NULL, '2017-04-14 21:30:59'),
+(8, 1, '2017-04-09 05:00:00', NULL, NULL, '2017-04-09 21:30:28'),
+(9, 2, '2017-04-10 05:00:00', '2017-04-10 11:00:28', '2017-04-10 13:00:28', '2017-04-10 21:30:28'),
+(10, 3, '2017-04-11 05:00:00', '2017-04-11 11:00:28', '2017-04-11 13:00:28', '2017-04-11 21:30:28'),
+(11, 4, '2017-04-12 05:00:00', NULL, NULL, '2017-04-12 21:30:28'),
+(12, 5, '2017-04-13 05:00:00', '2017-04-13 11:00:28', '2017-04-13 13:00:28', '2017-04-13 21:30:28'),
+(13, 6, '2017-04-14 05:00:00', '2017-04-14 11:00:28', '2017-04-14 13:00:28', '2017-04-14 21:30:28'),
+(14, 0, '2017-04-15 05:00:00', NULL, NULL, '2017-04-15 21:30:28'),
+(15, 2, '2017-04-14 05:00:00', '2017-04-14 11:00:28', '2017-04-14 13:00:28', '2017-04-14 21:30:28'),
+(16, 5, '2017-04-14 05:00:00', '2017-04-14 11:00:28', '2017-04-14 16:00:28', '2017-04-14 21:30:28');
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `ccn_ouvertureinfo`
+--
+ALTER TABLE `ccn_ouvertureinfo`
+  ADD PRIMARY KEY (`oui_id`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `ccn_ouvertureinfo`
+--
+ALTER TABLE `ccn_ouvertureinfo`
+  MODIFY `oui_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+
+--
+-- Structure de la table `ccn_lienouverture`
+--
+
+CREATE TABLE IF NOT EXISTS `ccn_lienouverture` (
+  `lie_ouv_id` int(11) NOT NULL,
+  `lie_oui_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `ccn_lienouverture`
+--
+
+INSERT INTO `ccn_lienouverture` (`lie_ouv_id`, `lie_oui_id`) VALUES
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(2, 15),
+(2, 16);
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `ccn_lienouverture`
+--
+ALTER TABLE `ccn_lienouverture`
+  ADD PRIMARY KEY (`lie_ouv_id`,`lie_oui_id`),
+  ADD KEY `fk_etablissemnet_ouv_info` (`lie_oui_id`);
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `ccn_lienouverture`
+--
+ALTER TABLE `ccn_lienouverture`
+  ADD CONSTRAINT `fk_etablissement_ouv` FOREIGN KEY (`lie_ouv_id`) REFERENCES `ccn_ouverture` (`ouv_id`),
+  ADD CONSTRAINT `fk_etablissemnet_ouv_info` FOREIGN KEY (`lie_oui_id`) REFERENCES `ccn_ouvertureinfo` (`oui_id`);
+
 
 --
 -- Structure de la table `ccn_fermetureinfo`
@@ -648,42 +813,7 @@ INSERT INTO `ccn_maladieaccident` (`mac_id`, `mac_per_id`, `mac_dateDebut`, `mac
 (21, 4, '2017-04-02', '2017-04-04', 0),
 (22, 6, '2017-04-13', '2017-04-15', 0);
 
--- --------------------------------------------------------
 
---
--- Structure de la table `ccn_ouvertureinfo`
---
-
-CREATE TABLE `ccn_ouvertureinfo` (
-  `ouv_id` int(11) NOT NULL,
-  `ouv_jour` varchar(20) DEFAULT NULL,
-  `ouv_debut` datetime DEFAULT NULL,
-  `ouv_fin` datetime DEFAULT NULL,
-  `ouv_eta_id` int(11) NOT NULL,
-  `ouv_pauseDebut` datetime DEFAULT NULL,
-  `ouv_pauseFin` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `ccn_ouvertureinfo`
---
-
-INSERT INTO `ccn_ouvertureinfo` (`ouv_id`, `ouv_jour`, `ouv_debut`, `ouv_fin`, `ouv_eta_id`, `ouv_pauseDebut`, `ouv_pauseFin`) VALUES
-(18, 'Mardi', '2016-12-09 07:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 'Lundi', '2016-12-09 07:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(20, 'Jeudi', '2016-12-09 07:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(21, 'Mercredi', '2016-12-09 07:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 'Samedi', '2016-12-09 10:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 'Vendredi', '2016-12-09 07:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 'Dimanche', '2016-12-09 10:00:14', '2016-12-10 00:00:14', 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 'Vendredi', '2017-02-06 07:00:57', '2017-02-06 23:00:57', 39, '2017-02-06 15:00:57', '2017-02-06 17:00:57'),
-(26, 'Lundi', '2017-02-06 07:00:57', '2017-02-06 23:00:57', 39, '2017-02-06 15:00:57', '2017-02-06 17:00:57'),
-(27, 'Jeudi', '2017-02-06 07:00:57', '2017-02-06 23:00:57', 39, '2017-02-06 15:00:57', '2017-02-06 17:00:57'),
-(28, 'Lundi', '2017-02-07 07:00:30', '2017-02-07 23:00:30', 40, '2017-02-07 15:00:30', '2017-02-07 17:00:30'),
-(29, 'Mardi', '2017-02-07 07:00:30', '2017-02-07 23:00:30', 40, '2017-02-07 15:00:30', '2017-02-07 17:00:30'),
-(30, 'Mercredi', '2017-02-07 07:00:30', '2017-02-07 23:00:30', 40, '2017-02-07 15:00:30', '2017-02-07 17:00:30');
-
--- --------------------------------------------------------
 
 --
 -- Structure de la table `ccn_personne`
@@ -1086,12 +1216,6 @@ ALTER TABLE `ccn_departement`
   ADD KEY `fk_Departement_Etablissement1_idx` (`dep_eta_id`);
 
 --
--- Index pour la table `ccn_etablissement`
---
-ALTER TABLE `ccn_etablissement`
-  ADD PRIMARY KEY (`eta_id`);
-
---
 -- Index pour la table `ccn_fermetureinfo`
 --
 ALTER TABLE `ccn_fermetureinfo`
@@ -1133,12 +1257,6 @@ ALTER TABLE `ccn_maladieaccident`
   ADD PRIMARY KEY (`mac_id`),
   ADD KEY `mac_per_id` (`mac_per_id`);
 
---
--- Index pour la table `ccn_ouvertureinfo`
---
-ALTER TABLE `ccn_ouvertureinfo`
-  ADD PRIMARY KEY (`ouv_id`,`ouv_eta_id`),
-  ADD KEY `fk_InfoOuverture_Etablissement1_idx` (`ouv_eta_id`);
 
 --
 -- Index pour la table `ccn_personne`
@@ -1227,12 +1345,8 @@ ALTER TABLE `ccn_demandepersonne`
 --
 ALTER TABLE `ccn_departement`
   MODIFY `dep_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
---
--- AUTO_INCREMENT pour la table `ccn_etablissement`
---
-ALTER TABLE `ccn_etablissement`
-  MODIFY `eta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
---
+  
+  
 -- AUTO_INCREMENT pour la table `ccn_fermetureinfo`
 --
 ALTER TABLE `ccn_fermetureinfo`
@@ -1257,11 +1371,7 @@ ALTER TABLE `ccn_jourpreconfig`
 --
 ALTER TABLE `ccn_maladieaccident`
   MODIFY `mac_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
---
--- AUTO_INCREMENT pour la table `ccn_ouvertureinfo`
---
-ALTER TABLE `ccn_ouvertureinfo`
-  MODIFY `ouv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
 --
 -- AUTO_INCREMENT pour la table `ccn_personne`
 --
@@ -1339,12 +1449,6 @@ ALTER TABLE `ccn_horairepreconfig`
 --
 ALTER TABLE `ccn_maladieaccident`
   ADD CONSTRAINT `mac_per_id` FOREIGN KEY (`mac_per_id`) REFERENCES `ccn_personne` (`per_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `ccn_ouvertureinfo`
---
-ALTER TABLE `ccn_ouvertureinfo`
-  ADD CONSTRAINT `fk_InfoOuverture_Etablissement1` FOREIGN KEY (`ouv_eta_id`) REFERENCES `ccn_etablissement` (`eta_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `ccn_possede`

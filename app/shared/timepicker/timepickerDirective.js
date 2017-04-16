@@ -18,13 +18,24 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			scope.heureFin1 = Const.HOUR_END;
 			scope.heureDebut2 = Const.HOUR_OPEN;
 			scope.heureFin2 = Const.HOUR_END;
-
+			
+			var checkHoursInOpenning = function() {
+				if ((scope.heureDebut1 != Const.HOUR_OPEN && scope.heureFin1 != Const.HOUR_END)) {
+					isHoursInOpenning(scope.heureDebut1, scope.heureFin1, 2, scope.heureFin1);
+				}
+				if ((scope.heureDebut2 != Const.HOUR_OPEN && scope.heureFin2 != Const.HOUR_END)) {
+					isHoursInOpenning(scope.heureDebut2, scope.heureFin2, 4, scope.heureFin2);
+				}
+			}
+			
+			
 			var isHoursInOpenning = function (heureDebut, heureFin, id, date) {
 				var heureDebutS1 = heureDebut.getHours()+":"+heureDebut.getMinutes()+":00";
 	  			var heureFinS1 = heureFin.getHours() +":"+heureFin.getMinutes()+":00";
 		 		var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': scope.myPerson, 'date': DateFactory.getDateBDD(scope.event.startsAt), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1};
 		 		var $res = $http.post('assets/php/checkHoraireReadyToModify.php', data);
 		 		$res.then(function(message) {
+		 			console.log(message);
 		 			var objet = message.data;
 		 			var res = null;
 		 			if (!objet.valide) {
