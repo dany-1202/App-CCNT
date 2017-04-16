@@ -15,7 +15,7 @@
 		$tab = [];
 		$tab['infoSolde'] = HoraireEmployeeDAO::getInfosSolde($authData['per_id'], $authData['dateDebut'], $authData['dateFin']); // Récupère le résulat obtenu
 		$tab['infoSoldeMois'] = HoraireEmployeeDAO::getInfosHeuresMois($authData['per_id'], $authData['mois'], $authData['annee'], $authData['eta_id']); // Récupère le résulat obtenu
-		
+		$tab['soldeCourant'] = HoraireEmployeeDAO::calculerSoldeEmployee($authData['per_id'], $authData['mois'], $authData['annee'], $authData['eta_id']);
 		echo(json_encode($tab)); // Retourner le résultat sous format json
 	}
 	

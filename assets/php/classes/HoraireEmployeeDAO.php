@@ -2,6 +2,10 @@
 
 require_once("MySQLManager.php");
 
+define("DROITCONGE", 2);
+define("DROITFERIE", 0.5);
+define("DROITVACANCE_MOIS", 2.92);
+
 /**
 * Class php qui va gérer toutes les interactions avec la table possede (les département assignés aux personne) (Table : ccn_possede). 
 * Tout le CRUD sera géré ici.	
@@ -96,11 +100,13 @@ class HoraireEmployeeDAO {
 			  	$stmt->bind_result($nbHeuresPos);
 		    	$stmt->fetch();
 		    	
+		    	
+		    	
 		    	$infos = [];
 		    	
 			  	$stmt->close();
 			  	
-			  	$queryeff = "SELECT SEC_TO_TIME((SUM(hop_pause)*60)) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id AND tra_per_id = ? AND hop_date BETWEEN ? and ?";
+			  	$queryeff = "SELECT SEC_TO_TIME((SUM(hop_pause)*60)) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE tra_per_id = ? AND hop_date BETWEEN ? and ?";
 			  	if ($stmt = $db->prepare($queryeff)) {
 			  		$stmt->bind_param('iss', $per_id, $dateDebut, $dateFin);
 				  	$stmt->execute();
@@ -109,10 +115,10 @@ class HoraireEmployeeDAO {
 			    	
 			    	if ($nbHeuresMin == NULL) {$nbHeuresMin = '00:00:00';}
 			    	if ($nbHeuresPos == NULL) {$nbHeuresPos = '00:00:00';}
+			    	if ($pauseTotal == NULL) {$pauseTotal = '00:00:00';}
 			    	
 			    	$res = HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos);
 		    		
-		    		return $res;
 		    		$infos['brut'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds($res));
 			    	$infos['totalPause'] = HoraireEmployeeDAO::timeToObject($pauseTotal);
 			    	
@@ -163,19 +169,18 @@ class HoraireEmployeeDAO {
 		  	$stmt->bind_result($heuresCCNT);
     		$stmt->fetch();
     		$stmt->close();
-			return $heuresCCNT;
-			$query = "SELECT SUM(hop_abs_freq) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE tra_per_id = ? AND MONTH(hop_date) = ? AND hop_abs_id NOT LIKE NULL AND hop_abs_id <> 9";
+			
+			$query = "SELECT SUM(hop_abs_freq) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ? AND hop_abs_id NOT LIKE NULL AND hop_abs_id <> 9";
 			if ($stmt=$db->prepare($query)) {
-				$stmt->bind_param('ii', $per_id, $mois);
+				$stmt->bind_param('iis', $per_id, $mois, $annee);
 			  	$stmt->execute();
 			  	$stmt->bind_result($nbDaysAbsencesSansAutre);
 		    	$stmt->fetch();
 		    	$stmt->close();
 		    	
-		    	
-		    	$queryAbsencesTotal = "SELECT SUM(hop_abs_freq) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE tra_per_id = ? AND MONTH(hop_date) = ? AND hop_abs_id NOT LIKE NULL AND hop_abs_id <> 9";
+		    	$queryAbsencesTotal = "SELECT SUM(hop_abs_freq) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id LEFT JOIN ccn_absence ON abs_id = hop_abs_id WHERE tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ? AND hop_abs_id NOT LIKE NULL AND hop_abs_id <> 9";
 		    	if ($stmt=$db->prepare($queryAbsencesTotal)) {
-		    		$stmt->bind_param('ii', $per_id, $mois);
+		    		$stmt->bind_param('iis', $per_id, $mois, $annee);
 				  	$stmt->execute();
 				  	$stmt->bind_result($nbDaysAbsencesTotal);
 			    	$stmt->fetch();
@@ -183,64 +188,83 @@ class HoraireEmployeeDAO {
 			    	$infos = [];
 			    	$nbDays = cal_days_in_month(CAL_GREGORIAN, $mois, $annee);
 			    	
-			    	$queryFerie = "SELECT COUNT(*) FROM ccn_fermetureinfo WHERE fer_Eta_id = ? AND MONTH(fer_date) = ?";
+			    	$queryFerie = "SELECT COUNT(*) FROM ccn_fermetureinfo WHERE fer_Eta_id = ? AND MONTH(fer_date) = ? AND YEAR(fer_date) = ?";
 					
 					if ($stmt=$db->prepare($queryFerie)) {
-						$stmt->bind_param('ii', $eta_id, $mois);
+						$stmt->bind_param('iis', $eta_id, $mois, $annee);
 					  	$stmt->execute();
 					  	$stmt->bind_result($nbDaysFeries);
 				    	$stmt->fetch();
 				    	$stmt->close();
-				    	
-				    	$queryHeuresSemaine = "SELECT con_hor_id, con_particularite FROM ccn_contrat WHERE con_per_id = ?";
+						
+						
+						$queryJourPrisVac = "SELECT COUNT(*) FROM ccn_horairepersonne JOIN ccn_travail ON tra_hop_id = hop_id WHERE hop_abs_id = 3 AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
 					
-						if ($stmt=$db->prepare($queryHeuresSemaine)) {
-							$stmt->bind_param('i', $per_id);
+						if ($stmt=$db->prepare($queryJourPrisVac)) {
+							$stmt->bind_param('iis', $per_id, $mois, $annee);
 						  	$stmt->execute();
-						  	$stmt->bind_result($typeHeure, $particularite);
+						  	$stmt->bind_result($nbDaysVacances);
 					    	$stmt->fetch();
 					    	$stmt->close();
-					    	
-							$infos['joureffectifconges'] = $nbDays - $nbDaysAbsencesSansAutre;
-					    	$infos['joureffectifheures'] = $nbDays - ($nbDaysAbsencesTotal + $nbDaysFeries);
-					    	$infos['droitconges'] = ($infos['joureffectifconges']/7)*2;
-					    	$infos['droitvacances/mois'] = HoraireEmployeeDAO::timeToObjectWithDays(HoraireEmployeeDAO::daysToHoursMinutesSeconds((30 / 30) * 2.92), (30 / 30) * 2.92);
-					    	$infos['droitvacances/annee'] = HoraireEmployeeDAO::timeToObjectWithDays(HoraireEmployeeDAO::daysToHoursMinutesSeconds((12 / 12) * 35), (12 / 12) * 35);
-					    	$infos['droitjoursferies/mois'] = (30 / 30) * 0.5;
-					    	$infos['droitjoursferies/annee'] = (12 / 12) * 6;
-					    	
-					    	$heuresSemaines = $heuresCCNT;
-							if ($typeHeure == 2) {
-					    		$heuresSemaines = $heuresCCNT * $particularite;
-					    	} else if ($typeHeure == 3) {
-					    		$heuresSemaines = $particularite;
-					    	}
-					    	$infos['heures/semaine'] = $heuresSemaines;
-					    	$infos['tot/semaine'] = ($infos['joureffectifheures']/7);
-					    	$infos['heures/mois'] = $infos['heures/semaine'] * $infos['tot/semaine'];
-					    	
-					    	
-					    	$query1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ?";
-		
-							if ($stmt=$db->prepare($query1)) {
-								$stmt->bind_param('ii', $per_id, $mois);
+
+				    		$queryHeuresSemaine = "SELECT con_hor_id, con_particularite FROM ccn_contrat WHERE con_per_id = ?";
+							if ($stmt=$db->prepare($queryHeuresSemaine)) {
+								$stmt->bind_param('i', $per_id);
 							  	$stmt->execute();
-							  	$stmt->bind_result($nbHeuresMin);
+							  	$stmt->bind_result($typeHeure, $particularite);
 						    	$stmt->fetch();
-							  	$stmt->close();
-							  	
-							  	$query2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureDebut, hop_heureFin)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut >= hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ?";
-							  	if ($stmt=$db->prepare($query2)) {
-									$stmt->bind_param('ii', $per_id, $mois);
+						    	$stmt->close();
+						    	
+						    	$infos['jourprisvacances'] = $nbDaysVacances;
+						    	$infos['jourprisferies'] = $nbDaysFeries;
+						    	
+								$infos['joureffectifconges'] = $nbDays - $nbDaysAbsencesSansAutre;
+						    	$infos['joureffectif_heures'] = $nbDays - ($nbDaysAbsencesTotal + $nbDaysFeries);
+						    	$infos['droitconges'] = ($infos['joureffectifconges']/7) * DROITCONGE;
+						    	$infos['droitvacances_mois'] = HoraireEmployeeDAO::timeToObjectWithDays(HoraireEmployeeDAO::daysToHoursMinutesSeconds(DROITVACANCE_MOIS), DROITVACANCE_MOIS);
+						    	$infos['droitvacances_annee'] = HoraireEmployeeDAO::timeToObjectWithDays(HoraireEmployeeDAO::daysToHoursMinutesSeconds((DROITVACANCE_MOIS*12)), (DROITVACANCE_MOIS*12));
+						    	$infos['droitjoursferies_mois'] = DROITFERIE;
+						    	$infos['droitjoursferies_annee'] = (DROITFERIE * 12);
+						    	
+						    	$heuresSemaines = $heuresCCNT;
+								if ($typeHeure == 2) {
+						    		$heuresSemaines = $heuresCCNT * $particularite;
+						    	} else if ($typeHeure == 3) {
+						    		$heuresSemaines = $particularite;
+						    	}
+						    	$infos['heures_semaine'] = $heuresSemaines; // Problème si je change les heures de contrat
+						    	$infos['total_semaine'] = ($infos['joureffectif_heures']/7);
+						    	$infos['heures_mois'] = $infos['heures_semaine'] * $infos['total_semaine'];
+						    	
+						    	
+						    	$query1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
+			
+								if ($stmt=$db->prepare($query1)) {
+									$stmt->bind_param('iis', $per_id, $mois, $annee);
 								  	$stmt->execute();
-								  	$stmt->bind_result($nbHeuresPos);
+								  	$stmt->bind_result($nbHeuresMin);
 							    	$stmt->fetch();
 								  	$stmt->close();
-								  	$res = HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos);
 								  	
-								  	$infos['solde'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(($res - ($infos['heures/mois'] * 3600))));
-								  	MySQLManager::close();
-									return (json_encode($infos));
+								  	$query2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureDebut, hop_heureFin)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut >= hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
+								  	if ($stmt=$db->prepare($query2)) {
+										$stmt->bind_param('iis', $per_id, $mois, $annee);
+									  	$stmt->execute();
+									  	$stmt->bind_result($nbHeuresPos);
+								    	$stmt->fetch();
+									  	$stmt->close();
+									  	
+									  	if ($nbHeuresMin == NULL) {$nbHeuresMin = '00:00:00';}
+				    					if ($nbHeuresPos == NULL) {$nbHeuresPos = '00:00:00';}
+
+									  	$infos['heureseffectives'] = HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos);
+									  	
+									  	//$infos['solde'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(($res - ($infos['heures_mois'] * 3600))));
+									  	
+									  	//return HoraireEmployeeDAO::calculerSoldeEmployee($per_id, $mois, $annee);
+									  	//MySQLManager::close();
+										return (json_encode($infos));
+									}
 								}
 							}
 						}
@@ -269,31 +293,34 @@ class HoraireEmployeeDAO {
 	}
 	
 	
-	public static function calculerSoldeEmployee($per_id, $mois, $annee) {
+	public static function calculerSoldeEmployee($per_id, $mois, $annee, $eta_id) {
 		$dateIn = HoraireEmployeeDAO::getDateEntreeEmp($per_id);
-
+		$dateFin = new DateTime('01'.'-'.($mois+1).'-'.$annee);
+		$dateDep = new DateTime($dateIn);
 		$db = MySQLManager::get();
-		$queryHeuresEffectives = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";		
-		if ($stmt= $db->prepare($query)) {
-			$stmt->bind_param('iis', $per_id, $mois, $annee);
-			$stmt->execute();
-			$stmt->bind_result($nbHeuresNeg);
-			$stmt->fetch();
-			$stmt->close();
-			$queryHeuresEffectives = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureDebut, hop_heureFin)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut >= hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
-			if ($stmt= $db->prepare($query)) {
-				$stmt->bind_param('iis', $per_id, $mois, $annee);
-				$stmt->execute();
-				$stmt->bind_result($nbHeuresPos);
-				$stmt->fetch();
-				$stmt->close();
-				$nbHeureEffectives = $nbHeuresNeg + $nbHeuresPos; // Heures effectives qu'il a fait
-				
-				return $nbHeureEffectives;
-			}
+		$nbHeureEffectives = 0;
+		$soldeHeures = 0; 
+		$soldeConges = 0; 
+		$soldeVacances = 0; 
+		$soldeFeries = 0;
+		
+		while ($dateDep != $dateFin) {
+			$res = HoraireEmployeeDAO::getInfosHeuresMois($per_id, $dateDep->format('m'), $dateDep->format('Y'), $eta_id);
+			$resDec = json_decode($res);
+			
+			$soldeHeures = (($resDec->heureseffectives + $soldeHeures) - $resDec->heures_mois);
+			$soldeConges += (($soldeConges + $resDec->droitconges) - 8);
+			$soldeVacances += (($soldeVacances + $resDec->droitvacances_mois->time) - $resDec->jourprisvacances);
+			$soldeFeries += (($soldeFeries + $resDec->droitjoursferies_mois) - $resDec->jourprisferies);
+			
+			$dateDep->add(new DateInterval('P1M'));
+			$dateDep = new DateTime('01'.'-'.$dateDep->format('m').'-'.$dateDep->format('Y'));
 		}
-		MySQLManager::close();
-		return 0;
+		$infos['solde_heures'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds($soldeHeures*3600));
+		$infos['solde_conges'] = $soldeConges;
+		$infos['solde_vacances'] = $soldeVacances;
+		$infos['solde_feries'] = $soldeFeries;
+		return $infos;
 	}
 
 	public static function getHorairesEmployee ($per_id, $absences) {
