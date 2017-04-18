@@ -604,10 +604,10 @@ div#carre-8:hover {
 .alert {
     padding: 10px;
     padding-left: 40px;
-    border-left: 5px solid black;
+    border-left: 2px solid black;
     color: black;
-    background-color: #0097A7;
-    background-color: rgba(0,0,255,0.1);
+    /*background-color: #0097A7;*/
+    background-color: rgba(100,200,100,0.1);
 }
 
 .closebtn {

@@ -3,6 +3,7 @@
 require_once("MySQLManager.php");
 require_once("ContratDAO.php");
 require_once("PossedeDAO.php");
+require_once("PushServiceDAO.php"); // Gestion des push en fonction des demandes
 /**
 * Class php qui va gérer toutes les interactions avec une demande d'un employé
 * Tout le CRUD sera géré ici.	
@@ -72,26 +73,66 @@ class DemandesDAO {
 		MySQLManager::close();
 		return null;
 	}
-
+	/*
 	public static function updateDemande ($hop_id) {
 		$db = MySQLManager::get();
 		$query = "";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('', );
 			/* Exécution de la requête */
-			$stmt->execute();
+/*			$stmt->execute();
 		}
 		MySQLManager::close();
 		return null;
-	}
-/*
-SELECT * 
-FROM ccn_horairepersonne
-JOIN ccn_travail ON hop_id = tra_hop_id
-WHERE (hop_date BETWEEN '2017-04-03' AND '2017-04-30') 
-AND tra_per_id = 4
-
-*/
+	}*/
+	
+	// Paramètre: $dpe_id : id de la demande, $isAccept : true = demande acceptée, false = demande refusée
+	public static function traiterDemande($id, $isAccept){	
+		$db = MySQLManager::get();
+		$queryStatut = "SELECT dpe_per_id, dpe_statut FROM ccn_demandePersonne WHERE dpe_id = ?";
+		if ($stmt = $db->prepare($queryStatut)) {				
+				$stmt->bind_param("i", $id);
+				$stmt->execute();
+				$stmt->store_result();
+				$stmt->bind_result($per_id, $dpe_statut);	
+				$stmt->fetch();
+				if ($stmt->affected_rows > 0) {									
+					// On défini le nouveau statut par rapport à la valeur de isAccept et du statut actuel, et on envois le push en fonction
+					$newStatut = '';
+					if($isAccept){
+						if($dpe_statut == 'new'){
+							$newStatut = 'accept';
+							PushServiceDAO::sendPushDemandeCongeAcceptee($per_id);
+						} else {
+							$newStatut = 'modifyAccept';
+							PushServiceDAO::sendPushDemandeModCongeAcceptee($per_id);						
+						}
+					 } else {					
+						if($dpe_statut == 'new'){
+							$newStatut = 'refuse';	
+							PushServiceDAO::sendPushDemandeCongeRefusee($per_id);
+						} else {
+							$newStatut = 'modifyRefuse';
+							PushServiceDAO::sendPushDemandeModCongeRefusee($per_id);
+						}
+					}
+					
+					// On enregsitre le nouveau statut dans la BDD
+					$db = MySQLManager::get();			
+					$query = "UPDATE ccn_demandePersonne SET dpe_statut = ? WHERE dpe_id = ?";
+					if ($stmt = $db->prepare($query)) {
+							$stmt->bind_param("si", $newStatut, $id);
+							$stmt->execute();
+							if ($stmt->affected_rows > -1) {
+								MySQLManager::close();
+								return true;					 
+						} 							
+					} 
+					MySQLManager::close();
+				}
+		}
+		return false;
+	}//traiterDemande
 }
 
 ?>

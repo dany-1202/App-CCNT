@@ -5,7 +5,8 @@ ctrlCCNT.controller('demandesController', function($timeout, $rootScope, $scope,
 		
 	var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 	$scope.demandes = [];
-
+	
+	$timeout(function() {$('.ui.dropdown').dropdown();}, 10);
 	$scope.getDemandes = function () {
 		//data.employes = [];
 		//data.employes = angular.copy($scope.employe);
@@ -30,11 +31,15 @@ ctrlCCNT.controller('demandesController', function($timeout, $rootScope, $scope,
 					        style = {"background":"#32d296"};
 					        statutFR = "Accepté";
 					        break;
+				        case "refuse":
+					        style = {"background":"#f0506e"};
+					        statutFR = "Refusé";
+					        break;
 					    case "modifyAccept":
 					        style = {"background":"#32d296"};
 					        statutFR = "Accepté";
 					        break;
-					     case "modifyRefuse":
+				    	case "modifyRefuse":
 					        style = {"background":"#f0506e"};
 					        statutFR = "Refusé";
 					        break;
@@ -60,19 +65,41 @@ ctrlCCNT.controller('demandesController', function($timeout, $rootScope, $scope,
     $scope.getDemandes();
 	
     $scope.accepter = function (demande) {
+    	var len = $scope.demandes.length;
     	console.log("accepter");
     	console.log(demande);
     	data.demande = demande;
+    	data.demande.accept = true;
     	var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
-	    $promise.then(function (message) {});
+	    $promise.then(function (message) {
+	    	if (demande.statut == 'new') {
+	    		demande.statut = 'accept';
+	    	} else {
+	    		demande.statut = 'modifyAccept';
+	    	}
+	    	demande.statutFR = "Accepté";
+    		demande.style = {"background":"#32d296"};
+	    	
+	    	
+	    });
     }
 
     $scope.refuser = function (demande) {
+    	var len = $scope.demandes.length;
     	console.log("refuser");
     	console.log(demande);
     	data.demande = demande;
-    	var $promise = $http.post('assets/php/refuserDemandesAPI.php', data);
-	    $promise.then(function (message) {});
+    	data.demande.accept = false;
+    	var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
+	    $promise.then(function (message) {
+	    	if (demande.statut == 'new') {
+	    		demande.statut = 'refuse';
+	    	} else {
+	    		demande.statut = 'modifyRefuse';
+	    	}
+	    	demande.statutFR = "Refusé";
+    		demande.style = {"background":"#f0506e"};
+	   	});
     }
 
 });
