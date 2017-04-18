@@ -142,6 +142,9 @@
 			<li ng-class="{active: $route.current.activetab == 'emp'}" ng-show="{{user.configuration}}">
 				<a href="#!/employe"><i class="fa fa-fw fa-user"></i> Gestion employés</a>
 			</li>
+			<li ng-class="{active: $route.current.activetab == 'demandes'}">
+				<a href="#!/demandes"><i class="fa fa-fw fa-wrench"></i> Demandes</a>
+			</li>
 			<li ng-class="{active: $route.current.activetab == 'planning'}" ng-show="{{user.configemp && user.configuration}}">
 				<a href="" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-calendar"></i> Planning
 				<i class="fa fa-fw fa-caret-down"></i></a>
