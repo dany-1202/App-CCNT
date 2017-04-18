@@ -5,6 +5,7 @@
 	ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux, $route, DateFactory) {
 		$scope.$route = $route;
 		function init() {
+			
 			$scope.user = {};
 			$scope.idUser = -1;
 			

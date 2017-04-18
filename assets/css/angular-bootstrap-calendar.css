@@ -494,6 +494,7 @@ mwl-calendar #cal-week-box {
   background-color: #fafafa;
   text-align: center;
   font-size: 10px;
+  margin-left: 10px;
 }
 mwl-calendar .cal-week-box .cal-row-head {
   border-bottom: 1px solid #e1e1e1;
