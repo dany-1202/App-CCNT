@@ -36,6 +36,11 @@ class HoraireEmployeeDAO {
 		  	$stmt->execute();
 		  	$stmt->bind_result($nbHeuresMin);
 	    	$stmt->fetch();
+	    	
+	    	$infos = [];
+	    	$infos['heuresEffectives'] = $nbHeuresMin;
+	    	
+	    	
 		  	$stmt->close();
 		  	MySQLManager::close();
 	  		return $nbHeuresMin;
