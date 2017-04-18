@@ -3,7 +3,7 @@
 
 	<div id="page-wrapper" class="padding-top-50">
 		<div class="container-fluid">
-		
+			
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="uk-margin-top uk-heading-line title-planning"><span>Gestion des employés</span></h1>
@@ -18,62 +18,67 @@
 						<p>Consulter, ajouter ou modifier les informations des employés de votre établissement</p>
 					</div>
 				</div>
-			<div>
+				<div>
 
-			<div class="row">
-				<div class="col-lg-12">
-					<button type="button" ng-click="ajouterEmploye()" class="btn btn-primary right" style="margin-bottom:15px;margin-right:15px!important">Ajouter employé</button>
-				</div>
-			</div>
-        <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-			<div ng-repeat="emp in employe" class="col-md-6 col-sm-6 col-xs-12 profile_details">
-                <div class="well profile_view">
-                  <div class="col-sm-12">
-                    <h4 class="brief"><i>{{emp.dep.nom}}</i></h4>
-                    <div class="left col-xs-7">
-                      <h2 style="display: inline">{{emp.nom}} <h3 style="display: inline"> {{emp.prenom}}</h3></h2>
-                      <!--<p><strong>Heures/semaines: </strong> 45 heures</p>-->
-                      <ul class="list-unstyled">
-                        <li><i class="fa fa-calendar"></i> Âge: {{emp.dateNaissance | age}} </li>
-                        <li><i class="fa fa-phone"></i> Téléphone: {{emp.telFixe}} </li>
-                      </ul>
-                    </div>
-                    <div class="right col-xs-5 text-center">
-                    	<img class="img-circle img-responsive" ng-if="emp.genre == 'M'" ng-src="assets/images/man.png">
-						<img class="img-circle img-responsive" ng-if="emp.genre == 'F'" ng-src="assets/images/women.png">
-                    </div>
-                  </div>
-                  <div class="col-xs-12 bottom text-center">
-                    <div class="col-xs-12 col-sm-12 emphasis">
-                      	<div ng-click="modEmploye($index)" style="display: inline;"><a md-whiteframe="1" class="btn btn-default" style="width: 15%; height: 100%" ><em class="fa fa-pencil" style="line-height: 25px; color:black!important"></em></a></div>
-			        	<div ng-click="supEmploye($index)" style="display: inline;"><a md-whiteframe="1" class="btn btn-danger" style="width: 15%; height: 100%" ><em class="fa fa-trash" style="line-height: 25px;color:white!important"></em></a></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-			<!--
-			<div class="row animate-repeat" ng-repeat="emp in employe">
-				<div class="col-lg-12">
-					<div class="card-emp clearfix" >
-			        	<div class="btn-group-emp clearfix">
-			          		<div ng-click="modEmploye($index)" class="btn-modif-emp"><a md-whiteframe="1" class="btn btn-default" style="width: 100%; height: 100%" ><em class="fa fa-pencil" style="line-height: 25px; color:black!important"></em></a></div>
-				        	<div ng-click="supEmploye($index)" class="btn-sup-emp"><a md-whiteframe="1" class="btn btn-danger" style="width: 100%; height: 100%" ><em class="fa fa-trash" style="line-height: 25px;color:white!important"></em></a></div>
-			        	</div>
-			        	<div class="container-dep">
-			        		<img ng-cloak ng-src="assets/images/bande{{emp.dep.img}}.jpg" alt="" class="image image-dep"/>
-			          		<span class="title-dep">{{emp.dep.nom}}</span>
-			        	</div>
-			        	<span class="age">{{emp.dateNaissance | age}}</span>
-			        	<span class="name">{{emp.nom}} <span class="prenom">{{emp.prenom}}</span></span>
+					<div class="row">
+						<div class="col-lg-12">
+							<div ng-click="affCarre = true" style="display: inline; margin-left:15px"><a class="btn btn-default"><em class="fa fa-th-large" style="line-height: 25px; color:black!important"></em></a></div>
+							<div ng-click="affCarre = false" style="display: inline; margin-left:-7px"><a class="btn btn-default"><em class="fa fa-bars" style="line-height: 25px;color:black!important"></em></a></div>
+							<button type="button" ng-click="ajouterEmploye()" class="btn btn-primary right" style="margin-bottom:15px;margin-right:15px!important">Ajouter employé</button>
+						</div>
+					</div>
+					
+					<div ng-if="affCarre" class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+							<div ng-repeat="emp in employe" class="col-md-6 col-sm-6 col-xs-12 profile_details">
+								<div class="well profile_view">
+									<div class="col-sm-12">
+										<h4 class="brief"><i>{{emp.dep.nom}}</i></h4>
+										<div class="left col-xs-7">
+											<h2 style="display: inline">{{emp.nom}} <h3 style="display: inline"> {{emp.prenom}}</h3></h2>
+											<!--<p><strong>Heures/semaines: </strong> 45 heures</p>-->
+											<ul class="list-unstyled">
+												<li><i class="fa fa-calendar"></i> Âge: {{emp.dateNaissance | age}} </li><br>
+												<li><i class="fa fa-phone"></i> Téléphone: {{emp.telFixe}} </li>
+											</ul>
+										</div>
+										<div class="right col-xs-5 text-center">
+											<img class="img-circle img-responsive" ng-if="emp.genre == 'M'" ng-src="assets/images/man.png">
+											<img class="img-circle img-responsive" ng-if="emp.genre == 'F'" ng-src="assets/images/women.png">
+										</div>
+									</div>
+									<div class="col-xs-12 bottom text-center">
+										<div class="col-xs-12 col-sm-12 emphasis">
+											<div ng-click="modEmploye($index)" style="display: inline;"><a md-whiteframe="1" class="btn btn-default" style="width: 15%; height: 100%" ><em class="fa fa-pencil" style="line-height: 25px; color:black!important"></em></a></div>
+											<div ng-click="supEmploye($index)" style="display: inline;"><a md-whiteframe="1" class="btn btn-danger" style="width: 15%; height: 100%" ><em class="fa fa-trash" style="line-height: 25px;color:white!important"></em></a></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div ng-if="!affCarre" class="row animate-repeat" ng-repeat="emp in employe">
+						<div class="col-lg-12">
+							<div class="card-emp clearfix" >
+					        	<div class="btn-group-emp clearfix">
+					          		<div ng-click="modEmploye($index)" class="btn-modif-emp"><a md-whiteframe="1" class="btn btn-default" style="width: 100%; height: 100%" ><em class="fa fa-pencil" style="line-height: 25px; color:black!important"></em></a></div>
+						        	<div ng-click="supEmploye($index)" class="btn-sup-emp"><a md-whiteframe="1" class="btn btn-danger" style="width: 100%; height: 100%" ><em class="fa fa-trash" style="line-height: 25px;color:white!important"></em></a></div>
+					        	</div>
+					        	<div class="container-dep">
+					        		<img ng-cloak ng-src="assets/images/bande{{emp.dep.img}}.jpg" alt="" class="image image-dep"/>
+					          		<span class="title-dep">{{emp.dep.nom}}</span>
+					        	</div>
+					        	<span class="age">{{emp.dateNaissance | age}}</span>
+					        	<span class="name">{{emp.nom}} <span class="prenom">{{emp.prenom}}</span></span>
 
-	        			<img class="icon-emp" ng-if="emp.genre == 'M'" ng-src="assets/images/man.png">
-						<img class="icon-emp" ng-if="emp.genre == 'F'" ng-src="assets/images/women.png">
-			      	</div>
-				</div>
-			</div> -->
+			        			<img class="icon-emp" ng-if="emp.genre == 'M'" ng-src="assets/images/man.png">
+								<img class="icon-emp" ng-if="emp.genre == 'F'" ng-src="assets/images/women.png">
+					      	</div>
+						</div>
+					</div>
+					
 
 		</div>
 	</div>
@@ -112,4 +117,4 @@
 		</div>
 	</div>
 </div>
-	<!-- /#page-wrapper -->
+<!-- /#page-wrapper -->

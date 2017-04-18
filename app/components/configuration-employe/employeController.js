@@ -2,7 +2,7 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State, $route) {
 	$scope.$route = $route;
-
+    $scope.affCarre = true;
 	$scope.user = {};
 	$scope.idUser = -1;
 	$scope.user.configuration = SessionService.get('user_configured');

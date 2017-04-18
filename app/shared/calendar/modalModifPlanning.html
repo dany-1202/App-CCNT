@@ -11,7 +11,7 @@
           <br>
           <h6 class="spectre-card-subtitle">{{depSel}}</h6>
           <h4 class="text-center">
-            <select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 100%; margin-top:5px">
+            <select select-dir class="ui dropdown" ng-change="majPerson()" ng-model="myPerson" style="width: 100%; margin-top:5px">
               <option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
             </select>
             <span ng-if="myPerson == null" style="color:red; display: block; margin-bottom: 70px;">Veuillez choisir un employé !</span>
@@ -56,14 +56,14 @@
                 </div>
                 <div ng-show="scope.motifAfficher" class="uk-margin" >
                   <label for="form-stacked-select">Motif absence</label>
-                  <select id="selMotif" class="uk-select" ng-model="scope.motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+                  <select id="selMotif" select-dir class="ui dropdown" ng-model="scope.motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
                     <option ng-repeat="abs in scope.absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
                   </select>
                 </div>
                 <div ng-hide="scope.motifAfficher" class="uk-margin">
                   <label for="form-stacked-select">Pause</label>
                   <div class="uk-form-controls">
-                    <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
+                    <select select-dir style="font-size:1.2em" id="selPause1" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
                   </div>
                 </div>
               </div>

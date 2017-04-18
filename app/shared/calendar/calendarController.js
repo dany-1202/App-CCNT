@@ -14,8 +14,9 @@
 */
 
 appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog, SessionService, $scope, moment, alert, calendarConfig, $http, NotifService, DateFactory, PromiseDAO, State, Popover, Const, $mdpTimePicker) {
-
+	
 	var vm = this; // Je prend la référence de moi-même et je la stocke
+	
 	
 	vm.isOpen = false;
 	vm.selectedMode = 'md-scale';
@@ -1065,7 +1066,7 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 	  					);
 	  			}
 	  			
-	  			function CreatePlanningController($scope, $mdDialog, $mdpTimePicker, $filter, Const) {
+	  			function CreatePlanningController($scope, $mdDialog, $timeout, $mdpTimePicker, $filter, Const) {
 	  				$scope.scope = $scope;
 	  				$scope.modif = vm.modif;
 	  				$scope.event = angular.copy(vm.event);
