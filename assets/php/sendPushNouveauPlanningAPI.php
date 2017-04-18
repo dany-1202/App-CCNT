@@ -9,7 +9,11 @@
 	if ($authentified == false) {
 		//echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		$res = PushServiceDAO::sendPushNouveauPlanning($authData['per_id']);
+
+		if ($authData['type_push'] == 'new') {
+			$res = PushServiceDAO::sendPushNouveauPlanning($authData['per_id']);
+		} else if ($authData['type_push'] == 'modif') {
+			$res = PushServiceDAO::sendPushModificationPlanning($authData['per_id']);
+		}
 		echo(json_encode($res));
 	}
-	

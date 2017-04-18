@@ -11,8 +11,8 @@
 	if ($authentified == false) {
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
-		require_once("classes/EtatInitial.php");
-		$res = EtatInitial::insertOuvertureInfo($authData);
+		require_once("classes/OuvertureDAO.php");
+		$res = OuvertureDAO::insertOuvertureEstablishment($authData);
 		echo($res);
 	}
 		

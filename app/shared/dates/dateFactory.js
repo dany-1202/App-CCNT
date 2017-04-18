@@ -59,6 +59,31 @@
 	  		return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 		}
 		
+		date.getJourById = function(id) {
+			var day = 'Dimanche';
+			switch(id) {
+			    case '1':
+			        day = 'Lundi';
+			        break;
+			    case '2':
+			       	day = 'Mardi';
+			        break;
+		        case '3':
+			        day = 'Mercredi';
+			        break;
+		        case '4':
+			        day = 'Jeudi';
+			        break;
+		        case '5':
+			        day = 'Vendredi';
+			        break;
+		        case '6':
+			        day = 'Samedi';
+			        break;
+			}
+			return day;
+		};
+		
 		
 		date.getTimeStr = function (date) {
 			var d = moment(date);
@@ -159,7 +184,7 @@
 			}
 			return index;
 		}
-
+		
 		return date;
 	})
 })();

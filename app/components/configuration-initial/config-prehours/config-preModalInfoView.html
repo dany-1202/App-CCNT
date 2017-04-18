@@ -62,7 +62,7 @@
 									<tr>
 										<th rowspan="1" style="line-height: 5px!important" class="tableau-darkBrownWithC">Pause</th>
 										<td ng-repeat="data in prehours track by $index">
-											<select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="data.datapauseMatin" ng-options="p.name for p in nbPause"></select>
+											<select select-dir style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="data.datapauseMatin" ng-options="p.name for p in nbPause"></select>
 										</td>
 									</tr>
 
@@ -90,7 +90,7 @@
 									<tr>
 										<th rowspan="1" style="line-height: 5px!important" class="tableau-darkBrownWithC">Pause</th>
 										<td ng-repeat="data in prehours track by $index">
-											<select style="font-size:1.2em" class="uk-select" id="form-stacked-select" ng-model="data.datapauseSoir" ng-options="p.name for p in nbPause"></select>
+											<select select-dir style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="data.datapauseSoir" ng-options="p.name for p in nbPause"></select>
 										</td>
 									</tr>
 								 </tbody>
@@ -119,7 +119,7 @@
 				        <div class="text-center">
 				          <label class="uk-form-label" for="form-stacked-select">Pause</label>
 				          <div class="uk-form-controls">
-				            <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-change="changePause()" ng-model="pauseService1" ng-options="p.name for p in nbPause"></select>
+				            <select style="font-size:1.2em" id="selPause1" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="pauseService1" ng-options="p.name for p in nbPause"></select>
 				          </div>
 				        </div>
 				      </div>
@@ -143,7 +143,7 @@
 		                  <label class="uk-form-label" for="form-stacked-select">Pause</label>
 		                  <div class="uk-form-controls">
 
-		                    <select style="font-size:1.2em" id="selPause2" class="uk-select" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause2"></select>
+		                    <select style="font-size:1.2em" id="selPause2" class="ui dropdown" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause2"></select>
 		                  </div>
 		              </div>
 		          </div>

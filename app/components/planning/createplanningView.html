@@ -65,7 +65,7 @@
 					  		<div class="uk-button-group btngroup-filtrescal">
 						  		<!-- Gestion des filtres départements -->
 							    <button class="uk-button uk-button-default" type="button">Départements <i class="fa fa-chevron-down" style="margin-left:5px; margin-right: -5px" aria-hidden="true"></i></button>
-							    <div uk-dropdown="mode: click;pos: bottom-justify">
+							    <div id="scrollbar" uk-dropdown="mode: click;pos: bottom-justify" style="max-height:200px;overflow:auto">
 								    <div class="searchable-container animate-repeat" ng-repeat="dep in departments track by $index">
 										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px">
 											<div class="info-block block-info clearfix">
@@ -85,7 +85,7 @@
 							    </div>
     					  		<!-- Gestion des filtres employés -->
 							    <button class="uk-button uk-button-default" type="button">Employés <i class="fa fa-chevron-down" style="margin-left:5px;margin-right: -5px" aria-hidden="true"></i></button>
-							    <div uk-dropdown="mode: click;pos: bottom-justify" style="min-width: 300px!important">
+							    <div id="scrollbar" uk-dropdown="mode: click;pos: bottom-justify" style="min-width: 300px!important;max-height:250px;overflow:auto">
 							    	<div ng-if="personsDeps.length == 0"><h4 style="margin-top:5px">Aucun employé</h4><h6 style="margin-top:-20px;color:grey">(Réactiver les filtres départements)</h6></div>
 								    <div class="searchable-container animate-repeat" ng-repeat="person in personsDeps track by $index">
 										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px;">
@@ -110,7 +110,7 @@
 							    </div>
 						  		<!-- Gestion des filtres absences -->
 							    <button class="uk-button uk-button-default" type="button">Absences <i class="fa fa-chevron-down" style="margin-left:5px;margin-right: -5px" aria-hidden="true"></i></button>
-							    <div uk-dropdown="mode: click;pos: bottom-justify">
+							    <div id="scrollbar" uk-dropdown="mode: click;pos: bottom-justify" style="max-height:250px;overflow:auto">
 							    	<div class="searchable-container animate-repeat" ng-repeat="abs in absences track by $index">
 										<div class="items col-xs-12" style="padding-right: 0px;padding-left: 0px">
 											<div class="info-block block-info clearfix">

@@ -30,11 +30,13 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="row">
-				<div class="col-lg-12">
-					<input type="submit" ng-click="getHeuresBrut()">Récupérer heures employé</input>
+				<div class="col-lg-12 text-center">
+					<md-button ng-click="getHeuresBrut()" class="bouton centrer">Récupérer heures employé</md-button>
 				</div>
 			</div>
+			
 			<div id="configEmp" ng-hide="{{user.configemp}}"  class="row">
 				<div class="col-lg-12">
 					<div class="jumbotron centrer">
@@ -45,33 +47,28 @@
 					</div>
 				</div>
 			</div>
-			<!--
-			<div class="row">
-				<div class="col-lg-12 text-center uk-padding"><button class="uk-button uk-button-secondary" ng-click="envoyerMail()">Envoyer mail à Jally</button></div>
-			</div> -->
-
 			<div class="row">
 				<div class="col-lg-4">
 					<div md-whiteframe="2" class="uk-card uk-card-default uk-card-hover uk-width-1-1 uk-margin-bottom">
-					    	<div class="uk-card-header">
-				        		<div class="uk-grid-small uk-flex-middle" uk-grid>
-				            		<div class="uk-width-auto">
-			                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: clock">
-				            		</div>
-				            		<div class="uk-width-expand">
-			                			<h3 class="uk-card-title uk-margin-remove-bottom">Création d'un planning</h3>
-		                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
-				            		</div>
-				        		</div>
-					    	</div>
-					    	<div class="uk-card-body">
-				        		<p>Créer et consulter les plannings</p>
-				  			</div>
-					    	<div class="uk-card-footer">
-					        	<md-card-actions layout="row" layout-align="center">
-									<md-button ng-href="#!/createplanning" class="bouton"> Aller </md-button>
-								</md-card-actions>
-					    	</div>
+						<div class="uk-card-header">
+							<div class="uk-grid-small uk-flex-middle" uk-grid>
+								<div class="uk-width-auto">
+									<img class="uk-border-circle" width="40" height="40" uk-icon="icon: clock">
+								</div>
+								<div class="uk-width-expand">
+									<h3 class="uk-card-title uk-margin-remove-bottom">Création d'un planning</h3>
+									<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
+								</div>
+							</div>
+						</div>
+						<div class="uk-card-body">
+							<p>Créer et consulter les plannings</p>
+						</div>
+						<div class="uk-card-footer">
+							<md-card-actions layout="row" layout-align="center">
+								<md-button ng-href="#!/createplanning" class="bouton"> Aller </md-button>
+							</md-card-actions>
+						</div>
 					</div>
 					
 				</div>
@@ -80,54 +77,85 @@
 
 
 					<div md-whiteframe="2" class="uk-card uk-card-default uk-card-hover uk-width-1-1 uk-margin-bottom">
-				    	<div class="uk-card-header">
-			        		<div class="uk-grid-small uk-flex-middle" uk-grid>
-			            		<div class="uk-width-auto">
-			                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: history">
-			            		</div>
-			            		<div class="uk-width-expand">
-			                			<h3 class="uk-card-title uk-margin-remove-bottom">Consulter l'historique</h3>
-		                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
-			            		</div>
-			        		</div>
-				    	</div>
-				    	<div class="uk-card-body">
-			        		<p>Consulter tous les évenements qui se sont déjà passés.</p>
-				  		</div>
-				    	<div class="uk-card-footer">
-				        		<md-card-actions layout="row" layout-align="center">
-									<md-button class="bouton">Aller</md-button>
-								</md-card-actions>
-			    		</div>
+						<div class="uk-card-header">
+							<div class="uk-grid-small uk-flex-middle" uk-grid>
+								<div class="uk-width-auto">
+									<img class="uk-border-circle" width="40" height="40" uk-icon="icon: history">
+								</div>
+								<div class="uk-width-expand">
+									<h3 class="uk-card-title uk-margin-remove-bottom">Consulter l'historique</h3>
+									<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
+								</div>
+							</div>
+						</div>
+						<div class="uk-card-body">
+							<p>Consulter tous les évenements qui se sont déjà passés.</p>
+						</div>
+						<div class="uk-card-footer">
+							<md-card-actions layout="row" layout-align="center">
+								<md-button class="bouton">Aller</md-button>
+							</md-card-actions>
+						</div>
 					</div>
 
 				</div>
 
 				<div class="col-lg-4">
 					<div md-whiteframe="2" class="uk-card uk-card-default uk-card-hover uk-width-1-1 uk-margin-bottom">
-					    	<div class="uk-card-header">
-					        		<div class="uk-grid-small uk-flex-middle" uk-grid>
-					            		<div class="uk-width-auto">
-					                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: cog">
-					            		</div>
-					            		<div class="uk-width-expand">
-					                			<h3 class="uk-card-title uk-margin-remove-bottom">Mon établissement</h3>
-				                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
-					            		</div>
-					        		</div>
-					    	</div>
-					    	<div class="uk-card-body">
-					        		<p>Gérer le profil de votre établissement, ses informations, etc...</p>
-				  		</div>
-					    	<div class="uk-card-footer">
-					        		<md-card-actions layout="row" layout-align="center">
+						<div class="uk-card-header">
+							<div class="uk-grid-small uk-flex-middle" uk-grid>
+								<div class="uk-width-auto">
+									<img class="uk-border-circle" width="40" height="40" uk-icon="icon: cog">
+								</div>
+								<div class="uk-width-expand">
+									<h3 class="uk-card-title uk-margin-remove-bottom">Mon établissement</h3>
+									<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
+								</div>
+							</div>
+						</div>
+						<div class="uk-card-body">
+							<p>Gérer le profil de votre établissement, ses informations, etc...</p>
+						</div>
+						<div class="uk-card-footer">
+							<md-card-actions layout="row" layout-align="center">
 								<md-button ng-href="#!/construction" class="bouton">Gérer</md-button>
 							</md-card-actions>
-					    	</div>
+						</div>
 					</div>
 					
 				</div>
 			</div>
+			<!--
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="flakes-key-metrics gt100 gt150 gt200 gt250 lt300 lt350 lt400 lt450 lt500 lt550 lt600 lt650 lt700 lt750 lt800 lt850 lt900" data-respond="">
+						<div title="A unit of account is a standard monetary unit of measurement of value/cost of goods, services, or assets. It is one of three well-known functions of money.[1] It lends meaning to profits, losses, liability, or assets.">
+							<span>2,382</span><br>
+							Units Sold
+						</div>
+						<div title="Avg. Margin refer to a measure of profitability. It is calculated by finding the net profit as a percentage of the revenue.">
+							<span>18.33%</span><br>
+							Avg. Margin
+						</div>
+						<div title="Revenue or turnover is income that a company receives from its normal business activities, usually from the sale of goods and services to customers. ">
+							<span>$183,232</span><br>
+							Gross Revenue
+						</div>
+						<div title="Profit is the difference between the purchase and the component costs of delivered goods and/or services and any operating or other expenses.">
+							<span>$58,329</span><br>
+							Gross Profit
+						</div>
+						<div title="The goods or merchandise kept on the premises of a business or warehouse and available for sale or distribution.">
+							<span>$133,429</span><br>
+							Stock On Hand
+						</div>
+						<div title="Pay back (money), typically to a customer who is not satisfied with goods or services bought.">
+							<span>$19,429</span><br>
+							Refunds
+						</div>
+					</div> 
+				</div>
+			</div> -->
 
 		</div>
 	</div> <!-- /#page-wrapper -->

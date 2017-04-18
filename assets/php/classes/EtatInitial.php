@@ -75,19 +75,12 @@ class EtatInitial {
 		return false;
 	} // insertFermetureInfo
 
-	/*Permet d'ajouter une heure d'ouverture dans la table ccn_ouvertureInfo
-	  En paramètre: un Etablissement Contenant :
-		la date d'ouverture
-		une date / heure de début
-		une date / heure de fin
-		l'identifiant de l'établissement
-	*/
 	public static function insertOuvertureInfo ($data) {
 		$db = MySQLManager::get();
 		$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_matinDebut, ouv_matinFin, ouv_soirDebut, ouv_soirFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
 		if ($stmt = $db->prepare($query)) {
-	  		if ($data['matinFin'] == "") {$matinFin = NULL;} else {$matinFin = $data['matinFin'];}
-	  		if ($data['soirDebut'] == "") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}
+	  		if ($data['matinFin'] == "" || $data['matinFin'] == "Heure fin") {$matinFin = NULL;} else {$matinFin = $data['matinFin'];}
+	  		if ($data['soirDebut'] == "" || $data['soirDebut'] == "Heure début") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}
 			$stmt->bind_param('sssssi', $data['jour'], $data['matinDebut'], $matinFin, $soirDebut, $data['soirFin'], $data['etaId']);
 		  	$stmt->execute();
 		  	$stmt->store_result();

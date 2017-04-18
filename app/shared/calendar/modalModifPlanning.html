@@ -1,5 +1,5 @@
 <md-dialog aria-label="Gestion Horaire" style="width:500px">
-  <md-content md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
+  <md-content md-scroll-y="" id="scrollbar" layout="column" flex="" class="_md layout-column flex">
   	<div class="spectre-card">
       <div class="spectre-card-header">
         <h5 class="spectre-card-title">
@@ -11,7 +11,7 @@
           <br>
           <h6 class="spectre-card-subtitle">{{depSel}}</h6>
           <h4 class="text-center">
-            <select class="uk-select" ng-change="majPerson()" ng-model="myPerson" style="width: 100%; margin-top:5px">
+            <select select-dir class="ui dropdown" ng-change="majPerson()" ng-model="myPerson" style="width: 100%; margin-top:5px">
               <option ng-repeat="person in persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
             </select>
             <span ng-if="myPerson == null" style="color:red; display: block; margin-bottom: 70px;">Veuillez choisir un employé !</span>
@@ -23,51 +23,63 @@
       <div class="spectre-card-body" ng-if="myPerson != null">
         <div class="row">
           <div class="col-lg-12">
-              <p class="uk-input-group text-center" style="background-color: beige">
-                  <label style="font-size: 1.5em">Date</label>
-                  <md-datepicker ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
-              </p>
+            <div class="x_panel" md-whiteframe="1" style="border: 1px solid #222;">
+              <div class="x_title text-center"  style="color: black; font-weight: 600; border-bottom: 1px solid #222">
+                <h3 style="height: 20px;padding-bottom:0px">Date <i style="margin-left:20px" class="fa fa-calendar-o" aria-hidden="true"></i></h3>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content text-center">
+                <md-datepicker style="color:white" ng-model="event.startsAt" md-placeholder="Choisir date"></md-datepicker>
+              </div>
+            </div>
           </div>
         </div>
         <hr class="uk-divider-icon">
-        <div class="row">
+        <div class="row margin-bottom-xss">
           <div class="col-lg-12">
-          
-            <h3 style="border-bottom: 3px solid cadetblue;">Heures de Service 
-              <label class="right" style="font-size: 1em">
-                <input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()"/> 
-                Absent
-              </label>
-            </h3>
-            <div class="text-center">
-              <md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showModifHeureDebutSer1($event, $index)" aria-label="show picker">
-               <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
-               <i class="espace-avant fa fa-clock-o"></i>
-              </md-button>
-              <md-button ng-model="heureFin1" class="btnS md-raised" ng-click="showModifHeureFinSer1($event, $index)" aria-label="show picker">
-                 <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
-                 <i class="espace-avant fa fa-clock-o"></i>
-              </md-button>
-            </div>
-            <div ng-show="scope.motifAfficher" class="uk-margin text-center" >
-              <label for="form-stacked-select">Motif absence</label>
-              <select id="selMotif" class="uk-select" ng-model="scope.motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
-                <option ng-repeat="abs in scope.absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
-              </select>
-            </div>
-            <div ng-hide="scope.motifAfficher" class="text-center">
-              <label class="uk-form-label" for="form-stacked-select">Pause</label>
-              <div class="uk-form-controls">
-                <select style="font-size:1.2em" id="selPause1" class="uk-select" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
+            <div class="x_panel" md-whiteframe="1" style="border: 1px solid #222;">
+              <div class="x_title" style="border-bottom: 1px solid #222;">
+                <h3 style="display: inline; color: #222; font-weight: 600">Heures de Service</h3>
+                <label class="right" style="font-size: 1.3em;font-weight: 500;margin-top: 6px;"><input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()"/> Absent</label>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <div class="text-center">
+                  <md-button ng-model="heureDebut1" class="btnS md-raised" style="background-color: #222;color: white;width: 150px!important;" ng-click="showModifHeureDebutSer1($event, $index)" aria-label="show picker">
+                    {{ heureDebut1 | date:'HH:mm' }}
+                    <i class="espace-avant fa fa-clock-o"></i>
+                  </md-button>
+                  <md-button ng-model="heureFin1" class="btnS md-raised" style="background-color: #222;color: white;width: 150px!important;" ng-click="showModifHeureFinSer1($event, $index)" aria-label="show picker">
+                    {{ heureFin1 | date:'HH:mm' }}
+                    <i class="espace-avant fa fa-clock-o"></i>
+                  </md-button>
+                </div>
+                <div ng-show="scope.motifAfficher" class="uk-margin" >
+                  <label for="form-stacked-select">Motif absence</label>
+                  <select id="selMotif" select-dir class="ui dropdown" ng-model="scope.motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+                    <option ng-repeat="abs in scope.absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+                  </select>
+                </div>
+                <div ng-hide="scope.motifAfficher" class="uk-margin">
+                  <label for="form-stacked-select">Pause</label>
+                  <div class="uk-form-controls">
+                    <select select-dir style="font-size:1.2em" id="selPause1" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
+                  </div>
+                </div>
               </div>
             </div>
+            
+            
           </div>
         </div>
         <hr>
         </div>
     </div>
-    <button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('modif')">
+    <button style="bottom: 0; position: fixed; width: 50%" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('modif')">
       Enregistrer
+    </button>
+    <button style="bottom: 0; right: 0;position: fixed; width: 50%; background-color: #ECF0F1; color:#222" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="cancel()">
+      Annuler
     </button>
  </md-content>
 </md-dialog>
