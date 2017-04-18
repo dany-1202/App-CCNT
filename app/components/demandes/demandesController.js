@@ -15,22 +15,65 @@ ctrlCCNT.controller('demandesController', function($timeout, $rootScope, $scope,
 	          var tab = message.data;
 	          	for (var i = 0; i < tab.length; i++) {
 	          		var demande = tab[i];
+	          		var style = "";
+	          		var statutFR = "";
+	          		switch(demande.statut) {
+					    case "new":
+					        style = {"background":"#1e87f0"};
+					        statutFR = "Nouveau";
+					        break;
+					    case "modify":
+					        style = {"background":"#faa05a"};
+					        statutFR = "Modifié";
+					        break;
+					    case "accept":
+					        style = {"background":"#32d296"};
+					        statutFR = "Accepté";
+					        break;
+					    case "modifyAccept":
+					        style = {"background":"#32d296"};
+					        statutFR = "Accepté";
+					        break;
+					     case "modifyRefuse":
+					        style = {"background":"#f0506e"};
+					        statutFR = "Refusé";
+					        break;
+					} 
 
 	          		$scope.demandes.push({
-	                       	id:demande.id,
+	                       	idPers:demande.id,
 	                       	nom:demande.nom,
 	                       	prenom:demande.prenom,
+	                       	idDem:demande.dpe_id,
 	                       	dateDebut:demande.dateDebut,
 	                       	dateFin:demande.dateFin,
 	                       	motif:demande.motif,
 	                       	statut:demande.statut,
-	                       	nomDemande:demande.nomDemande
+	                       	nomDemande:demande.nomDemande,
+	                       	style:style,
+	                       	statutFR:statutFR
                  	});	
 	          	}
 	    });
 	}
 
-      $scope.getDemandes();
+    $scope.getDemandes();
 	
+    $scope.accepter = function (demande) {
+    	console.log("accepter");
+    	console.log(demande);
+    	data.demande = demande;
+    	var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
+	    $promise.then(function (message) {});
+    }
+
+    $scope.refuser = function (demande) {
+    	console.log("refuser");
+    	console.log(demande);
+    	data.demande = demande;
+    	var $promise = $http.post('assets/php/refuserDemandesAPI.php', data);
+	    $promise.then(function (message) {});
+    }
+
 });
 })();
