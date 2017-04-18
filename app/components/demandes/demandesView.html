@@ -19,11 +19,22 @@
 			<br>
 			<!-- début du contenu des demandes -->
 			<div class="alert alert-success" role="alert">
-
-				<h4 class="alert-heading">Consultation et gestion des demandes des employés</h4>
+			<h4 class="alert-heading">Consultation et gestion des demandes des employés</h4>
 				<p>Consulter, gérer les demandes des employés de votre établissement</p>
 			</div>
-			
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 class="ui header">
+						<i style="font-size: 1.8em;padding-top: 5px; padding-right: 10px" class="fa fa-calendar-check-o"> </i>
+						<div class="content">
+							Demandes
+							<div class="sub header">Gestion des demandes</div>
+						</div>
+					</h2>
+				</div>
+			</div>
+			<hr>
 			<div ng-repeat="dem in demandes" class="ui middle aligned divided list">
 				<div class="item">
 					<div class="uk-card-badge uk-label" style="position: relative;left: 5px;margin-right: 10px;" ng-style="dem.style">{{dem.statutFR}}</div>
@@ -40,7 +51,7 @@
 					</div>
 					<div class="right floated content" ng-if="(dem.statut !== 'new' || dem.statut !== 'modify')">
 						<div class="uk-inline" ng-hide="dem.statut === 'new' || dem.statut === 'modify'">
-							<button class="uk-button uk-button-default" type="button"><i class="fa fa-pencil"></i> Modifier</button>
+							<button class="ui primary basic button"><i class="fa fa-pencil"></i> Modifier</button>
 							<div uk-dropdown="mode: click; position:center" style="width: 50px">
 								<button class="ui positive fluid basic button" ng-click="accepter(dem)" style="margin-bottom:3px">
 									<i class="fa fa-check"></i>
