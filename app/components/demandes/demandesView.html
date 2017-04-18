@@ -23,16 +23,41 @@
 				<h4 class="alert-heading">Consultation et gestion des demandes des employés</h4>
 				<p>Consulter, gérer les demandes des employés de votre établissement</p>
 			</div>
+			
 			<div ng-repeat="dem in demandes" class="ui middle aligned divided list">
 			  <div class="item">
 			    <div class="right floated content">
-			      <div class="ui button">Modifier</div>
+			      <button class="ui positive basic button">
+			      	<i class="fa fa-check"></i>
+			      	Accepter
+			      </button>
+			      <button class="ui negative basic button">
+			      	<i class="fa fa-ban"></i>
+			      	Refuser
+			      </button>
 			    </div>
 			    <img class="ui avatar image" src="assets/images/avatar.png">
 			    <div class="content">
-			      {{dem.nom}}
+			   		<div class="header"> {{dem.nom}} {{dem.prenom}}</div>
+			      		<div>{{dem.motif}}</div>
+			      	 <div class="ui massive horizontal divided list">
+			      	 	<div class="item" style="font-size: 0.6em">
+			      	 		<div class="content">
+			      	 			<div class="header"></div>
+			      	 			Date début : {{dem.dateDebut}}
+			      	 		</div>
+			      	 	</div>
+			      	 	<div class="item" style="font-size: 0.6em">
+			      	 		<div class="content">
+			      	 			<div class="header"></div>
+			      	 			Date fin : {{dem.dateFin}}
+			      	 		</div>
+			      	 	</div>
+		      	 	</div>
 			    </div>
 			  </div>
+			  <hr>
+		 	</div>
 
 			<!--
 			<div class="row animate-repeat" ng-repeat="emp in employe">
