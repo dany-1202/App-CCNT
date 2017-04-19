@@ -1,6 +1,7 @@
 <!-- Afficher le menu principal -->
 <!-- Navigation -->
-<nav ng-controller="homeController" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+<nav ng-controller="homeController" class="navbar navbar-inverse navbar-fixed-top" role="navigation" notif-demandes>
 	<!-- Brand and toggle get grouped for better mobile display -->
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -16,15 +17,9 @@
 	<ul class="nav navbar-right top-nav">
 		<li>
 			
-				<!--<div class="sk-folding-cube">
-				  	<div class="sk-cube1 sk-cube"></div>
-				  	<div class="sk-cube2 sk-cube"></div>
-				  	<div class="sk-cube4 sk-cube"></div>
-				  	<div class="sk-cube3 sk-cube"></div>
-				</div>-->
 			<div class="spinner" ng-show="$root.loading === true">
-			  <div class="dot1"></div>
-			  <div class="dot2"></div>
+				<div class="dot1"></div>
+				<div class="dot2"></div>
 			</div>
 			
 		</li>
@@ -87,33 +82,26 @@
 		</li>
 		
 		<li class="dropdown">
+			
 			<a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b>
 				<md-tooltip class="showTooltip-1">
 					Notifications
 				</md-tooltip>
+				<span ng-if="notif.demandesNotif.length != 0" class="w3-badge w3-green">{{notif.demandesNotif.length}}</span>
 			</a>
 			<ul class="dropdown-menu alert-dropdown">
-				<li>
-					<a href="">Alert Name <span class="label label-default">Alert Badge</span></a>
+				<li ng-if="notif.demandesNotif.length == 0">
+					<a href="">Aucune nouvelle demande</a>
+				</li>
+				<li ng-repeat="dem in notif.demandesNotif">
+					<a href="#modal-example" style="border-bottom: 1px solid #e5e5e5" uk-toggle ng-click="notif.affDemande(dem)">
+						<div style="display: inline; margin-top: 8px;width: 53px; height:auto; float:left;margin-left:-15px"><span class="label" style="background-color: #1e87f0; color:white; font-weight: 400">Nouveau</span></div>
+						<span style="padding-left: 3px;overflow: hidden;text-overflow: ellipsis;display: block;white-space: nowrap;font-weight: 600">{{dem.per_nom}} {{dem.per_prenom}}</span>
+						<span style="padding-left: 3px;overflow: hidden;text-overflow: ellipsis;display: block;white-space: nowrap;font-weight: 400">{{dem.typeDemande_nom}}</span>
+					</a>
 				</li>
 				<li>
-					<a href="">Alert Name <span class="label label-primary">Alert Badge</span></a>
-				</li>
-				<li>
-					<a href="">Alert Name <span class="label label-success">Alert Badge</span></a>
-				</li>
-				<li>
-					<a href="">Alert Name <span class="label label-info">Alert Badge</span></a>
-				</li>
-				<li>
-					<a href="">Alert Name <span class="label label-warning">Alert Badge</span></a>
-				</li>
-				<li>
-					<a href="">Alert Name <span class="label label-danger">Alert Badge</span></a>
-				</li>
-				<li class="divider"></li>
-				<li>
-					<a href="">View All</a>
+					<a href="#!/demandes">Voir toutes les demandes</a>
 				</li>
 			</ul>
 		</li>
@@ -155,23 +143,11 @@
 			<li ng-class="{active: $route.current.activetab == 'emp'}" ng-show="{{user.configuration}}">
 				<a href="#!/employe"><i class="fa fa-fw fa-user"></i> Gestion employés</a>
 			</li>
-			<li ng-class="{active: $route.current.activetab == 'demandes'}">
-				<a href="#!/demandes"><i class="fa fa-fw fa-wrench"></i> Demandes</a>
-			</li>
 			<li ng-class="{active: $route.current.activetab == 'planning'}" ng-show="{{user.configemp && user.configuration}}">
-				<a href="" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-calendar"></i> Planning
-				<i class="fa fa-fw fa-caret-down"></i></a>
-				<ul id="demo" class="collapse">
-					<li>
-						<a href="#!/construction">Créer planning</a>
-					</li>
-					<li>
-						<a href="#!/construction">Modifier planning</a>
-					</li>
-					<li>
-						<a href="#!/createplanning">Consulter planning</a>
-					</li>
-				</ul>
+				<a href="#!/createplanning"><i class="fa fa-fw fa-calendar"></i> Planning</a>
+			</li>
+			<li ng-class="{active: $route.current.activetab == 'demandes'}">
+				<a href="#!/demandes"><i class="fa fa-fw fa-bell"></i> Demandes</a>
 			</li>
 			<li ng-class="{active: $route.current.activetab == 'hist'}">
 				<a href="#!/construction"><i class="fa fa-fw fa-history"></i> Historique</a>
@@ -186,6 +162,23 @@
 				<a href="#!/parametrage"><i class="fa fa-fw fa-wrench"></i> Paramètres</a>
 			</li>
 		</ul>
+		<div id="modal-example" uk-modal="center: true">
+		    <div class="uk-modal-dialog uk-modal-body">
+		        <h2 class="uk-modal-title text-center">Demande n° {{demandeCours.idDem}}</h2>
+		        <hr class="uk-divider-icon">
+		        <h3 style="margin-top:-5px">Employé : {{demandeCours.per_nom}}</h3>
+		        <h4 style="margin-top:-10px; color:dimgrey">Type demande : {{demandeCours.typeDemande_nom}}</h4>
+		        <h5>Motif : <span ng-if="demandeCours.motif == null">Aucune justification</span>{{demandeCours.motif}} </h5>
+		        <h5 class="text-center">Date début : <strong>{{demandeCours.dateDebut}}</strong><br> Date fin : <strong>{{demandeCours.dateFin}}</strong></h5>
+		        <hr>
+		        <p class="uk-text text-center">
+		            <button class="ui positive basic button uk-modal-close" type="button" ng-click="traiterDemande(true)">Accepter</button>
+		            <button class="ui negative basic button uk-modal-close" type="button" ng-click="traiterDemande(false)">Refuser</button>
+		        </p>
+		    </div>
+		</div>
 	</div> <!-- /.navbar-collapse -->
 </nav>
+
+
 
