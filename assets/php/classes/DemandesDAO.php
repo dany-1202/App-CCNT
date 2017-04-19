@@ -10,6 +10,43 @@ require_once("PushServiceDAO.php"); // Gestion des push en fonction des demandes
 */
 class DemandesDAO {
 	
+	/* Retourne toutes les nouvelles demandes*/
+	public static function getNouvellesDemandes ($eta_id) {
+		$res = false;
+		$db = MySQLManager::get();
+		$query = "SELECT dpe_id, dpe_dateDebut, dpe_dateFin, dpe_motif, dpe_statut, dem_id, dem_nom, per_id, per_nom, per_prenom, per_mail FROM ccn_demandePersonne
+				 INNER JOIN ccn_demande ON (dpe_dem_id = dem_id)
+				 INNER JOIN ccn_personne ON (dpe_per_id = per_id)
+                 JOIN ccn_possede ON per_id = pos_per_id
+                 JOIN ccn_departement ON dep_id = pos_dep_id
+				 WHERE dpe_statut = 'new' AND dep_eta_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $eta_id);
+		  	$stmt->execute();
+		  	$stmt->bind_result($dpe_id, $dpe_dateDebut, $dpe_dateFin, $dpe_motif, $dpe_statut, $dem_id, $dem_nom, $per_id, $per_nom, $per_prenom, $per_mail);
+		  	$data = array();
+		  	while($stmt->fetch()) {
+		  		$dem = [];
+		  		$dem['idDem'] = $dpe_id;
+		  		$dem['dateDebut'] = $dpe_dateDebut;
+				$dem['dateFin'] = $dpe_dateFin;
+				$dem['motif'] = $dpe_motif;
+				$dem['statut'] = $dpe_statut;
+				$dem['typeDemande_id'] = $dem_id;
+				$dem['typeDemande_nom'] = $dem_nom;
+				$dem['per_id'] = $per_id;
+				$dem['per_nom'] = $per_nom;
+				$dem['per_prenom'] = $per_prenom;
+				$dem['per_mail'] = $per_mail;
+		  		$data[] = $dem;
+		  	}					
+			MySQLManager::close();
+			return $data;
+		}
+		return false; // On retourne le tout en JSON
+	}//getDemandesATraiter
+	
+	
 	/* Récupère tous les employés (Attention seulement les employés per_admin = 0) */
 	public static function getDemandes ($eta_id) {
 		$db = MySQLManager::get();
