@@ -1792,7 +1792,15 @@ select.uk-form-width-xsmall {
 }
 
 .uk-card-body {
-    padding: 30px 30px
+    padding: 30px 30px;
+    height: 100px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto!important;
 }
 
 .uk-card-header {
