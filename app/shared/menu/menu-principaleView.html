@@ -87,10 +87,10 @@
 				<md-tooltip class="showTooltip-1">
 					Demandes
 				</md-tooltip>
-				<span ng-if="notif.demandesNotif.length != 0" class="w3-badge w3-green">{{notif.demandesNotif.length}}</span>
+				<span ng-if="notif.demandesNotif.length != 0 || notif.demandesNotif != 'null'" class="w3-badge w3-green">{{notif.demandesNotif.length}}</span>
 			</a>
 			<ul class="dropdown-menu alert-dropdown">
-				<li ng-if="notif.demandesNotif.length == 0">
+				<li ng-if="notif.demandesNotif.length == 0 || notif.demandesNotif == 'null'">
 					<a href="">Aucune nouvelle demande</a>
 				</li>
 				<li ng-repeat="dem in notif.demandesNotif">
