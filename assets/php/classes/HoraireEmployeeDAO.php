@@ -323,7 +323,7 @@ class HoraireEmployeeDAO {
 		$infos['solde_conges'] = $soldeConges;
 		$infos['solde_vacances'] = $soldeVacances;
 		$infos['solde_feries'] = $soldeFeries;
-		return $infos;
+		return (json_encode($infos));
 	}
 
 	public static function getHorairesEmployee ($per_id, $absences) {
@@ -403,17 +403,17 @@ class HoraireEmployeeDAO {
 		
 		$date = new DateTime($horaire['date']);
 		
-		
+		$dateDay = $date->format('w');
 		if ($stmt=$db->prepare($req)) {
 			$erreur = [];
-			$stmt->bind_param('iis', $date->format('w'), $eta_id, $horaire['date']);			
+			$stmt->bind_param('iis', $dateDay, $eta_id, $horaire['date']);			
 		  	$stmt->execute();
 		  	$stmt->bind_result($oui_matinDebut, $oui_matinFin, $oui_soirDebut, $oui_soirFin);
 		  	$stmt->fetch();
 		  	$stmt->close();
 		  	if ($oui_matinDebut == null || $oui_matinFin == null || $oui_soirDebut == null || $oui_soirFin == null) {
 		  		if ($stmt=$db->prepare($reqBase)) {
-		  			$stmt->bind_param('ii', $date->format('w'), $eta_id);			
+		  			$stmt->bind_param('ii', $dateDay, $eta_id);			
 				  	$stmt->execute();
 				  	$stmt->bind_result($oui_matinDebutBase, $oui_matinFinBase, $oui_soirDebutBase, $oui_soirFinBase);
 				  	$stmt->fetch();
@@ -434,7 +434,7 @@ class HoraireEmployeeDAO {
 			  				$erreur['valide'] = false;
 			  				$erreur['type'] = 1;
 			  				$erreur['coupures'] = 0;
-			  				$erreur['jour'] = $date->format('w');
+			  				$erreur['jour'] = $dateDay;
 			  				$erreur['message'] = $msgInvalide;
 			  				$erreur['heureDebut'] = $oui_matinDebutBase;
 			  				$erreur['heureFin'] = $oui_soirFinBase;
@@ -450,7 +450,7 @@ class HoraireEmployeeDAO {
 			  				$erreur['valide'] = false;
 			  				$erreur['type'] = 1;
 			  				$erreur['coupures'] = 1;
-			  				$erreur['jour'] = $date->format('w');
+			  				$erreur['jour'] = $dateDay;
 			  				$erreur['message'] = $msgInvalide;
 			  				$erreur['matinDebut'] = $oui_matinDebutBase;
 			  				$erreur['matinFin'] = $oui_matinFinBase;
@@ -477,7 +477,7 @@ class HoraireEmployeeDAO {
 		  				$erreur['valide'] = false;
 		  				$erreur['type'] = 1;
 		  				$erreur['coupures'] = 0;
-		  				$erreur['jour'] = $date->format('w');
+		  				$erreur['jour'] = $dateDay;
 		  				$erreur['message'] = $msgInvalide;
 		  				$erreur['heureDebut'] = $oui_matinDebutBase;
 		  				$erreur['heureFin'] = $oui_soirFinBase;
@@ -493,7 +493,7 @@ class HoraireEmployeeDAO {
 		  				$erreur['valide'] = false;
 		  				$erreur['type'] = 0;
 		  				$erreur['coupures'] = 1;
-		  				$erreur['jour'] = $date->format('w');
+		  				$erreur['jour'] = $dateDay;
 		  				$erreur['message'] = $msgInvalide;
 		  				$erreur['matinDebut'] = $oui_matinDebut;
 		  				$erreur['matinFin'] = $oui_matinFin;

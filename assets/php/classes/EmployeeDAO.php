@@ -311,7 +311,7 @@ class EmployeeDAO {
 		  						Bonjour, <br/>
 		  						Votre compte vient tout juste d\'être créé. <br/> 
 		  						Veuillez l\'activer en cliquant sur le lien suivant : <br/>
-		  						<a href="http://localhost/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
+		  						<a href="https://ctrl-ccnt.ch/#!/employe/password/'.$token.'">Validation du compte</a>
 		  					</p>
 		  				</div>
 		  			</body>

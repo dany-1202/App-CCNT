@@ -127,7 +127,6 @@ class PushServiceDAO{
 	// Renvois TRUE sur le push est envoyé avec succès, FALSE dans le cas inverse
 	public static function sendPushNouveauPlanning($user_id){
 		$ps = new PushServiceDAO($user_id, self::PUSH_NOUVEAU_PLANNING);
-		return $ps->deviceToken;
 		if($ps->checkPushData()){
 			return $ps->sendPush();	
 		}	

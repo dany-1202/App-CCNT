@@ -71,7 +71,6 @@
 .bic_calendar .event a{
    background-color: transparent!important;
    border:none!important;
-   color:white!important;
 }
 
 .bic_calendar .event a:hover{
