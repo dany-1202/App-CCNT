@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 Auteur : Joel Marques;
 Date : 3010.2016;
@@ -60,4 +61,75 @@ Description : Feuille de style pour la page homeView.html
 		margin : 0 auto;
 		text-align: center!important;
 	}
+=======
+/*
+Auteur : Joel Marques;
+Date : 3010.2016;
+Description : Feuille de style pour la page homeView.html
+*/
+
+/*     padding: 24px!important    */
+
+.back-app {
+	min-height: 100vh!important;
+	width: 100%!important;
+	background-color: white!important;
+}
+
+.carddemoBasicUsage .card-media {
+  background-color: #999999; 
+}
+
+.grand{
+	font-size: 60px !important;
+}
+
+.fa-power-off {
+  color: #FFEBEE!important;
+  padding-right: 5px!important;
+}
+
+.fa-exclamation, .fa-exclamation-triangle, .fa-check {
+	padding-left: 2px!important;
+	padding-right: 5px!important;
+}
+
+.notifTitre{
+	font-size: 18px!important;
+	text-align: center!important;
+}
+
+.notifTexte{
+	margin-top: 15px!important;
+	margin-bottom: 15px!important;
+	font-size: 14px!important;
+	text-align: center!important;
+}
+
+@media (max-width: 351px) {
+	.hide-top-navDeco {
+		display: none;
+	}
+}
+
+@media (max-width: 480px) {
+	.hide-top-nav {
+		display: none;
+	}
+}
+
+@media (max-width: 767px) {
+	.top-nav {
+		display : table!important;
+		margin : 0 auto;
+		text-align: center!important;
+	}
+	
+	.top-nav>li>a {
+	    padding-top: 5px;
+	    padding-bottom: 5px;
+	    line-height: 25px;
+	    color: #999;
+	}
+>>>>>>> appCCNT
 }
