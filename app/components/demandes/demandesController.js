@@ -69,41 +69,22 @@
 	$scope.getDemandes();
 
 	console.log($scope.demandes);
-	
-	$scope.accepter = function (demande) {
-		var len = $scope.demandes.length;
-		console.log("accepter");
-		console.log(demande);
-		data.demande = demande;
-		data.demande.accept = true;
-		var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
-		$promise.then(function (message) {
-			if (demande.statut == 'new') {
-				demande.statut = 'accept';
-			} else {
-				demande.statut = 'modifyAccept';
-			}
-			demande.statutFR = "Accepté";
-			demande.style = {"background":"#32d296"};
 
-		});
-	}
-
-	$scope.refuser = function (demande) {
+	$scope.traiterDemande = function(boolean, demande) {
 		var len = $scope.demandes.length;
-		console.log("refuser");
 		console.log(demande);
 		data.demande = demande;
 		data.demande.accept = false;
 		var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
 		$promise.then(function (message) {
+			console.log(message);
 			if (demande.statut == 'new') {
-				demande.statut = 'refuse';
+				demande.statut = (boolean ? 'accept' : 'refuse');
 			} else {
-				demande.statut = 'modifyRefuse';
+				demande.statut = (boolean ? 'modifyAccept' : 'modifyRefuse');
 			}
-			demande.statutFR = "Refusé";
-			demande.style = {"background":"#f0506e"};
+			demande.statutFR = (boolean ? 'Accepté' : 'Refusé');
+			demande.style = {"background": (boolean ? "#32d296" : "#f0506e")};
 		});
 	}
 
