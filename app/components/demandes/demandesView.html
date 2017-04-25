@@ -40,11 +40,11 @@
 					<div class="uk-card-badge uk-label" style="position: relative;left: 5px;margin-right: 10px;" ng-style="dem.style">{{dem.statutFR}}</div>
 					<div class="right floated content" ng-if="dem.statut === 'new' || dem.statut === 'modify'">
 						
-						<button class="ui positive basic button" ng-click="accepter(dem)">
+						<button class="ui positive basic button" ng-click="traiterDemande(true, dem)">
 							<i class="fa fa-check"></i>
 							Accepter
 						</button>
-						<button class="ui negative basic button" ng-click="refuser(dem)">
+						<button class="ui negative basic button" ng-click="traiterDemande(false, dem)">
 							<i class="fa fa-ban"></i>
 							Refuser
 						</button>
@@ -53,11 +53,11 @@
 						<div class="uk-inline" ng-hide="dem.statut === 'new' || dem.statut === 'modify'">
 							<button class="ui primary basic button"><i class="fa fa-pencil"></i> Modifier</button>
 							<div uk-dropdown="mode: click; position:center" style="width: 50px">
-								<button class="ui positive fluid basic button" ng-click="accepter(dem)" style="margin-bottom:3px">
+								<button class="ui positive fluid basic button" ng-click="traiterDemande(true, dem)" style="margin-bottom:3px">
 									<i class="fa fa-check"></i>
 									Accepter
 								</button>
-								<button class="ui negative fluid basic button" ng-click="refuser(dem)">
+								<button class="ui negative fluid basic button" ng-click="traiterDemande(false,dem)">
 									<i class="fa fa-ban"></i>
 									Refuser
 								</button>

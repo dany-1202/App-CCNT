@@ -6,6 +6,7 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 		link: function (scope, iElement, iAttrs) {
 			scope.notif = scope;
 			scope.demandeCours = {};
+
 			var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 			
 			
@@ -18,7 +19,14 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 		    	data.demande.accept = boolean;
 		    	var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
 			    $promise.then(function (message) {
-			    	console.log(message.data);
+			    	console.log(message);
+			    	var pos = 0;
+			    	for (var i = 0; i < scope.demandesNotif.length; i++) {
+			    		if (scope.demandesNotif[i].idDem == scope.demandeCours.idDem) {
+			    			pos = i;
+			    		}
+			    	}
+			    	scope.demandesNotif.splice(pos, 1);
 			    });
 			}
 			
@@ -31,7 +39,7 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 	    				scope.demandesNotif = message.data;
 	    			}
 	    		});
-				$timeout(getDemandesNotif, 30000);
+				$timeout(getDemandesNotif, 10000);
 			}
 			
 			getDemandesNotif();
