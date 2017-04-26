@@ -74,7 +74,8 @@
 		var len = $scope.demandes.length;
 		console.log(demande);
 		data.demande = demande;
-		data.demande.accept = false;
+		data.demande.accept = boolean;
+		console.log(data);
 		var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
 		$promise.then(function (message) {
 			console.log(message);
