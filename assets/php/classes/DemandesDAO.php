@@ -110,20 +110,7 @@ class DemandesDAO {
 		}
 		MySQLManager::close();
 		return null;
-	}
-	/*
-	public static function updateDemande ($hop_id) {
-		$db = MySQLManager::get();
-		$query = "";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('', );
-			/* Exécution de la requête */
-/*			$stmt->execute();
-		}
-		MySQLManager::close();
-		return null;
-	}*/
-	
+	}	
 
 	public static function insertDemandeIntoHoraire($dateDebut, $heureDebut, $heureFin, $abs_id, $abs_freq) {
 		$db = MySQLManager::get();
@@ -139,6 +126,19 @@ class DemandesDAO {
 		}
 		return -1;
 	}
+
+
+	public static function insertUpdateDemandeTravail($tab, $per_id, $hop_id, $tra_valide, $dpe_abs_id, $dpe_freq, $date, $heureDebut, $heureFin) {
+		if (count($tab) > 0) {
+			foreach ($tab as $key => $val) {
+				HoraireEmployeeDAO::updateHoraireIntoAbsence($per_id, $tra_valide, $val, $dpe_abs_id, $dpe_freq);
+			}
+		} else {
+			$hop_id = DemandesDAO::insertDemandeIntoHoraire($date, $heureDebut, $heureFin, $dpe_abs_id, $dpe_freq);
+	  		HoraireEmployeeDAO::insertTravail($per_id, $hop_id, $tra_valide);
+		}
+	}
+
 
 	// Paramètre: $dpe_id : id de la demande, $isAccept : true = demande acceptée, false = demande refusée
 	public static function traiterDemande($id, $isAccept){	
@@ -192,62 +192,30 @@ class DemandesDAO {
 						$hop_id = 0;
 
 						$arrayHopId = HoraireEmployeeDAO::getHorairesEmployeeInDate($per_id, $dateDebut->format('Y-m-d'), $dpe_dateDebut, $heureFin);
-						
-						if (count($arrayHopId) > 0) {
-							foreach ($arrayHopId as $key => $val) {
-								HoraireEmployeeDAO::updateHoraireIntoAbsence($per_id, $tra_valide, $val, $dpe_abs_id, $dpe_freq);
-							}
-						} else {
-							$hop_id = DemandesDAO::insertDemandeIntoHoraire($dateDebut->format('Y-m-d'), $dpe_dateDebut, $heureFin, $dpe_abs_id, $dpe_freq);
-					  		HoraireEmployeeDAO::insertTravail($per_id, $hop_id, $tra_valide);
-						}
-						
+						DemandesDAO::insertUpdateDemandeTravail($arrayHopId, $per_id, $hop_id, $tra_valide, $dpe_abs_id, $dpe_freq, $dateDebut->format('Y-m-d'), $dpe_dateDebut, $heureFin);
 						$dateDebut->add(new DateInterval('P1D'));
 
-						while ($dateDebut->format('Y-m-d') != $dateFin->format('Y-m-d')) {
-							$arrayHopId = HoraireEmployeeDAO::getHorairesEmployeeInDate($per_id, $dateDebut->format('Y-m-d'), $heureDebut, $heureFin);
-
-							if (count($arrayHopId) > 0) {
-								foreach ($arrayHopId as $key => $val) {
-									HoraireEmployeeDAO::updateHoraireIntoAbsence($per_id, $tra_valide, $val, $dpe_abs_id, $dpe_freq);
-								}
-							} else {
-								$hop_id = DemandesDAO::insertDemandeIntoHoraire($dateDebut->format('Y-m-d'), $heureDebut, $heureFin, $dpe_abs_id, $dpe_freq);
-						  		HoraireEmployeeDAO::insertTravail($per_id, $hop_id, $tra_valide);
+						if ($dateDebut->format('Y-m-d') < $dateFin->format('Y-m-d')) {
+							while ($dateDebut->format('Y-m-d') != $dateFin->format('Y-m-d')) {
+								$arrayHopId = HoraireEmployeeDAO::getHorairesEmployeeInDate($per_id, $dateDebut->format('Y-m-d'), $heureDebut, $heureFin);
+								DemandesDAO::insertUpdateDemandeTravail($arrayHopId, $per_id, $hop_id, $tra_valide, $dpe_abs_id, $dpe_freq, $dateDebut->format('Y-m-d'), $heureDebut, $heureFin);
+								$dateDebut->add(new DateInterval('P1D'));
 							}
-							
-							$dateDebut->add(new DateInterval('P1D'));
 						}
 
 						$arrayHopId = HoraireEmployeeDAO::getHorairesEmployeeInDate($per_id, $dateFin->format('Y-m-d'), $heureDebut, $dpe_dateFin);
+						DemandesDAO::insertUpdateDemandeTravail($arrayHopId, $per_id, $hop_id, $tra_valide, $dpe_abs_id, $dpe_freq, $dateFin->format('Y-m-d'), $heureDebut, $dpe_dateFin);
 
-						if (count($arrayHopId) > 0) {
-							foreach ($arrayHopId as $key => $val) {
-								HoraireEmployeeDAO::updateHoraireIntoAbsence($per_id, $tra_valide, $val, $dpe_abs_id, $dpe_freq);
-							}
-						} else {
-							$hop_id = DemandesDAO::insertDemandeIntoHoraire($dateFin->format('Y-m-d'), $heureDebut, $dpe_dateFin, $dpe_abs_id, $dpe_freq);
-							HoraireEmployeeDAO::insertTravail($per_id, $hop_id, $tra_valide);
-						}
-
-						
 					} else {
 						$dpe_freq = 0.5;
-
 						$arrayHopId = HoraireEmployeeDAO::getHorairesEmployeeInDate($per_id, $dpe_dateDebut, $dpe_dateDebut, $dpe_dateDebut);
-
-						if (count($arrayHopId) > 0) {
-							foreach ($arrayHopId as $key => $val) {
-								HoraireEmployeeDAO::updateHoraireIntoAbsence($per_id, $tra_valide, $val, $dpe_abs_id, $dpe_freq);
-							}
-						} else {
-							$hop_id = DemandesDAO::insertDemandeIntoHoraire($dpe_dateDebut, $dpe_dateDebut, $dpe_dateDebut, $dpe_abs_id, $dpe_freq);
-							HoraireEmployeeDAO::insertTravail($per_id, $hop_id, $tra_valide);
-						}
-						
+						DemandesDAO::insertUpdateDemandeTravail($arrayHopId, $per_id, $hop_id, $tra_valide, $dpe_abs_id, $dpe_freq, $dpe_dateDebut, $dpe_dateDebut, $dpe_dateDebut);						
 					}
+
 					$stmt->close();
 					MySQLManager::close();
+				} else {
+					
 				}
 
 				

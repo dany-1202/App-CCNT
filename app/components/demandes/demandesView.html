@@ -53,11 +53,11 @@
 						<div class="uk-inline" ng-hide="dem.statut === 'new' || dem.statut === 'modify'">
 							<button class="ui primary basic button"><i class="fa fa-pencil"></i> Modifier</button>
 							<div uk-dropdown="mode: click; position:center" style="width: 50px">
-								<button class="ui positive fluid basic button" ng-click="traiterDemande(true, dem)" style="margin-bottom:3px">
+								<button ng-disabled="dem.statut === 'accept' || dem.statut === 'modifyAccept'" class="ui positive fluid basic button" ng-click="traiterDemande(true, dem)" style="margin-bottom:3px">
 									<i class="fa fa-check"></i>
 									Accepter
 								</button>
-								<button class="ui negative fluid basic button" ng-click="traiterDemande(false,dem)">
+								<button ng-disabled="dem.statut === 'refuse' || dem.statut === 'modifyRefuse'" class="ui negative fluid basic button" ng-click="traiterDemande(false,dem)">
 									<i class="fa fa-ban"></i>
 									Refuser
 								</button>
