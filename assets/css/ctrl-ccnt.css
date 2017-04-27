@@ -4,6 +4,61 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
+.bcgWhite {
+    background-color: white;
+}
+
+.bcgBlack {
+    color: #ccc;
+    border-color: #000;
+    background: #222;
+}
+
+.center-vertical {
+    position: relative;
+    z-index: 15;
+    top: 0;
+    left: 0;
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.panel-box {
+    display: table-cell;
+    float: none!important;
+    padding: 0!important;
+    table-layout: fixed;
+    vertical-align: middle;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.panel-content {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+.panel-box .panel-content .nav-best-justified, .panel-box .panel-content p {
+    margin: 0;
+}
+.center-vertical .center-content {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.nav-best-justified {
+    width: 100%;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.nav-best {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+
 .white-box {
     background: #fff;
     padding: 20px;
