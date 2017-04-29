@@ -19,25 +19,70 @@
 			<br>
 			<!-- début du contenu des demandes -->
 			<div class="alert alert-success" role="alert">
-			<h4 class="alert-heading">Consultation et gestion des demandes des employés</h4>
+				<h4 class="alert-heading">Consultation et gestion des demandes des employés</h4>
 				<p>Consulter, gérer les demandes des employés de votre établissement</p>
 			</div>
-			<hr>
-			<div class="row">
-				<div class="col-lg-12">
-					<h2 class="ui header">
-						<i style="font-size: 1.8em;padding-top: 5px; padding-right: 10px" class="fa fa-calendar-check-o"> </i>
-						<div class="content">
-							Demandes
-							<div class="sub header">Gestion des demandes</div>
-						</div>
-					</h2>
-				</div>
-			</div>
-			<hr>
-			<div ng-repeat="dem in demandes" class="ui middle aligned divided list">
+			<h4 class="ui horizontal divider header">
+				<i style="font-size: 1.1em;" class="fa fa-calendar-check-o"> </i> Gestion des demandes
+			</h4>
+			<div  ng-repeat="dem in demandes" class="ui divided items">
 				<div class="item">
-					<div class="uk-card-badge uk-label" style="position: relative;left: 5px;margin-right: 10px;" ng-style="dem.style">{{dem.statutFR}}</div>
+					<div class="image spectre-avatar" style="width: 80px; height: 80px;border-radius: 80px;padding: 10px;">
+						<img width="80px" height="80px" src="assets/images/avatar.png">
+					</div>
+					<div class="content">
+						<a class="header">{{dem.nom}} {{dem.prenom}} </a><div class="uk-label" style="margin-left:  25px; margin-top:-5px;text-align: center; width: 80px" ng-style="dem.style">{{dem.statutFR}}</div>
+						<div class="meta">
+							<span class="cinema" style="font-size: 1.2em;height: auto"><strong>Début : </strong> {{dem.dateDebut}} <span style="margin-left:20px"><strong>Fin : </strong>{{dem.dateFin}}</span></span>
+						</div>
+						<div class="description">
+							<p>Motif : {{dem.motif}}</p>
+						</div>
+						<div class="extra">
+							<div class="ui label">{{dem.nomDemande}}</div>
+							<div class="right floated content" ng-if="dem.statut === 'new' || dem.statut === 'modify'">
+								<button class="ui positive basic button" ng-click="traiterDemande(true, dem)">
+									<i class="fa fa-check"></i>
+									Accepter
+								</button>
+								<button class="ui negative basic button" ng-click="traiterDemande(false, dem)">
+									<i class="fa fa-ban"></i>
+									Refuser
+								</button>
+							</div>
+
+							<div class="right floated content" ng-if="(dem.statut !== 'new' || dem.statut !== 'modify')">
+								<div class="uk-inline" ng-hide="dem.statut === 'new' || dem.statut === 'modify'">
+									<button class="ui primary basic button circular" style="background: #222"><i class="fa fa-pencil"></i></button>
+									<div uk-dropdown="mode: click; position:center" style="width: 50px">
+										<button ng-disabled="dem.statut === 'accept' || dem.statut === 'modifyAccept'" class="ui positive fluid basic button" ng-click="traiterDemande(true, dem)" style="margin-bottom:3px">
+											<i class="fa fa-check"></i>
+											Accepter
+										</button>
+										<button ng-disabled="dem.statut === 'refuse' || dem.statut === 'modifyRefuse'" class="ui negative fluid basic button" ng-click="traiterDemande(false,dem)">
+											<i class="fa fa-ban"></i>
+											Refuser
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				
+			</div>
+
+			
+<!--
+			<div ng-repeat="dem in demandes" class="ui middle aligned divided list">
+
+
+
+
+				
+				<div class="item">
+					<div class="uk-card-badge uk-label" style="position: relative;left: 5px;margin-right: 10px; text-align: center; width: 80px" ng-style="dem.style">{{dem.statutFR}}</div>
 					<div class="right floated content" ng-if="dem.statut === 'new' || dem.statut === 'modify'">
 						
 						<button class="ui positive basic button" ng-click="traiterDemande(true, dem)">
@@ -84,10 +129,10 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> 
 				<hr>
-			</div>
-			<!-- fin du contenu des demandes -->
-		</div>
+			</div> 
+			<!-- fin du contenu des demandes 
+		</div> -->
 	</div>
 </div> <!-- /#page-wrapper -->

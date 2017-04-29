@@ -30,19 +30,19 @@
 						statutFR = "Modifié";
 						break;
 						case "accept":
-						style = {"background":"#32d296"};
+						style = {"background":"#27ae60"};
 						statutFR = "Accepté";
 						break;
 						case "refuse":
-						style = {"background":"#f0506e"};
+						style = {"background":"#c0392b"};
 						statutFR = "Refusé";
 						break;
 						case "modifyAccept":
-						style = {"background":"#32d296"};
+						style = {"background":"#27ae60"};
 						statutFR = "Accepté";
 						break;
 						case "modifyRefuse":
-						style = {"background":"#f0506e"};
+						style = {"background":"#c0392b"};
 						statutFR = "Refusé";
 						break;
 					} 
@@ -85,7 +85,7 @@
 				demande.statut = (boolean ? 'modifyAccept' : 'modifyRefuse');
 			}
 			demande.statutFR = (boolean ? 'Accepté' : 'Refusé');
-			demande.style = {"background": (boolean ? "#32d296" : "#f0506e")};
+			demande.style = {"background": (boolean ? "#27ae60" : "#c0392b")};
 		});
 	}
 

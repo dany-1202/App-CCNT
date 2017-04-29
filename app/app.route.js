@@ -60,7 +60,12 @@ ctrlCCNT.config(['$routeProvider','$locationProvider',
 		.when('/parametrage', {
 			templateUrl: 'app/components/parametrage/parametrageView.html',
 			controller: 'parametrageController',
-			activetab: 'parametrage'
+			activetab: 'param'
+		})
+		.when('/stats', {
+			templateUrl: 'app/components/statistiques/statsView.html',
+			controller: 'statsController',
+			activetab: 'stats'
 		})
 		.when('/demandes', {
 			templateUrl: 'app/components/demandes/demandesView.html',
