@@ -251,9 +251,13 @@ class DemandesDAO {
 						$heureFin = "23:59:59";
 						$hop_id = 0;
 
+						/* Récupération des employés qui empietent dans l'horaire à cette date */
 						$arrayHopId = HoraireEmployeeDAO::getHorairesEmployeeInDate($per_id, $dateDebut->format('Y-m-d'), $dpe_dateDebut, $heureFin, -1);
+						
+						/* Suite au résultat on ajoute les absences et modifie les horaires du tableau */
 						DemandesDAO::insertUpdateDemandeTravail($arrayHopId, $per_id, $hop_id, $tra_valide, $dpe_abs_id, $dpe_freq, $dateDebut->format('Y-m-d'), $dpe_dateDebut, $heureFin, 1);
-						$dateDebut->add(new DateInterval('P1D'));
+						
+						$dateDebut->add(new DateInterval('P1D')); // J'ajoute un jour
 
 						if ($dateDebut->format('Y-m-d') < $dateFin->format('Y-m-d')) {
 							while ($dateDebut->format('Y-m-d') != $dateFin->format('Y-m-d')) {
@@ -275,7 +279,7 @@ class DemandesDAO {
 					$stmt->close();
 					MySQLManager::close();
 				} else {
-					if($dpe_statut == 'modifyAccept'){
+					if($dpe_statut == 'modifyAccept'){ // Si ça a déjà été modifier par une acceptation
 						DemandesDAO::deleteHoraireByDemande($dateDebut, $dateFin, $per_id, $dpe_statut, $dpe_abs_id, $dpe_dateDebut, $dpe_dateFin, $dpe_isJourneeComplete);
 					}	
 				}
