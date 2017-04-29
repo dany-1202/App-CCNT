@@ -659,12 +659,12 @@ class HoraireEmployeeDAO {
 			return -1;
 		}
 
-		public static function getHorairesEmployeeInDate($per_id, $date, $heureDebut, $heureFin) {
-			$req = "SELECT hop_id FROM ccn_horairepersonne JOIN ccn_travail ON tra_hop_id = hop_id WHERE (hop_date = ?) AND (tra_per_id = ?) AND (hop_heureDebut >= ? AND hop_heureFin <= ?)";
+		public static function getHorairesEmployeeInDate($per_id, $date, $heureDebut, $heureFin, $hop_dem_modif) {
+			$req = "SELECT hop_id FROM ccn_horairepersonne JOIN ccn_travail ON tra_hop_id = hop_id WHERE (hop_date = ?) AND (tra_per_id = ?) AND (hop_heureDebut >= ? AND hop_heureFin <= ?) AND hop_dem_modif = ?";
 			$arrayHopId = array();
 			$db = MySQLManager::get();
 			if ($stmt = $db->prepare($req)) {
-				$stmt->bind_param("siss", $date, $per_id, $heureDebut, $heureFin);
+				$stmt->bind_param("sissi", $date, $per_id, $heureDebut, $heureFin, $hop_dem_modif);
 				$stmt->execute();
 				$stmt->bind_result($hop_id);
 				while ($stmt->fetch()) {
@@ -674,11 +674,11 @@ class HoraireEmployeeDAO {
 			return $arrayHopId;
 		}
 
-		public static function updateHoraireIntoAbsence($per_id, $tra_valide, $hop_id, $hop_abs_id, $hop_abs_freq) {
-			$query = "UPDATE ccn_horairepersonne SET hop_abs_id = ?, hop_abs_freq = ? WHERE hop_id = ?";
+		public static function updateHoraireIntoAbsence($per_id, $tra_valide, $hop_id, $hop_abs_id, $hop_abs_freq, $hop_dem_modif) {
+			$query = "UPDATE ccn_horairepersonne SET hop_abs_id = ?, hop_abs_freq = ?, hop_dem_modif = ? WHERE hop_id = ?";
 			$db = MySQLManager::get();
 			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('iii', $hop_abs_id, $hop_abs_freq, $hop_id);
+				$stmt->bind_param('iiii', $hop_abs_id, $hop_abs_freq, $hop_dem_modif, $hop_id);
 				$stmt->execute();
 				$stmt->close();
 				$query1 = "UPDATE ccn_travail SET tra_valide = ? WHERE tra_hop_id = ? AND tra_per_id = ?";
@@ -693,8 +693,32 @@ class HoraireEmployeeDAO {
 				return false;
 			}
 		}
+/*
+
+		public static function deleteHoraireAbsence($hop_id) {
+			$query = "DELETE FROM `ccn_travail` WHERE tra_hop_id = ?";
+			$db = MySQLManager::get();
+			if ($stmt = $db->prepare($query)) {
+				$stmt->bind_param('i', $hop_id);
+				$stmt->execute();
+				$stmt->close();
+				$query1 = "DELETE FROM `ccn_horairepersonne` WHERE hop_id = ?";
+				if ($stmt = $db->prepare($query1)) {
+					$stmt->bind_param('i', $hop_id);
+					$stmt->execute();
+					$stmt->close();
+					MySQLManager::close();
+					return true;
+				}
+				MySQLManager::close();
+				return false;
+			} else {
+				print('Invalide');
+			}
+			
+		}*/
 
 
 	}
 
-	?>
+?>

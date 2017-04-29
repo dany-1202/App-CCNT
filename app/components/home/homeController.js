@@ -33,6 +33,7 @@
 				{label: "Mail-Order Sales", value: 20}
 				]
 			});*/
+			/*
 			Morris.Line({
 				element: 'line-example',
 				data: [
@@ -48,7 +49,7 @@
 				ykeys: ['a', 'b'],
 				labels: ['Series A', 'Series B']
 			});
-			$rootScope.count = true;
+			$rootScope.count = true;*/
 		}
 
 		var user_confEmp = SessionService.get('user_confEmp');
