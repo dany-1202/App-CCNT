@@ -20,92 +20,74 @@
 				Situation des employés
 			</h4>
 			<div class="row">
-				<div class="col-lg-4">
-					<div class="panel-box col-xs-1">
-						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover">
-							<img class="avatar" src="assets/images/man.png" width="80px" height="80px"></img> <h4 style="margin-top:0;margin-bottom:0">Joel Marques da Silva</h4>
-						</div>
-						<div class="panel-content bcgBlack">
-							<div class="center-vertical">
-								<ul class="center-content nav-best nav-best-justified"> 
-									<li>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> 32 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Vacances</p>
-										</div>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> -2.6 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-down" aria-hidden="true" style="color:red"></i>  Solde Fériés</p>
-										</div>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> 3 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Congés</p>
-										</div>
-										
-									</li>
-								</ul>
-							</div>
-						</div>
+				<div class="col-lg-6">
+						Mois
+						<select class="uk-select"> 
+								<option value="">Janvier</option>
+								<option value="">Février</option>
+								<option value="">Mars</option>
+								<option value="">Avril</option>
+								<option value="">Mai</option>
+								<option value="">Juin</option>
+								<option value="">Juillet</option>
+								<option value="">Août</option>
+								<option value="">Septembre</option>
+								<option value="">Octobre</option>
+								<option value="">Novembre</option>
+								<option value="">Décembre</option>
+						</select>
 					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="panel-box col-xs-1">
-						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover">
-							<img class="avatar" src="assets/images/women.png" width="80px" height="80px"></img> <h4 style="margin-top:0;margin-bottom:0">Céline Paniz</h4>
-						</div>
-						<div class="panel-content bcgBlack">
-							<div class="center-vertical">
-								<ul class="center-content nav-best nav-best-justified">
-									<li>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> 3 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Vacances</p>
-										</div>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> 5 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i>  Solde Fériés</p>
-										</div>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> 1 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Congés</p>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
+					<div class="col-lg-6">
+						Année
+						<select class="uk-select"> 
+								<option value="">Janvier</option>
+						</select>
 					</div>
-				</div>
-
-
-				<div class="col-lg-4">
-					<div class="panel-box col-xs-1">
-						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover">
-							<img class="avatar" src="assets/images/women.png" width="80px" height="80px"></img> <h4 style="margin-top:0;margin-bottom:0">Marcuzzo Vanessa</h4>
-						</div>
-						<div class="panel-content bcgBlack">
-							<div class="center-vertical">
-								<ul class="center-content nav-best nav-best-justified">
-									<li>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> -1 jour</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-down" aria-hidden="true" style="color:red"></i> Solde Vacances</p>
-										</div>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> 2 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i>  Solde Fériés</p>
-										</div>
-										<div class="col-xs-4">
-											<h4 style="color:#ccc"> -5.2 jours</h4>
-											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-down" aria-hidden="true" style="color:red"></i> Solde Congés</p>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-
 			</div>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<table class="ui celled structured table">
+						<thead>
+							<tr>
+								<th class="center aligned" colspan="3">Employés</th>
+								<th class="center aligned" colspan="3">Pris à ce jour</th>
+								<th style="background: #222;color: white;font-weight: 400;" class="center aligned" colspan="3">Solde actuel</th>
+							</tr>
+							<tr>
+								<th class="center aligned"></th>
+								<th class="center aligned">Nom</th>
+								<th class="center aligned">Prenom</th>
+								<th class="center aligned">Jours de congé</th>
+								<th class="center aligned">Jours fériés</th>
+								<th class="center aligned">Vacances</th>
+								<th class="center aligned">Jours de congé</th>
+								<th class="center aligned">Jours fériés</th>
+								<th class="center aligned">Vacances</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="emp in employes">
+								<td  class="center aligned">
+									<img style="margin-left:-13px" ng-if="emp.genre === 'M'" class="ui avatar image" src="assets/images/man.png">
+									<img style="margin-left:-13px" ng-if="emp.genre === 'F'" class="ui avatar image" src="assets/images/women.png">
+								</td>
+								<td class="center aligned">{{emp.nom}}</td>
+								<td class="center aligned">{{emp.prenom}}</td>
+								<td class="center aligned">0</td>
+								<td class="center aligned">{{emp.solde.infoSoldeMois.jourprisferies}}</td>
+								<td class="center aligned">{{emp.solde.infoSoldeMois.jourprisvacances}}</td>
+								<td class="center aligned">{{emp.solde.soldeCourant.solde_conges}}</td>
+								<td class="center aligned">{{emp.solde.soldeCourant.solde_feries}}</td>
+								<td class="center aligned">{{emp.solde.soldeCourant.solde_vacances}}</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+
 		</div>
 
 		<div class="row">
