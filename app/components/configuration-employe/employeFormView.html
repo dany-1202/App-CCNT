@@ -331,20 +331,20 @@
 				<div class="row margin-bottom-10">
 					<div class="col-lg-3">Département : </div>
 					<div class="col-lg-7">
-						<select class="ui dropdown" id="form-horizontal-select" ng-model="monDep" ng-options="d.name for d in deps"></select>
+						<select class="uk-select" id="form-horizontal-select" ng-model="monDep" ng-options="d.name for d in deps"></select>
 					</div>
 				</div>
 				<div class="row margin-bottom-10">
 					<div class="col-lg-3">Type d'horaire : </div>
 					<div class="col-lg-7">
 						<div class="uk-uk-inputs">
-							<select class="ui dropdown" id="form-horizontal-select" ng-change="changementHoraire()" ng-model="monHoraire" ng-options="hor.name for hor in horaire"></select>
+							<select class="uk-select" id="form-horizontal-select" ng-change="changementHoraire()" ng-model="monHoraire" ng-options="hor.name for hor in horaire"></select>
 						</div>
 					</div>
 					<div class="col-lg-3" ></div>
 					<div class="col-lg-7 margin-top">
 						<span ng-show="showMen">
-							Choisir le taux d'horaire : <select class="ui dropdown" ng-model="monPourc" ng-options="p.name for p in pourcentage"></select>
+							Choisir le taux d'horaire : <select class="uk-select" ng-model="monPourc" ng-options="p.name for p in pourcentage"></select>
 						</span>
 						<span ng-show="showSpe">
 							Nombre d'heure par semaine : <input class="uk-input" style="display: inline-block;"  ng-model="nbHeure" type="number" ></input>
@@ -356,7 +356,7 @@
 					<div class="col-lg-3">Type de contrat : </div>
 					<div class="col-lg-7">
 						<div class="uk-uk-inputs">
-							<select class="ui dropdown" id="form-horizontal-select" ng-model="monContrat" ng-options="con.name for con in contrat"></select>
+							<select class="uk-select" id="form-horizontal-select" ng-model="monContrat" ng-options="con.name for con in contrat"></select>
 						</div>
 					</div>
 				</div>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .bic_calendar{
     background: white;
     border-radius: 5px;
@@ -141,4 +142,148 @@
     color: white;
     background-color : #795548!important;
     height: 30px!important;
+=======
+.bic_calendar{
+    background: white;
+    border-radius: 5px;
+    /*border: 1px solid #DDD;*/
+}
+.bic_calendar a{
+    text-decoration: none;
+    color: #444;
+    cursor: pointer;
+}
+
+.bic_calendar .table tbody > tr > td{
+    text-align: center;
+    padding: 0px;
+    border : none;
+    background-color: white!important;
+}
+.bic_calendar td div{
+    padding: 5px;
+}
+
+.bic_calendar .header{
+    padding: 10px 0 10px 0;
+    font-size: 30px;
+    /*border-bottom: 1px solid #ddd;*/
+}
+.bic_calendar .button-month-previous{
+    padding: 5px;
+    float: left;
+}
+.bic_calendar .button-month-next{
+    padding: 5px;
+    float: right;
+}
+.bic_calendar .button-year-previous{
+    padding: 5px;
+    float: left;
+}
+.bic_calendar .button-year-previous:hover{
+    padding: 5px;
+    float: left;
+    background-color: #d7ccc8;
+}
+.bic_calendar .button-year-next{
+    padding: 5px;
+    float: right;
+}
+
+.bic_calendar .button-year-next:hover{
+    padding: 5px;
+    float: right;
+    background-color: #d7ccc8;
+}
+.bic_calendar .monthAndYear{
+    text-align: center;
+    font-weight: 500;
+}
+.bic_calendar .days-month{
+    font-weight: 500;
+}
+
+.bic_calendar .event{
+    color: #795548;
+    background: #d7ccc8;
+     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); 
+    font-weight: bold;
+}
+
+.bic_calendar .event a{
+   background-color: transparent!important;
+   border:none!important;
+}
+
+.bic_calendar .event a:hover{
+    color: #795548;
+    background: #3B5A97;
+    box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.8); 
+    font-weight: bold;
+}
+.bic_calendar .event a{
+    color: #2c3e50;
+    padding-bottom: 2px!important;
+    border: 2px solid #303943;
+    font-size: 15px;
+    border-spacing: 25px;
+    background-color: #ecf0f1;
+}
+.bic_calendar .table{
+    margin-bottom: 3px;
+}
+.bic_calendar .days-month td{
+    background-color: white!important;
+    color:#795548;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    /*background: #f0f0f0;*/
+}
+.bic_calendar .selection{
+    background-color: #d7ccc8;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.bic_calendar .first-selection{
+    border-radius: 6px 0 0 6px;
+    border-right: 0;
+}
+.bic_calendar .last-selection{
+    border-radius: 0 6px 6px 0;
+    border-left: 0;
+}
+.bic_calendar .middle-selection{
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+.bic_calendar .popover{
+    color: black;
+    text-shadow: none;
+    width: 100px;
+}
+.bic_calendar .popover-content{
+    font-weight: 300;
+}
+.bic_calendar .monthDisplayed{
+    margin: 5px;
+    margin-top: 25px;
+    border: 1px #ddd solid;
+    border-radius: 10px;
+}
+.bic_calendar .monthDisplayed .month{
+    text-align: center;
+    display: block;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+    background-color : #795548!important;
+    height: 30px!important;
+>>>>>>> appCCNT
 }
