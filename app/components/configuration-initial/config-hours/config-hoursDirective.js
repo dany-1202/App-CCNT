@@ -110,20 +110,20 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			\*****************************************************************************************/
 
 			$scope.toggle = function (item, list) {
-	        	var idx = list.indexOf(item);
-	        	var pos = $scope.cal.hours.indexOf(item);
-	        	if (idx > -1) {
-		          	list.splice(idx, 1);
-		          	$scope.cal.hours[pos].pause.existe = false;
-        		} else {
-		          	list.push(item);
-		          	$scope.cal.hours[pos].pause.existe = true;
-       			}
-	    	};
+		        	var idx = list.indexOf(item);
+		        	var pos = $scope.cal.hours.indexOf(item);
+		        	if (idx > -1) {
+			          	list.splice(idx, 1);
+			          	$scope.cal.hours[pos].pause.existe = false;
+	        		} else {
+			          	list.push(item);
+			          	$scope.cal.hours[pos].pause.existe = true;
+	       			}
+		    	};
 
 			$scope.exists = function (item, list) {
-	        	return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
-	      	};
+	        		return $scope.cal.hours[$scope.cal.hours.indexOf(item)].pause.existe || list.indexOf(item) > -1;
+	      		};
 
 	  		/*****************************************************************************************\
 			*                                 Gestion des coupures                                    *
@@ -192,99 +192,97 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			function chooseDaysController($scope, $mdDialog) {
 			  	$scope.days = [
 					{day: 'Lundi', chosen : false},
-                	{day: 'Mardi', chosen : false},
-                	{day: 'Mercredi', chosen : false},
-                	{day: 'Jeudi', chosen : false},
-                	{day: 'Vendredi', chosen : false},
-                   	{day: 'Samedi', chosen : false},
-                	{day: 'Dimanche', chosen : false}
+		                	{day: 'Mardi', chosen : false},
+		                	{day: 'Mercredi', chosen : false},
+		                	{day: 'Jeudi', chosen : false},
+		                	{day: 'Vendredi', chosen : false},
+		                   	{day: 'Samedi', chosen : false},
+		                	{day: 'Dimanche', chosen : false}
 				];
 
-		    	$scope.hide = function() {
-		      		$mdDialog.hide();
-		    	};
+			    	$scope.hide = function() {
+			      		$mdDialog.hide();
+			    	};
 
-		    	$scope.cancel = function() {
-		      		$mdDialog.cancel();
-		    	};
+			    	$scope.cancel = function() {
+			      		$mdDialog.cancel();
+			    	};
 
-		    	$scope.answer = function() {
-		    		$mdDialog.hide($scope.days);
-		    	}
-		    	
-		    	$scope.isChecked = function() {
-			    	return allDaysChosen();
+			    	$scope.answer = function() {
+			    		$mdDialog.hide($scope.days);
+			    	}
+			    	
+			    	$scope.isChecked = function() {
+				    	return allDaysChosen();
 			  	};
-			  	
+				  	
 		  	  	$scope.isIndeterminate = function() {
-				    return (countDaysChosen() > 0 &&
-				        countDaysChosen() < $scope.days.length);
+				    	return (countDaysChosen() > 0 && countDaysChosen() < $scope.days.length);
 				};
 		    	
-		    	var allDaysChosen = function () {
-		    		for (var i = 0; i < $scope.days.length; i++) {
-		    			if (!$scope.days[i].chosen) {
-		    				return false;
-		    			}
-		    		}
-		    		return true;
-		    	}
+			    	var allDaysChosen = function () {
+			    		for (var i = 0; i < $scope.days.length; i++) {
+			    			if (!$scope.days[i].chosen) {
+			    				return false;
+			    			}
+			    		}
+			    		return true;
+			    	}
+			    	
+			    	var countDaysChosen = function () {
+			    		var count = 0;
+			    		for (var i = 0; i < $scope.days.length; i++) {
+			    			if (!$scope.days[i].chosen) {
+			    				count += 1;
+			    			}
+			    		}
+			    		return count;
+			    	}
+			    	
+			    	var changeAllDays = function (val) {
+			    		for (var i = 0; i < $scope.days.length; i++) {
+			    			$scope.days[i].chosen = val;
+			    		}
+			    	}
 		    	
-		    	var countDaysChosen = function () {
-		    		var count = 0;
-		    		for (var i = 0; i < $scope.days.length; i++) {
-		    			if (!$scope.days[i].chosen) {
-		    				count += 1;
-		    			}
-		    		}
-		    		return count;
-		    	}
-		    	
-		    	var changeAllDays = function (val) {
-		    		for (var i = 0; i < $scope.days.length; i++) {
-		    			$scope.days[i].chosen = val;
-		    		}
-		    	}
-		    	
-		    	$scope.toggleAll = function () {
-		    		if (allDaysChosen()) {
-				      	changeAllDays(false);
-				    } else {
-				    	changeAllDays(true);
-				    }
-		    	}
+			    	$scope.toggleAll = function () {
+			    		if (allDaysChosen()) {
+					      	changeAllDays(false);
+				    	} else {
+					    	changeAllDays(true);
+				    	}
+			    	}
 		    	
 			};
 
 			var fillTimeDays = function (days, objHour) {
-				
 				console.log(objHour);
 				for (var i = days.length - 1; i >= 0; i--) {
-		     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
-		     			$scope.cal.hours[i].matin.debut = moment(objHour.matin.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-		     			$scope.cal.hours[i].soir.fin = moment(objHour.soir.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-		     			if (objHour.pause.existe) {
-		     				$scope.cal.hours[i].matin.fin = moment(objHour.matin.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
-		     				$scope.cal.hours[i].soir.debut = moment(objHour.soir.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();;
-		     			}
-		     		}
-	     		};
+			     		if (days[i].chosen && days[i].day != objHour.day) { // Il a choisi ce jour pour reprendre les même horaires
+			     			$scope.cal.hours[i].matin.debut = moment(objHour.matin.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+			     			$scope.cal.hours[i].soir.fin = moment(objHour.soir.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+			     			if (objHour.pause.existe) {
+			     				$scope.cal.hours[i].matin.fin = moment(objHour.matin.fin).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();
+			     				$scope.cal.hours[i].soir.debut = moment(objHour.soir.debut).add($scope.cal.hours[i].id - objHour.id, 'days').toDate();;
+			     			}
+			     		}
+	     			};
 			}
 			
 			/* Lance la fenêtre modale avec les paramètres (event, objet Jour) */
 			$scope.showAdvanced = function(ev, objHour) {
-			    $mdDialog.show({
-			      controller: chooseDaysController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
-			      templateUrl: 'app/components/configuration-initial/config-hours/views/chooseDaysView.html',
-			      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
-			      targetEvent: ev,
-			      clickOutsideToClose:true,
-			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-			    })
-			    .then(function(days) {
+			    	$mdDialog.show({
+				      controller: chooseDaysController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
+				      templateUrl: 'app/components/configuration-initial/config-hours/views/chooseDaysView.html',
+				      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
+				      targetEvent: ev,
+				      clickOutsideToClose:true,
+				      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    	})
+			    	.then(function(days) {
 					fillTimeDays(days, objHour); // Je met à jour les jours respectifs
-			    	$scope.showDivOtherHours();
-			    }, function() {
+			    		$scope.showDivOtherHours();
+			   	}, function() {
 			    	// Ici il annule ça ne fait rien 
 				});
 		  	}
@@ -299,43 +297,42 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				console.log($scope.tabCalendars);
 				$scope.affHoraire = State.affHoraire;
 				
-		    	$scope.hide = function() {
-		      		$mdDialog.hide();
-		    	};
+			    	$scope.hide = function() {
+			      		$mdDialog.hide();
+			    	};
 
-		    	$scope.cancel = function() {
-		      		$mdDialog.cancel();
-		    	};
+			    	$scope.cancel = function() {
+			      		$mdDialog.cancel();
+			    	};
 
-		    	$scope.answer = function() {
-		    		if ($scope.cal.errorName || $scope.cal.errorPeriod) {
-		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
-		    		} else {
-		    			$mdDialog.hide($scope.cal);
-		    		}
-		    	}
-		    	
+			    	$scope.answer = function() {
+			    		if ($scope.cal.errorName || $scope.cal.errorPeriod) {
+			    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+			    		} else {
+			    			$mdDialog.hide($scope.cal);
+			    		}
+			    	}
 			};
 			
 		  	$scope.modifCal = function (ev, index) {
 		  		$scope.cal = $scope.tabCalendars[index];
 		  		State.changeCal($scope.cal, index);
 		  		$mdDialog.show({
-			      controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
-			      templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
-			      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
-			      targetEvent: ev,
-			      clickOutsideToClose:true,
-			      fullscreen: true // Only for -xs, -sm breakpoints.
-			    })
-			    .then(function(cal) {
-			    	$timeout(function () {
+				      	controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
+				      	templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
+				      	parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
+				      	targetEvent: ev,
+				      	clickOutsideToClose:true,
+				      	fullscreen: true // Only for -xs, -sm breakpoints.
+			   	})
+			    	.then(function(cal) {
+			    		$timeout(function () {
 						$scope.cal = angular.copy(cal);
 						$scope.tabCalendars[index] = angular.copy($scope.cal);
 						console.log($scope.tabCalendars);
 						State.changeCal($scope.cal, index);
-			    	}, 0);
-			    }, function() {
+	    				}, 0);
+		   		}, function() {
 			    	// Ici il annule ça ne fait rien 
 				});
 		  	}
@@ -353,79 +350,79 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				return nb;
 			}
 
-	    	$scope.validationHours = function () {
-	    		if (isHoursCompleted()) { // Ces heures sont toutes configurées
-	    			$scope.affOtherHours = true;
-	    			$scope.addOtherHours();
-	    			/*$timeout(hide, 1);
-    				$timeout($scope.ctrl.next(4), 2);*/
-	    		} else {
-	    			// Afficher un message d'erreur
-	    		}
-	    	}
+		    	$scope.validationHours = function () {
+		    		if (isHoursCompleted()) { // Ces heures sont toutes configurées
+		    			$scope.affOtherHours = true;
+		    			$scope.addOtherHours();
+		    			/*$timeout(hide, 1);
+	    				$timeout($scope.ctrl.next(4), 2);*/
+		    		} else {
+		    			// Afficher un message d'erreur
+		    		}
+		    	}
 	    	
-	    	$scope.dayConfigured = function () {}
+		    	$scope.dayConfigured = function () {}
 
-	    	$scope.isCurrentInfoCalCorrect = function () {
-	    		if ($scope.cal.errorName == true || $scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
-    				return false
-	    		}
-	    		return true; // Vérification à faire des infos champs nom pas vide et période pas vide et celle fin doit être plus grande que celle de début
-	    	}
+		    	$scope.isCurrentInfoCalCorrect = function () {
+		    		if ($scope.cal.errorName == true || $scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
+	    				return false
+		    		}
+		    		return true; // Vérification à faire des infos champs nom pas vide et période pas vide et celle fin doit être plus grande que celle de début
+		    	}
 
-	    	/*///////////////////////////////////////////////////////////////////////////////////////*/
+	    		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
-	    	$scope.addHour = function () {
-	    		if ($scope.isCurrentInfoCalCorrect()) {
-	    			var pos = $scope.tabCalendars.length;
-	    			console.log($scope.tabCalendars[0].choix);
-	    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: angular.copy($scope.tabCalendars[pos-1].choix)});
-	    			$scope.cal = $scope.tabCalendars[pos];
-	    			$scope.affCalendar = true;
-	    		} else {
-	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
-	    		}
-	    	}
+		    	$scope.addHour = function () {
+		    		if ($scope.isCurrentInfoCalCorrect()) {
+		    			var pos = $scope.tabCalendars.length;
+		    			console.log($scope.tabCalendars[0].choix);
+		    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: angular.copy($scope.tabCalendars[pos-1].choix)});
+		    			$scope.cal = $scope.tabCalendars[pos];
+		    			$scope.affCalendar = true;
+		    		} else {
+		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+		    		}
+		    	}
 
-	    	$scope.addHoursToTab = function () {
-	    		if ($scope.isCurrentInfoCalCorrect()) {
-	    			$scope.cal.errorPeriod = false;
-	    			$scope.cal.state = Const.COMP;
-	    			$scope.affModifOtherHours = false;
-	    			$scope.affModifOtherHours1 = true;
-	    		} else {
-	    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
-	    		}
-	    		
-	    	}
-	    	
-	    	$scope.supCal = function (item, index) {
-    			UIkit.modal.confirm("Voulez-vous vraiment supprimer l'horaire nomée : <strong>"+ $scope.tabCalendars[index].name + "</strong> ?", {center: true}).then(function() {
-			    	$timeout(function () {
-			    		$scope.tabCalendars.splice(index, 1);
-	    				$scope.cal = $scope.tabCalendars[index-1];
-	    				NotifService.success('Suppression Horaires', "L'horaire a été supprimé avec succès !");
-			    	}, 0);
+		    	$scope.addHoursToTab = function () {
+		    		if ($scope.isCurrentInfoCalCorrect()) {
+		    			$scope.cal.errorPeriod = false;
+		    			$scope.cal.state = Const.COMP;
+		    			$scope.affModifOtherHours = false;
+		    			$scope.affModifOtherHours1 = true;
+		    		} else {
+		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+		    		}
+		    		
+		    	}
+		    	
+		    	$scope.supCal = function (item, index) {
+	    			UIkit.modal.confirm("Voulez-vous vraiment supprimer l'horaire nomée : <strong>"+ $scope.tabCalendars[index].name + "</strong> ?", {center: true}).then(function() {
+				    	$timeout(function () {
+				    		$scope.tabCalendars.splice(index, 1);
+		    				$scope.cal = $scope.tabCalendars[index-1];
+		    				NotifService.success('Suppression Horaires', "L'horaire a été supprimé avec succès !");
+			    		}, 0);
 				});
-	    	}
+		    	}
 	
-	    	$scope.changeCal = function (item, index) {
-	    		$scope.cal = $scope.tabCalendars[index];
-	    		$scope.affCalendar = true;
-	    	}
+		    	$scope.changeCal = function (item, index) {
+		    		$scope.cal = $scope.tabCalendars[index];
+		    		$scope.affCalendar = true;
+		    	}
 
-	    	$scope.goNextStep = function () {
-	    		$timeout(Popover.hide, 0);
-	    		var nb = $scope.isAllInfoCalCorrect();
-	    		if (nb == 0) {
-	    			$timeout($scope.ctrl.next(5), 2);
-	    		} else {
-	    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
-	    		}
-	    	}
+		    	$scope.goNextStep = function () {
+		    		$timeout(Popover.hide, 0);
+		    		var nb = $scope.isAllInfoCalCorrect();
+		    		if (nb == 0) {
+		    			$timeout($scope.ctrl.next(5), 2);
+		    		} else {
+		    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
+		    		}
+		    	}
 	   	 	
-    } // Fin du link
-  } // Fin du return
+    		} // Fin du link
+ 	} // Fin du return
 }); // Fin de la directive
 
 })();

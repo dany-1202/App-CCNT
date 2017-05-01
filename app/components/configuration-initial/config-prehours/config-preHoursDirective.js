@@ -16,9 +16,6 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 			scope.prehours = scope.$parent.prehours;
 			//scope.preHoursSelected = '';
 			
-			scope.nbPause = [];
-			for (var nb = 0; nb <= 60; nb+=5) {scope.nbPause.push({name: nb + ' minutes', value:nb});}
-			
 			scope.supHoraire = function(hour, index) {
 				scope.prehours.splice(index, 1);
 				NotifService.success(Const.TITLE_DELETE_HOUR, Const.MSG_DELETE_HOUR_SUCCESS);
@@ -71,7 +68,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 			}
 				
 			function DialogController ($scope) {	
-		    	$scope.modif = self.modif;	    	
+		    		$scope.modif = self.modif;	    	
 				$scope.dep = $scope.modif ? self.prehour.dep.id : 0;
 				$scope.deps = self.deps;
 				$scope.nbPause = self.nbPause;
@@ -386,12 +383,12 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 		    	};
 		    	
 		    	var isDayInvalide = function (objDay) {
-					return ((objDay.debut != Const.HOUR_OPEN) && (objDay.fin == Const.HOUR_END));
-				}
+				return ((objDay.debut != Const.HOUR_OPEN) && (objDay.fin == Const.HOUR_END));
+			}
 				
-				var isDayRempli = function (objDay) {
-					return (objDay.debut != Const.HOUR_OPEN && objDay.fin != Const.HOUR_END);
-				}
+			var isDayRempli = function (objDay) {
+				return (objDay.debut != Const.HOUR_OPEN && objDay.fin != Const.HOUR_END);
+			}
 		    	
 		    	var lessThanOneHour = function () {
 		    		var nb = 0;
