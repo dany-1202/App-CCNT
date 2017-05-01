@@ -30,12 +30,12 @@
 					</div>
 				</div>
 			</div>
-			
+			<!--
 			<div class="row">
 				<div class="col-lg-12 text-center">
 					<md-button ng-click="getHeuresBrut()" class="bouton centrer">Récupérer heures employé</md-button>
 				</div>
-			</div>
+			</div>-->
 			
 			<div id="configEmp" ng-hide="{{user.configemp}}"  class="row">
 				<div class="col-lg-12">
@@ -61,7 +61,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="uk-card-body">
+						<div class="uk-card-body" style="height: 100px;line-height: 20px;text-overflow: ellipsis;">
 							<p>Créer et consulter les plannings</p>
 						</div>
 						<div class="uk-card-footer">
@@ -88,7 +88,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="uk-card-body">
+						<div class="uk-card-body" style="height: 100px;line-height: 20px;text-overflow: ellipsis;">
 							<p>Consulter tous les évenements qui se sont déjà passés.</p>
 						</div>
 						<div class="uk-card-footer">
@@ -113,7 +113,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="uk-card-body">
+						<div class="uk-card-body" style="height: 100px;line-height: 20px;text-overflow: ellipsis;">
 							<p>Gérer le profil de votre établissement, ses informations, etc...</p>
 						</div>
 						<div class="uk-card-footer">
@@ -122,9 +122,112 @@
 							</md-card-actions>
 						</div>
 					</div>
-					
 				</div>
 			</div>
+			<div class="row stat-emp-line">
+				<div class="col-lg-4">
+					<div class="panel-box col-xs-1">
+						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover">
+							<img class="avatar" src="assets/images/man.png" width="80px" height="80px"></img> <h4 style="margin-top:0;margin-bottom:0">Joel Marques da Silva</h4>
+						</div>
+						<div class="panel-content bcgBlack">
+							<div class="center-vertical">
+								<ul class="center-content nav-best nav-best-justified"> 
+									<li>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> 32 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Vacances</p>
+										</div>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> -2.6 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-down" aria-hidden="true" style="color:red"></i>  Solde Fériés</p>
+										</div>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> 3 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Congés</p>
+										</div>
+										
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="panel-box col-xs-1">
+						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover">
+							<img class="avatar" src="assets/images/women.png" width="80px" height="80px"></img> <h4 style="margin-top:0;margin-bottom:0">Céline Paniz</h4>
+						</div>
+						<div class="panel-content bcgBlack">
+							<div class="center-vertical">
+								<ul class="center-content nav-best nav-best-justified">
+									<li>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> 3 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Vacances</p>
+										</div>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> 5 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i>  Solde Fériés</p>
+										</div>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> 1 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i> Solde Congés</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-4">
+					<div class="panel-box col-xs-1">
+						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover">
+							<img class="avatar" src="assets/images/women.png" width="80px" height="80px"></img> <h4 style="margin-top:0;margin-bottom:0">Marcuzzo Vanessa</h4>
+						</div>
+						<div class="panel-content bcgBlack">
+							<div class="center-vertical">
+								<ul class="center-content nav-best nav-best-justified">
+									<li>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> -1 jour</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-down" aria-hidden="true" style="color:red"></i> Solde Vacances</p>
+										</div>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> 2 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-up" aria-hidden="true" style="color:green"></i>  Solde Fériés</p>
+										</div>
+										<div class="col-xs-4">
+											<h4 style="color:#ccc"> -5.2 jours</h4>
+											<p class="opacity-80 text-transform-upr font-size-11 mrg5T"> <i class="fa fa-chevron-down" aria-hidden="true" style="color:red"></i> Solde Congés</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div id="line-example"></div>
+				</div>
+			</div>
+
+
+			<!--
+			<div class="row">
+				<div class="col-lg-4"><div id="donut-example"></div></div>
+				<div class="col-lg-4"><div id="donut-example1"></div></div>
+				<div class="col-lg-4"><div id="donut-example2"></div></div>
+			</div>-->
+
+			
 			<!--
 			<div class="row">
 				<div class="col-lg-12">

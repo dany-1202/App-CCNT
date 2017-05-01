@@ -129,7 +129,7 @@
 			{name:"95%",value:0.95},{name:"100%",value:1.0},
 			];
 			$scope.monPourc = $scope.pourcentage[0];
-
+			
 			$scope.showMen = false; // Savoir si on doit afficher champs mensuel
 			$scope.showSpe = false; // Savoir si on doit afficher champs spécial
 

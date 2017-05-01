@@ -23,19 +23,21 @@ class EmployeeDAO {
 			$array = array();
 			$person = [];
 			while($stmt->fetch()) {
-			    	/* Stocker le département */
-			    	$dep = [];
-			    	$dep['id'] = $dep_id;
-			    	$dep['nom'] = $dep_nom;
-					$dep['img'] = $dep_img_no;	
-			    	/* Stocker le type de contrat */
-			    	$typ_contrat = [];
-			    	$typ_contrat['id'] = $typ_id;
-			    	$typ_contrat['nom'] = $typ_nom;
+				/* Stocker le département */
+				$dep = [];
+				$dep['id'] = $dep_id;
+				$dep['nom'] = $dep_nom;
+				$dep['img'] = $dep_img_no;
+				$dep['eta_id'] = $eta_id;
+				
+				/* Stocker le type de contrat */
+				$typ_contrat = [];
+				$typ_contrat['id'] = $typ_id;
+				$typ_contrat['nom'] = $typ_nom;
 
-			    	/* Stocker le type horaire du contrat */
-			    	$hor_contrat = [];
-			    	$hor_contrat['id'] = $hor_id;
+				/* Stocker le type horaire du contrat */
+				$hor_contrat = [];
+				$hor_contrat['id'] = $hor_id;
 			    	$hor_contrat['nom'] = $hor_nom; // Problème avec les accents
 
 			    	/* Stocker les infos du contrat */
@@ -48,25 +50,25 @@ class EmployeeDAO {
 
 			    	/* Stocker la personne avec toutes ses infos */
 			    	$person['id'] = $per_id;
-			      	$person['nom'] = $per_nom;
-			      	$person['prenom'] = $per_prenom;
-			     	$person['adresse'] = $per_adresse;
-	        		$person['codePostal'] = $per_codePostal;
-	        		$person['ville'] = $per_ville;
-		        	$person['mail'] = $per_mail;
-		        	$person['genre'] = $per_genre;
-		        	$person['dateNaissance'] = $per_dateNaissance;
-		        	$person['adresseSup'] = $per_InfoSuppAdresse;
-		        	$person['telFixe'] = $per_telFixe;
-					$person['telMobile'] = $per_telMobile;
-					$person['dep'] = $dep;
-					$person['contrat'] = $contrat;
+			    	$person['nom'] = $per_nom;
+			    	$person['prenom'] = $per_prenom;
+			    	$person['adresse'] = $per_adresse;
+			    	$person['codePostal'] = $per_codePostal;
+			    	$person['ville'] = $per_ville;
+			    	$person['mail'] = $per_mail;
+			    	$person['genre'] = $per_genre;
+			    	$person['dateNaissance'] = $per_dateNaissance;
+			    	$person['adresseSup'] = $per_InfoSuppAdresse;
+			    	$person['telFixe'] = $per_telFixe;
+			    	$person['telMobile'] = $per_telMobile;
+			    	$person['dep'] = $dep;
+			    	$person['contrat'] = $contrat;
 
-					$array[] = $person; // L'ajouter au tableau d'objet
-		    	}
-		  	$stmt->close();
-		  	MySQLManager::close();
-	  		return $array;
+				$array[] = $person; // L'ajouter au tableau d'objet
+			}
+			$stmt->close();
+			MySQLManager::close();
+			return $array;
 		}
 		MySQLManager::close();
 		return null;
@@ -97,36 +99,36 @@ class EmployeeDAO {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('i', $data['eta_id']);
 			/* Exécution de la requête */
-	    	$stmt->execute();
-	    	/* Lecture des variables résultantes */
-	    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
-	    	/* Récupération des valeurs */
-	    	$array = array();
-	    	$person = [];
-	    	$dep = [];
-	    	while($stmt->fetch()) {
-		    	$person['id'] = $per_id;
-	        	$person['nom'] = $per_nom;
-	        	$person['prenom'] = $per_prenom;
-	        	$person['admin'] = $per_admin;
-	        	$person['genre'] = $per_genre;
-	        	$person['dep_id'] = $dep_id;
-	        	$person['dep_nom'] = $dep_nom;
-	        	$dep['id'] = $dep_id;
-	        	$dep['nom'] = $dep_nom;
-	        	$dep['img'] = $dep_img;
-	        	$person['dep'] = $dep;
+			$stmt->execute();
+			/* Lecture des variables résultantes */
+			$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+			/* Récupération des valeurs */
+			$array = array();
+			$person = [];
+			$dep = [];
+			while($stmt->fetch()) {
+				$person['id'] = $per_id;
+				$person['nom'] = $per_nom;
+				$person['prenom'] = $per_prenom;
+				$person['admin'] = $per_admin;
+				$person['genre'] = $per_genre;
+				$person['dep_id'] = $dep_id;
+				$person['dep_nom'] = $dep_nom;
+				$dep['id'] = $dep_id;
+				$dep['nom'] = $dep_nom;
+				$dep['img'] = $dep_img;
+				$person['dep'] = $dep;
 				$array[] = $person;
-	    	}
+			}
 			$stmt->close();
-	    	MySQLManager::close();
-  			return $array;
+			MySQLManager::close();
+			return $array;
 		}
 		MySQLManager::close();
 		return null;
 	} // getPersonneEmp
 	
-		public static function getHoraireFiltreAbs ($data) {
+	public static function getHoraireFiltreAbs ($data) {
 		$db = MySQLManager::get();
 		$query = "SELECT per_id, per_nom, per_prenom, per_admin, per_genre, dep_id, dep_nom, dep_img_no FROM ccn_etablissement JOIN ccn_departement ON eta_id = dep_eta_id JOIN ccn_possede ON dep_id = pos_dep_id JOIN ccn_personne ON per_id = pos_per_id WHERE per_admin = 0 AND eta_id = ?";
 		/* Construction de la requête*/
@@ -150,30 +152,30 @@ class EmployeeDAO {
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('i', $data['eta_id']);
 			/* Exécution de la requête */
-	    	$stmt->execute();
-	    	/* Lecture des variables résultantes */
-	    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
-	    	/* Récupération des valeurs */
-	    	$array = array();
-	    	$person = [];
-	    	$dep = [];
-	    	while($stmt->fetch()) {
-		    	$person['id'] = $per_id;
-	        	$person['nom'] = $per_nom;
-	        	$person['prenom'] = $per_prenom;
-	        	$person['admin'] = $per_admin;
-	        	$person['genre'] = $per_genre;
-	        	$person['dep_id'] = $dep_id;
-	        	$person['dep_nom'] = $dep_nom;
-	        	$dep['id'] = $dep_id;
-	        	$dep['nom'] = $dep_nom;
-	        	$dep['img'] = $dep_img;
-	        	$person['dep'] = $dep;
+			$stmt->execute();
+			/* Lecture des variables résultantes */
+			$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+			/* Récupération des valeurs */
+			$array = array();
+			$person = [];
+			$dep = [];
+			while($stmt->fetch()) {
+				$person['id'] = $per_id;
+				$person['nom'] = $per_nom;
+				$person['prenom'] = $per_prenom;
+				$person['admin'] = $per_admin;
+				$person['genre'] = $per_genre;
+				$person['dep_id'] = $dep_id;
+				$person['dep_nom'] = $dep_nom;
+				$dep['id'] = $dep_id;
+				$dep['nom'] = $dep_nom;
+				$dep['img'] = $dep_img;
+				$person['dep'] = $dep;
 				$array[] = $person;
-	    	}
+			}
 			$stmt->close();
-	    	MySQLManager::close();
-  			return $array;
+			MySQLManager::close();
+			return $array;
 		}
 		MySQLManager::close();
 		return null;
@@ -204,28 +206,28 @@ class EmployeeDAO {
 			$stmt->bind_param('i', $data['eta_id']);
 
 			/* Exécution de la requête */
-		    	$stmt->execute();
-		    	/* Lecture des variables résultantes */
-		    	$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
-		    	/* Récupération des valeurs */
-		    	$array = array();
-		    	$person = [];
-		    	$dep = [];
-		    	while($stmt->fetch()) {
-			    	$person['id'] = $per_id;
-			       	$person['nom'] = $per_nom;
-			        	$person['prenom'] = $per_prenom;
-			        	$person['admin'] = $per_admin;
-			        	$person['genre'] = $per_genre;
-			        	$dep['id'] = $dep_id;
-			        	$dep['nom'] = $dep_nom;
-			        	$dep['img'] = $dep_img;
-			        	$person['dep'] = $dep;
+			$stmt->execute();
+			/* Lecture des variables résultantes */
+			$stmt->bind_result($per_id, $per_nom, $per_prenom, $per_admin, $per_genre, $dep_id, $dep_nom, $dep_img);
+			/* Récupération des valeurs */
+			$array = array();
+			$person = [];
+			$dep = [];
+			while($stmt->fetch()) {
+				$person['id'] = $per_id;
+				$person['nom'] = $per_nom;
+				$person['prenom'] = $per_prenom;
+				$person['admin'] = $per_admin;
+				$person['genre'] = $per_genre;
+				$dep['id'] = $dep_id;
+				$dep['nom'] = $dep_nom;
+				$dep['img'] = $dep_img;
+				$person['dep'] = $dep;
 				$array[] = $person;
-		    	}
-		   	$stmt->close();
-		    	MySQLManager::close();
-	  		return $array;
+			}
+			$stmt->close();
+			MySQLManager::close();
+			return $array;
 		}
 		MySQLManager::close();
 		return null;
@@ -240,19 +242,19 @@ class EmployeeDAO {
 			TelephoneMobile	Genre
 		Contrainte : Il faut impérativement le per_id de la personne !
 	*/
-	public static function updateEmployee ($data) {
-		$db = MySQLManager::get();
-		$query = "UPDATE ccn_personne SET per_nom = ?, per_prenom = ?, per_mail = ?, per_dateNaissance = ?, per_adresse = ?, per_infoSuppAdresse = ?, per_codePostal = ?, per_ville = ?, per_telFixe = ?, per_telMobile = ?, per_genre = ? WHERE per_id = ?";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('ssssssissssi', $data['nom'], $data['prenom'], $data['mail'], $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre'], $data['id']);
-		  	$stmt->execute();
-		  	$stmt->close();
-		  	MySQLManager::close();
+		public static function updateEmployee ($data) {
+			$db = MySQLManager::get();
+			$query = "UPDATE ccn_personne SET per_nom = ?, per_prenom = ?, per_mail = ?, per_dateNaissance = ?, per_adresse = ?, per_infoSuppAdresse = ?, per_codePostal = ?, per_ville = ?, per_telFixe = ?, per_telMobile = ?, per_genre = ? WHERE per_id = ?";
+			if ($stmt = $db->prepare($query)) {
+				$stmt->bind_param('ssssssissssi', $data['nom'], $data['prenom'], $data['mail'], $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre'], $data['id']);
+				$stmt->execute();
+				$stmt->close();
+				MySQLManager::close();
 		  	if (PossedeDAO::updatePossede($data)) { // Appelle la méthode static de PossedeDAO qui modifie le département assigné à la personne
 				return ContratDAO::updateContratEmp($data); // Appelle la méthode static de ContratDAO qui permet de modifier son contrat
-		  	} else {
-		  		return false;
-		  	}
+			} else {
+				return false;
+			}
 		}
 		MySQLManager::close();
 		return false;
@@ -262,18 +264,18 @@ class EmployeeDAO {
 		Permet de mettre un employé en état inactif on ne pourra pas l'utiliser dans l'application
 		En paramètre: l'id de l'utilisateur qui devra être mis en inactif
 	*/	
-	public static function supEmployee($user_id) {
-		$db = MySQLManager::get();
-		$query = "UPDATE ccn_personne SET per_inactif = 1 WHERE per_id = ?";
-		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('i', $user_id);
-		  	$stmt->execute();
-	  		MySQLManager::close();
-			return true;
+		public static function supEmployee($user_id) {
+			$db = MySQLManager::get();
+			$query = "UPDATE ccn_personne SET per_inactif = 1 WHERE per_id = ?";
+			if ($stmt = $db->prepare($query)) {
+				$stmt->bind_param('i', $user_id);
+				$stmt->execute();
+				MySQLManager::close();
+				return true;
+			}
+			MySQLManager::close();
+			return false;
 		}
-		MySQLManager::close();
-		return false;
-	}
 
 	/*
 		Permet d'ajouter les données d'une personne dans la table ccn_personne
@@ -284,72 +286,72 @@ class EmployeeDAO {
 
 		Contrainte BDD : l'attribut per_dep_id doit être > 0 et doit exister dans la bdd
 	*/
-	public static function insertEmployee ($data) {
-		$db = MySQLManager::get();
-		/* Insertion dans la table ccn_personne */
-		$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
-		if ($stmt = $db->prepare($query)) {
+		public static function insertEmployee ($data) {
+			$db = MySQLManager::get();
+			/* Insertion dans la table ccn_personne */
+			$query = "INSERT INTO ccn_personne (per_nom, per_prenom, per_mail, per_mdp, per_token, per_dateNaissance, per_adresse, per_infoSuppAdresse, per_codePostal, per_ville, per_admin, per_telFixe, per_telMobile, per_genre) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
+			if ($stmt = $db->prepare($query)) {
 
-			$token = uniqid() . uniqid() . uniqid();
-			$stmt->bind_param('sssssssissss', $data['nom'], $data['prenom'], $data['mail'], $token, $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
+				$token = uniqid() . uniqid() . uniqid();
+				$stmt->bind_param('sssssssissss', $data['nom'], $data['prenom'], $data['mail'], $token, $data['dateNaissance'], $data['adresse'], $data['adresseSup'], $data['code'], $data['localite'], $data['telFixe'], $data['telMobile'], $data['genre']);
 
-		  	$stmt->execute();
-		  	$per_id = $stmt->insert_id;
-		  	$data['id'] = $per_id;
+				$stmt->execute();
+				$per_id = $stmt->insert_id;
+				$data['id'] = $per_id;
 
-		  	$stmt->close();
-		  	MySQLManager::close();
-		  	
-		  	$to = $data['mail'];
+				$stmt->close();
+				MySQLManager::close();
+
+				$to = $data['mail'];
 		  	//$to = "joel.marquesd@gmail.com";
-		  	$subject = "Validation du compte";
-		  	$contents = '
-		  		<html>
-		  			<body>
-		  				<div align = "center">
-		  					<p>
-		  						Bonjour, <br/>
-		  						Votre compte vient tout juste d\'être créé. <br/> 
-		  						Veuillez l\'activer en cliquant sur le lien suivant : <br/>
-		  						<a href="http://localhost/App-CCNT/#!/employe/password/'.$token.'">Validation du compte</a>
-		  					</p>
-		  				</div>
-		  			</body>
-		  		</html>
-		  	';
-		  	mail($to, $subject, $contents, 'Content-Type: text/html;charset=utf-8');
+				$subject = "Validation du compte";
+				$contents = '
+				<html>
+				<body>
+					<div align = "center">
+						<p>
+							Bonjour, <br/>
+							Votre compte vient tout juste d\'être créé. <br/> 
+							Veuillez l\'activer en cliquant sur le lien suivant : <br/>
+							<a href="https://ctrl-ccnt.ch/#!/employe/password/'.$token.'">Validation du compte</a>
+						</p>
+					</div>
+				</body>
+				</html>
+				';
+				mail($to, $subject, $contents, 'Content-Type: text/html;charset=utf-8');
 
 		  	if (PossedeDAO::insertPossede($data)) { // Appelle la méthode static de PossedeDAO qui insére le département à une personne
 		  		return ContratDAO::insertContrat($data); // Appelle la méthode static de ContratDAO qui permet d'insérer un contrat à une personne
 		  	}
 		  	return -1;
-		}
-		MySQLManager::close();
-		return -1;
+		  }
+		  MySQLManager::close();
+		  return -1;
 	} // insertPersonne
 
 	/*
 		Met à jours le mot de passe d'un employé
 	*/	
-	public static function updatePasswordEmploye ($data) {
-		$db = MySQLManager::get(); 
-		$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_token = ?";
-		if ($stmt = $db->prepare($query)) {
-			$pwdCrypted = hash('sha512', $data['password']);
-			$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
-		  	$stmt->execute();
-		  	$stmt->close();
-		  	$query1 = "UPDATE ccn_personne SET per_token = NULL WHERE per_token = ?";
-		  	if ($stmt1 = $db->prepare($query1)) {
-		  		$stmt1->bind_param('s', $data['user_token']);
-		  		$stmt1->execute();
-		  		$stmt1->close();
-		  		MySQLManager::close();
-				return true;
-		  	}
-		}
-		MySQLManager::close();
-		return false;
+		public static function updatePasswordEmploye ($data) {
+			$db = MySQLManager::get(); 
+			$query = "UPDATE ccn_personne SET per_mdp = ? WHERE per_token = ?";
+			if ($stmt = $db->prepare($query)) {
+				$pwdCrypted = hash('sha512', $data['password']);
+				$stmt->bind_param('ss', $pwdCrypted, $data['user_token']);
+				$stmt->execute();
+				$stmt->close();
+				$query1 = "UPDATE ccn_personne SET per_token = NULL WHERE per_token = ?";
+				if ($stmt1 = $db->prepare($query1)) {
+					$stmt1->bind_param('s', $data['user_token']);
+					$stmt1->execute();
+					$stmt1->close();
+					MySQLManager::close();
+					return true;
+				}
+			}
+			MySQLManager::close();
+			return false;
 	} // updatePasswordEmploye
 
 }

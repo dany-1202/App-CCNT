@@ -1023,9 +1023,9 @@ legend {
     margin-bottom: 0
 }
 .profile_details .profile_view .bottom {
-    background: #F2F5F7;
+    /*background: #F2F5F7;*/
     padding: 9px 0;
-    border-top: 1px solid #E6E9ED
+    /*border-top: 1px solid #E6E9ED*/
 }
 .profile_details .profile_view .left {
     margin-top: 20px
@@ -1050,7 +1050,9 @@ legend {
 }
 .profile_details .profile_view .brief {
     margin: 0;
-    font-weight: 300
+    font-weight: 700;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E6E9ED;
 }
 .profile_details .profile_left {
     background: white
