@@ -10,12 +10,10 @@
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
 		/* Utilisateur autorisé */
-		require_once("classes/EtatInitial.php");
-		require_once("classes/DemandesDAO.php");
-
-		$eta_id = EtatInitial::getEstablishmentPerson($authData);
-		$res = DemandesDAO::getDemandes($eta_id); // Récupère le résulat obtenu
-		
-		echo(json_encode($res));
+		require_once("classes/Sanitizer.php");
+		require_once("classes/EmployeeDAO.php");
+		$res = EmployeeDAO::getEmployePourJour($authData['date'], $authData['idDep']); // Récupère le résulat obtenu
+		echo(json_encode($res)); // Retourner le résultat sous format json
 	}
+	
 ?>

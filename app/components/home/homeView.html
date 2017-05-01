@@ -1,198 +1,4 @@
-<<<<<<< HEAD
-<div ng-controller="homeController" id="wrapper" class="back-app">
-	
-	<ng-menu></ng-menu>
-
-	<div id="page-wrapper" class="padding-top-50">
-		<div class="container-fluid">
-
-			<!-- Page Heading -->
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="uk-margin-top uk-heading-line title-planning"><span>Tableau de bord</span></h1>
-					<div class="uk-breadcrumb">
-
-						<a href="#!/home" >Home</a>
-						<a href="#!/home" class="active">Dashboard</a>
-					</div>
-				</div>
-			</div>
-			<br>
-			
-			<!--  ng-hide="{{user.config}}" -->
-			<div id="configInit" ng-hide="{{user.configuration}}" class="row">
-				<div class="col-lg-12">
-					<div class="jumbotron centrer">
-						<div class="uk-card-badge uk-label">nouveau</div>
-						<h1>Configuration Initiale</h1>
-						<p><strong>Vous n'avez pas encore configuré votre établissement</strong></p>
-						
-						<md-button ng-click="lancerConfig($event)" class="bouton-grand centrer">Commencer</md-button>
-					</div>
-				</div>
-			</div>
-			
-			<div id="configEmp" ng-hide="{{user.configemp}}"  class="row">
-				<div class="col-lg-12">
-					<div class="jumbotron centrer">
-						<div class="uk-card-badge uk-label">nouveau</div>
-						<h1>Configuration Employés</h1>
-						<p><strong>Vous n'avez aucun employé assigné à votre établissement</strong></p>
-						<md-button ng-click="lancerConfigEmp()" class="bouton-grand centrer">Commencer</md-button>
-					</div>
-				</div>
-			</div>
-			<!--
-			<div class="row">
-				<div class="col-lg-12 text-center uk-padding"><button class="uk-button uk-button-secondary" ng-click="envoyerMail()">Envoyer mail à Jally</button></div>
-			</div> -->
-
-			<div class="row">
-				<div class="col-lg-4">
-					<div md-whiteframe="2" class="uk-card uk-card-default uk-card-hover uk-width-1-1 uk-margin-bottom">
-					    	<div class="uk-card-header">
-				        		<div class="uk-grid-small uk-flex-middle" uk-grid>
-				            		<div class="uk-width-auto">
-			                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: clock">
-				            		</div>
-				            		<div class="uk-width-expand">
-			                			<h3 class="uk-card-title uk-margin-remove-bottom">Création d'un planning</h3>
-		                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
-				            		</div>
-				        		</div>
-					    	</div>
-					    	<div class="uk-card-body">
-				        		<p>Créer vos planning soit manuellement ou automatiquement.</p>
-				  			</div>
-					    	<div class="uk-card-footer">
-					        	<md-card-actions layout="row" layout-align="center">
-									<md-button ng-href="#!/createplanning" class="bouton"> Manuel </md-button>
-									<md-button class="bouton"> Automatique </md-button>
-								</md-card-actions>
-					    	</div>
-					</div>
-					<!--
-					<div  ng-cloak >
-						<md-content class="md-padding" layout-xs="column" layout="row">
-							<div flex-xs flex-gt-xs="100" layout="column">
-								<md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-									<md-card-title>
-										<md-card-title-text>
-											<span class="md-headline">Création d'un planning</span>
-											<span class="md-subhead">Créer vos planning de deux manières</span>
-										</md-card-title-text>
-										<md-card-title-media>
-											<div class="md-media-xl card-media"><i class="grand fa fa-clock-o" aria-hidden="true"></i></div>
-										</md-card-title-media>
-									</md-card-title>
-									<md-card-actions layout="row" layout-align="end center">
-										<md-button class="bouton"> Manuel </md-button>
-										<md-button class="bouton"> Automatique </md-button>
-									</md-card-actions>
-								</md-card>
-							</div>
-						</md-content>
-					</div> -->
-				</div>
-
-				<div class="col-lg-4">
-
-
-					<div md-whiteframe="2" class="uk-card uk-card-default uk-card-hover uk-width-1-1 uk-margin-bottom">
-				    	<div class="uk-card-header">
-			        		<div class="uk-grid-small uk-flex-middle" uk-grid>
-			            		<div class="uk-width-auto">
-			                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: history">
-			            		</div>
-			            		<div class="uk-width-expand">
-			                			<h3 class="uk-card-title uk-margin-remove-bottom">Consulter l'historique</h3>
-		                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
-			            		</div>
-			        		</div>
-				    	</div>
-				    	<div class="uk-card-body">
-			        		<p>Consulter tous les évenements qui se sont déjà passés.</p>
-				  		</div>
-				    	<div class="uk-card-footer">
-				        		<md-card-actions layout="row" layout-align="center">
-									<md-button class="bouton">Aller</md-button>
-								</md-card-actions>
-			    		</div>
-					</div>
-					<!--
-					<div  ng-cloak >
-						<md-content class="md-padding" layout-xs="column" layout="row">
-							<div flex-xs flex-gt-xs="100" layout="column">
-								<md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-									<md-card-title>
-										<md-card-title-text>
-											<span class="md-headline">Consulter l'historique</span>
-											<span class="md-subhead">Consulter tous les évenements passés</span>
-										</md-card-title-text>
-										<md-card-title-media>
-											<div class="md-media-xl card-media"><i class="grand fa fa-history" aria-hidden="true"></i></div>
-										</md-card-title-media>
-									</md-card-title>
-									<md-card-actions layout="row" layout-align="end center">
-										<md-button class="bouton">Aller</md-button>
-									</md-card-actions>
-								</md-card>
-							</div>
-						</md-content>
-					</div> -->
-				</div>
-
-				<div class="col-lg-4">
-					<div md-whiteframe="2" class="uk-card uk-card-default uk-card-hover uk-width-1-1 uk-margin-bottom">
-					    	<div class="uk-card-header">
-					        		<div class="uk-grid-small uk-flex-middle" uk-grid>
-					            		<div class="uk-width-auto">
-					                			<img class="uk-border-circle" width="40" height="40" uk-icon="icon: cog">
-					            		</div>
-					            		<div class="uk-width-expand">
-					                			<h3 class="uk-card-title uk-margin-remove-bottom">Mon établissement</h3>
-				                				<!--<p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>-->
-					            		</div>
-					        		</div>
-					    	</div>
-					    	<div class="uk-card-body">
-					        		<p>Gérer le profil de votre établissement, ses informations, etc...</p>
-				  		</div>
-					    	<div class="uk-card-footer">
-					        		<md-card-actions layout="row" layout-align="center">
-								<md-button class="bouton">Gérer</md-button>
-							</md-card-actions>
-					    	</div>
-					</div>
-					<!--
-					<div  ng-cloak >
-						<md-content class="md-padding" layout-xs="column" layout="row">
-							<div flex-xs flex-gt-xs="100" layout="column">
-								<md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-									<md-card-title>
-										<md-card-title-text>
-											<span class="md-headline">Mon restaurant</span>
-											<span class="md-subhead">Gestion du profil de votre restaurant</span>
-										</md-card-title-text>
-										<md-card-title-media>
-											<div class="md-media-xl card-media"><i class="grand fa fa-cutlery"></i></div>
-										</md-card-title-media>
-									</md-card-title>
-									<md-card-actions layout="row" layout-align="end center">
-										<md-button class="bouton">Gérer</md-button>
-									</md-card-actions>
-								</md-card>
-							</div>
-						</md-content>
-					</div>
-					-->
-				</div>
-			</div>
-
-		</div>
-	</div> <!-- /#page-wrapper -->
-=======
-<div ng-controller="homeController" id="wrapper" class="back-app">
+<div id="wrapper" class="back-app">
 	
 	<ng-menu></ng-menu>
 
@@ -291,7 +97,6 @@
 							</md-card-actions>
 						</div>
 					</div>
-
 				</div>
 
 				<div class="col-lg-4">
@@ -318,6 +123,29 @@
 					</div>
 				</div>
 			</div>
+			<div class="row stat-emp-line">
+				<div class="col-lg-12">
+					<div class="panel-box col-xs-1">
+						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover"><h3><i class="fa fa-clock-o" aria-hidden="true"></i> Qui travaille aujourd'hui ?</h3></div>
+						<div class="panel-content bcgBlack">
+							<div class="center-vertical">
+								<ul class="center-content nav-best nav-best-justified"> 
+									<li>
+										<div style="margin-bottom:15px;" class="col-xs-4" ng-repeat="dep in departements">
+											<h3 style="color:#ccc"> {{dep.name}}</h3>
+											<span ng-repeat="array in employeForDep">
+												<p class="opacity-80 text-transform-upr font-size-11 mrg5T" ng-repeat="obj in array">
+												<i class="fa fa-user-o" aria-hidden="true" style="margin-right:5px;"></i>{{obj.perNom}} {{obj.perPrenom}}</p>
+											</span>
+										</div>
+									</li> 
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
 			<div class="row stat-emp-line">
 				<div class="col-lg-4">
 					<div class="panel-box col-xs-1">
@@ -456,5 +284,4 @@
 
 		</div>
 	</div> <!-- /#page-wrapper -->
->>>>>>> appCCNT
 </div>
