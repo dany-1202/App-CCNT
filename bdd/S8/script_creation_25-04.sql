@@ -47,7 +47,8 @@ INSERT INTO `ccn_absence` (`abs_id`, `abs_nom`) VALUES
 (9, 'Autre'),
 (10, 'Paternité'),
 (11, 'Congé sans solde'),
-(12, 'Récupération');
+(12, 'Récupération'),
+(13, 'Accident');
 
 -- --------------------------------------------------------
 
@@ -531,7 +532,8 @@ CREATE TABLE `ccn_horairepersonne` (
   `hop_heureFin` time NOT NULL,
   `hop_pause` int(11) NOT NULL,
   `hop_abs_id` int(11) DEFAULT NULL,
-  `hop_abs_freq` float DEFAULT NULL
+  `hop_abs_freq` float DEFAULT NULL,
+  `hop_dem_modif` tinyint(1) NOT NULL DEFAULT '-1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
