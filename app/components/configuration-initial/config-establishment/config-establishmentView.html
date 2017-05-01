@@ -62,9 +62,14 @@
 		<div class="col-lg-3"></div>
 		<div class="col-lg-6">
 			<br>
-			<md-radio-group ng-model="$parent.hoursCCNTChosen" class="md-primary">
+			<md-radio-group ng-if="!state" ng-model="$parent.hoursCCNTChosen" class="md-primary">
 				<md-radio-button ng-repeat="h in ccntHeure" ng-value="h.value">
-					{{h.name}}<br/>
+					{{h.name}}
+				</md-radio-button>
+			</md-radio-group>
+			<md-radio-group ng-if="state" ng-model="stateModif.hoursCCNTChosen" class="md-primary">
+				<md-radio-button ng-repeat="h in stateModif.ccntHeure" ng-value="h.value">
+					{{h.name}}
 				</md-radio-button>
 			</md-radio-group>
 		</div>

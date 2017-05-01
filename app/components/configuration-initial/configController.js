@@ -208,7 +208,8 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 			for (var i = 0; i < $scope.calEvents.length; i++) {
 				var dataFermetureInfo = {
 					'date': DateFactory.toDateTimeBDD(DateFactory.getDateStr($scope.calEvents[i].date)),
-					'etaId': idEstablishment, 'user_id': SessionService.get('user_id'),
+					'etaId': idEstablishment, 
+					'user_id': SessionService.get('user_id'),
 					'user_token': SessionService.get('user_token')
 				};
 				var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);

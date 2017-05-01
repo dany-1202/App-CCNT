@@ -69,7 +69,6 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 			var $promise = $http.post('assets/php/getDepartementsAPI.php', data);
 			$promise.then(function (message) {
 				var tab = message.data;
-				console.log(message);
 				for (var i = 0; i < tab.length; i++) {
 					var dep = tab[i];
 					deps.push({
@@ -77,7 +76,8 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 						name:dep.name,
 						carre: "carre-" + dep.img,
 						format: 'label-carre-100',
-						error: false
+						error: false,
+						img: dep.img,
 					});
 				}
 				deferred.resolve(deps);
@@ -103,6 +103,37 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 			$promise.then(function (message) {
 				var info = message.data;
 				deferred.resolve(info);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		getPreHours: function(data) {
+			var deferred = $q.defer();
+			$promise = $http.post('assets/php/getHoraireTypePreConfigAPI.php', data);
+			$promise.then(function(message) {
+				deferred.resolve(message);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		getHoursOpenning: function(data) {
+			var deferred = $q.defer();
+			$promise = $http.post('assets/php/getOuvertureInfosAPI.php', data);
+			$promise.then(function(message) {
+				deferred.resolve(message);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		updateEstablishment: function(data) {
+			var deferred = $q.defer();
+			$promise = $http.post('assets/php/updateEstablishmentAPI.php', data);
+			$promise.then(function(message) {
+				console.log(message);
+				deferred.resolve(message);
 			}).then(function(error) {
 				deferred.resolve(error);
 			});

@@ -15,7 +15,7 @@ class EstablishmentDAO {
 			$db = MySQLManager::get();
 			$query = "INSERT INTO ccn_etablissement (eta_nom, eta_adresse, eta_telReservation, eta_telDirection, eta_email, eta_siteWeb, eta_adresseInfo, eta_codePostal, eta_localite, eta_nbHeure) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('sssssssisi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
+				$stmt->bind_param('sssssssisd', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure']);
 				$stmt->execute();
 				$id = $stmt->insert_id;
 				$stmt->close();
@@ -24,6 +24,23 @@ class EstablishmentDAO {
 			}
 			MySQLManager::close();
 			return -1;
+	} // insertEtablissement
+
+
+	public static function updateEtablissement ($data) {
+		$eta_id = EstablishmentDAO::getEtablissement($data['user_id']);
+		$db = MySQLManager::get();
+		$query = "UPDATE `ccn_etablissement` SET eta_nom=?,eta_adresse=?, eta_telReservation=?,eta_telDirection=?,eta_email=?,eta_siteWeb=?,eta_adresseInfo=?,eta_codePostal=?,eta_localite=?,eta_nbHeure=? WHERE eta_id = ?";
+		if ($stmt = $db->prepare($query)) {
+
+			$stmt->bind_param('sssssssisdi', $data['nom'], $data['adresse'], $data['telReservation'], $data['telDirection'], $data['email'], $data['siteWeb'], $data['adresseInfo'], $data['codePostal'], $data['localite'], $data['nbHeure'], $eta_id);
+			$stmt->execute();
+			$stmt->close();
+			MySQLManager::close();
+			return $eta_id;
+		}
+		MySQLManager::close();
+		return -1;
 	} // insertEtablissement
 	
 	/*Permet d'ajouter un Etablissement dans la table ccn_etablissement

@@ -59,29 +59,11 @@ require_once("MySQLManager.php");
 		la date de fermeture
 		l'identifiant de l'établissement
 	*/
-		public static function insertFermetureInfo ($data) {
-			$db = MySQLManager::get();
-			$query = "INSERT INTO ccn_fermetureInfo (fer_date, fer_eta_id) VALUES (?, ?)";
-			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('si', $data['date'], $data['etaId']);
-				$stmt->execute();
-				$stmt->store_result();
-				if ($stmt->num_rows == 1) {
-					MySQLManager::close();
-					return true;
-				}
-			}
-			MySQLManager::close();
-			return false;
-	} // insertFermetureInfo
-
-	public static function insertOuvertureInfo ($data) {
+	public static function insertFermetureInfo ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_matinDebut, ouv_matinFin, ouv_soirDebut, ouv_soirFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
+		$query = "INSERT INTO ccn_fermetureInfo (fer_nom, fer_dateDebut, fer_dateFin, fer_eta_id) VALUES (?,?,?,?)";
 		if ($stmt = $db->prepare($query)) {
-			if ($data['matinFin'] == "" || $data['matinFin'] == "Heure fin") {$matinFin = NULL;} else {$matinFin = $data['matinFin'];}
-			if ($data['soirDebut'] == "" || $data['soirDebut'] == "Heure début") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}
-			$stmt->bind_param('sssssi', $data['jour'], $data['matinDebut'], $matinFin, $soirDebut, $data['soirFin'], $data['etaId']);
+			$stmt->bind_param('sssi', $data['nom'], $data['dateDebut'], $data['dateFin'], $data['etaId']);
 			$stmt->execute();
 			$stmt->store_result();
 			if ($stmt->num_rows == 1) {
@@ -91,6 +73,24 @@ require_once("MySQLManager.php");
 		}
 		MySQLManager::close();
 		return false;
+	} // insertFermetureInfo
+
+	 public static function insertOuvertureInfo ($data) {
+	 	$db = MySQLManager::get();
+	 	$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_matinDebut, ouv_matinFin, ouv_soirDebut, ouv_soirFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
+	 	if ($stmt = $db->prepare($query)) {
+	 		if ($data['matinFin'] == "" || $data['matinFin'] == "Heure fin") {$matinFin = NULL;} else {$matinFin = $data['matinFin'];}
+	 		if ($data['soirDebut'] == "" || $data['soirDebut'] == "Heure début") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}
+	 		$stmt->bind_param('sssssi', $data['jour'], $data['matinDebut'], $matinFin, $soirDebut, $data['soirFin'], $data['etaId']);
+	 		$stmt->execute();
+	 		$stmt->store_result();
+	 		if ($stmt->num_rows == 1) {
+	 			MySQLManager::close();
+	 			return true;
+	 		}
+	 	}
+	 	MySQLManager::close();
+	 	return false;
 	} // insertOuvertureInfo
 
 	public static function insertPersonInEstablishment ($data) {
