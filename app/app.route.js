@@ -72,6 +72,11 @@ ctrlCCNT.config(['$routeProvider','$locationProvider',
 			controller: 'demandesController',
 			activetab: 'demandes'
 		})
+		.when('/myestablishment', {
+			templateUrl: 'app/components/establishment/myestablishment.html',
+			controller: 'establishmentController',
+			activetab: 'estab'
+		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion
 		})

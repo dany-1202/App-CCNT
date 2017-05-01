@@ -62,6 +62,51 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 				deferred.resolve(error);
 			});
 			return deferred.promise;
+		},
+		getDeps : function(data) {
+			var deferred = $q.defer();
+			var deps = [];
+			var $promise = $http.post('assets/php/getDepartementsAPI.php', data);
+			$promise.then(function (message) {
+				var tab = message.data;
+				console.log(message);
+				for (var i = 0; i < tab.length; i++) {
+					var dep = tab[i];
+					deps.push({
+						id:dep.id,
+						name:dep.name,
+						carre: "carre-" + dep.img,
+						format: 'label-carre-100',
+						error: false
+					});
+				}
+				deferred.resolve(deps);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		getInfosEstablishment : function(data) {
+			var deferred = $q.defer();
+			var $promise = $http.post('assets/php/getInfosEstablishmentAPI.php', data);
+			$promise.then(function (message) {
+				var info = message.data;
+				deferred.resolve(info);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		getHolidays : function(data) {
+			var deferred = $q.defer();
+			var $promise = $http.post('assets/php/getFermetureInfosAPI.php', data);
+			$promise.then(function (message) {
+				var info = message.data;
+				deferred.resolve(info);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
 		}
 
 	}

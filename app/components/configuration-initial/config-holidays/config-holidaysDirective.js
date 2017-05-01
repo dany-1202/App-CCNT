@@ -9,7 +9,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			var monthNames = DateFactory.monthNames;
 			var dayNames = DateFactory.dayNames;
-			var photo = "https://image.jimcdn.com/app/cms/image/transf/dimension=300x10000:format=jpg/path/se1a08fc9547ef1da/image/i8097eee300b9501a/version/1337253899/jour-f%C3%A9ri%C3%A9.jpg";
+			var photo = Const.PHOTOFERMETURE;
 			
 			scope.afficherJour = false; // Afficher la div pour ajouter un jour
 			scope.afficherPlage = false; // Afficher la div pour ajouter une plage
