@@ -79,12 +79,20 @@
 	<div class="col-lg-12"></div>
 </div>
 
-<div class="row">
+<div class="row" ng-if="!state">
 		<div class="col-lg-12">
 			<div class="centrer">
 				<md-button ng-click="precedent()" class="bouton-prec bouton-l">Précédent</md-button>
 				<md-button ng-click="suivant()" class="bouton bouton-l">Suivant</md-button>
 			</div>
+		</div>
+	</div>
+</div>
+<hr class="uk-divider-icon">
+<div class="row">
+	<div class="col-lg-12" ng-if="state">
+		<div class="centrer">
+			<md-button id="btnSuivant" ng-click="saveDepartments()" class="bouton bouton-l" style="background-color:brown">Enregistrer</md-button>
 		</div>
 	</div>
 </div>

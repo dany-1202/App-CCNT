@@ -162,7 +162,11 @@
 		</div>
 
 
-<div class="centrer padding-top">
+<div class="centrer padding-top" ng-if="!state">
 	<md-button ng-click="ctrl.previous(4)" class="bouton-prec bouton-l">Précédent</md-button>
 	<md-button ng-click="ctrl.saveConfiguration()" class="bouton bouton-l">Terminer</md-button>
+</div>
+
+<div class="centrer padding-top" ng-if="state">
+	<md-button ng-click="saveHolidays()" class="bouton bouton-l">Enregistrer</md-button>
 </div>

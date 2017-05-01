@@ -246,13 +246,21 @@
 
 <!-- Affichage de l'information * jours avec coupures -->
 <div class="right" ng-show="cal.choix.id == 1 && affCalendar"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
-
+<hr class="uk-divider-icon">
 <!-- Actions de l'étape -->
-<div class="row">
+<div class="row" ng-if="!state">
  	<div class="col-lg-12 padding-top">
 		<div class="centrer">
 			 <md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
 			 <md-button ng-click="goNextStep()" class="bouton bouton-l">Suivant</md-button>
 		</div>
  	</div>
+</div>
+
+<div class="row" ng-if="state">
+	<div class="col-lg-12 padding-top">
+		<div class="centrer">
+			<md-button ng-click="saveHours()" class="bouton bouton-l">Enregistrer</md-button>
+		</div>
+	</div>
 </div>

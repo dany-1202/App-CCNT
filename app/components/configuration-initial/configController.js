@@ -7,6 +7,7 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory, Popover) {
 	$scope.$route = $route;
+	$scope.state = false;
 	$scope.nbSteps = 5; // Nombre d'étapes de la configuration initiale
 	$scope.nbPercentage = 20; // Pourcentage en fonction de l'avancement de la configuration
 	$scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
