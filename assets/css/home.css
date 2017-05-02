@@ -42,7 +42,7 @@ Description : Feuille de style pour la page homeView.html
 	text-align: center!important;
 }
 
-@media (max-width: 351px) {
+@media (max-width: 370px) {
 	.hide-top-navDeco {
 		display: none;
 	}

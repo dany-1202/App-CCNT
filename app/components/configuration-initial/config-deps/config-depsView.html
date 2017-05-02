@@ -69,7 +69,7 @@
  	<div class="col-lg-12">
 		<div class="centrer">
 			<md-button ng-disabled="depart.length === 8" id="btnAjoutDep" data-title="Choisir un département" ng-data-container="body" data-toggle="popover" data-placement="{{popAdd.position}}" data-content="Ajouter les départements que votre établissement doit posséder" ng-click="ajouterDepartement($event)" class="bouton bouton-xl">
-				Ajouter Departement
+				<i class="fa fa-plus" aria-hidden="true" style="margin-right: 3px"></i> Ajouter Departement
 			</md-button>
 		</div>
  	</div>
@@ -88,11 +88,11 @@
 		</div>
 	</div>
 </div>
-<hr class="uk-divider-icon">
+<hr ng-if="state" class="uk-divider-icon">
 <div class="row">
 	<div class="col-lg-12" ng-if="state">
 		<div class="centrer">
-			<md-button id="btnSuivant" ng-click="saveDepartments()" class="bouton bouton-l" style="background-color:brown">Enregistrer</md-button>
+			<md-button id="btnSuivant" ng-click="saveDepartments()" class="bouton bouton-l" style="background-color:brown"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button>
 		</div>
 	</div>
 </div>

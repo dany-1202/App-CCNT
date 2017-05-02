@@ -82,9 +82,9 @@
 		<md-button id="btnSuivant" data-title="Aller à l'étape suivante" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer sur suivant pour avancer à l'étape suivante de la configuration initiale" ng-click="verificationSuivant()" class="bouton bouton-l" style="background-color:brown">Suivant</md-button>
 	</div>
 </div>
-<hr class="uk-divider-icon">
-<div class="col-lg-12 padding-top" ng-if="state">
+<hr ng-if="state" class="uk-divider-icon">
+<div class="col-lg-12" ng-if="state">
 	<div class="centrer">
-		<md-button id="btnSuivant" ng-click="saveEstablishment()" class="bouton bouton-l" style="background-color:brown">Enregistrer</md-button>
+		<md-button id="btnSuivant" ng-click="saveEstablishment()" class="bouton bouton-l" style="background-color:brown"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer </md-button>
 	</div>
 </div>

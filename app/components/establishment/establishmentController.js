@@ -4,6 +4,7 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 	$scope.$route = $route;
 
 	$scope.stateModif = $scope;
+
 	$scope.state = true;
 	$scope.nbSteps = 5; // Nombre d'étapes de la configuration initiale
 	$scope.nbPercentage = 20; // Pourcentage en fonction de l'avancement de la configuration
@@ -24,9 +25,9 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 	 - Si c'est la première fois les popovers sont à true sinon il passe à false
 	 */
 	 $scope.tabCalendars = [];
-
+	 $scope.idEsta = -1;
 	// {id: 0, name: Const.HORAIREBASE, period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod:true, choix: null}
-	 
+
 
 	var tabContains = function(nom, tab) {
 		for (var i = 0; i < tab.length; i++) {
@@ -66,65 +67,65 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 				}
 			}
 		}
-	    	return data;
+		return data;
 	}
 
- 	$scope.getHours = function() {
-	 	PromiseDAO.getHoursOpenning(data).then(function(res) {
+	$scope.getHours = function() {
+		PromiseDAO.getHoursOpenning(data).then(function(res) {
 
-	 		var objet = res.data;
-	 		for (var i = 0; i < objet.length; i++) {
-	 			if (!tabContains(objet[i].nom, $scope.tabCalendars)) {
-	 				var liste = getOuvertures(objet, objet[i].nom);
-	 				$scope.tabCalendars.push({id: objet[i].id, name: objet[i].nom, period: {debut: objet[i].dateDebut, fin: objet[i].dateFin}, hours: liste, state: Const.COMP, errorName: false, errorPeriod:false, choix: {id: 0, nom:Const.CONTINUE, color: Const.COLORCONTINUE}});
-	 			}
-	 		}
+			var objet = res.data;
+			for (var i = 0; i < objet.length; i++) {
+				if (!tabContains(objet[i].nom, $scope.tabCalendars)) {
+					var liste = getOuvertures(objet, objet[i].nom);
+					$scope.tabCalendars.push({id: objet[i].id, name: objet[i].nom, period: {debut: objet[i].dateDebut, fin: objet[i].dateFin}, hours: liste, state: Const.COMP, errorName: false, errorPeriod:false, choix: {id: 0, nom:Const.CONTINUE, color: Const.COLORCONTINUE}});
+				}
+			}
 
-	 		console.log($scope.tabCalendars);
-	 		
-	 	});
- 	}
+			console.log($scope.tabCalendars);
 
-	 $scope.getHours();
+		});
+	}
+
+	$scope.getHours();
 
 
-	 $scope.nbHoursChosen = null;
+	$scope.nbHoursChosen = null;
 
-	 /* Définition des horaires de la semaine */
-	 $scope.hours = [
-		 { id: 1, day: 'Lundi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-		 { id: 2, day: 'Mardi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-		 { id: 3, day: 'Mercredi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-		 { id: 4, day: 'Jeudi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-		 { id: 5, day: 'Vendredi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-		 { id: 6, day: 'Samedi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-		 { id: 7, day: 'Dimanche', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
-	 ]
+	/* Définition des horaires de la semaine */
+	$scope.hours = [
+	{ id: 1, day: 'Lundi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	{ id: 2, day: 'Mardi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	{ id: 3, day: 'Mercredi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	{ id: 4, day: 'Jeudi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	{ id: 5, day: 'Vendredi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	{ id: 6, day: 'Samedi', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	{ id: 7, day: 'Dimanche', matin: { debut: Const.OPEN, fin: Const.END }, soir: { debut: Const.OPEN, fin: Const.END }, pause: { existe: false, debut: Const.PAUSED, fin: Const.PAUSEF }, nbHours: 0 },
+	]
 
-	 /* Définition des départements de l'établissement */
-	 $scope.depart = [];
+	/* Définition des départements de l'établissement */
+	$scope.depart = [];
 
-	 $scope.getDepartments = function() {
-	 	PromiseDAO.getDeps(data).then(function(res){
-	 		$scope.depart = res;
-	 		$scope.getPreHours();
-	 	});
-	 }
+	$scope.getDepartments = function() {
+		PromiseDAO.getDeps(data).then(function(res){
+			$scope.depart = res;
+			$scope.getPreHours();
+		});
+	}
 
-	 $scope.getDepartments();
+	$scope.getDepartments();
 
-	 /* Définition des informations nécessaires pour l'établissement */
-	 $scope.infoEtablissement = [
-	 { id: 1, type: 'text', name: Const.NAME, value: "", min: 2, max: 40, error: false, message: Const.ERRORNAME, icon:Const.INAME},
-	 { id: 2, type: 'text', name: Const.ADRESSE, value: "", min: 2, max: 50, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSE},
-	 { id: 3, type: 'text', name: Const.ADRESSEPLUS, value: "", min: 0, max: 100, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSEPLUS},
-	 { id: 4, type: 'text', name: Const.POST, value: {no: "", nom: ""}, min: 4, max: 4, error: false, message: Const.ERRORPOST, icon: Const.IPOST},
+	/* Définition des informations nécessaires pour l'établissement */
+	$scope.infoEtablissement = [
+		{ id: 1, type: 'text', name: Const.NAME, value: "", min: 2, max: 40, error: false, message: Const.ERRORNAME, icon:Const.INAME},
+		{ id: 2, type: 'text', name: Const.ADRESSE, value: "", min: 2, max: 50, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSE},
+		{ id: 3, type: 'text', name: Const.ADRESSEPLUS, value: "", min: 0, max: 100, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSEPLUS},
+		{ id: 4, type: 'text', name: Const.POST, value: {no: "", nom: ""}, min: 4, max: 4, error: false, message: Const.ERRORPOST, icon: Const.IPOST},
 		//{ id: 5, type: 'text', name: Const.LOCATION, value: "", min: 2, max: 30, error: false, message: Const.LOCATION },
 		{ id: 6, type: 'tel', name: Const.PHONERES, value: "", min: 10, max: 10, error: false, message: Const.ERRORPHONE, icon: Const.IPHONERES},
 		{ id: 7, type: 'tel', name: Const.PHONEDIR, value: "", min: 10, max: 10, error: false, message: Const.ERRORPHONE, icon: Const.IPHONEDIR},
 		{ id: 8, type: 'email', name: Const.EMAIL, value: "", min: 6, max: 30, error: false, message: Const.ERROREMAIL, icon:Const.IEMAIL },
 		{ id: 9, type: 'text', name: Const.URL, value: "", min: 0, max: 30, error: false, message: Const.ERRORURL, icon:Const.IURL },
-		];
+	];
 
 		$scope.ccntHeure = [
 		{ id: 1, name: "42 Heures", value: Const.CCNT1},
@@ -142,6 +143,7 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 				$scope.infoEtablissement[5].value = res.telReservation;
 				$scope.infoEtablissement[6].value = res.email;
 				$scope.infoEtablissement[7].value = res.siteWeb;
+				$scope.idEsta = res.id;
 				$scope.hoursCCNTChosen = res.nbHeure;
 			});
 		}
@@ -209,12 +211,12 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 							if (!data[i].liste) {
 								var liste = getListe(data[i], res.data);
 								$scope.prehours.push(
-									{
-										prehours: getCalPreHours(liste), 
-										title: data[i].nom,
-										dep:  getDepById(res.config.data.dep_id),
-										liste : liste,
-									}
+								{
+									prehours: getCalPreHours(liste), 
+									title: data[i].nom,
+									dep:  getDepById(res.config.data.dep_id),
+									liste : liste,
+								}
 								);
 							}
 						}
@@ -325,25 +327,25 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 	}
 	
 	/*****************************************************************************************\
-			* Formater date en datetime pour la base de données *                        
-			\*****************************************************************************************/
+	* Formater date en datetime pour la base de données *                        
+	\*****************************************************************************************/
 
-			var formatDatesPreHour = function() {
-				var formatJour = function(matinOuSoir) {
-					if (matinOuSoir.debut != Const.HOUR_OPEN) {matinOuSoir.debut = DateFactory.toDateTimeBDD(matinOuSoir.debut);}
-					if (matinOuSoir.fin != Const.HOUR_END) {matinOuSoir.fin =DateFactory.toDateTimeBDD(matinOuSoir.fin);}
-				}
-				for (var i = 0; i < $scope.prehours.length; i++) {
-					var obj = $scope.prehours[i].prehours;
-					for (var cpt = 0; cpt < obj.length; cpt++) {
-						formatJour(obj[i].matin);
-						formatJour(obj[i].soir);
-					}
-				}
+	var formatDatesPreHour = function() {
+		var formatJour = function(matinOuSoir) {
+			if (matinOuSoir.debut != Const.HOUR_OPEN) {matinOuSoir.debut = DateFactory.toDateTimeBDD(matinOuSoir.debut);}
+			if (matinOuSoir.fin != Const.HOUR_END) {matinOuSoir.fin =DateFactory.toDateTimeBDD(matinOuSoir.fin);}
+		}
+		for (var i = 0; i < $scope.prehours.length; i++) {
+			var obj = $scope.prehours[i].prehours;
+			for (var cpt = 0; cpt < obj.length; cpt++) {
+				formatJour(obj[i].matin);
+				formatJour(obj[i].soir);
 			}
+		}
+	}
 
-			this.saveConfiguration = function () {
-				$timeout(Popover.hide(), 0);
+	this.saveConfiguration = function () {
+		$timeout(Popover.hide(), 0);
 
 		formatDatesPreHour(); // Formate dates nécessaires
 		
@@ -446,9 +448,10 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 	}
 
 	$scope.changeState = function(id, event) {
-		$('#item' + $scope.currentView).removeClass('active');
+		console.log();
+		$($('#item' + $scope.currentView)[0].parentElement).removeClass('tab-current');
 		$scope.currentView = id;
-		$(event.target).addClass('active');
+		$($(event.target)[0].parentElement).addClass('tab-current');
 	}
 
 	$scope.saveEstablishment = function() {
@@ -478,6 +481,17 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 
 	$scope.saveDepartments = function() {
 		console.log('deps');
+		console.log($scope.idEsta);
+		
+		/*
+		for (var i = 0; i < $scope.depart.length; i++) {
+			var department = $scope.depart[i];
+			var dataDep = { 'nom': department.name, 'img': (i + 1), 'noEta': $scope.idEsta, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
+			PromiseDAO.insertDepartment(dataDep).then(function(value) {
+				console.log("Insertion Départements");
+				console.log(value);
+			}).then(function(value) {});
+		}*/
 	}
 
 	$scope.savePreHours = function() {

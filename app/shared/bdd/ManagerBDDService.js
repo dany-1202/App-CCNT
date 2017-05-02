@@ -13,6 +13,16 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 			});
 			return deferred.promise;
 		},
+		departmentsReadyToDelete : function(dataDep) {
+			var deferred = $q.defer();
+			var $res = $http.post("assets/php/checkDepartmentsToDelete.php", dataDep);
+			$res.then(function (data) {
+				deferred.resolve(data);
+			}).then(function (error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
 		insertDepartment: function(dataDep) {
 			var deferred = $q.defer();
 			var $res = $http.post("assets/php/insertDepartementAPI.php", dataDep);

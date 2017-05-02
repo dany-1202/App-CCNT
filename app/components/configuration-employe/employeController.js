@@ -3,18 +3,15 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, State, $route, PromiseDAO) {
 	$scope.$route = $route;
 	$scope.affCarre = true;
-	$scope.user = {};
 	$scope.idUser = -1;
-	$scope.user.configuration = SessionService.get('user_configured');
-	console.log(SessionService.get('user_confEmp'));
 
 	var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
         	$scope.employe = []; //Tableau contenant les employes
 
         	$scope.getEmployes = function () {
         		PromiseDAO.getAllEmployees(data).then(function(resolve) {
-     			$scope.employe = resolve;
-     		});
+                        $scope.employe = resolve;
+                     });
         	}
 
         	$scope.getEmployes();
@@ -57,10 +54,10 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 /*****************************************************************************************\
     * Filtre pour afficher l'age comme il faut exemple : 17 ans *                        
     \*****************************************************************************************/
-    ctrlCCNT.filter('age', function(DateFactory) {
+ctrlCCNT.filter('age', function(DateFactory) {
     	return function(date) {
     		return DateFactory.getAge(date) + " ans";
     	};
-    })
+})
 
 /*///////////////////////////////////////////////////////////////////////////////////////*/
