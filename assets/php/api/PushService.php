@@ -97,7 +97,7 @@ class PushService{
 	
 	private function getPushContent($nom){
 		$db = MySQLManager::get();
-		if ($stmt = $db->prepare("SELECT pus_id, pus_titre, pus_message, pus_sousTitre, pus_ticket FROM ccn_pushInfo WHERE pus_nom = ?")) {
+		if ($stmt = $db->prepare("SELECT pus_id, pus_titre, pus_message, pus_sousTitre, pus_ticket FROM ccn_pushinfo WHERE pus_nom = ?")) {
 			$stmt->bind_param('s', $nom);
 			$stmt->execute();
 			$stmt->store_result();

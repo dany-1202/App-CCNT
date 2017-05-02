@@ -9,73 +9,29 @@ require_once("PushService.php");
  
 $res = false;
 
-if(!empty($_GET['type'])){
+if(!empty($_GET['type']) && !empty($_GET['id'])){
 	switch ($_GET['type']) {
 		case 1:
-			$res = PushService::sendPushNouveauPlanning(1);
+			$res = PushService::sendPushNouveauPlanning($_GET['id']);
 			break;
 		case 2:
-			$res = PushService::sendPushModificationPlanning(1);
+			$res = PushService::sendPushModificationPlanning($_GET['id']);
 			break;
 		case 3:
-			 $res = PushService::sendPushDemandeCongeAcceptee(1);
+			 $res = PushService::sendPushDemandeCongeAcceptee($_GET['id']);
 			break;
 		case 4:
-			$res = PushService::sendPushDemandeCongeRefusee(1);
+			$res = PushService::sendPushDemandeCongeRefusee($_GET['id']);
 			break;
 		case 5:
-			$res = PushService::sendPushDemandeModCongeAcceptee(1);
+			$res = PushService::sendPushDemandeModCongeAcceptee($_GET['id']);
 			break;
 		case 6:
-			$res = PushService::sendPushDemandeModCongeRefusee(1);
+			$res = PushService::sendPushDemandeModCongeRefusee($_GET['id']);
 			break;
 	}	
 }
 
-if(!empty($_GET['type2'])){
-	switch ($_GET['type2']) {
-		case 1:
-			$res = PushService::sendPushNouveauPlanning(3);
-			break;
-		case 2:
-			$res = PushService::sendPushModificationPlanning(3);
-			break;
-		case 3:
-			 $res = PushService::sendPushDemandeCongeAcceptee(3);
-			break;
-		case 4:
-			$res = PushService::sendPushDemandeCongeRefusee(3);
-			break;
-		case 5:
-			$res = PushService::sendPushDemandeModCongeAcceptee(3);
-			break;
-		case 6:
-			$res = PushService::sendPushDemandeModCongeRefusee(3);
-			break;
-	}	
-}
-if(!empty($_GET['type3'])){
-	switch ($_GET['type3']) {
-		case 1:
-			$res = PushService::sendPushNouveauPlanning(4);
-			break;
-		case 2:
-			$res = PushService::sendPushModificationPlanning(4);
-			break;
-		case 3:
-			 $res = PushService::sendPushDemandeCongeAcceptee(4);
-			break;
-		case 4:
-			$res = PushService::sendPushDemandeCongeRefusee(4);
-			break;
-		case 5:
-			$res = PushService::sendPushDemandeModCongeAcceptee(4);
-			break;
-		case 6:
-			$res = PushService::sendPushDemandeModCongeRefusee(4);
-			break;
-	}	
-}
 echo 'Résultat : ';
 if($res) {
 	echo 'OK';

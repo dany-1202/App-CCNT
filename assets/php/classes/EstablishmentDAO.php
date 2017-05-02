@@ -83,6 +83,7 @@ class EstablishmentDAO {
 					$stmt1->bind_result($eta_nom, $eta_adresse, $eta_telRes, $eta_telDir, $eta_mail, $eta_site, $eta_adresseInfo, $eta_codePostal, $eta_localite, $eta_nbHeure);
 					$stmt1->fetch();
 					$eta = [];
+					$eta['id'] = $eta_id;
 					$eta['nom'] = $eta_nom;
 					$eta['adresse'] = $eta_adresse;
 					$eta['telReservation'] = $eta_telRes;

@@ -3,12 +3,29 @@ Auteur : Joel Marques;
 Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
+
+
+
+ /* Ici pour empêcher la sélection dans les divs seulement permis dans les champs textes */
+div {
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    ::selection { background: transparent; color:inherit; }
+    ::-moz-selection { background: transparent; color:inherit; }
+}
+ 
+
+
+
 @media(max-width: 1152px) {
     .tab-menu-responsive{
         display: inline-block!important;
     }
 }
-
 
 
 .bcgWhite {

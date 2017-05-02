@@ -71,7 +71,7 @@ class HoraireEmployeeDAO {
 		}
 
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* 
 		Function qui permet de récupérer un objet qui contient :
@@ -100,8 +100,6 @@ class HoraireEmployeeDAO {
 						$stmt->execute();
 						$stmt->bind_result($nbHeuresPos);
 						$stmt->fetch();
-
-
 
 						$infos = [];
 
@@ -268,47 +266,47 @@ class HoraireEmployeeDAO {
 						    		}
 						    	}
 						    }
+						 }
 						}
 					}
 				}
 			}
-		}
-		MySQLManager::close();
-		return false;
-	}
-	
-	public static function getDateEntreeEmp ($per_id) {
-		$db = MySQLManager::get();
-		$queryDateIn = "SELECT con_dateIn FROM ccn_contrat WHERE con_per_id = ?";		
-		if ($stmt= $db->prepare($queryDateIn)) {
-			$stmt->bind_param('i', $per_id);
-			$stmt->execute();
-			$stmt->bind_result($dateIn);
-			$stmt->fetch();
-			$stmt->close();
 			MySQLManager::close();
-			return $dateIn;
+			return false;
 		}
-		MySQLManager::close();
-		return 0;
-	}
-	
-	
-	public static function calculerSoldeEmployee($per_id, $mois, $annee, $eta_id) {
-		$dateIn = HoraireEmployeeDAO::getDateEntreeEmp($per_id);
-		$dateFin = new DateTime('01'.'-'.($mois+1).'-'.$annee);
-		$dateDep = new DateTime($dateIn);
-		$db = MySQLManager::get();
-		$nbHeureEffectives = 0;
-		$soldeHeures = 0; 
-		$soldeConges = 0; 
-		$soldeVacances = 0; 
-		$soldeFeries = 0;
-		
-		while ($dateDep != $dateFin) {
-			$res = HoraireEmployeeDAO::getInfosHeuresMois($per_id, $dateDep->format('m'), $dateDep->format('Y'), $eta_id);
-			$resDec = json_decode($res);
-			
+
+		public static function getDateEntreeEmp ($per_id) {
+			$db = MySQLManager::get();
+			$queryDateIn = "SELECT con_dateIn FROM ccn_contrat WHERE con_per_id = ?";		
+			if ($stmt= $db->prepare($queryDateIn)) {
+				$stmt->bind_param('i', $per_id);
+				$stmt->execute();
+				$stmt->bind_result($dateIn);
+				$stmt->fetch();
+				$stmt->close();
+				MySQLManager::close();
+				return $dateIn;
+			}
+			MySQLManager::close();
+			return 0;
+		}
+
+
+		public static function calculerSoldeEmployee($per_id, $mois, $annee, $eta_id) {
+			$dateIn = HoraireEmployeeDAO::getDateEntreeEmp($per_id);
+			$dateFin = new DateTime('01'.'-'.($mois+1).'-'.$annee);
+			$dateDep = new DateTime($dateIn);
+			$db = MySQLManager::get();
+			$nbHeureEffectives = 0;
+			$soldeHeures = 0; 
+			$soldeConges = 0; 
+			$soldeVacances = 0; 
+			$soldeFeries = 0;
+
+			while ($dateDep != $dateFin) {
+				$res = HoraireEmployeeDAO::getInfosHeuresMois($per_id, $dateDep->format('m'), $dateDep->format('Y'), $eta_id);
+				$resDec = json_decode($res);
+
 			/* Attention je dois décortiquer les heures effectives afin de déduire complétement 
 			les minutes et les secondes (bon secondes c'est factultatif mais au moins les secondes) */
 			$soldeHeures = (($resDec->heureseffectives->time + $soldeHeures) - $resDec->heures_mois);
@@ -721,4 +719,4 @@ class HoraireEmployeeDAO {
 
 	}
 
-?>
+	?>

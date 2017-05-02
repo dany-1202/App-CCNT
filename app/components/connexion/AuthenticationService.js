@@ -48,13 +48,13 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 					        	$rootScope.user.prenom = authenData.user_prenom;
 					        	$rootScope.user.type = authenData.user_type;
 					        	$rootScope.user.token = authenData.user_token;
-					        	$rootScope.user.config = message.data;
+					        	$rootScope.user.configuration = message.data;
 				        		var $res = $http.post("assets/php/checkConfigurationEmp.php", data);
 								$res.then(function (message) {
 									console.log(message);
 									
 									SessionService.set('user_confEmp', message.data > 0 ? true : false);
-									$rootScope.user.configEmp = message.data;
+									$rootScope.user.configemp = SessionService.get('user_confEmp');
 							        	
 						        	/* Connexion réussi*/
 						        	NotifService.successCon();
@@ -77,6 +77,7 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 			var $promise = $http.post("assets/php/disconnectAuthentication.php", data); // Lange la promesse
 			$promise.then(function (message) {
 				SessionService.destroyAll(); //Destruction de toutes les données stockées dans la session
+				$rootScope.user = {};
 				$location.path('/connexion'); // Redirection sur la page de login
 				$rootScope.$broadcast("connectionStateChanged"); // Applique dans l'évennement connectionStateChanged sa déconnexion
 			});
