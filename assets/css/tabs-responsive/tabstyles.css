@@ -858,7 +858,7 @@
 .tabs-style-linebox nav a {
 	padding: 0 1.5em;
 	color: #74777b;
-	font-weight: 700;
+	font-weight: 500;
 	-webkit-transition: color 0.3s;
 	transition: color 0.3s;
 }
