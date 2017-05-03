@@ -9,6 +9,7 @@
 
 .lien {
 	color: #74777b!important;
+	
 	text-decoration: none!important;
 	outline: none!important;
 }
@@ -92,6 +93,7 @@
 }
 
 .tabs nav li.tab-current a {
+    	font-weight: 500!important;
 	color: white!important;
 }
 
