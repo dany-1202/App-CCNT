@@ -217,7 +217,8 @@ module.provider("$mdpDatePicker", function() {
                     currentDate: currentDate,
                     options: options
                 },
-                skipHide: true
+                skipHide: true,
+                multiple: true
             });
         };
     
@@ -802,8 +803,8 @@ module.provider("$mdpTimePicker", function() {
                                     
                                     '<md-dialog-actions layout="row">' +
 	                                	'<span flex></span>' +
-                                        '<md-button class="md-raised" ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="timepicker.confirm()" class="md-raised md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '<md-button style="min-width: 100px!important;" class="md-raised" ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
+                                        '<md-button style="min-width: 100px!important;" ng-click="timepicker.confirm()" class="md-raised md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -814,7 +815,8 @@ module.provider("$mdpTimePicker", function() {
                     time: time,
                     autoSwitch: options.autoSwitch
                 },
-                skipHide: true
+                skipHide: true,
+                multiple: true
             });
         };
     

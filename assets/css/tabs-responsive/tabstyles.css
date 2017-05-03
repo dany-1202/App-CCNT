@@ -17,7 +17,7 @@
 .lien:hover, .lien:focus {
 	color: #2CC185!important;
 }
-
+/*
 @font-face {
 	font-weight: normal;
 	font-style: normal;
@@ -27,7 +27,7 @@
 		url('../fonts/stroke7pixeden/stroke7pixeden.woff?u58ytb') format('woff'),
 		url('../fonts/stroke7pixeden/stroke7pixeden.ttf?u58ytb') format('truetype'),
 		url('../fonts/stroke7pixeden/stroke7pixeden.svg?u58ytb#stroke7pixeden') format('svg');
-}
+}*/
 
 .tabs {
 	position: relative;

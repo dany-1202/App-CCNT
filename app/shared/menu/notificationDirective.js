@@ -47,6 +47,10 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 			getDemandesNotif();
 			console.log(scope.demandesNotif);
 
+			scope.affParametrageVue = function() {
+				console.log('ici');
+			}
+
 			scope.$on('$destroy', function () {
 			    	$timeout.cancel(timer);
 			});
