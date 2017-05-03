@@ -1,7 +1,8 @@
 (function(){
 	var ctrlCCNT = angular.module('ctrlCCNT');
 
-	ctrlCCNT.controller('demandesController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State, $route) {
+	ctrlCCNT.controller('demandesController', function($route,$timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State, $route) {
+		$scope.$route = $route;
 		$scope.demc = $scope;
 		var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 		$scope.demandes = [];
