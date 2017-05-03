@@ -165,9 +165,9 @@
 		</ul>
 		<div id="modal-example" uk-modal="center: true">
 		    <div class="uk-modal-dialog uk-modal-body">
-		        <h2 class="uk-modal-title text-center">Demande n° {{demandeCours.idDem}}</h2>
-		        <hr class="uk-divider-icon">
-		        <h3 style="margin-top:-5px">Employé : {{demandeCours.per_nom}}</h3>
+		    	<h2 class="uk-modal-title text-center" style="padding: 15px;width: 100%;height: auto;position: absolute;top: 0px;left: 0;background: #222;color: white;">Demande n° {{demandeCours.idDem}}</h2>
+		       <hr>
+		       <h3>Employé : {{demandeCours.per_nom}}</h3>
 		        <h4 style="margin-top:-10px; color:dimgrey">Type demande : {{demandeCours.typeDemande_nom}}</h4>
 		        <h5>Motif : <span ng-if="demandeCours.motif == null">Aucune justification</span>{{demandeCours.motif}} </h5>
 		        <h5 class="text-center">Date début : <strong>{{demandeCours.dateDebut}}</strong><br> Date fin : <strong>{{demandeCours.dateFin}}</strong></h5>
