@@ -7,6 +7,7 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 		link: function (scope, iElement, iAttrs) {
 			scope.notif = scope;
 			scope.demandeCours = {};
+
 			var timer; 
 			var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 			
@@ -53,6 +54,7 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 
 			scope.$on('$destroy', function () {
 			    	$timeout.cancel(timer);
+			    	$( "#modal-example" ).remove();
 			});
 			
 		}
