@@ -26,7 +26,6 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 				self.prehour = hour;
 				self.nbPause = scope.nbPause;
 				self.deps = scope.$parent.depart;
-				$('.side-nav').css('display', 'none');
 				
 				$mdDialog.show({
 					controller: DialogController,
@@ -39,7 +38,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 				})
 				.then(function(objet) {
 					scope.prehours[index] = objet;
-				}, function() {$('.side-nav').css('display', '');});
+				}, function() {});
 			}
 			
 
@@ -54,7 +53,6 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 
 				self.nbPause = scope.nbPause;
 				console.log(scope.nbPause);
-				$('.side-nav').css('display', 'none');
 
 				$mdDialog.show({
 					controller: DialogController,
@@ -63,16 +61,14 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 					targetEvent: event,
 					clickOutsideToClose:false,
 					fullscreen: true,
+					multiple: true
 				})
 				.then(function(objet) {
 					objet.horaire = {};
 					objet.horaire.prehours = State.getTabCalDefaultWithPause();
 					scope.prehours.push(objet);
 					scope.preHoursSelected = objet;
-					console.log(objet);
-					$('.side-nav').css('display', '');
-
-				}, function() {$('.side-nav').css('display', '');}); 
+				}, function() {}); 
 			}
 
 			function DialogController ($scope) {	

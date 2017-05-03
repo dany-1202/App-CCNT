@@ -7,7 +7,6 @@
 		var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 		$scope.demandes = [];
 
-		$timeout(function() {$('.ui.dropdown').dropdown();}, 10);
 		$scope.getDemandes = function () {
 			//data.employes = [];
 			//data.employes = angular.copy($scope.employe);
