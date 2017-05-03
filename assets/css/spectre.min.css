@@ -504,8 +504,7 @@ code {
 }
 .spectre-card {
   background: #fff;
-  border: .1rem solid #f0f1f4;
-  border-radius: .2rem;
+  border: none;
   display: block;
 }
 .spectre-card .spectre-card-header,

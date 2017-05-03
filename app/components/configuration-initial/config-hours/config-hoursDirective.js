@@ -277,7 +277,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
 				      targetEvent: ev,
 				      clickOutsideToClose:true,
-				      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+				      fullscreen: $scope.customFullscreen,
+				      multiple:true // Only for -xs, -sm breakpoints.
 			    	})
 			    	.then(function(days) {
 					fillTimeDays(days, objHour); // Je met à jour les jours respectifs
