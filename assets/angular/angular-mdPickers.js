@@ -589,7 +589,13 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
             this.VIEW_MINUTES = 2;
             this.currentView = this.VIEW_HOURS;
             this.time = moment(time);
-            this.autoSwitch = !!autoSwitch;
+
+            if (angular.isUndefined(autoSwitch)) {
+                  this.autoSwitch = true;
+            } else {
+                  this.autoSwitch = autoSwitch;
+            }
+            
             
             this.clockHours = parseInt(this.time.format("h"));
             this.clockMinutes = parseInt(this.time.minutes());
