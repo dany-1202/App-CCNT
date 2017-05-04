@@ -73,14 +73,16 @@
 								</div>
 								<div ng-show="motifAfficher && scope.absent1" class="uk-margin" >
 									<label for="form-stacked-select">Motif absence</label>
-									<select id="selMotif" class="ui dropdown" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
-										<option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
-									</select>
+									<div class="uk-form-controls text-center">
+										<select id="selMotif" class="ui dropdown" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+											<option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+										</select>
+									</div>
 								</div>
 								<div ng-hide="scope.motifAfficher && scope.absent1" class="uk-margin">
 									<label for="form-stacked-select">Pause</label>
-									<div class="uk-form-controls">
-										<select style="font-size:1.2em" id="selPause1" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
+									<div class="uk-form-controls text-center">
+										<select style="font-size:1.2em" id="selPause1" class="ui dropdown " id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
 									</div>
 								</div>
 							</div>
@@ -107,14 +109,16 @@
 								</div>
 								<div ng-show="motifAfficher && scope.absent2" class="uk-margin" >
 									<label for="form-stacked-select">Motif absence</label>
-									<select id="selMotif" class="ui dropdown" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
-										<option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
-									</select>
+									<div class="uk-form-controls text-center">
+										<select id="selMotif" class="ui dropdown" ng-model="motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+											<option ng-repeat="abs in absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+										</select>
+									</div>
 								</div>
 								<div ng-hide="scope.motifAfficher && scope.absent2" class="uk-margin">
 									<label for="form-stacked-select">Pause</label>
-									<div class="uk-form-controls">
-										<select style="font-size:1.2em" id="selPause2" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService2" ng-options="p.name for p in nbPause"></select>
+									<div class="uk-form-controls text-center">
+										<select style="font-size:1.2em" id="selPause2" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService2" ng-options="p.name for p in nbPause2"></select>
 									</div>
 								</div>
 							</div>

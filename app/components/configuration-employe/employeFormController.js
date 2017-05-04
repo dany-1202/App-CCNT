@@ -285,7 +285,11 @@
 			}
 
 			$scope.validationTelFixe = function () {
-				if (isNaN($scope.myEmp.telFixe) || $scope.myEmp.telFixe.length != 10) {
+				if ($scope.myEmp.telFixe == "" || $scope.myEmp.telFixe == null) {
+					$scope.validations[13].valide = true;
+					return;
+				}
+				if (isNaN($scope.myEmp.telFixe) || $scope.myEmp.telFixe.length < 10 || $scope.myEmp.telMobile.length > 14) {
 					$scope.validations[13].valide = false;
 				} else {
 					$scope.validations[13].valide = true;
@@ -293,7 +297,11 @@
 			}
 
 			$scope.validationTelMobile = function () {
-				if (isNaN($scope.myEmp.telMobile) || $scope.myEmp.telMobile.length != 10) {
+				if ($scope.myEmp.telMobile == "" || $scope.myEmp.telMobile == null) {
+					$scope.validations[14].valide = true;
+					return;
+				}
+				if (isNaN($scope.myEmp.telMobile) || $scope.myEmp.telMobile.length < 10 || $scope.myEmp.telMobile.length > 14) {
 					$scope.validations[14].valide = false;
 				} else {
 					$scope.validations[14].valide = true;
@@ -303,8 +311,10 @@
 			$scope.validationDateNaissance = function () {
 				if ($scope.myEmp.dateNaissance == null || $scope.myEmp.dateNaissance == "") {
 					$scope.validations[12].valide = false;
+					$scope.errorDateNaiss = "La date de naissance n'est pas valide";
 				} else {
-					$scope.validations[12].valide = true;
+					$scope.validations[12].valide = DateFactory.getAge($scope.myEmp.dateNaissance) > 10;
+					$scope.errorDateNaiss = "L'employé doit avoir plus de 10 ans";
 				}
 			}
 
