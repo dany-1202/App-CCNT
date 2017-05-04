@@ -1,7 +1,7 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 
-ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifService, Const, Popover, $mdpTimePicker, DateFactory, ChooseDaysModal) {
+ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifService, Const, Popover, $mdpTimePicker, DateFactory, ChooseDaysModal, ModalTuto) {
 
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
@@ -19,6 +19,11 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 			scope.supHoraire = function(hour, index) {
 				scope.prehours.splice(index, 1);
 				NotifService.success(Const.TITLE_DELETE_HOUR, Const.MSG_DELETE_HOUR_SUCCESS);
+			}
+
+			scope.nextToHours = function(ev) {
+				ModalTuto.showModal(ev, 3);
+				scope.$parent.ctrl.next(4);
 			}
 			
 			scope.modifHoraire = function (hour, index) {

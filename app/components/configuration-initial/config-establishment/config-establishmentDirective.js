@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover, State, $q, $log, Postaux) {
+ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover, State, $q, $log, Postaux, ModalTuto) {
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
 		templateUrl : 'app/components/configuration-initial/config-establishment/config-establishmentView.html', // Template à utiliser lorsque la balise est utilisé
@@ -50,7 +50,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 						}
 					}
 					/* Valide si l'étape est validé */
-					scope.verificationSuivant = function(){
+					scope.verificationSuivant = function(ev){
 						$timeout(Popover.hide, 0);
 
 						var err = false;
@@ -58,7 +58,7 @@ ctrlCCNT.directive('configEstablishment', function($timeout, $rootScope, Popover
 							scope.verification(scope.infoEtablissement[i].id,i);
 							if (scope.infoEtablissement[i].error == true){err=true;}
 						};
-						if(err == false){scope.$parent.ctrl.next(2);}
+						if(err == false){ ModalTuto.showModal(ev, 2); scope.$parent.ctrl.next(2);}
 					}
 					$timeout(Popover.showPop(0, ['#btnSuivant']), 1000);
 				}, 500);
