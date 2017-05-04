@@ -1,7 +1,7 @@
 (function(){ 
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Popover, DateFactory, Const, State, $route) {
+ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Popover, DateFactory, Const, State, $route, ModalTuto) {
 	
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
@@ -412,10 +412,11 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    		$scope.affCalendar = true;
 		    	}
 
-		    	$scope.goNextStep = function () {
+		    	$scope.goNextStep = function (ev) {
 		    		$timeout(Popover.hide, 0);
 		    		var nb = $scope.isAllInfoCalCorrect();
 		    		if (nb == 0) {
+		    			ModalTuto.showModal(ev, 9);
 		    			$timeout($scope.ctrl.next(5), 2);
 		    		} else {
 		    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");

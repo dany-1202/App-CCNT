@@ -62,11 +62,32 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	state.getConfigTuto = function () {
 		return angular.copy(state.configTuto);
 	}
-	
+	state.finishEsta = false;
+	state.finishDep = false;
+	state.finishPreHours = false;
+	state.finishHours = false;
+	state.finishHolidays = false;
+
 	state.finishTuto = false;
 
 	state.changeFinishTuto = function () {
 		state.finishTuto = true;
+	}
+
+	state.changeFinishEsta = function () {
+		state.finishEsta = true;
+	}
+	state.changeFinishDep = function () {
+		state.finishDep = true;
+	}
+	state.changeFinishPreHours = function () {
+		state.finishPreHours = true;
+	}
+	state.changeFinishHours = function () {
+		state.finishHours = true;
+	}
+	state.changeFinishHolidays = function () {
+		state.finishHolidays = true;
 	}
 
 	state.getTabCalDefault = function () {
