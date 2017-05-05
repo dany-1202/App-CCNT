@@ -43,7 +43,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 		 				var res = DateFactory.getJourById(objet.jour);
 		 				scope.errorJour = res;
 		 				scope.ouvertures = (objet.coupures === 1 ? (' Matin: ' + objet.matinDebut + ' - ' + objet.matinFin + ' | Soir: ' + objet.soirDebut + ' - ' + objet.soirFin) : (' Début: ' + objet.heureDebut + ' | Fin: ' + objet.heureFin));
-		 				NotifService.warning('Heures Hors-Ouverture Établissement', objet.message);
+		 				NotifService.error('Heures Hors-Ouverture Établissement', objet.message);
 		 				res = (id == 1 || id == 3) ? Const.HOUR_OPEN : Const.HOUR_END;
 		 			} else {
 		 				scope.errorHoraire = false;
