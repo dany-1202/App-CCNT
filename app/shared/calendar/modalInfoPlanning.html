@@ -42,12 +42,14 @@
                 events="events"
                 view="calendarView"
                 view-date="event.startsAt"
+                day-view-time-position="side"
                 day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
               </mwl-calendar>
               <mwl-calendar style="background-color: white" ng-if="isTwoDays"
                 events="events"
                 view="calendarView"
                 view-date="event.endsAt"
+                day-view-time-position="side"
                 day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
               </mwl-calendar>
               <hr>

@@ -160,13 +160,17 @@
 			</div>
 				<br>
 			<div class="row">
-				<mwl-calendar
+				<div md-swipe-right="onSwipeRight(vm.viewDate)"
+					md-swipe-left="onSwipeLeft(vm.viewDate)">
+		
+				<mwl-calendar 
+
 					events="vm.events"
 					view="vm.calendarView"
 					view-title="vm.calendarTitle"
 					view-date="vm.viewDate"
 					on-event-click="vm.eventClicked(calendarEvent)"
-					on-event-times-changed="vm.eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+					on-event-times-changed="vm.eventTimesChanged(calendarEvent, calendarNewEventStart,calendarNewEventEnd);"
 					cell-is-open="vm.cellIsOpen"
 					day-view-start="00:00"
 					day-view-end="23:59"
@@ -178,6 +182,7 @@
 					<!-- custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" -->
 
 				</mwl-calendar>
+				</div>
 			</div>
 			
 				<br>

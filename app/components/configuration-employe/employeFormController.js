@@ -4,6 +4,7 @@
 
 	ctrlCCNT.controller('employeFormController', function($timeout, $rootScope, $scope, $http, $location, SessionService, NotifService, $q, State,Postaux, $route, DateFactory) {
 		$scope.$route = $route;
+		
 		function init() {
 			
 			$scope.user = {};
@@ -313,7 +314,7 @@
 					$scope.validations[12].valide = false;
 					$scope.errorDateNaiss = "La date de naissance n'est pas valide";
 				} else {
-					$scope.validations[12].valide = DateFactory.getAge($scope.myEmp.dateNaissance) > 10;
+					$scope.validations[12].valide = DateFactory.getAge($scope.myEmp.dateNaissance) > 15; // Âge légal 16
 					$scope.errorDateNaiss = "L'employé doit avoir plus de 10 ans";
 				}
 			}
