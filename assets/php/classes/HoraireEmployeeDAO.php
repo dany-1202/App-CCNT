@@ -377,49 +377,55 @@ class HoraireEmployeeDAO {
   		
 		return $dateDebut >= $dateDebutComp && $dateFin <= $dateFinComp; // Retourne false si ça déborde 
 	}
-	
-	
-	public static function validationPlageOuverture($horaire) {
-		$eta_id = EstablishmentDAO::getEtablissement($horaire['user_id']);
-		$db = MySQLManager::get();
-		$msgInvalide = "Attention les heures que vous essayé d'entrer ne correspondent pas aux heures d'ouvertures de votre établissement !";
-		
-		$req = "
-		SELECT oui_matinDebut, oui_matinFin, oui_soirDebut, oui_soirFin  
-		FROM ccn_ouvertureinfo 
-		JOIN ccn_lienouverture ON lie_oui_id = oui_id 
-		JOIN ccn_ouverture ON lie_ouv_id = ouv_id 
-		WHERE oui_jour = ? AND ouv_base = 0 AND ouv_eta_id = ? AND ? BETWEEN ouv_dateDebut AND ouv_dateFin
-		";
-		$reqBase = "
-		SELECT oui_matinDebut, oui_matinFin, oui_soirDebut, oui_soirFin  
-		FROM ccn_ouvertureinfo 
-		JOIN ccn_lienouverture ON lie_oui_id = oui_id 
-		JOIN ccn_ouverture ON lie_ouv_id = ouv_id 
-		WHERE oui_jour = ? AND ouv_base = 1 AND ouv_eta_id = ?
-		";
-		
-		$date = new DateTime($horaire['date']);
-		
-		$dateDay = $date->format('w');
-		if ($stmt=$db->prepare($req)) {
-			$erreur = [];
-			$stmt->bind_param('iis', $dateDay, $eta_id, $horaire['date']);			
-			$stmt->execute();
-			$stmt->bind_result($oui_matinDebut, $oui_matinFin, $oui_soirDebut, $oui_soirFin);
-			$stmt->fetch();
-			$stmt->close();
-			if ($oui_matinDebut == null || $oui_matinFin == null || $oui_soirDebut == null || $oui_soirFin == null) {
-				if ($stmt=$db->prepare($reqBase)) {
-					$stmt->bind_param('ii', $dateDay, $eta_id);			
-					$stmt->execute();
-					$stmt->bind_result($oui_matinDebutBase, $oui_matinFinBase, $oui_soirDebutBase, $oui_soirFinBase);
-					$stmt->fetch();
-					$stmt->close();
-					$dateDebut = new DateTime($horaire['heureDebut']);
-					$dateFin = new DateTime($horaire['heureFin']);
 
-					if ($dateDebut > $dateFin) { 
+	// Enlever les secondes
+	public static function heureminute($heure) {
+		$arrayheure = explode(':',$heure);
+		$newheure = $arrayheure[0].':'.$arrayheure[1];
+   		return $newheure; // de la forme hh:mm
+   	}
+
+   	public static function validationPlageOuverture($horaire) {
+   		$eta_id = EstablishmentDAO::getEtablissement($horaire['user_id']);
+   		$db = MySQLManager::get();
+   		$msgInvalide = "Attention les heures que vous essayé d'entrer ne correspondent pas aux heures d'ouvertures de votre établissement !";
+
+   		$req = "
+   		SELECT oui_matinDebut, oui_matinFin, oui_soirDebut, oui_soirFin  
+   		FROM ccn_ouvertureinfo 
+   		JOIN ccn_lienouverture ON lie_oui_id = oui_id 
+   		JOIN ccn_ouverture ON lie_ouv_id = ouv_id 
+   		WHERE oui_jour = ? AND ouv_base = 0 AND ouv_eta_id = ? AND ? BETWEEN ouv_dateDebut AND ouv_dateFin
+   		";
+   		$reqBase = "
+   		SELECT oui_matinDebut, oui_matinFin, oui_soirDebut, oui_soirFin  
+   		FROM ccn_ouvertureinfo 
+   		JOIN ccn_lienouverture ON lie_oui_id = oui_id 
+   		JOIN ccn_ouverture ON lie_ouv_id = ouv_id 
+   		WHERE oui_jour = ? AND ouv_base = 1 AND ouv_eta_id = ?
+   		";
+
+   		$date = new DateTime($horaire['date']);
+
+   		$dateDay = $date->format('w');
+   		if ($stmt=$db->prepare($req)) {
+   			$erreur = [];
+   			$stmt->bind_param('iis', $dateDay, $eta_id, $horaire['date']);			
+   			$stmt->execute();
+   			$stmt->bind_result($oui_matinDebut, $oui_matinFin, $oui_soirDebut, $oui_soirFin);
+   			$stmt->fetch();
+   			$stmt->close();
+   			if ($oui_matinDebut == null || $oui_matinFin == null || $oui_soirDebut == null || $oui_soirFin == null) {
+   				if ($stmt=$db->prepare($reqBase)) {
+   					$stmt->bind_param('ii', $dateDay, $eta_id);			
+   					$stmt->execute();
+   					$stmt->bind_result($oui_matinDebutBase, $oui_matinFinBase, $oui_soirDebutBase, $oui_soirFinBase);
+   					$stmt->fetch();
+   					$stmt->close();
+   					$dateDebut = new DateTime($horaire['heureDebut']);
+   					$dateFin = new DateTime($horaire['heureFin']);
+
+   					if ($dateDebut > $dateFin) { 
 				  		$dateFin->add(new DateInterval('P1D')); // Ajoute un jour à la date
 				  	}
 				  	
@@ -434,8 +440,8 @@ class HoraireEmployeeDAO {
 				  			$erreur['coupures'] = 0;
 				  			$erreur['jour'] = $dateDay;
 				  			$erreur['message'] = $msgInvalide;
-				  			$erreur['heureDebut'] = $oui_matinDebutBase;
-				  			$erreur['heureFin'] = $oui_soirFinBase;
+				  			$erreur['heureDebut'] = HoraireEmployeeDAO::heureminute($oui_matinDebutBase);
+				  			$erreur['heureFin'] = HoraireEmployeeDAO::heureminute($oui_soirFinBase);
 				  			MySQLManager::close();
 				  			return $erreur;
 				  		}
@@ -450,10 +456,10 @@ class HoraireEmployeeDAO {
 				  			$erreur['coupures'] = 1;
 				  			$erreur['jour'] = $dateDay;
 				  			$erreur['message'] = $msgInvalide;
-				  			$erreur['matinDebut'] = $oui_matinDebutBase;
-				  			$erreur['matinFin'] = $oui_matinFinBase;
-				  			$erreur['soirDebut'] = $oui_soirDebutBase;
-				  			$erreur['soirFin'] = $oui_soirFinBase;
+				  			$erreur['matinDebut'] = HoraireEmployeeDAO::heureminute($oui_matinDebutBase);
+				  			$erreur['matinFin'] = HoraireEmployeeDAO::heureminute($oui_matinFinBase);
+				  			$erreur['soirDebut'] = HoraireEmployeeDAO::heureminute($oui_soirDebutBase);
+				  			$erreur['soirFin'] = HoraireEmployeeDAO::heureminute($oui_soirFinBase);
 				  			MySQLManager::close();
 				  			return $erreur;
 				  		}
@@ -477,8 +483,8 @@ class HoraireEmployeeDAO {
 			  			$erreur['coupures'] = 0;
 			  			$erreur['jour'] = $dateDay;
 			  			$erreur['message'] = $msgInvalide;
-			  			$erreur['heureDebut'] = $oui_matinDebutBase;
-			  			$erreur['heureFin'] = $oui_soirFinBase;
+			  			$erreur['heureDebut'] = HoraireEmployeeDAO::heureminute($oui_matinDebutBase);
+			  			$erreur['heureFin'] = HoraireEmployeeDAO::heureminute($oui_soirFinBase);
 			  			MySQLManager::close();
 			  			return $erreur;
 			  		}
@@ -493,10 +499,10 @@ class HoraireEmployeeDAO {
 			  			$erreur['coupures'] = 1;
 			  			$erreur['jour'] = $dateDay;
 			  			$erreur['message'] = $msgInvalide;
-			  			$erreur['matinDebut'] = $oui_matinDebut;
-			  			$erreur['matinFin'] = $oui_matinFin;
-			  			$erreur['soirDebut'] = $oui_soirDebut;
-			  			$erreur['soirFin'] = $oui_soirFin;
+			  			$erreur['matinDebut'] = HoraireEmployeeDAO::heureminute($oui_matinDebut);
+			  			$erreur['matinFin'] = HoraireEmployeeDAO::heureminute($oui_matinFin);
+			  			$erreur['soirDebut'] = HoraireEmployeeDAO::heureminute($oui_soirDebut);
+			  			$erreur['soirFin'] = HoraireEmployeeDAO::heureminute($oui_soirFin);
 			  			MySQLManager::close();
 			  			return $erreur;
 			  		}

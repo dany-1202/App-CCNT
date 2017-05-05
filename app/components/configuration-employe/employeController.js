@@ -32,7 +32,7 @@ ctrlCCNT.controller('employeController', function($timeout, $rootScope, $scope, 
 	  		var $promise = $http.post('assets/php/supEmployeeAPI.php', data);
 	  		$promise.then(function (message) {
 	  			if (message.data) {
-	  				NotifService.success("Suppression d'employé", "L'employé : " + nom + " " + prenom + " a été supprimé");
+	  				NotifService.success("Suppression d'employé", "L'employé : " + nom + " " + prenom + " a été supprimé avec succès");
 	  			} else {
 	  				NotifService.error("Suppression d'employé", "L'employé : " + nom + " " + prenom + " n'a pu étre supprimé");
 	  			}

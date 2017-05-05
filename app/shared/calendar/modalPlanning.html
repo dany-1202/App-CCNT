@@ -47,7 +47,7 @@
 							<h3 style="color:#c0392b">Rappel Ouverture Établissement</h3>
 							<p style="color:#e74c3c; font-weight: normal">Pour rappel, votre établissement est ouvert le <strong>{{errorJour}}</strong><br> {{ouvertures}}</p>
 							<div class="text-center">
-								<button class="uk-button uk-button-text" style="margin-right: 25px"> Autoriser </button> <button class="uk-button uk-button-text"> Corriger </button>
+								<button class="uk-button uk-button-text" ng-click="validateHour()" style="margin-right: 25px"> Autoriser </button> <button class="uk-button uk-button-text" ng-click="scope.showHeureCorriger($event)"> Corriger </button>
 							</div>
 						</div>
 					</div>
