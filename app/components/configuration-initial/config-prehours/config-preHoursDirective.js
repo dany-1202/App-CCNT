@@ -217,7 +217,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 						if (selectedDate == Const.ANNULER) {
 							objHour.soir.debut = Const.HOUR_OPEN;
 							objHour.soir.fin = Const.HOUR_END;
-							$scope.showDivOtherHours();
+							//$scope.showDivOtherHours();
 						} else {
 							
 							if (objHour.soir.fin != Const.HOUR_END && !DateFactory.validateHour(selectedDate, objHour.soir.fin)) {
@@ -315,6 +315,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 					 		} else {
 
 					 			if (objHour.matin.debut != Const.HOUR_OPEN) { // Si c'est le jour suivant
+					 				/*
 					 				if (selectedDate.getHours() >= 0 && selectedDate.getHours() <= objHour.matin.debut.getHours()) {
 					 					if (selectedDate.getHours() == objHour.matin.debut.getHours()) { // Si même heure
 						 					if (selectedDate.getMinutes() > objHour.matin.debut.getMinutes()) { // Comparer les minutes
@@ -325,9 +326,8 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 						 					NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.matin.debut) + "</span> du jour même !"); 
 					 						return;
 						 				}
-					 				}
-					 				selectedDate = selectedDate.setDate(objHour.matin.debut.getDate() + 1); // Je rajoute un jour
-					 				selectedDate = new Date(selectedDate); 
+					 				}*/
+					 				
 
 				 				} else if (selectedDate.getHours() < 12) { // Si je suis dans le matin et que l'heure que j'ai séléctionné et plus grande que celle du demain
 				 					if (objSuiv.matin.debut != Const.HOUR_OPEN) {
@@ -356,27 +356,31 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 				 			}
 
 					 		/****************************************************************************\
-								Contrôler si la date est supérieur à matin fin ! Sinon on la rejette 
-								\****************************************************************************/
+							Contrôler si la date est supérieur à matin fin ! Sinon on la rejette 
+							\****************************************************************************/
 
-								if (index == 6) {
-								if (selectedDate.getHours() >= 0 && selectedDate.getHours() <= objSuiv.matin.debut.getHours()) { // Si c'est le jour suivant
-					 				if (selectedDate.getHours() == objSuiv.matin.debut.getHours()) { // Si même heure
-					 					if (selectedDate.getMinutes() > objSuiv.matin.debut.getMinutes()) { // Comparer les minutes
-					 						console.log('Horaire lendemain');
-					 						NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être inférieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objSuiv.matin.debut) + "</span> de " + objSuiv.day + " !"); 
-					 						//$scope.showDivOtherHours();
-					 						return;		 						
-					 					}
-					 				}
-					 			} else {
-					 				if (!DateFactory.validateHour(objHour.matin.debut, selectedDate)) {
-					 					/* Date invalide */
-					 					objHour.soir.fin = Const.HOUR_OPEN;
-					 					NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.matin.debut) + "</span> du jour même"); 
-					 					return;
-					 				}
-					 			}
+							if (index == 6) {
+								if (objSuiv.matin.debut != Const.HOUR_OPEN) {
+									if (selectedDate.getHours() >= 0 && selectedDate.getHours() <= objSuiv.matin.debut.getHours()) { // Si c'est le jour suivant
+						 				if (selectedDate.getHours() == objSuiv.matin.debut.getHours()) { // Si même heure
+						 					if (selectedDate.getMinutes() > objSuiv.matin.debut.getMinutes()) { // Comparer les minutes
+						 						console.log('Horaire lendemain');
+						 						NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être inférieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objSuiv.matin.debut) + "</span> de " + objSuiv.day + " !"); 
+						 						//$scope.showDivOtherHours();
+						 						return;		 						
+						 					}
+						 				}
+						 			} else {
+
+						 				if (!DateFactory.validateHour(objHour.matin.debut, selectedDate)) {
+						 					/* Date invalide */
+						 					objHour.soir.fin = Const.HOUR_OPEN;
+						 					NotifService.error('Horaire invalide', "L'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(objHour.matin.debut) + "</span> du jour même"); 
+						 					return;
+						 				}
+						 			}
+								}
+							
 					 		} else {
 					 			if (objSuiv.matin.debut != Const.HOUR_OPEN) {
 					 				if (!DateFactory.validateHour(selectedDate, objSuiv.matin.debut)) {
