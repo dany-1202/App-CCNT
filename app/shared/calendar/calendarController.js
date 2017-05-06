@@ -1,7 +1,7 @@
 
 (function(){
 
-var appCal = angular.module('ctrlCCNT');
+	var appCal = angular.module('ctrlCCNT');
 
 /* 
 * Contrôleur de l'application - calendarController
@@ -148,7 +148,8 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 		  	var heureDebut = getTimeDate(objDate.startsAt);
 		  	var heureFin = getTimeDate(objDate.endsAt);
 		  	var dateDebut = DateFactory.getDateBDD(objDate.startsAt);
-
+		  	console.log(args);
+		  	console.log(event);
 		  	UIkit.modal.confirm('Voulez vous vraiment supprimer cet horaire de ' + person.nom, {center: true}).then(function() {
 		  		var $req = $http.post("assets/php/supHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': person.id, 'hor_id': objDate.id});
 		  		$req.then(function (message) {
@@ -452,6 +453,7 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	\*****************************************************************************************/
 	vm.eventClicked = function(event) {
 		vm.eventCurrent = event;
+		console.log(event);
 		$mdDialog.show({
 			controller: DialogController,
 			templateUrl: 'app/shared/calendar/modalInfoPlanning.html',
@@ -461,18 +463,47 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 			fullscreen: true,
 			multiple:true
 		})
-		.then(function(answer) {
-			$scope.status = 'You said the information was "' + answer + '".';
-		}, function() {
-			$scope.status = 'You cancelled the dialog.';
-		});
+		.then(function(answer) {}, function() {});
 	};
+
 	function DialogController($scope, $mdDialog) {
 		$scope.event = angular.copy(vm.eventCurrent);
+		$scope.eventDeleted = false;
+		var actions = [{
+			label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+			onClick: function(args, event) {
+			  	var person = getInfoEvent(args.calendarEvent.title);
+			  	var objDate = args.calendarEvent;
+			  	var heureDebut = getTimeDate(objDate.startsAt);
+			  	var heureFin = getTimeDate(objDate.endsAt);
+			  	var dateDebut = DateFactory.getDateBDD(objDate.startsAt);
+
+			  	UIkit.modal.confirm('Voulez vous vraiment supprimer cet horaire de ' + person.nom, {center: true}).then(function() {
+			  		var $req = $http.post("assets/php/supHoraireEmployeeAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': person.id, 'hor_id': objDate.id});
+			  		$req.then(function (message) {
+			  			console.log(message);
+			  			if (message.data != null) {
+			  				vm.events.splice(vm.eventCurrent.calendarEventId, 1);
+			  				$scope.events.splice(args.calendarEvent.calendarEventId, 1);
+			  				$scope.eventDeleted = true;
+			  				NotifService.success('Suppression Horaire', "L'horaire : " + dateDebut + " de l'employé : " + person.nom + " " + person.prenom + " a été supprimé avec succès");
+			  				var $res2 = $http.post("assets/php/sendPushNouveauPlanningAPI.php", {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': person.id, type_push: 'modif'});
+			  				$res2.then(function (message) {
+			  					console.log(message);
+			  				});
+			  			} else {
+			  				NotifService.success('Suppression Horaire', "L'horaire n'a pas pu être supprimé");
+			  			}
+			  		}); 
+			  	}, function () {return;});
+		  	}     
+		}];
 		$scope.events = [];
+		$scope.event.actions = actions;
 		$scope.events.push($scope.event);
 		$scope.calendarView = 'day';
 		$scope.isTwoDays = ($scope.event.endsAt.getDate() > $scope.event.startsAt.getDate()) ? true : false;
+
 
 		$scope.hide = function() {$mdDialog.hide();};
 		$scope.cancel = function() {$mdDialog.cancel();};
@@ -1114,86 +1145,86 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 			
 			var isHoursInOpenning = function (heureDebut, heureFin, id, date) {
 				var heureDebutS1 = heureDebut.getHours()+":"+heureDebut.getMinutes()+":00";
-	  			var heureFinS1 = heureFin.getHours() +":"+heureFin.getMinutes()+":00";
-		 		var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD($scope.event.startsAt), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1};
-		 		var $res = $http.post('assets/php/checkHoraireReadyToModify.php', data);
-		 		$res.then(function(message) {
-		 			console.log(message);
-		 			var objet = message.data;
-		 			var res = null;
-		 			if (!objet.valide) {
-		 				$scope.errorHoraire = true;
-		 				var res = DateFactory.getJourById(objet.jour);
-		 				$scope.errorJour = res;
-		 				$scope.ouvertures = (objet.coupures === 1 ? (' Matin: ' + objet.matinDebut + ' - ' + objet.matinFin + ' | Soir: ' + objet.soirDebut + ' - ' + objet.soirFin) : (' Début: ' + objet.heureDebut + ' | Fin: ' + objet.heureFin));
-		 				NotifService.error('Heures Hors-Ouverture Établissement', objet.message);
-		 				res = (id == 1 || id == 3) ? Const.HOUR_OPEN : Const.HOUR_END;
-		 			} else {
-		 				$scope.errorHoraire = false;
-		 				res = date;
-		 			}
-		 			switch(id) { 
-		 				case 1:
-			 				$scope.heureDebut1 = res;
-			 				$scope.hourToValidate = {id : 1, hour: date};
-			 				break;
-		 				case 2:
-			 				$scope.heureFin1 = res;
-			 				$scope.hourToValidate = {id : 2, hour: date};
-			 				break;
-		 				case 3:
-			 				$scope.heureDebut2 = res;
-			 				$scope.hourToValidate = {id : 3, hour: date};
-			 				break;
-		 				case 4:
-			 				$scope.heureFin2 = res;
-			 				$scope.hourToValidate = {id : 4, hour: date};
-			 				break;
-		 			}
-		 		});
+				var heureFinS1 = heureFin.getHours() +":"+heureFin.getMinutes()+":00";
+				var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'), 'per_id': $scope.myPerson, 'date': DateFactory.getDateBDD($scope.event.startsAt), 'heureDebut': heureDebutS1, 'heureFin': heureFinS1};
+				var $res = $http.post('assets/php/checkHoraireReadyToModify.php', data);
+				$res.then(function(message) {
+					console.log(message);
+					var objet = message.data;
+					var res = null;
+					if (!objet.valide) {
+						$scope.errorHoraire = true;
+						var res = DateFactory.getJourById(objet.jour);
+						$scope.errorJour = res;
+						$scope.ouvertures = (objet.coupures === 1 ? (' Matin: ' + objet.matinDebut + ' - ' + objet.matinFin + ' | Soir: ' + objet.soirDebut + ' - ' + objet.soirFin) : (' Début: ' + objet.heureDebut + ' | Fin: ' + objet.heureFin));
+						NotifService.error('Heures Hors-Ouverture Établissement', objet.message);
+						res = (id == 1 || id == 3) ? Const.HOUR_OPEN : Const.HOUR_END;
+					} else {
+						$scope.errorHoraire = false;
+						res = date;
+					}
+					switch(id) { 
+						case 1:
+						$scope.heureDebut1 = res;
+						$scope.hourToValidate = {id : 1, hour: date};
+						break;
+						case 2:
+						$scope.heureFin1 = res;
+						$scope.hourToValidate = {id : 2, hour: date};
+						break;
+						case 3:
+						$scope.heureDebut2 = res;
+						$scope.hourToValidate = {id : 3, hour: date};
+						break;
+						case 4:
+						$scope.heureFin2 = res;
+						$scope.hourToValidate = {id : 4, hour: date};
+						break;
+					}
+				});
 			}
 
 			$scope.showHeuresDebutSer1 = function(ev) {
-			 	$mdpTimePicker($scope.heureDebut1 == Const.HOUR_OPEN ? DateFactory.matinDebut : $scope.heureDebut1, {
-			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
-			 	}).then(function(selectedDate) {
-			 		if (selectedDate == Const.ANNULER) { $scope.heureDebut1 = Const.HOUR_OPEN; return; }
-			 		
-			 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-			 		if ($scope.heureFin1 != Const.HOUR_END) {
-			 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
-			 			if(date >= dateFin){
-		   					NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN_AFTER_END);
-		   					return;
-			 			}
-			 		}
-			 		if ($scope.heureFin1 != Const.HOUR_END) {
-			 			isHoursInOpenning(date, $scope.heureFin1, 1, date);
-			 		} else {
-			 			$scope.heureDebut1 = date;
-			 		}
-			 		
-			 	});
+				$mdpTimePicker($scope.heureDebut1 == Const.HOUR_OPEN ? DateFactory.matinDebut : $scope.heureDebut1, {
+					targetEvent: ev,
+					parent: angular.element(document.body.parentElement)
+				}).then(function(selectedDate) {
+					if (selectedDate == Const.ANNULER) { $scope.heureDebut1 = Const.HOUR_OPEN; return; }
+
+					var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+					if ($scope.heureFin1 != Const.HOUR_END) {
+						var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
+						if(date >= dateFin){
+							NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN_AFTER_END);
+							return;
+						}
+					}
+					if ($scope.heureFin1 != Const.HOUR_END) {
+						isHoursInOpenning(date, $scope.heureFin1, 1, date);
+					} else {
+						$scope.heureDebut1 = date;
+					}
+
+				});
 			};
 			
 			$scope.showHeuresFinSer1 = function(ev) {
-			 	$mdpTimePicker($scope.heureFin1 == Const.HOUR_END ? DateFactory.matinFin : $scope.heureFin1, {
-			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
-			 	}).then(function(selectedDate) {
-			 		if (selectedDate == Const.ANNULER) { $scope.heureFin1 = Const.HOUR_END; return; }
-			 		
-			 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-			 		if ($scope.heureDebut2 != Const.HOUR_OPEN) {
-			 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
-	 					if(date >= dateFin){
-			   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_FIN1_AFTER_OPEN2);
-			   				return;
-			 			}
-			 		} else {
+				$mdpTimePicker($scope.heureFin1 == Const.HOUR_END ? DateFactory.matinFin : $scope.heureFin1, {
+					targetEvent: ev,
+					parent: angular.element(document.body.parentElement)
+				}).then(function(selectedDate) {
+					if (selectedDate == Const.ANNULER) { $scope.heureFin1 = Const.HOUR_END; return; }
+
+					var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+					if ($scope.heureDebut2 != Const.HOUR_OPEN) {
+						var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
+						if(date >= dateFin){
+							NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_FIN1_AFTER_OPEN2);
+							return;
+						}
+					} else {
 			 			if ($scope.heureDebut1 != Const.HOUR_OPEN && date <= $scope.heureDebut1) { // Comparer la première heure
-			   				date = moment(date).add(1, 'days').toDate();
+			 				date = moment(date).add(1, 'days').toDate();
 			 			}
 			 		}
 			 		
@@ -1202,33 +1233,33 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 			 		} else {
 			 			$scope.heureFin1 = date;
 			 		}
-					
+
 			 	});
 			};
 			
 			$scope.showHeuresDebutSer2 = function(ev) {
-			 	$mdpTimePicker($scope.heureDebut2 == Const.HOUR_OPEN ? DateFactory.soirDebut : $scope.heureDebut2, {
-			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
-			 	}).then(function(selectedDate) {
-			 		console.log(selectedDate);
-			 		
-			 		if (selectedDate == Const.ANNULER) { $scope.heureDebut2 = Const.HOUR_OPEN; return; }
-			 		
-			 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+				$mdpTimePicker($scope.heureDebut2 == Const.HOUR_OPEN ? DateFactory.soirDebut : $scope.heureDebut2, {
+					targetEvent: ev,
+					parent: angular.element(document.body.parentElement)
+				}).then(function(selectedDate) {
+					console.log(selectedDate);
+
+					if (selectedDate == Const.ANNULER) { $scope.heureDebut2 = Const.HOUR_OPEN; return; }
+
+					var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
 			 		if ($scope.heureFin1 != Const.HOUR_END) { // Comparer la première heure
 			 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin1);
-		   				if (date <= dateFin) {
-			   				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN2_BEFORE_END1);
-			   				return;
+			 			if (date <= dateFin) {
+			 				NotifService.error(Const.TITLE_ERROR_CONFIG, Const.MSG_OPEN2_BEFORE_END1);
+			 				return;
 			 			}
 			 		}
 			 		
 			 		if ($scope.heureFin2 != Const.HOUR_END) { // Comparer la première heure
 			 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureFin2);
-		   				if (date >= dateFin) {
-			   				NotifService.error(Const.TITLE_ERROR_CONFIG,  Const.MSG_OPEN_AFTER_END);
-			   				return;
+			 			if (date >= dateFin) {
+			 				NotifService.error(Const.TITLE_ERROR_CONFIG,  Const.MSG_OPEN_AFTER_END);
+			 				return;
 			 			}
 			 			isHoursInOpenning(date, $scope.heureFin2, 3, date);
 			 		} else {
@@ -1238,65 +1269,65 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 			 	});
 			};
 			$scope.showHeuresFinSer2 = function(ev) {
-			 	$mdpTimePicker($scope.heureFin2 == Const.HOUR_END ? DateFactory.soirFin : $scope.heureFin2, {
-			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
-			 	}).then(function(selectedDate) {
-			 		if (selectedDate == Const.ANNULER) { $scope.heureFin2 = Const.HOUR_END; return; }
-			 		
-			 		var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
-			 		
+				$mdpTimePicker($scope.heureFin2 == Const.HOUR_END ? DateFactory.soirFin : $scope.heureFin2, {
+					targetEvent: ev,
+					parent: angular.element(document.body.parentElement)
+				}).then(function(selectedDate) {
+					if (selectedDate == Const.ANNULER) { $scope.heureFin2 = Const.HOUR_END; return; }
+
+					var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
+
 			 		if (scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
 			 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
 			 			if (date < dateFin) {
 			 				if (scope.heureDebut1 != Const.HOUR_OPEN) {
-				 				if ((date.getHours() == scope.heureDebut1.getHours() && date.getMinutes() >= scope.heureDebut1.getMinutes()) || date.getHours() > scope.heureDebut1.getHours()) {
-				 					NotifService.error(Const.TITLE_ERROR_CONFIG, "L'heure de fermeture est avant celle d'ouverture !");
-			   						return;
-				 				}
+			 					if ((date.getHours() == scope.heureDebut1.getHours() && date.getMinutes() >= scope.heureDebut1.getMinutes()) || date.getHours() > scope.heureDebut1.getHours()) {
+			 						NotifService.error(Const.TITLE_ERROR_CONFIG, "L'heure de fermeture est avant celle d'ouverture !");
+			 						return;
+			 					}
 			 				}
-		 					date = moment(date).add(1, 'days').toDate();
+			 				date = moment(date).add(1, 'days').toDate();
 			 			}
 			 			isHoursInOpenning($scope.heureDebut2, date, 4, date);
 			 		} else {
-						$scope.heureFin2 = date;
+			 			$scope.heureFin2 = date;
 			 		}
 			 	});
 			};
 
 			$scope.showHeureCorriger = function(ev) {
 				switch($scope.hourToValidate.id) { 
-	 				case 1:
-		 				$scope.showHeuresDebutSer1(ev);
-		 				break;
-	 				case 2:
-		 				$scope.showHeuresFinSer1(ev);
-		 				break;
-	 				case 3:
-		 				$scope.showHeuresDebutSer2(ev);
-		 				break;
-	 				case 4:
-		 				$scope.showHeuresFinSer2(ev);
-		 				break;
-	 			}
+					case 1:
+					$scope.showHeuresDebutSer1(ev);
+					break;
+					case 2:
+					$scope.showHeuresFinSer1(ev);
+					break;
+					case 3:
+					$scope.showHeuresDebutSer2(ev);
+					break;
+					case 4:
+					$scope.showHeuresFinSer2(ev);
+					break;
+				}
 			}
 
 			$scope.validateHour = function() {
 				switch($scope.hourToValidate.id) { 
-	 				case 1:
-		 				$scope.heureDebut1 = $scope.hourToValidate.hour;
-		 				break;
-	 				case 2:
-		 				$scope.heureFin1 = $scope.hourToValidate.hour;
-		 				break;
-	 				case 3:
-		 				$scope.heureDebut2 = $scope.hourToValidate.hour;
-		 				break;
-	 				case 4:
-		 				$scope.heureFin2 = $scope.hourToValidate.hour;
-		 				break;
-	 			}
-	 			$scope.errorHoraire = false;
+					case 1:
+					$scope.heureDebut1 = $scope.hourToValidate.hour;
+					break;
+					case 2:
+					$scope.heureFin1 = $scope.hourToValidate.hour;
+					break;
+					case 3:
+					$scope.heureDebut2 = $scope.hourToValidate.hour;
+					break;
+					case 4:
+					$scope.heureFin2 = $scope.hourToValidate.hour;
+					break;
+				}
+				$scope.errorHoraire = false;
 			}
 
 
