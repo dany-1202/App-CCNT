@@ -124,10 +124,10 @@
 				<br class="visible-xs visible-sm">
 				<div class="col-md-12 text-center">
 				   	<div class="uk-button-group btngroup-viewcal">
-		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'year'" ng-click="vm.cellIsOpen = false">Année</button>
-		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'month'" ng-click="vm.cellIsOpen = false">Mois</button>
-		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'week'" ng-click="vm.cellIsOpen = false">Semaine</button>
-		        		<button class="uk-button uk-button-secondary" ng-model="vm.calendarView" uib-btn-radio="'day'" ng-click="vm.cellIsOpen = false">Jour</button>
+		        		<button class="uk-button uk-button-secondary" ng-class="{'active-view-cal' : vm.calendarView == 'year' }" ng-model="vm.calendarView" uib-btn-radio="'year'" ng-click="vm.cellIsOpen = false">Année</button>
+		        		<button class="uk-button uk-button-secondary" ng-class="{'active-view-cal' : vm.calendarView == 'month' }" ng-model="vm.calendarView" uib-btn-radio="'month'" ng-click="vm.cellIsOpen = false">Mois</button>
+		        		<button class="uk-button uk-button-secondary" ng-class="{'active-view-cal' : vm.calendarView == 'week' }" ng-model="vm.calendarView" uib-btn-radio="'week'" ng-click="vm.cellIsOpen = false">Semaine</button>
+		        		<button class="uk-button uk-button-secondary" ng-class="{'active-view-cal' : vm.calendarView == 'day' }" ng-model="vm.calendarView" uib-btn-radio="'day'" ng-click="vm.cellIsOpen = false">Jour</button>
 		    		</div>
 				</div>		
 			</div>

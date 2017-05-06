@@ -17,6 +17,11 @@ div {
     ::selection { background: transparent; color:inherit; }
     ::-moz-selection { background: transparent; color:inherit; }
 }
+
+.active-view-cal {
+    background-color: black!important;
+    color:white!important;
+}
  
 
 
