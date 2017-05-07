@@ -4,7 +4,9 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
-
+.off{
+   pointer-events:none;
+}
 
  /* Ici pour empêcher la sélection dans les divs seulement permis dans les champs textes */
 div {
