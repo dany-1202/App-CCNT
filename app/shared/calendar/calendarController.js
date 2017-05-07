@@ -13,7 +13,6 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	
 	var vm = this; // Je prend la référence de moi-même et je la stocke
 	
-	
 	vm.isOpen = false;
 	vm.selectedMode = 'md-scale';
 	
@@ -127,11 +126,10 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	  		$mdDialog.show({
 	  			controller: CreatePlanningController,
 	  			templateUrl: 'app/shared/calendar/modalModifPlanning.html',
-	  			parent: angular.element(document.body),
+	  			parent: angular.element(document.body.parentElement),
 	  			targetEvent: event,
 	  			clickOutsideToClose:true,
 	  			fullscreen: true,
-	  			multiple:true,
 	  		})
 	  		.then(function(answer) {
 	  			NotifService.success('Moditication Réussi', 'L\'horaire a été modifié avec succès !');
@@ -1054,6 +1052,7 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 			vm.pauseService1 = $scope.pauseService1;
 			vm.pauseService2 = $scope.pauseService2;
 			vm.personsSel = $scope.personsSel;
+
 			$mdDialog.show({
 				controller: CreatePlanningController,
 				templateUrl: 'app/shared/calendar/modalPlanning.html',
@@ -1061,7 +1060,6 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 				targetEvent: event,
 				clickOutsideToClose:true,
 				fullscreen: true,
-				multiple:true,
 			})
 			.then(function(answer) {
 
@@ -1070,6 +1068,7 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 		}
 
 		function CreatePlanningController($scope, $mdDialog, $timeout, $mdpTimePicker, $filter, Const) {
+
 			$scope.scope = $scope;
 			$scope.hourToValidate = {};
 			$scope.modif = vm.modif;
@@ -1395,7 +1394,7 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 	}
 
 	$scope.addHoraire = function (answer) {
-
+		console.log('nombre de fois');
 		if ($scope.event.title != "") {
 			var horaireDeuxJours = false;
 			var dateFin;
@@ -1531,10 +1530,11 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 		$scope.answer = function(answer) {
 			if (answer == 'modif') {
 				$scope.modifHoraire();
-			} else {
+			} else if (answer == 'new'){
 				$scope.addHoraire();
+			} else {
+				$mdDialog.hide('');
 			}
-	      	//$mdDialog.hide(answer);
 	      };
 	   }
 

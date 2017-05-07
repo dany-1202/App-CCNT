@@ -130,59 +130,12 @@
 			</div>
 		</div>
 		
-		<button style="bottom: 0; position: fixed; width: 50%; background-color: #ECF0F1; color:#222" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="cancel()">
+		<button style="bottom: 0; position: fixed; width: 50%; background-color: #ECF0F1; color:#222" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="scope.cancel()">
 			Annuler
 		</button>
-		<button style="bottom: 0; right: 0;position: fixed; width: 50%" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('')">
+		<button style="bottom: 0; right: 0;position: fixed; width: 50%" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="scope.answer('new')" >
 			Ajouter
 		</button>
 		
 	</md-content>
 </md-dialog>
-
-        <!--
-        <div class="row">
-          <div class="col-lg-12">
-            
-            <div class="text-center">
-              <md-button ng-model="heureDebut1" class="btnS md-raised" ng-click="showHeureDebutSer1($event, $index)" aria-label="show picker">
-               <strong>{{ heureDebut1 | date:'HH:mm' }}</strong>
-               <i class="espace-avant fa fa-clock-o"></i>
-              </md-button>
-              <md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer1($event, $index)" aria-label="show picker">
-                 <strong>{{ heureFin1 | date:'HH:mm' }}</strong>
-                 <i class="espace-avant fa fa-clock-o"></i>
-              </md-button>
-            </div>
-            <div class="text-center">
-              <label class="uk-form-label" for="form-stacked-select">Pause</label>
-              <div class="uk-form-controls">
-                <select style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="pauseService1" ng-options="p.name for p in nbPause"/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--
-        <div class="row">
-          <div class="col-lg-12">
-              <h3>Service 2  
-                  <label class="right" style="font-size: 1em"><input class="uk-checkbox" type="checkbox" ng-model="absent2" ng-change="changeAb2();validationAbsence()"/> Absent</label>
-              </h3>
-              <div class="text-center">
-                <md-button ng-model="heureDebut2" class="btnS md-raised" ng-click="showHeureDebutSer2($event, $index)" aria-label="show picker">
-                  <strong>{{ heureDebut2 | date:'HH:mm' }}</strong>
-                  <i class="espace-avant fa fa-clock-o"></i>
-                </md-button>
-                <md-button ng-model="heureFin2" class="btnS md-raised" ng-click="showHeureFinSer2($event, $index)" aria-label="show picker">
-                  <strong>{{ heureFin2 | date:'HH:mm' }}</strong>
-                  <i class="espace-avant fa fa-clock-o"></i>
-                </md-button>
-              </div>
-              <div class="text-center">
-                  <label class="uk-form-label" for="form-stacked-select">Pause</label>
-                  <div class="uk-form-controls">
-                    <select style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="pauseService2" ng-options="p.name for p in nbPause"/>
-                  </div>
-              </div>
-          </div>
-        </div> -->

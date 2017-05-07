@@ -8,7 +8,6 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 		//transclude : true, // Inclu la vue au template déjà existant
 
 		link: function(scope, element, attrs, $timeout) {
-			
 			scope.event = {};
 			scope.errorHoraire = false;
 			scope.errorJour = '';

@@ -35,7 +35,7 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	    	{id: 6, day: 'Samedi', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
 	    	{id: 0, day: 'Dimanche', matin : {debut: Const.OPEN, fin: Const.END}, soir : {debut: Const.OPEN, fin: Const.END}, pause: {existe : false},  nbHours : 0},
  	]
- 	
+
  	state.hoursWithPause = [
 	       	{id: 1, day: 'Lundi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, pause: {existe : true}, nbHours : 0},
 	    	{id: 2, day: 'Mardi', matin : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END}, soir : {debut: Const.HOUR_OPEN, fin: Const.HOUR_END},  pause:{existe : true}, nbHours : 0},
@@ -99,6 +99,17 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	}
 
 	state.tabCalendars = [{id: 0, name: Const.HORAIREBASE, period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod:true, choix: null}];
+
+
+	state.getCalendarDefault = function () {
+		return {id: 0, name: Const.HORAIREBASE, period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod:true, choix: null};
+	}
+
+	state.changeDefaultTabCalendars = function() {
+		state.tabCalendars = [{id: 0, name: Const.HORAIREBASE, period: {debut: "", fin: ""}, hours: state.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod:true, choix: null}];
+	}
+
+
 
 	state.getTabCalPrec = function (pos) {
 		var hours = angular.copy(state.tabCalendars[pos].hours);

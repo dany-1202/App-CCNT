@@ -12,14 +12,14 @@
 
 				$scope.closeAddOtherHours = function () {
 					if ($scope.isCurrentInfoCalCorrect()) {
-	    				$scope.affOtherHours = false;
-	    				$scope.affDefinitif = false;
-	    				State.changeAffDefinitif();
+		    				$scope.affOtherHours = false;
+		    				$scope.affDefinitif = false;
+		    				State.changeAffDefinitif();
 						$scope.affModifOtherHours1 = false;
 						$scope.affModifOtherHours2 = false;
-		    		} else {
-		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
-		    		}
+			    		} else {
+			    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
+			    		}
 				}
 
 				$scope.showAffModifOtherHours = function () {
@@ -28,9 +28,9 @@
 					$scope.affModifOtherHours2 = true;
 					$scope.affCalendar = false;
 					var pos = $scope.tabCalendars.length;
-	    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: false, errorPeriod: true, choix: angular.copy($scope.tabCalendars[0].choix)});
-	    			$scope.cal = $scope.tabCalendars[pos];
-	    			$scope.affCalendar = true;
+		    			$scope.tabCalendars.push({name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: false, errorPeriod: false, choix: angular.copy($scope.tabCalendars[0].choix)});
+		    			$scope.cal = $scope.tabCalendars[pos];
+		    			$scope.affCalendar = true;
 				}
 
 				$scope.showDivOtherHours = function () {
@@ -49,12 +49,7 @@
 						$scope.affModifOtherHours = true; // Div enregistrer infos de la semaine de base
 						$scope.affModifOtherHours1 = false; // Div question autre horaires
 						$scope.affModifOtherHours2 = false; // Div enregistrer autre horaire
-					}/* else {
-						$scope.affModifOtherHours = false;
-						$scope.affModifOtherHours1 = false;
-						$scope.affModifOtherHours2 = true;
-						$scope.affCalendar = false;
-					} */
+					}
 				}
 				/*///////////////////////////////////////////////////////////////////////////////////////*/
 			}

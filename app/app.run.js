@@ -36,11 +36,11 @@ ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionServi
 					if (newUrl.indexOf(routeSansLogin[0].split('/')[1]) == -1) {
 						UIkit.modal.confirm('Attention si vous quittez la configuration intiale, toutes les données enregistrées seront perdues, souhaitez-vous continuer ?', {center: true}).then(function() {
 					    	//onRouteChangeOff(); //Stop listening for location changes
-					    	essai = 2;
-					    	var obj = $location.url(newUrl).$$hash.split('!')[1];
-	        				$location.path(obj);//Go to page they're interested in
-	        				$rootScope.$apply();
-	        				essai = 1;
+					    		essai = 2;
+					    		var obj = $location.url(newUrl).$$hash.split('!')[1];
+			        				$location.path(obj);//Go to page they're interested in
+			        				$rootScope.$apply();
+			        				essai = 1;
 						}, function () {});
 						event.preventDefault();
 	  					return;
