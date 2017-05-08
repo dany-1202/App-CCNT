@@ -438,48 +438,48 @@
 				if ($scope.validation()) {
 					if ($rootScope.myEmp == null) { // Lancer l'insertion de l'employé
 						$scope.myEmp.dateIn = DateFactory.toDateTimeBDD($scope.myEmp.dateIn); // Ajouter l'heure pour ajouter correctement
-					$scope.myEmp.dateNaissance = DateFactory.toDateTimeBDD($scope.myEmp.dateNaissance);
-					if ($scope.myEmp.dateOut != null || $scope.myEmp.dateOut != '') {
-						$scope.myEmp.dateOut = DateFactory.toDateTimeBDD($scope.myEmp.dateOut);
-					}
-					insertionEmploye();
+						$scope.myEmp.dateNaissance = DateFactory.toDateTimeBDD($scope.myEmp.dateNaissance);
+						if ($scope.myEmp.dateOut != null || $scope.myEmp.dateOut != '') {
+							$scope.myEmp.dateOut = DateFactory.toDateTimeBDD($scope.myEmp.dateOut);
+						}
+						insertionEmploye();
 					} else { // Lancer la modification de l'employé 
-					modificationEmploye();
+						modificationEmploye();
+					}
+				} else {
+					$('#addEmp').text("Enregistrer");
+					$('#addEmp').removeClass("loading");
+					NotifService.error('Champs invalides', 'Tous les champs ne sont pas valides, veuillez les compléter ou modifier');
 				}
-			} else {
-				$('#addEmp').text("Enregistrer");
-				$('#addEmp').removeClass("loading");
-				NotifService.error('Champs invalides', 'Tous les champs ne sont pas valides, veuillez les compléter ou modifier');
+			}
+
+			// permet d'afficher les champs en plus si on choisi un certain type d'horaire pour l'employé
+			$scope.changementHoraire = function(){
+				if($scope.monHoraire.name == "Mensuel"){
+					$scope.showMen = true; 
+					$scope.showSpe = false;
+				} else if($scope.monHoraire.name == "Spécial"){
+					$scope.showMen = false; 
+					$scope.showSpe = true;
+				} else {
+					$scope.showMen = false; 
+					$scope.showSpe = false;
+				};
+				
+			};
+
+			$scope.changementGenre = function() {
+				console.log($scope.genres[0]);
+				console.log($scope.genres[1]);
 			}
 		}
-
-		// permet d'afficher les champs en plus si on choisi un certain type d'horaire pour l'employé
-		$scope.changementHoraire = function(){
-			if($scope.monHoraire.name == "Mensuel"){
-				$scope.showMen = true; 
-				$scope.showSpe = false;
-			} else if($scope.monHoraire.name == "Spécial"){
-				$scope.showMen = false; 
-				$scope.showSpe = true;
-			} else {
-				$scope.showMen = false; 
-				$scope.showSpe = false;
-			};
-			
-		};
-
-		$scope.changementGenre = function() {
-			console.log($scope.genres[0]);
-			console.log($scope.genres[1]);
-		}
-	}
 	
-	if ($scope.postaux == null) {
-		Postaux.query(function(data) {
-			$scope.postaux = data;
-			init();
-		});
-	} 
+		if ($scope.postaux == null) {
+			Postaux.query(function(data) {
+				$scope.postaux = data;
+				init();
+			});
+		} 
 
 	});
 })();

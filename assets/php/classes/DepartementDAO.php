@@ -29,13 +29,12 @@ class DepartementDAO {
 
 	public static function updateDepartment ($data) {
 	  	$db = MySQLManager::get();
-	  	$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_img_no`, `dep_eta_id`) VALUES (?, ?, ?)";
+	  	$query = "UPDATE `ccn_departement` SET `dep_nom`=?,`dep_img_no`=? WHERE dep_id = ? AND dep_eta_id = ?";
 	  	if ($stmt = $db->prepare($query)) {
-	  		$stmt->bind_param('sii', $data['nom'], $data['img'], $data['noEta']);
+	  		$stmt->bind_param('siii', $data['nom'], $data['img'], $data['id'], $data['noEta']);
 	  		$stmt->execute();
-	  		$dep_id = $stmt->insert_id;
 	  		MySQLManager::close();
-	  		return $dep_id;
+	  		return $data['id'];
 	  	}
 	  	MySQLManager::close();
 	  	return false;
