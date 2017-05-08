@@ -354,6 +354,41 @@ class EmployeeDAO {
 			return false;
 	} // updatePasswordEmploye
 
+	//retourne les employés qui bosse pour un jour et departements recu
+	public static function getEmployePourJour ($date,$idDepartement) {
+		$db = MySQLManager::get();
+		$query = "SELECT DISTINCT(per_id), per_nom, per_prenom, hop_date, dep_nom
+		FROM ccn_personne
+		JOIN ccn_travail ON per_id = tra_per_id
+		JOIN ccn_horairepersonne ON tra_hop_id = hop_id
+		JOIN ccn_possede ON per_id = pos_per_id
+		JOIN ccn_departement ON dep_id = pos_dep_id
+		WHERE dep_id = ? and hop_date = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('is', $idDepartement,$date);
+			$stmt->execute();
+			$stmt->bind_result($per_id, $per_nom, $per_prenom, $hop_date, $dep_nom);
+			$array = array();
+			$objet = [];
+			while($stmt->fetch()) {
+				$objet = [];
+				$objet['perId'] = $per_id;
+				$objet['perNom'] = $per_nom;
+				$objet['perPrenom'] = $per_prenom;
+				$objet['hopDate'] = $hop_date;
+				$objet['depNom'] = $dep_nom;
+				$objet['depId'] = $idDepartement;
+
+		    $array[] = $objet; // L'ajouter au tableau d'objet
+		 }
+		 $stmt->close();
+		 MySQLManager::close();
+		 return $array;
+		}
+		MySQLManager::close();
+		return null;
+	}
+
 }
 
 ?>
