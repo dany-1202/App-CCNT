@@ -21,8 +21,6 @@
 				var employe = message.data[x];
 				$scope.departements[id].tab.push(employe);
 			};
-			
-			//console.log($scope.employeForDep);
 		}
 
 		$scope.getEmployesPourJour = function(){

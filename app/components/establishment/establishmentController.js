@@ -17,7 +17,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 	$scope.nbPause = [];
 	for (var nb = 0; nb <= 60; nb+=5) {$scope.nbPause.push({name: nb + ' minutes', value:nb});}
 
-	var data = {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token')};
+		var data = {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token')};
 	/* Regarde si les nopostaux ont déjà été chargé ou pas */
 	if (angular.isUndefined($scope.postaux)) {Postaux.query(function(data) {$scope.postaux = data;});}
 
@@ -117,16 +117,16 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 
 	/* Définition des informations nécessaires pour l'établissement */
 	$scope.infoEtablissement = [
-		{ id: 1, type: 'text', name: Const.NAME, value: "", min: 2, max: 40, error: false, message: Const.ERRORNAME, icon:Const.INAME},
-		{ id: 2, type: 'text', name: Const.ADRESSE, value: "", min: 2, max: 50, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSE},
-		{ id: 3, type: 'text', name: Const.ADRESSEPLUS, value: "", min: 0, max: 100, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSEPLUS},
-		{ id: 4, type: 'text', name: Const.POST, value: {no: "", nom: ""}, min: 4, max: 4, error: false, message: Const.ERRORPOST, icon: Const.IPOST},
+	{ id: 1, type: 'text', name: Const.NAME, value: "", min: 2, max: 40, error: false, message: Const.ERRORNAME, icon:Const.INAME},
+	{ id: 2, type: 'text', name: Const.ADRESSE, value: "", min: 2, max: 50, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSE},
+	{ id: 3, type: 'text', name: Const.ADRESSEPLUS, value: "", min: 0, max: 100, error: false, message: Const.ERRORADRESS, icon: Const.IADRESSEPLUS},
+	{ id: 4, type: 'text', name: Const.POST, value: {no: "", nom: ""}, min: 4, max: 4, error: false, message: Const.ERRORPOST, icon: Const.IPOST},
 		//{ id: 5, type: 'text', name: Const.LOCATION, value: "", min: 2, max: 30, error: false, message: Const.LOCATION },
 		{ id: 6, type: 'tel', name: Const.PHONERES, value: "", min: 10, max: 10, error: false, message: Const.ERRORPHONE, icon: Const.IPHONERES},
 		{ id: 7, type: 'tel', name: Const.PHONEDIR, value: "", min: 10, max: 10, error: false, message: Const.ERRORPHONE, icon: Const.IPHONEDIR},
 		{ id: 8, type: 'email', name: Const.EMAIL, value: "", min: 6, max: 30, error: false, message: Const.ERROREMAIL, icon:Const.IEMAIL },
 		{ id: 9, type: 'text', name: Const.URL, value: "", min: 0, max: 30, error: false, message: Const.ERRORURL, icon:Const.IURL },
-	];
+		];
 
 		$scope.ccntHeure = [
 		{ id: 1, name: "42 Heures", value: Const.CCNT1},
@@ -151,6 +151,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 
 		$scope.getInfosEstablishment();
 		$scope.prehours = [];
+		$scope.preHoursBDD = [];
 
 		var getListe = function(hour, tableau) {
 			var liste = [];
@@ -206,22 +207,26 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 			for (var i = 0; i < $scope.depart.length; i++) {
 				var data = {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), dep_id: $scope.depart[i].id};
 				PromiseDAO.getPreHours(data).then(function(res) {
-					for (var i = 0; i < res.data.length; i++) {
-						var data = res.data[i];
-						for (var i = 0; i < data.length; i++) {
-							if (!data[i].liste) {
-								var liste = getListe(data[i], res.data);
+					for (var c = 0; c < res.data.length; c++) {
+						var data = res.data[c];
+						console.log(data);
+						for (var t = 0; t < data.length; t++) {
+							if (!data[t].liste) {
+								var liste = getListe(data[t], res.data);
 								$scope.prehours.push(
-								{
-									prehours: getCalPreHours(liste), 
-									title: data[i].nom,
-									dep:  getDepById(res.config.data.dep_id),
-									liste : liste,
-								}
+									{
+										prehours: getCalPreHours(liste), 
+										title: data[t].nom,
+										dep:  getDepById(res.config.data.dep_id),
+										liste : liste,
+										state : 'modif',
+										hpr_id : data[t].id,
+									}
 								);
 							}
 						}
 					}
+					$scope.preHoursBDD = angular.copy($scope.prehours);
 				});
 			}
 		}
@@ -456,6 +461,8 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 	}
 
 	$scope.saveEstablishment = function() {
+		$('#saveEsta').text("");
+		$('#saveEsta').addClass("loading");
 		var dataEtablissement = {
 			'nom': $scope.infoEtablissement[0].value,
 			'adresse': $scope.infoEtablissement[1].value,
@@ -473,16 +480,29 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		console.log($scope.hoursCCNTChosen);
 		PromiseDAO.updateEstablishment(dataEtablissement).then(function(res){
 			if (res != -1) {
-				NotifService.success("Changements mis à jour", "Les informations de l'établissement ont été mises à jour");
+				$timeout(function() {
+					$('#saveEsta').append("<i class='fa fa-floppy-o' aria-hidden='true' style='margin-right: 3px'></i> Enregistrer");
+					$('#saveEsta').removeClass("loading");
+					NotifService.success("Changements mis à jour", "Les informations de l'établissement ont été mises à jour");
+				}, 200);
 			} else {
 				NotifService.error("Problème mise à jour", "Les informations de l'établissement n'ont pas pu être mis à jour");
 			}
 		});
 	}
 
-	var isDeleted = function(id) {
-		for (var i = 0; i < $scope.depart.length; i++) {
-			if (id == $scope.depart[i].id) {
+	var isDeleted = function(id, tab) {
+		for (var i = 0; i < tab.length; i++) {
+			if (id == tab.id) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	var isDeletedPreHours = function(id, tab) {
+		for (var i = 0; i < tab.length; i++) {
+			if (id == tab[i].hpr_id) {
 				return false;
 			}
 		}
@@ -494,7 +514,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		for (var i = 0; i < $scope.departBDD.length; i++) {
 			var dep = $scope.departBDD[i];
 			console.log(dep.id);
-			if (isDeleted(dep.id)) {
+			if (isDeleted(dep.id, $scope.depart)) {
 				PromiseDAO.deleteDepartment({ 'id': dep.id, fin: ((i == $scope.departBDD.length - 1) ?1 :0), 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') }).then(function(message){
 					if (message.config.data.fin == 1) {
 						deferred.resolve(message);
@@ -511,35 +531,90 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		return deferred.promise;
 	}
 
-	$scope.saveDepartments = function() {
-		console.log('deps');
-		console.log($scope.idEsta);
-		console.log($scope.departBDD);
-		console.log($scope.depart);
-		for (var i = 0; i < $scope.depart.length; i++) {
-			var department = $scope.depart[i];
-			var dataDep = { 'nom': department.name, 'img': (i + 1), 'noEta': $scope.idEsta, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
-			if (department.state == 'new') {
-				PromiseDAO.insertDepartment(dataDep).then(function(value) {
-					console.log("Insertion Départements");
-					console.log(value);
-				}).then(function(value) {});
-			} else if (department.state == 'modif') {
-				//Modification du département
-				/*
-				PromiseDAO.insertDepartment(dataDep).then(function(value) {
-					console.log("Insertion Départements");
-					console.log(value);
-				}).then(function(value) {}); */
+	var deletePreHoursBDD = function() {
+		var deferred = $q.defer();
+		for (var i = 0; i < $scope.preHoursBDD.length; i++) {
+			var prehour = $scope.preHoursBDD[i];
+			if (isDeletedPreHours(prehour.hpr_id, $scope.prehours)) {
+				console.log('à supprimer');
+				PromiseDAO.supPreHours({ 'hpr_id': prehour.hpr_id, fin: ((i == $scope.preHoursBDD.length - 1) ?1 :0), 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') }).then(function(message){
+					console.log(message);
+					if (message.config.data.fin == 1) {
+						deferred.resolve(message);
+					}
+				}).then(function(error) {
+					deferred.resolve(error);
+				});
+			} else {
+				if (i == $scope.preHoursBDD.length - 1) {
+					deferred.resolve('fin');
+				}
 			}
 		}
-		deleteDepartmentsBDD().then(function(value){
-			$scope.getDepartments();
-		});
+		return deferred.promise;
 	}
 
+	$scope.saveDepartments = function() {
+		$('#saveDeps').text("");
+		$('#saveDeps').addClass("loading");
+		for (var i = 0; i < $scope.depart.length; i++) {
+			var department = $scope.depart[i];
+			var dataDep = {id: department.id, pos: i, 'nom': department.name, 'img': (i + 1), 'noEta': $scope.idEsta, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
+			if (department.state == 'new') {
+				// Insertion du département
+				PromiseDAO.insertDepartment(dataDep).then(function(value) {
+					$scope.depart[value.config.data.pos].id = value.data;
+					$scope.depart[value.config.data.pos].state = 'modif';
+				}).then(function(value) {});
+			} else if (department.state == 'modif') {
+				// Modification du département
+				PromiseDAO.updateDepartment(dataDep).then(function(value) {});
+			}
+		}
+		
+		deleteDepartmentsBDD().then(function(value){
+			//$scope.depart = [];
+			$scope.getDepartments(); // Je récupère les départements de la base !
+			$scope.prehours = [];
+			$timeout(function() {
+				$('#saveDeps').append("<i class='fa fa-floppy-o' aria-hidden='true' style='margin-right: 3px'></i> Enregistrer");
+				$('#saveDeps').removeClass("loading");
+				NotifService.success("Changements mis à jour", "Les départements de votre établissement ont été mis à jour");
+			}, 200);
+		});
+		
+	}
+
+
+
 	$scope.savePreHours = function() {
-		console.log('prehours');
+		$('#savePreHours').text("");
+		$('#savePreHours').addClass("loading");
+		for (var i = 0; i < $scope.prehours.length; i++) {
+			var prehour = $scope.prehours[i];
+			var data = {hpr_id : prehour.hpr_id, pos: i, 'hpr_nom': prehour.title, 'hpr_dep_id': prehour.dep.id, 'prehours': prehour.prehours,'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
+			if (prehour.state == 'new') {
+				PromiseDAO.insertHoursPreConfig(data).then(function(value) {
+					$scope.prehour[value.config.data.pos].hpr_id = value.data;
+					$scope.prehour[value.config.data.pos].state = 'modif';
+				});
+			} else if (prehour.state == 'modif') {
+				console.log(prehour);
+				// Modification du département
+				//PromiseDAO.updateHoursPreConfig(data).then(function(value) {});
+			}
+		}
+		deletePreHoursBDD().then(function(value){
+			console.log(value);
+			//$scope.depart = [];
+			$scope.prehours = [];
+			$scope.getDepartments(); // Je récupère les départements de la base !
+			$timeout(function() {
+				$('#savePreHours').append("<i class='fa fa-floppy-o' aria-hidden='true' style='margin-right: 3px'></i> Enregistrer");
+				$('#savePreHours').removeClass("loading");
+				NotifService.success("Changements mis à jour", "Les horaires pré-configurés ont été mis à jour");
+			}, 200);
+		});
 	}
 
 	$scope.saveHours = function() {

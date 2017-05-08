@@ -11,7 +11,7 @@ class HorairePreconfigureDAO {
 	
 	public static function getHorairePreconfig ($data) {
 		$db = MySQLManager::get();
-      	$query = "SELECT jou_id, jou_sem, jou_heureDebut, jou_heureFin, jou_heureDebutS, jou_heureFinS, jou_pause, jou_pauseS, hpr_id, hpr_nom FROM ccn_horairepreconfig JOIN ccn_contient ON con_hpr_id = hpr_id JOIN ccn_jourpreconfig ON con_jou_id = jou_id WHERE hpr_dep_id = ?";	
+      		$query = "SELECT jou_id, jou_sem, jou_heureDebut, jou_heureFin, jou_heureDebutS, jou_heureFinS, jou_pause, jou_pauseS, hpr_id, hpr_nom FROM ccn_horairepreconfig JOIN ccn_contient ON con_hpr_id = hpr_id JOIN ccn_jourpreconfig ON con_jou_id = jou_id WHERE hpr_dep_id = ?";	
 	  	if ($stmt = $db->prepare($query)) {
 					
 	  		$stmt->bind_param('i', $data['dep_id']);
@@ -96,6 +96,58 @@ class HorairePreconfigureDAO {
 		  		MySQLManager::close();
 				return $jou_id;
 		  	}
+		}
+		MySQLManager::close();
+		return -1;
+	}
+
+
+	public static function deleteJourPreconfig($id){
+		$db = MySQLManager::get();
+		$query = "DELETE FROM `ccn_jourpreconfig` WHERE jou_id = ?";
+  		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $id);
+		  	$stmt->execute();
+		  	$stmt->close();
+		  	MySQLManager::close();
+			return 1;
+		}
+		MySQLManager::close();
+		return -1;
+	}
+
+
+	public static function deleteHorairePreconfig($data) {
+		$db = MySQLManager::get();
+
+		$query = "SELECT jou_id FROM ccn_jourpreconfig JOIN ccn_contient WHERE con_hpr_id = ?";
+	  	if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['hpr_id']);
+		  	$stmt->execute();
+		  	$stmt->bind_result($jou_id);
+		  	$tab = array();
+		  	while ($stmt->fetch()) {
+		  		$tab[] = $jou_id;
+		  	}
+		  	$stmt->close();
+
+			$query = "DELETE FROM `ccn_contient` WHERE con_hpr_id = ?";
+	  		if ($stmt = $db->prepare($query)) {
+				$stmt->bind_param('i', $data['hpr_id']);
+			  	$stmt->execute();
+			  	$stmt->close();
+			  	$query = "DELETE FROM `ccn_horairepreconfig` WHERE hpr_id = ?";
+		  		if ($stmt = $db->prepare($query)) {
+					$stmt->bind_param('i', $data['hpr_id']);
+				  	$stmt->execute();
+				  	$stmt->close();
+				  	foreach ($tab as $key => $val) {
+				  		HorairePreconfigureDAO::deleteJourPreconfig($val);				  	
+				  	}
+				  	MySQLManager::close();
+					return 1;
+				}
+			}
 		}
 		MySQLManager::close();
 		return -1;

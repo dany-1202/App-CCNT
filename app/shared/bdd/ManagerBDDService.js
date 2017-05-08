@@ -43,6 +43,16 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 			});
 			return deferred.promise;
 		},
+		updateDepartment : function(dataDep) {
+			var deferred = $q.defer();
+			var $res = $http.post("assets/php/updateDepartmentAPI.php", dataDep);
+			$res.then(function (data) {
+				deferred.resolve(data);
+			}).then(function (error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
 		getHourPreConfigure: function(tabDeps) {
 			var deferred = $q.defer();
 			
@@ -56,6 +66,26 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 				});
 			}
 
+			return deferred.promise;
+		},
+		insertHoursPreConfig: function(dataPreHours) {
+			var deferred = $q.defer();
+			var $res = $http.post("assets/php/insertHorairePreconfigureAPI.php", dataPreHours);
+			$res.then(function (data) {
+				deferred.resolve(data);
+			}).then(function (error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		updateHoursPreConfig : function(dataPreHours) {
+			var deferred = $q.defer();
+			var $res = $http.post("assets/php/updateHorairePreconfigureAPI.php", dataPreHours);
+			$res.then(function (data) {
+				deferred.resolve(data);
+			}).then(function (error) {
+				deferred.resolve(error);
+			});
 			return deferred.promise;
 		},
 		getAllEmployees : function(data) {
@@ -132,6 +162,16 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 		getPreHours: function(data) {
 			var deferred = $q.defer();
 			$promise = $http.post('assets/php/getHoraireTypePreConfigAPI.php', data);
+			$promise.then(function(message) {
+				deferred.resolve(message);
+			}).then(function(error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
+		supPreHours : function(data) {
+			var deferred = $q.defer();
+			$promise = $http.post('assets/php/supHoraireTypePreConfigAPI.php', data);
 			$promise.then(function(message) {
 				deferred.resolve(message);
 			}).then(function(error) {

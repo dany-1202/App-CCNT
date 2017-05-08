@@ -412,57 +412,58 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 							//ChooseDaysModal.showChooseDays(ev, $scope.prehours);
 						}
 					});
-};
+				};
 
-var isDayInvalide = function (objDay) {
-	return ((objDay.debut != Const.HOUR_OPEN) && (objDay.fin == Const.HOUR_END));
-}
+				var isDayInvalide = function (objDay) {
+					return ((objDay.debut != Const.HOUR_OPEN) && (objDay.fin == Const.HOUR_END));
+				}
 
-var isDayRempli = function (objDay) {
-	return (objDay.debut != Const.HOUR_OPEN && objDay.fin != Const.HOUR_END);
-}
+				var isDayRempli = function (objDay) {
+					return (objDay.debut != Const.HOUR_OPEN && objDay.fin != Const.HOUR_END);
+				}
 
-var lessThanOneHour = function () {
-	var nb = 0;
-	for (var i = 0; i < $scope.prehours.length; i++) {
-		if (isDayInvalide($scope.prehours[i].matin) || isDayInvalide($scope.prehours[i].soir) ) {return true;}
-		if (isDayRempli($scope.prehours[i].matin) || isDayRempli($scope.prehours[i].soir)) {nb++;}
-	}
-	return nb == 0;
-}
+				var lessThanOneHour = function () {
+					var nb = 0;
+					for (var i = 0; i < $scope.prehours.length; i++) {
+						if (isDayInvalide($scope.prehours[i].matin) || isDayInvalide($scope.prehours[i].soir) ) {return true;}
+						if (isDayRempli($scope.prehours[i].matin) || isDayRempli($scope.prehours[i].soir)) {nb++;}
+					}
+					return nb == 0;
+				}
 
-$scope.addHorairePreConfig = function () {
-	if ($scope.dep == 0 || $scope.title.trim().length == 0) {
-		NotifService.error(Const.TITLE_IMCOMPLETE_FIELDS, Const.MSG_FILL_FIELDS);
-		return;
-	}
+				$scope.addHorairePreConfig = function () {
+					if ($scope.dep == 0 || $scope.title.trim().length == 0) {
+						NotifService.error(Const.TITLE_IMCOMPLETE_FIELDS, Const.MSG_FILL_FIELDS);
+						return;
+					}
 
-	if(lessThanOneHour()) {
-		NotifService.error(Const.TITLE_IMCOMPLETE_FIELDS, Const.MSG_FILL_HOURS);
-		return;
-	}
+					if(lessThanOneHour()) {
+						NotifService.error(Const.TITLE_IMCOMPLETE_FIELDS, Const.MSG_FILL_HOURS);
+						return;
+					}
 
-	$mdDialog.hide({
-		dep: $scope.getDepWithId($scope.dep),
-		title: $scope.title,
-		prehours: $scope.prehours,
-		heureDebut1 : $scope.heureDebut1,
-		heureFin1 : $scope.heureFin1,
-		heureDebut2 : $scope.heureDebut2,
-		heureFin2 : $scope.heureFin2,
-		pauseService1 : $scope.pauseService1,
-		pauseService2 : $scope.pauseService2,
-	});
-}
+					$mdDialog.hide({
+						dep: $scope.getDepWithId($scope.dep),
+						title: $scope.title,
+						prehours: $scope.prehours,
+						heureDebut1 : $scope.heureDebut1,
+						heureFin1 : $scope.heureFin1,
+						heureDebut2 : $scope.heureDebut2,
+						heureFin2 : $scope.heureFin2,
+						pauseService1 : $scope.pauseService1,
+						pauseService2 : $scope.pauseService2,
+						state: 'new'
+					});
+				}
 
 
-$scope.hide = function () {
-	$mdDialog.cancel();
-}
-$scope.test = function () {
-	console.log($scope.pauseService2);console.log($scope.pauseService1);
-}
-}
+				$scope.hide = function () {
+					$mdDialog.cancel();
+				}
+				$scope.test = function () {
+					console.log($scope.pauseService2);console.log($scope.pauseService1);
+				}
+			}
 
 		} // Fin du link
 	}
