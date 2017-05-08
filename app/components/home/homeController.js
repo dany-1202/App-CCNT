@@ -1,7 +1,7 @@
 (function(){
 	var ctrlCCNT = angular.module('ctrlCCNT');
 
-	ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State, $route) {
+	ctrlCCNT.controller('homeController', function($timeout, $rootScope, $scope, $http, $location, SessionService, $mdDialog, State, $route,DateFactory) {
 		$scope.$route = $route;
 		$scope.user = {};
 		$scope.user.configuration = angular.copy(SessionService.get('user_configured'));
@@ -90,23 +90,34 @@
 			var $res = $http.post('assets/php/getDepartementsAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token')});
 			$res.then(function (message) {
 				$scope.departements = message.data;
+				$scope.getEmployesPourJour();
 			});
 			
 		}
 
-		$scope.getEmployesPourJour = function(){
-			for (var i = 0; i < $scope.departements.length; i++) {
-				var $resu = $http.post('assets/php/getEmployeDuJourAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), 'idDep': $scope.departements[i].id,'date':'2017-02-16'});
-				$resu.then(function (message){
-					console.log(message);
-					$scope.employeForDep.push(message.data);
-					console.log($scope.employeForDep);
-				});
+		var getEmployes = function(id,message){
+			$scope.departements[id].tab = [];
+			for (var x = 0; x < message.data.length; x++) {
+				var employe = message.data[x];
+				$scope.departements[id].tab.push(employe);
 			};
+			
+			//console.log($scope.employeForDep);
 		}
 
+		$scope.getEmployesPourJour = function(){
+			for (var i = 0; i < $scope.departements.length; i++) {
+				var $resu = $http.post('assets/php/getEmployeDuJourAPI.php', {'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token'), 'idDep': $scope.departements[i].id,'date':DateFactory.getDateBDD(new Date()),'index':i});
+				$resu.then(function (message){
+					getEmployes(message.config.data.index,message);
+				});
+			};
+			console.log($scope.departements);
+		}
+
+
 		$scope.getDepartements();
-		$scope.getEmployesPourJour();
+		
 
 		$scope.getHeuresBrut = function() {
 			var data = {user_id: SessionService.get('user_id'), user_token: SessionService.get('user_token'),per_id : 11, dateDebut: '2017-01-01', dateFin: '2017-12-31', mois: 5, annee: 2017, eta_id: 2};
