@@ -110,6 +110,7 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover, PromiseDAO, Session
 
 			  	// Ajouter un département au tableau depuis le bouton ajouter département
 			  	scope.ajouterDepartement = function(event){
+			  		console.log(scope.state);
 			  		$timeout(Popover.hide, 0);
 			  		var length = scope.$parent.depart.length;
 			  		console.log(length);
@@ -162,7 +163,7 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover, PromiseDAO, Session
 			  			if ($(el).hasClass("transparence")) {
 			  				$(el).toggleClass("transparence");
 			  			}
-			  			scope.$parent.depart.push({id:posIns,name:'Votre département', carre:CARRE + posIns, error: false});
+			  			scope.$parent.depart.push({id:-1,name:'Votre département', carre:CARRE + posIns, error: false, state : 'new'});
 			  		};
 			  	}
 			  	var focus = function () {

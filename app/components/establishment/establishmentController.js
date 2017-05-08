@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $timeout, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory, Popover) {
+ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO, $timeout, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory, Popover) {
 	$scope.$route = $route;
 
 	$scope.stateModif = $scope;
@@ -104,10 +104,11 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 
 	/* Définition des départements de l'établissement */
 	$scope.depart = [];
-
+	$scope.departBDD = []; // Pour les suppressions des départements
 	$scope.getDepartments = function() {
 		PromiseDAO.getDeps(data).then(function(res){
 			$scope.depart = res;
+			$scope.departBDD = angular.copy($scope.depart);
 			$scope.getPreHours();
 		});
 	}
@@ -479,19 +480,62 @@ ctrlCCNT.controller('establishmentController', function ($route, PromiseDAO, $ti
 		});
 	}
 
+	var isDeleted = function(id) {
+		for (var i = 0; i < $scope.depart.length; i++) {
+			if (id == $scope.depart[i].id) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	var deleteDepartmentsBDD = function() {
+		var deferred = $q.defer();
+		for (var i = 0; i < $scope.departBDD.length; i++) {
+			var dep = $scope.departBDD[i];
+			console.log(dep.id);
+			if (isDeleted(dep.id)) {
+				PromiseDAO.deleteDepartment({ 'id': dep.id, fin: ((i == $scope.departBDD.length - 1) ?1 :0), 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') }).then(function(message){
+					if (message.config.data.fin == 1) {
+						deferred.resolve(message);
+					}
+				}).then(function(error) {
+					deferred.resolve(error);
+				});
+			} else {
+				if (i == $scope.departBDD.length - 1) {
+					deferred.resolve('fin');
+				}
+			}
+		}
+		return deferred.promise;
+	}
+
 	$scope.saveDepartments = function() {
 		console.log('deps');
 		console.log($scope.idEsta);
-		
-		/*
+		console.log($scope.departBDD);
+		console.log($scope.depart);
 		for (var i = 0; i < $scope.depart.length; i++) {
 			var department = $scope.depart[i];
 			var dataDep = { 'nom': department.name, 'img': (i + 1), 'noEta': $scope.idEsta, 'user_id': SessionService.get('user_id'), 'user_token': SessionService.get('user_token') };
-			PromiseDAO.insertDepartment(dataDep).then(function(value) {
-				console.log("Insertion Départements");
-				console.log(value);
-			}).then(function(value) {});
-		}*/
+			if (department.state == 'new') {
+				PromiseDAO.insertDepartment(dataDep).then(function(value) {
+					console.log("Insertion Départements");
+					console.log(value);
+				}).then(function(value) {});
+			} else if (department.state == 'modif') {
+				//Modification du département
+				/*
+				PromiseDAO.insertDepartment(dataDep).then(function(value) {
+					console.log("Insertion Départements");
+					console.log(value);
+				}).then(function(value) {}); */
+			}
+		}
+		deleteDepartmentsBDD().then(function(value){
+			$scope.getDepartments();
+		});
 	}
 
 	$scope.savePreHours = function() {

@@ -1,7 +1,7 @@
 <!-- Configuration des départements -->
 <div class="row">
 	 <div class="col-lg-12 padding-bottom">
-		<h2 class="no-margin-left">Départements</h2>
+		<h2 class="no-margin-left">Départements <md-button ng-if="state" id="btnSuivant" ng-click="saveDepartments()" class="bouton bouton-l" style="background-color:brown;float:right;"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button></h2>
 		<div class="alert alert-success" role="alert">
 			<h4 class="alert-heading">Sélections des départements</h4>
 			<p>Sélectionnez les départements qui seront utiles dans votre établissement.</p>
@@ -85,14 +85,6 @@
 				<md-button ng-click="precedent()" class="bouton-prec bouton-l">Précédent</md-button>
 				<md-button ng-click="suivant($event)" class="bouton bouton-l">Suivant</md-button>
 			</div>
-		</div>
-	</div>
-</div>
-<hr ng-if="state" class="uk-divider-icon">
-<div class="row">
-	<div class="col-lg-12" ng-if="state">
-		<div class="centrer">
-			<md-button id="btnSuivant" ng-click="saveDepartments()" class="bouton bouton-l" style="background-color:brown"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button>
 		</div>
 	</div>
 </div>
