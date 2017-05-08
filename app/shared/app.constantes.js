@@ -14,6 +14,8 @@ ctrlCCNT.constant("Const", {
             "DELETE" : "Supprimer",
             "SAVE" : "Enregistrer",
 
+            "PHOTOFERMETURE":"https://image.jimcdn.com/app/cms/image/transf/dimension=300x10000:format=jpg/path/se1a08fc9547ef1da/image/i8097eee300b9501a/version/1337253899/jour-f%C3%A9ri%C3%A9.jpg",
+
             /* Constantes utilisé dans Config des informations de l'établissement */
             "NAME" : "Nom",
             "ADRESSE" : "Adresse 1",

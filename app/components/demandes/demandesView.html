@@ -1,4 +1,4 @@
-<div ng-controller="demandesController" id="wrapper" class="back-app">
+<div id="wrapper" class="back-app">
 	
 	<ng-menu></ng-menu>
 
@@ -41,11 +41,11 @@
 						<div class="extra">
 							<div class="ui label">{{dem.nomDemande}}</div>
 							<div class="right floated content" ng-if="dem.statut === 'new' || dem.statut === 'modify'">
-								<button class="ui positive basic button" ng-click="traiterDemande(true, dem)">
+								<button class="ui positive basic button" ng-click="demc.traiterDemandes(true, dem)">
 									<i class="fa fa-check"></i>
 									Accepter
 								</button>
-								<button class="ui negative basic button" ng-click="traiterDemande(false, dem)">
+								<button class="ui negative basic button" ng-click="demc.traiterDemandes(false, dem)">
 									<i class="fa fa-ban"></i>
 									Refuser
 								</button>
@@ -55,11 +55,11 @@
 								<div class="uk-inline" ng-hide="dem.statut === 'new' || dem.statut === 'modify'">
 									<button class="ui primary basic button circular" style="background: #222"><i class="fa fa-pencil"></i></button>
 									<div uk-dropdown="mode: click; position:center" style="width: 50px">
-										<button ng-disabled="dem.statut === 'accept' || dem.statut === 'modifyAccept'" class="ui positive fluid basic button" ng-click="traiterDemande(true, dem)" style="margin-bottom:3px">
+										<button ng-disabled="dem.statut === 'accept' || dem.statut === 'modifyAccept'" class="ui positive fluid basic button" ng-click="demc.traiterDemandes(true, dem)" style="margin-bottom:3px">
 											<i class="fa fa-check"></i>
 											Accepter
 										</button>
-										<button ng-disabled="dem.statut === 'refuse' || dem.statut === 'modifyRefuse'" class="ui negative fluid basic button" ng-click="traiterDemande(false,dem)">
+										<button ng-disabled="dem.statut === 'refuse' || dem.statut === 'modifyRefuse'" class="ui negative fluid basic button" ng-click="demc.traiterDemandes(false,dem)">
 											<i class="fa fa-ban"></i>
 											Refuser
 										</button>
@@ -72,67 +72,5 @@
 				<hr>
 				
 			</div>
-
-			
-<!--
-			<div ng-repeat="dem in demandes" class="ui middle aligned divided list">
-
-
-
-
-				
-				<div class="item">
-					<div class="uk-card-badge uk-label" style="position: relative;left: 5px;margin-right: 10px; text-align: center; width: 80px" ng-style="dem.style">{{dem.statutFR}}</div>
-					<div class="right floated content" ng-if="dem.statut === 'new' || dem.statut === 'modify'">
-						
-						<button class="ui positive basic button" ng-click="traiterDemande(true, dem)">
-							<i class="fa fa-check"></i>
-							Accepter
-						</button>
-						<button class="ui negative basic button" ng-click="traiterDemande(false, dem)">
-							<i class="fa fa-ban"></i>
-							Refuser
-						</button>
-					</div>
-					<div class="right floated content" ng-if="(dem.statut !== 'new' || dem.statut !== 'modify')">
-						<div class="uk-inline" ng-hide="dem.statut === 'new' || dem.statut === 'modify'">
-							<button class="ui primary basic button"><i class="fa fa-pencil"></i> Modifier</button>
-							<div uk-dropdown="mode: click; position:center" style="width: 50px">
-								<button ng-disabled="dem.statut === 'accept' || dem.statut === 'modifyAccept'" class="ui positive fluid basic button" ng-click="traiterDemande(true, dem)" style="margin-bottom:3px">
-									<i class="fa fa-check"></i>
-									Accepter
-								</button>
-								<button ng-disabled="dem.statut === 'refuse' || dem.statut === 'modifyRefuse'" class="ui negative fluid basic button" ng-click="traiterDemande(false,dem)">
-									<i class="fa fa-ban"></i>
-									Refuser
-								</button>
-							</div>
-						</div>
-					</div>
-					<img class="ui avatar image" src="assets/images/avatar.png">
-					<div class="content">
-						<div class="header"> {{dem.nom}} {{dem.prenom}}</div>
-						<div class="header"> Demande de l'employé : {{dem.nomDemande}}</div>
-						<div>Motifs : {{dem.motif}}</div>
-						<div class="ui massive horizontal divided list">
-							<div class="item" style="font-size: 0.6em">
-								<div class="content">
-									<div class="header"></div>
-									Date début : {{dem.dateDebut}}
-								</div>
-							</div>
-							<div class="item" style="font-size: 0.6em">
-								<div class="content">
-									<div class="header"></div>
-									Date fin : {{dem.dateFin}}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> 
-				<hr>
-			</div> 
-			<!-- fin du contenu des demandes 
-		</div> -->
 	</div>
 </div> <!-- /#page-wrapper -->

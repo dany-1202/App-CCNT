@@ -15,7 +15,11 @@ var ctrlCCNT = angular.module('ctrlCCNT'); // Importe les dépendances du parent
 ctrlCCNT.run(function($rootScope, $location, AuthenticationService, SessionService, $http, NotifService, $timeout, Popover){
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder sans qu'il soit connecté */
 	var routeSansLogin = ['/connexion','/employe/password'];
-
+	$rootScope.user = {};
+	$rootScope.user.nom = SessionService.get('user_nom');
+	$rootScope.user.prenom = SessionService.get('user_prenom');
+	$rootScope.user.configuration = angular.copy(SessionService.get('user_configured'));
+	$rootScope.user.configemp = SessionService.get('user_confEmp');
 	/* Ici nous mettrons toutes les routes que l'utilisateur pourra accéder en devant être connecté */
 	var routeAvecLogin = ['/home', '/config-init', '/construction','/employe','/employe/edition', '/parametrage'];
 

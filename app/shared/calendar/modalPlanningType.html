@@ -1,10 +1,10 @@
 
 <md-dialog aria-label="Gestion Horaire Type" style="width:80%">
    <md-content id="scrollbar" md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
-     	<div class="spectre-card">
+     	<div class="spectre-card" select-dir>
       
          <div class="spectre-card-header">
-            <h5 class="spectre-card-title" select-dir>
+            <h5 class="spectre-card-title">
                {{person.nom}} {{person.prenom}}
                <figure class="avatar avatar-xl right" ng-if="scope.myPerson != null">
                   <img style="border-radius: 0%!important" ng-style="imgDep" ng-src="assets/images/bande{{person.dep.img}}.jpg" />
@@ -13,7 +13,7 @@
                <br>
                <h6 class="spectre-card-subtitle">{{depSel}}</h6>
                <h4 class="text-center">
-                  <select class="ui dropdown" ng-change="majPerson()" ng-model="scope.myPerson" style="width: 100%; margin-top:5px">
+                  <select class="ui dropdown"  ng-change="majPerson()" ng-model="scope.myPerson" style="width: 100%; margin-top:5px">
                      <option ng-repeat="person in scope.persons track by $index" value="{{person.id}}">{{person.nom}} {{person.prenom}}</option>
                   </select>
                   <span ng-if="scope.myPerson == null" style="color:red; display: block; margin-bottom: 70px;">Veuillez choisir un employé !</span>
@@ -40,13 +40,15 @@
                   <h3 class="text-center">Horaire Type Pré-configuré <i style="font-size:16px;margin-right: -5px" class="fa fa-clock-o" aria-hidden="true"></i> <i class="fa fa-cogs" aria-hidden="true"></i></h3>
                   <div class="alert alert-success" role="alert"><p>Sélectionnez un horaire type pré-configuré pour le département : <strong>{{depSel}}</strong></p></div>
                   <div class="text-center" style="width: 100%">
-                     <select class="ui dropdown text-center" style="min-width: 15em!important; width: 100%!important" select-dir  ng-change="majHoraireType()" ng-model="scope.myHoraireType" style="width: 100%; margin-top:5px">
+                     <select class="ui dropdown text-center" style="min-width: 15em!important; width: 100%!important"  ng-change="majHoraireType()" ng-model="scope.myHoraireType" style="width: 100%; margin-top:5px">
                      <option ng-repeat="horaireType in scope.listePreHours track by $index" value="{{horaireType.prehour.id}}">{{horaireType.prehour.nom}}</option>
                     </select>
                   </div>
                  
                </div>
-            </div><br><br>
+            </div>
+
+            <br><br>
           
             
          
@@ -89,7 +91,7 @@
                            <tr>
                               <th rowspan="1" style="line-height: 5px!important" class="tableau-darkBrownWithC">Pause</th>
                               <td ng-repeat="pauses in scope.prehours track by $index">
-                                 <select select-dir style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="pauses.datapauseMatin" ng-options="p.name for p in scope.nbPause"></select>
+                                 <select style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="pauses.datapauseMatin" ng-options="p.name for p in scope.nbPause"></select>
                               </td>
                            </tr>
 
@@ -117,7 +119,7 @@
                            <tr>
                               <th rowspan="1" style="line-height: 5px!important" class="tableau-darkBrownWithC">Pause</th>
                               <td ng-repeat="pauses in scope.prehours track by $index">
-                                 <select select-dir style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="pauses.datapauseSoir" ng-options="p.name for p in scope.nbPause"></select>
+                                 <select style="font-size:1.2em" class="ui dropdown" id="form-stacked-select" ng-model="pauses.datapauseSoir" ng-options="p.name for p in scope.nbPause"></select>
                               </td>
                               </td>
                            </tr>
@@ -128,7 +130,6 @@
              </div>
             
          </div>
-         <br><br><br>
          
       <button style="bottom: 0; left:0;position: fixed; width: 50%" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="answer('')">
         Ajouter

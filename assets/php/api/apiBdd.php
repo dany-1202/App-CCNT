@@ -4,6 +4,7 @@ header("Content-Type: application/json");
 require_once("../classes/UserAuthentication.php");
 require_once("ApiBddService.php");
 require_once("DemandeDAO.php");
+require_once("../classes/HoraireEmployeeDAO.php");
 
 if(!empty($_GET['type'])){
 	UserAuthentication::secureSessionStart(); // Lance une session sécurisé
@@ -51,14 +52,14 @@ if(!empty($_GET['type'])){
 	} elseif($_GET['type'] == 'getHorairesAttenteValidation'  && !empty($_GET['userId']) && !empty($_GET['token'])){
 		echo ApiBddService::getHorairesAttenteValidation(urldecode($_GET['userId']), urldecode($_GET['token']));
 			
-	} elseif($_GET['type'] == 'setDemande'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['demId']) && !empty($_GET['dateDebut']) && !empty($_GET['dateFin'])){
-		echo ApiBddService::setDemande(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['demId']), urldecode($_GET['dateDebut']) , urldecode($_GET['dateFin']) , urldecode($_GET['motif']));	
+	} elseif($_GET['type'] == 'setDemande'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['demId']) && !empty($_GET['dateDebut']) && !empty($_GET['dateFin'])  && isset($_GET['isJourneeComplete'])){
+		echo ApiBddService::setDemande(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['demId']), urldecode($_GET['dateDebut']) , urldecode($_GET['dateFin']) , urldecode($_GET['isJourneeComplete']), urldecode($_GET['motif']));	
 	
 	} elseif($_GET['type'] == 'getDemandes'  && !empty($_GET['userId']) && !empty($_GET['token'])){
 		echo ApiBddService::getDemandes(urldecode($_GET['userId']), urldecode($_GET['token']));			
 	
-	} elseif($_GET['type'] == 'modDemande'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['id']) && !empty($_GET['dateDebut']) && !empty($_GET['dateFin'])){
-		echo ApiBddService::modDemande(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['id']), urldecode($_GET['dateDebut']) , urldecode($_GET['dateFin']) , urldecode($_GET['motif']));		
+	} elseif($_GET['type'] == 'modDemande'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['id']) && !empty($_GET['dateDebut']) && !empty($_GET['dateFin']) && isset($_GET['isJourneeComplete'])){
+		echo ApiBddService::modDemande(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['id']), urldecode($_GET['dateDebut']) , urldecode($_GET['dateFin']) , urldecode($_GET['motif']), urldecode($_GET['isJourneeComplete']));		
 	
 	}  elseif($_GET['type'] == 'valHoraire'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['hopId'])){
 		echo ApiBddService::valHoraire(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['hopId']), urldecode($_GET['dateTimeDebut']), urldecode($_GET['dateTimeFin']),urldecode($_GET['traValide']));		
@@ -69,8 +70,8 @@ if(!empty($_GET['type'])){
 	}  elseif($_GET['type'] == 'getEtablissement'  && !empty($_GET['userId']) && !empty($_GET['token'])){
 		 echo ApiBddService::getEtablissement(urldecode($_GET['userId']), urldecode($_GET['token']));		
 	
-	} elseif($_GET['type'] == 'dateMaladieAccident'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['dateDebut']) && !empty($_GET['dateFin']) && isset($_GET['isAccident'])){
-		 echo ApiBddService::dateMaladieAccident(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['dateDebut']),urldecode($_GET['dateFin']),urldecode($_GET['isAccident']));		
+	} elseif($_GET['type'] == 'dateMaladieAccident'  && !empty($_GET['userId']) && !empty($_GET['token']) && !empty($_GET['dateDebut']) && !empty($_GET['dateFin']) && isset($_GET['isAccident']) && !empty($_GET['horaireId'])){
+		 echo ApiBddService::dateMaladieAccident(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['dateDebut']),urldecode($_GET['dateFin']),urldecode($_GET['isAccident']), urldecode($_GET['horaireId']));		
 	
 	}  elseif($_GET['type'] == 'getDemandesParMois'  && !empty($_GET['userId']) && !empty($_GET['token'])){
 		 echo ApiBddService::getDemandesAccepteesParMois(urldecode($_GET['userId']), urldecode($_GET['token']),urldecode($_GET['annee']), urldecode($_GET['mois']));		
@@ -80,6 +81,25 @@ if(!empty($_GET['type'])){
 	
 	} elseif($_GET['type'] == 'getValVueHor'  && !empty($_GET['userId']) && !empty($_GET['token'])){
 		 echo ApiBddService::getValVueHor(urldecode($_GET['userId']), urldecode($_GET['token']));		
+	
+	} elseif($_GET['type'] == 'getInfosHeuresMois'  && !empty($_GET['userId'])&& !empty($_GET['token'])){
+		 echo ApiBddService::getInfosHeuresMois(urldecode($_GET['userId']),urldecode($_GET['token']), urldecode($_GET['mois']), urldecode($_GET['annee']), urldecode($_GET['idEta']));		
+	
+	} elseif($_GET['type'] == 'getInfosSoldes'  && !empty($_GET['userId']) && !empty($_GET['token'])){
+		echo ApiBddService::getInfosSoldes(urldecode($_GET['userId']),urldecode($_GET['token']), urldecode($_GET['dateDebut']), urldecode($_GET['dateFin']));
+	
+	} elseif($_GET['type'] == 'getIdEtablissement'  && !empty($_GET['userId']) && !empty($_GET['token'])){
+		echo ApiBddService::getIdEtablissement(urldecode($_GET['userId']), urldecode($_GET['token']), urldecode($_GET['idDep']));
+	
+	}elseif($_GET['type'] == 'getTypeHoraireContrat'  && !empty($_GET['userId']) && !empty($_GET['token'])){
+		echo ApiBddService::getTypeHoraireContrat(urldecode($_GET['userId']), urldecode($_GET['token']));
+	
+	}elseif($_GET['type'] == 'getIdDepartement'  && !empty($_GET['userId']) && !empty($_GET['token'])){
+		echo ApiBddService::getIdDepartement(urldecode($_GET['userId']), urldecode($_GET['token']));
+	
+	} elseif($_GET['type'] == 'calculerSoldeEmployee'  && !empty($_GET['userId']) && !empty($_GET['token'])){
+		echo ApiBddService::calculerSoldeEmployee(urldecode($_GET['userId']), urldecode($_GET['token']),urldecode($_GET['mois']), urldecode($_GET['annee']), urldecode($_GET['idDep']));
 	}
+  
 } 
 ?>

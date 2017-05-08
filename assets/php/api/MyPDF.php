@@ -80,7 +80,7 @@ class MyPDF extends FPDF {
 					$this->Ln();
 				}
 				
-				if($row['valide'] == 0) {
+				if($row['valide'] == 'non') {
 					$isInvalide = true;
 					$this->SetTextColor(255, 0, 0);
 				} 
@@ -107,10 +107,6 @@ class MyPDF extends FPDF {
 		$this->Cell($largeurCell-$largeurColNbHeure,10, utf8_decode('Temps de travail total :'),'T',0,'R',false);
 		$this->Cell($largeurColNbHeure,10, $totalHeures,'T',0,'R',false);
 	}//TableValidationMensuelle
-	
-	
-
-
 	
 }
 ?>

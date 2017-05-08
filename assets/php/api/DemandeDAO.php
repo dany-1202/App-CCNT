@@ -7,7 +7,7 @@ class DemandeDAO{
 	public static function getDemandesATraiter () {
 		$res = false;
 		$db = MySQLManager::get();
-		$query = "SELECT dpe_id, dpe_dateDebut, dpe_dateFin, dpe_motif, dpe_statut, dem_id, dem_nom, per_id, per_nom, per_prenom, per_mail FROM ccn_demandePersonne
+		$query = "SELECT dpe_id, dpe_dateDebut, dpe_dateFin, dpe_motif, dpe_statut, dem_id, dem_nom, per_id, per_nom, per_prenom, per_mail FROM ccn_demandepersonne
 				 INNER JOIN ccn_demande ON (dpe_dem_id = dem_id)
 				 INNER JOIN ccn_personne ON (dpe_per_id = per_id)
 				 WHERE dpe_statut = 'new' OR dpe_statut = 'modify'";
@@ -40,7 +40,7 @@ class DemandeDAO{
 	// Paramètre: $dpe_id : id de la demande, $isAccept : true = demande acceptée, false = demande refusée
 	public static function traiterDemande($id, $isAccept){	
 		$db = MySQLManager::get();
-		$queryStatut = "SELECT dpe_per_id, dpe_statut FROM ccn_demandePersonne WHERE dpe_id = ?";
+		$queryStatut = "SELECT dpe_per_id, dpe_statut FROM ccn_demandepersonne WHERE dpe_id = ?";
 		if ($stmt = $db->prepare($queryStatut)) {				
 				$stmt->bind_param("i", $id);
 				$stmt->execute();
@@ -69,7 +69,7 @@ class DemandeDAO{
 					}
 					// On enregsitre le nouveau statut dans la BDD
 					$db = MySQLManager::get();			
-					$query = "UPDATE ccn_demandePersonne SET dpe_statut = ? WHERE dpe_id = ?";
+					$query = "UPDATE ccn_demandepersonne SET dpe_statut = ? WHERE dpe_id = ?";
 					if ($stmt = $db->prepare($query)) {
 							$stmt->bind_param("si", $newStatut, $dpe_id);
 							$stmt->execute();

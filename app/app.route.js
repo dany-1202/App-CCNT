@@ -18,16 +18,16 @@ ctrlCCNT.config(['$routeProvider','$locationProvider',
         // $routeProvider essentiel pour la configuration des routes
     	$routeProvider
 
-    	/* Les changements ou ajouts de route se font ici */
-    	.when('/home', { // Chemin du home
-            templateUrl: 'app/components/home/homeView.html',
-            controller: 'homeController',
-            activetab: 'dashboard' // Contrôleur de la page home
-       	})
-    	.when('/connexion', { // Chemin de la connexion
-            templateUrl: 'app/components/connexion/connexionView.html',
-            controller: 'connexionController' // Contrôleur de la connexion
-    	})
+    		/* Les changements ou ajouts de route se font ici */
+	    	.when('/home', { // Chemin du home
+	            templateUrl: 'app/components/home/homeView.html',
+	            controller: 'homeController',
+	            activetab: 'dashboard' // Contrôleur de la page home
+	       	})
+	    	.when('/connexion', { // Chemin de la connexion
+	            templateUrl: 'app/components/connexion/connexionView.html',
+	            controller: 'connexionController' // Contrôleur de la connexion
+	    	})
 		.when('/config-init', { // Chemin de la configuration initial */
 			templateUrl: 'app/components/configuration-initial/config-init.html',
 			controller: 'configController', // Contrôleur pour la configuration initial
@@ -71,6 +71,11 @@ ctrlCCNT.config(['$routeProvider','$locationProvider',
 			templateUrl: 'app/components/demandes/demandesView.html',
 			controller: 'demandesController',
 			activetab: 'demandes'
+		})
+		.when('/myestablishment', {
+			templateUrl: 'app/components/establishment/myestablishment.html',
+			controller: 'establishmentController',
+			activetab: 'estab'
 		})
 		.otherwise({
 			redirectTo: '/connexion' // Redirection sur la page de connexion

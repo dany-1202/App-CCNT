@@ -1,7 +1,7 @@
 <!-- Afficher le menu principal -->
 <!-- Navigation -->
 
-<nav ng-controller="homeController" class="navbar navbar-inverse navbar-fixed-top" role="navigation" notif-demandes>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" notif-demandes>
 	<!-- Brand and toggle get grouped for better mobile display -->
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -10,17 +10,20 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="#!/home">Ctrl CCNT</a>
+		<a class="navbar-brand" href="#!/home">Ctrl CCNT </a>
+		<a>
+			<div class="spinner" ng-show="$root.loading === true">
+				<div class="dot1"></div>
+				<div class="dot2"></div>
+			</div>
+		</a>
 	</div>
 	
 	<!-- Top Menu Items -->
 	<ul class="nav navbar-right top-nav">
 		<li>
 			
-			<div class="spinner" ng-show="$root.loading === true">
-				<div class="dot1"></div>
-				<div class="dot2"></div>
-			</div>
+			
 			
 		</li>
 		<li class="dropdown">
@@ -37,7 +40,7 @@
 								<img class="media-object" src="https://placehold.it/50x50" alt="">
 							</span>
 							<div class="media-body">
-								<h5 class="media-heading"><strong>{{user.prenom + " " + user.nom}}</strong>
+								<h5 class="media-heading"><strong>{{user.nom}} {{user.prenom}}</strong>
 								</h5>
 								<p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
 								<p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -52,7 +55,7 @@
 								<img class="media-object" src="https://placehold.it/50x50" alt="">
 							</span>
 							<div class="media-body">
-								<h5 class="media-heading"><strong>{{user.prenom + " " + user.nom}}</strong>
+								<h5 class="media-heading"><strong>{{user.nom}} {{user.prenom}}</strong>
 								</h5>
 								<p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
 								<p>Lorem ipsum dolor sit amet, consectetur...</p>
@@ -120,7 +123,7 @@
 					<a href=""><i class="fa fa-fw fa-envelope"></i> Messages</a>
 				</li>
 				<li>
-					<a href=""><i class="fa fa-fw fa-gear"></i> Paramètres</a>
+					<a ng-click="affParametrageVue()"><i class="fa fa-fw fa-gear"></i> Paramètres</a>
 				</li>
 				<li class="divider"></li>
 			</ul>
@@ -144,7 +147,8 @@
 				<a href="#!/employe"><i class="fa fa-fw fa-user"></i> Gestion employés</a>
 			</li>
 			<li ng-class="{active: $route.current.activetab == 'planning'}" ng-show="{{user.configemp && user.configuration}}">
-				<a href="#!/createplanning"><i class="fa fa-fw fa-calendar"></i> Planning</a>
+				<a href="#!/createplanning"><i class="fa fa-fw fa-calendar"></i> Planning </a>
+				<md-tooltip md-direction="rigth">Planning</md-tooltip>
 			</li>
 			<li ng-class="{active: $route.current.activetab == 'demandes'}">
 				<a href="#!/demandes"><i class="fa fa-fw fa-bell"></i> Demandes</a>
@@ -152,8 +156,8 @@
 			<li ng-class="{active: $route.current.activetab == 'hist'}">
 				<a href="#!/construction"><i class="fa fa-fw fa-history"></i> Historique</a>
 			</li>
-			<li ng-class="{active: $route.current.activetab == 'rest'}">
-				<a href="#!/construction"><i class="fa fa-fw fa-cutlery"></i> Mon Établissement</a>
+			<li ng-class="{active: $route.current.activetab == 'estab'}">
+				<a href="#!/myestablishment"><i class="fa fa-fw fa-cutlery"></i> Mon Établissement</a>
 			</li>
 			<li ng-class="{active: $route.current.activetab == 'stats'}">
 				<a href="#!/stats"><i class="fa fa-fw fa-pie-chart"></i> Statistiques</a>
@@ -163,19 +167,19 @@
 			</li>
 		</ul>
 		<div id="modal-example" uk-modal="center: true">
-		    <div class="uk-modal-dialog uk-modal-body">
-		        <h2 class="uk-modal-title text-center">Demande n° {{demandeCours.idDem}}</h2>
-		        <hr class="uk-divider-icon">
-		        <h3 style="margin-top:-5px">Employé : {{demandeCours.per_nom}}</h3>
-		        <h4 style="margin-top:-10px; color:dimgrey">Type demande : {{demandeCours.typeDemande_nom}}</h4>
-		        <h5>Motif : <span ng-if="demandeCours.motif == null">Aucune justification</span>{{demandeCours.motif}} </h5>
-		        <h5 class="text-center">Date début : <strong>{{demandeCours.dateDebut}}</strong><br> Date fin : <strong>{{demandeCours.dateFin}}</strong></h5>
-		        <hr>
-		        <p class="uk-text text-center">
-		            <button class="ui positive basic button uk-modal-close" type="button" ng-click="traiterDemande(true)">Accepter</button>
-		            <button class="ui negative basic button uk-modal-close" type="button" ng-click="traiterDemande(false)">Refuser</button>
-		        </p>
-		    </div>
+			<div class="uk-modal-dialog uk-modal-body">
+				<h2 class="uk-modal-title text-center" style="padding: 15px;width: 100%;height: auto;position: absolute;top: 0px;left: 0;background: #222;color: white;">Demande n° {{demandeCours.idDem}}</h2>
+				<hr>
+				<h3>Employé : {{demandeCours.per_nom}}</h3>
+				<h4 style="margin-top:-10px; color:dimgrey">Type demande : {{demandeCours.typeDemande_nom}}</h4>
+				<h5>Motif : <span ng-if="demandeCours.motif == null">Aucune justification</span>{{demandeCours.motif}} </h5>
+				<h5 class="text-center">Date début : <strong>{{demandeCours.dateDebut}}</strong><br> Date fin : <strong>{{demandeCours.dateFin}}</strong></h5>
+				<hr>
+				<p class="uk-text text-center">
+					<button class="ui positive basic button uk-modal-close" type="button" ng-click="notif.traiterDemande(true)">Accepter</button>
+					<button class="ui negative basic button uk-modal-close" type="button" ng-click="notif.traiterDemande(false)">Refuser</button>
+				</p>
+			</div>
 		</div>
 	</div> <!-- /.navbar-collapse -->
 </nav>

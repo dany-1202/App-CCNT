@@ -7,6 +7,7 @@ var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, $rootScope, $mdDialog, $scope, $http, $location, $mdpDatePicker, $mdpTimePicker, SessionService, NotifService, Const, State, Postaux, DateFactory, Popover) {
 	$scope.$route = $route;
+	$scope.state = false;
 	$scope.nbSteps = 5; // Nombre d'étapes de la configuration initiale
 	$scope.nbPercentage = 20; // Pourcentage en fonction de l'avancement de la configuration
 	$scope.currentDate = new Date(); // Récupère la date d'aujourd'hui
@@ -207,7 +208,8 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 			for (var i = 0; i < $scope.calEvents.length; i++) {
 				var dataFermetureInfo = {
 					'date': DateFactory.toDateTimeBDD(DateFactory.getDateStr($scope.calEvents[i].date)),
-					'etaId': idEstablishment, 'user_id': SessionService.get('user_id'),
+					'etaId': idEstablishment, 
+					'user_id': SessionService.get('user_id'),
 					'user_token': SessionService.get('user_token')
 				};
 				var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);

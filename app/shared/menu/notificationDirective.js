@@ -1,3 +1,4 @@
+
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
@@ -7,6 +8,7 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 			scope.notif = scope;
 			scope.demandeCours = {};
 
+			var timer; 
 			var data = {user_id : SessionService.get('user_id'), user_token: SessionService.get('user_token')};
 			
 			
@@ -16,34 +18,44 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 			
 			scope.traiterDemande = function(boolean) {
 				data.demande = scope.demandeCours;
-		    	data.demande.accept = boolean;
-		    	var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
-			    $promise.then(function (message) {
-			    	console.log(message);
-			    	var pos = 0;
-			    	for (var i = 0; i < scope.demandesNotif.length; i++) {
-			    		if (scope.demandesNotif[i].idDem == scope.demandeCours.idDem) {
-			    			pos = i;
+		    		data.demande.accept = boolean;
+		    		var $promise = $http.post('assets/php/accepterDemandesAPI.php', data);
+			   	 $promise.then(function (message) {
+			    		console.log(message);
+			    		var pos = 0;
+			    		for (var i = 0; i < scope.demandesNotif.length; i++) {
+			    			if (scope.demandesNotif[i].idDem == scope.demandeCours.idDem) {
+			    				pos = i;
+			    			}
 			    		}
-			    	}
-			    	scope.demandesNotif.splice(pos, 1);
-			    });
+			    		scope.demandesNotif.splice(pos, 1);
+			    	});
 			}
 			
 			scope.demandesNotif = [];
+
 			var getDemandesNotif = function() {
 				var $promise = $http.post('assets/php/getNouvelleDemandesAPI.php', data);
-	    		$promise.then(function (message) {
-	    			console.log(message);
-	    			if (message.data != 'false') {
-	    				scope.demandesNotif = message.data;
-	    			}
-	    		});
-				$timeout(getDemandesNotif, 10000);
+		    		$promise.then(function (message) {
+		    			console.log(message);
+		    			if (message.data != 'false') {
+		    				scope.demandesNotif = message.data;
+		    			}
+		    		});
+				timer = $timeout(getDemandesNotif, 20000);
 			}
 			
 			getDemandesNotif();
 			console.log(scope.demandesNotif);
+
+			scope.affParametrageVue = function() {
+				console.log('ici');
+			}
+
+			scope.$on('$destroy', function () {
+			    	$timeout.cancel(timer);
+			    	$( "#modal-example" ).remove();
+			});
 			
 		}
 	};

@@ -12,7 +12,7 @@
 <!-- <md-button ng-click="test()" class="bouton-prec bouton-l">Test</md-button>-->
 <div class="row">
 	<div class="col-lg-12 text-center">
-		<md-button ng-click="showModalHoraire()" class="btn bouton">Ajouter un horaire pré-configuré</md-button>
+		<md-button ng-click="showModalHoraire()" class="btn bouton"><i class="fa fa-plus" aria-hidden="true" style="margin-right: 3px"></i> Ajouter un horaire pré-configuré</md-button>
 	</div>
 </div>
 
@@ -32,15 +32,21 @@
         		<strong>Département</strong> : {{hour.dep.name}}
         	</span>
         	<span class="name" ><span style="font-size:1.3em!important">{{hour.title}}</span> <span class="prenom"></span></span>
-
-			<img style="border-radius: 0px!important" class="icon-emp" ng-src="assets/images/bande{{hour.dep.id}}.jpg">
-      	</div>
+			<img ng-if="!state" style="border-radius: 0px!important" class="icon-emp" ng-src="assets/images/bande{{hour.dep.id}}.jpg">
+			<img ng-if="state" style="border-radius: 0px!important" class="icon-emp" ng-src="assets/images/bande{{hour.dep.img}}.jpg">
+      		</div>
 	</div>
 </div>
-<hr>
-<div class="row" style="margin-top:20px">
+<hr ng-if="state" class="uk-divider-icon">
+<div class="row" style="margin-top:20px" ng-if="!state">
 	<div class="centrer">
 		<md-button ng-click="ctrl.previous(2)" class="bouton-prec bouton-l">Précédent</md-button>
 		<md-button ng-click="ctrl.next(4)" class="bouton bouton-l">Suivant</md-button>
+	</div>
+</div>
+
+<div class="row" style="margin-top:20px" ng-if="state">
+	<div class="centrer">
+		<md-button ng-click="savePreHours()" class="bouton bouton-l"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button>
 	</div>
 </div>

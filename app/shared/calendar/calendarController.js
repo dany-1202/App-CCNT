@@ -127,25 +127,6 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	  			fullscreen: true,
 	  		})
 	  		.then(function(answer) {
-		    	/*vm.events.splice(answer.calendarEventId, 1);
-		    	
-		    	$timeout(function() {
-		    		var obj = {
-		    			id: answer.id,
-						absence: answer.absence,
-						pause: answer.pause,
-						personne: answer.personne,
-					  	title: answer.title,
-					  	color: answer.color,
-					  	startsAt: answer.startsAt,
-					  	endsAt: answer.endsAt,
-					  	draggable: true,
-					  	resizable: true,
-					  	actions: actions,
-					  	cssClass: 'custom-event'
-		    		};
-			      	if (isFiltered(answer.personne)) {vm.events.push(obj)};
-			      }, 10);*/
 			      NotifService.success('Moditication Réussi', 'L\'horaire a été modifié avec succès !');
 			      $scope.majEvents();
 			  }, function() {/* Annulation */});
@@ -523,10 +504,6 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 					}
 					
 					if (index == $scope.departments.length-1){
-						$('.side-nav').css('display', 'none');
-						$('#page-wrapper').css('position', 'absolute');
-						$('#page-wrapper').css('left', '0px');
-
 						$mdDialog.show({
 							controller: GestionHoraireTypeController,
 							templateUrl: 'app/shared/calendar/modalPlanningType.html',
@@ -535,15 +512,9 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 							clickOutsideToClose:true,
 							fullscreen: true,
 						}).then(function(answer) {
-							$('#page-wrapper').css('position', '');
-							$('#page-wrapper').css('left', '');
-							$('.side-nav').css('display', '');
 							$scope.majEvents();
 							NotifService.success('Ajout Horaire', "Les horaires ont été ajouté avec succès");
 						}, function(answer) {
-							$('#page-wrapper').css('position', '');
-							$('#page-wrapper').css('left', '');
-							$('.side-nav').css('display', '');
 							console.log(answer);
 						});
 					}
@@ -1043,9 +1014,6 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 	  				vm.pauseService1 = $scope.pauseService1;
 	  				vm.pauseService2 = $scope.pauseService2;
 	  				vm.personsSel = $scope.personsSel;
-	  				$('.side-nav').css('display', 'none');
-	  				$('#page-wrapper').css('position', 'absolute');
-	  				$('#page-wrapper').css('left', '0px');
 	  				$mdDialog.show({
 	  					controller: CreatePlanningController,
 	  					templateUrl: 'app/shared/calendar/modalPlanning.html',
@@ -1055,15 +1023,9 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 	  					fullscreen: true,
 	  				})
 	  				.then(function(answer) {
-	  					$('#page-wrapper').css('position', '');
-	  					$('#page-wrapper').css('left', '');
-	  					$('.side-nav').css('display', '');
+	  					
 	  					$scope.majEvents();
-	  				}, function(error) {
-	  					$('#page-wrapper').css('position', '');
-	  					$('#page-wrapper').css('left', '');
-	  					$('.side-nav').css('display', '');}
-	  					);
+	  				}, function(error) {});
 	  			}
 	  			
 	  			function CreatePlanningController($scope, $mdDialog, $timeout, $mdpTimePicker, $filter, Const) {
