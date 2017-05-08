@@ -1,7 +1,7 @@
 <div class="row">
 	 <!-- affichage des champs -->
 	<div class="col-lg-12 padding-bottom">
-		<h2 class="no-margin-left">Informations sur l'établissement</h1>
+		<h2 class="no-margin-left">Informations sur l'établissement <md-button ng-if="state" id="btnSuivant" ng-click="saveEstablishment()" class="bouton bouton-l" style="background-color:brown; float:right;"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer </md-button></h1>
 		<div class="alert alert-success" role="alert">
 			<h4 class="alert-heading">Saisir les informations de votre établissement</h4>
 			<p>Saisissez toutes les informations principales concernant votre établissement ainsi que les heures soumises à la CCNT.</p>
@@ -80,11 +80,5 @@
 <div class="col-lg-12 padding-top" ng-if="!state">
 	<div class="centrer">
 		<md-button id="btnSuivant" data-title="Aller à l'étape suivante" data-container="body" data-toggle="popover" data-placement="top" data-content="Cliquer sur suivant pour avancer à l'étape suivante de la configuration initiale" ng-click="verificationSuivant($event)" class="bouton bouton-l" style="background-color:brown">Suivant</md-button>
-	</div>
-</div>
-<hr ng-if="state" class="uk-divider-icon">
-<div class="col-lg-12" ng-if="state">
-	<div class="centrer">
-		<md-button id="btnSuivant" ng-click="saveEstablishment()" class="bouton bouton-l" style="background-color:brown"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer </md-button>
 	</div>
 </div>

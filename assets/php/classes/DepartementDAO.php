@@ -27,6 +27,33 @@ class DepartementDAO {
 	  	return false;
 	} // insertDepartement
 
+	public static function updateDepartment ($data) {
+	  	$db = MySQLManager::get();
+	  	$query = "INSERT INTO ccn_departement (`dep_nom`, `dep_img_no`, `dep_eta_id`) VALUES (?, ?, ?)";
+	  	if ($stmt = $db->prepare($query)) {
+	  		$stmt->bind_param('sii', $data['nom'], $data['img'], $data['noEta']);
+	  		$stmt->execute();
+	  		$dep_id = $stmt->insert_id;
+	  		MySQLManager::close();
+	  		return $dep_id;
+	  	}
+	  	MySQLManager::close();
+	  	return false;
+	} // insertDepartement
+
+	public static function deleteDepartment ($data) {
+	  	$db = MySQLManager::get();
+	  	$query = "DELETE FROM `ccn_departement` WHERE dep_id = ?";
+	  	if ($stmt = $db->prepare($query)) {
+	  		$stmt->bind_param('i', $data['id']);
+	  		$stmt->execute();
+	  		MySQLManager::close();
+	  		return $data['id'];
+	  	}
+	  	MySQLManager::close();
+	  	return false;
+	} // insertDepartement
+
 
 	public static function checkDepartmentsToDelete ($data) {
 		$db = MySQLManager::get();
@@ -75,6 +102,7 @@ class DepartementDAO {
 						$dep['id'] = $dep_id;
 						$dep['name'] = $dep_nom;
 						$dep['img'] = $dep_img_no;
+						$dep['state'] = "modif";
 						$deps[] = $dep;
 					}
 					$stmt1->close();

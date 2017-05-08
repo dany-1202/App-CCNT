@@ -33,6 +33,16 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 			});
 			return deferred.promise;
 		},
+		deleteDepartment : function(dataDep) {
+			var deferred = $q.defer();
+			var $res = $http.post("assets/php/supDepartmentAPI.php", dataDep);
+			$res.then(function (data) {
+				deferred.resolve(data);
+			}).then(function (error) {
+				deferred.resolve(error);
+			});
+			return deferred.promise;
+		},
 		getHourPreConfigure: function(tabDeps) {
 			var deferred = $q.defer();
 			
@@ -88,6 +98,7 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 						format: 'label-carre-100',
 						error: false,
 						img: dep.img,
+						state: dep.state
 					});
 				}
 				deferred.resolve(deps);
