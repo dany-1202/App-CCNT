@@ -1,7 +1,7 @@
 (function(){ 
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Popover, DateFactory, Const, State, $route) {
+ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Popover, DateFactory, Const, State, $route, ModalTuto) {
 	
 	return {
 		restrict : 'E', // Ici se limite à la balise si on veut pour un attribut = A
@@ -55,18 +55,31 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				return (objDay.matin.debut != Const.OPEN && objDay.soir.fin == Const.END);
 			}
 
+			var isOneDayConfigurated = function() {
+				var cal = $scope.cal.hours;
+				var nb = 0;
+				for (var i = 0; i < cal.length; i++) {
+					if (cal[i].matin.debut != Const.OPEN || cal[i].soir.fin != Const.END) {
+						nb++;
+					}
+				}
+				return nb != 0;
+			}
+
 			$scope.isHoursCompleted = function () { // Toutes les heures ont été configurées
 				for (var i = 0; i < $scope.cal.hours.length; i++) {
 					var obj = $scope.cal.hours[i];
 					if (obj.pause.existe) {
 						// Tester que les 4 dates sont saisies
-						if ($scope.testWithCoupuresFin(obj)) {return false;}
+						if ($scope.testWithCoupuresFin(obj)) { $scope.cal.state = Const.INCOMP; return false;}
 					} else {
 						// Tester seulement matin début et soir fin
-						if ($scope.testWithoutCoupuresFin(obj)) {return false;}
+						if ($scope.testWithoutCoupuresFin(obj)) {$scope.cal.state = Const.INCOMP;return false;}
 					}
 				}
-				return true;
+				var res = isOneDayConfigurated();
+				$scope.cal.state = (res ? Const.COMP: Const.INCOMP);
+				return res;
 			}
 			
 			$scope.allDaysCompleted = function () { // Toutes les heures ont été configurées
@@ -74,12 +87,13 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 					var obj = $scope.cal.hours[i];
 					if (obj.pause.existe) {
 						// Tester que les 4 dates sont saisies
-						if (testWithCoupures(obj)) {return false;}
+						if (testWithCoupures(obj)) {$scope.cal.state = Const.INCOMP; return false;}
 					} else {
 						// Tester seulement matin début et soir fin
-						if (testWithoutCoupures(obj)) {return false;}
+						if (testWithoutCoupures(obj)) {$scope.cal.state = Const.INCOMP; return false;}
 					}
 				}
+				$scope.cal.state = Const.COMP;
 				return true;
 			}
 
@@ -172,14 +186,40 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 					}
 	  			}
 	  		}
-
-	  		$scope.modifChoiceOpenning = function () {
+	  		var hourScope = $scope;
+	  		$scope.modifChoiceOpenning = function (event) {
 	  			$timeout(Popover.hide, 0);
 	  			$scope.affInfos = !$scope.affInfos;
-	  			/*$scope.cal.choix = null;
-	  			$scope.removeAllDayPause();
-	  			$scope.affChoiceOpenning = true;
-	  			$scope.affCalendar = false;*/
+	  			$mdDialog.show({
+		  			controller: ModalTypeController,
+		  			templateUrl: 'app/components/configuration-initial/config-hours/modal/modalType.html',
+		  			parent: angular.element(document.body),
+		  			targetEvent: event,
+		  			clickOutsideToClose:true,
+		  			fullscreen: true,
+		  			multiple:true
+		  		})
+		  		.then(function(answer) {
+		  			
+		  		}, function() {/* Annulation */});
+	  		}
+
+	  		function ModalTypeController($scope) {
+	  			$scope.first = angular.copy(hourScope.cal);
+	  			$scope.cal = hourScope.cal;
+	  			$scope.choiceOpenning = hourScope.choiceOpenning;
+	  			$scope.choiceFrequencyCoup = hourScope.choiceFrequencyCoup;
+	  			$scope.hide = function() {$mdDialog.hide();}
+	  			$scope.cancel = function(answer) {hourScope.cal = angular.copy($scope.first); $mdDialog.cancel();}
+	  			$scope.answer = function(answer){
+	  				if ($scope.cal.choix.id == 0) {
+	  					var tab = $scope.cal.hours;
+	  					for (var i = 0; i < tab.length; i++) {
+	  						tab[i].pause.existe = false;
+	  					}
+	  				}
+	  				$mdDialog.hide();
+	  			}
 	  		}
 
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
@@ -314,6 +354,13 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			    		}
 			    	}
 			};
+
+			$scope.supCalDefault = function(item, index) {
+				$scope.affOtherHours = false;
+				$scope.tabCalendars[0].hours = State.getTabCalDefault();
+				$scope.tabCalendars[0].state = Const.INCOMP;
+				//$scope.cal.hours = State.getTabCalDefault();
+			}
 			
 		  	$scope.modifCal = function (ev, index) {
 		  		$scope.cal = $scope.tabCalendars[index];
@@ -373,6 +420,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 	    		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
+
 		    	$scope.addHour = function () {
 		    		if ($scope.isCurrentInfoCalCorrect()) {
 		    			var pos = $scope.tabCalendars.length;
@@ -412,13 +460,14 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    		$scope.affCalendar = true;
 		    	}
 
-		    	$scope.goNextStep = function () {
+		    	$scope.goNextStep = function (ev) {
 		    		$timeout(Popover.hide, 0);
 		    		var nb = $scope.isAllInfoCalCorrect();
 		    		if (nb == 0) {
+		    			ModalTuto.showModal(ev, 9);
 		    			$timeout($scope.ctrl.next(5), 2);
 		    		} else {
-		    			NotifService.error('Configuration Non Terminée', "Il vous reste encore " + nb + " calendrier" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span> veuillez les compléter pour continuer !");
+		    			NotifService.error('Configuration non Terminée', "Il vous reste encore " + nb + " horaire" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span>. Veuillez les compléter pour continuer !");
 		    		}
 		    	}
 	   	 	

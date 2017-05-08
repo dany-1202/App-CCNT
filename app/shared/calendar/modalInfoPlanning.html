@@ -1,63 +1,67 @@
 <md-dialog aria-label="Informations Horaire" style="width:500px">
-  <md-content id="scrollbar" md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
-  	<div class="spectre-card" style="border: none">
-      <div class="spectre-card-header" style="background-color:white">
-        <h4 class="spectre-card-title">{{event.title}}
-          <figure class="avatar avatar-xl right">
-            <img style="border-radius: 0%!important" src="assets/images/bande{{event.personne.dep.img}}.jpg" />
-            <div style="background-color: {{event.color.primary}};" class="avatar-icon" />
-          </figure>
-        </h4>
-        <h6 class="spectre-card-subtitle">{{event.personne.dep.nom}}</h6>
-      </div>
-      <div class="spectre-card-body">
-        <div class="row">
-          <div class="col-lg-12">
-            <span ng-if="event.absence.absence" style="color:#2c3e50;font-size: 2em"> Absent <br> </span>
-            <span ng-if="event.absence.absence" style="color:#2c3e50;font-size: 1.2em"> Raison : {{event.absence.objet.nom}} <br><hr> </span>
-            
-            
-            <div class="white-box" md-whiteframe="1" ng-if="!event.absence.absence">
-              <h4 class="box-title" style="display: inline">Début<span style="float: right;color:#3c763d"> <span style="color:#3c763d;font-weight: 500">{{event.startsAt | date:'HH:mm'}}</span></span></h4>
-            </div>
-            <div class="white-box" ng-if="event.absence.absence">
-              <h4 class="box-title" style="display: inline">À partir de<span style="float: right;color:#3c763d; font-weight: 500"><i class="fa fa-clock"></i> {{event.startsAt | date:'HH:mm'}}</span></h4>
-            </div>
-            <div class="white-box" ng-if="!event.absence.absence">
-              <h4 class="box-title" style="display: inline">Fin<span style="float: right;color:#c0392b; font-weight: 500"><i class="fa fa-clock"></i> {{event.endsAt | date:'HH:mm'}}</span></h4>
-            </div>
-            <div class="white-box" ng-if="event.absence.absence">
-              <h4 class="box-title" style="display: inline">Jusqu'à<span style="float: right;font-weight: 500"><i class="fa fa-clock"></i> {{event.endsAt | date:'HH:mm'}}</span></h4>
-            </div>
-            <div class="white-box" ng-hide="event.absence.absence">
-              <h4 class="box-title" style="display: inline">Pause<span style="float: right;font-weight: 500; text-transform: lowercase"><i class="fa fa-clock"></i> {{event.pause}} minutes</span></h4>
-            </div>
-            <div class="white-box" ng-if="event.absence.absence">
-              <h4 class="box-title" style="display: inline">Durée<span style="float: right;font-weight: 500"><i class="fa fa-clock"></i> {{event.endsAt - event.startsAt | date:'H'}} heures</span></h4>
-            </div>
-            <hr>
-            <h4 style="margin-top:-5px">Jour : {{event.startsAt | date:datetime}}</h4>
-            <div class="cal-day-info margin-bottom-xss">
-              <mwl-calendar style="background-color: white"
-                events="events"
-                view="calendarView"
-                view-date="event.startsAt"
-                day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
-              </mwl-calendar>
-              <mwl-calendar style="background-color: white" ng-if="isTwoDays"
-                events="events"
-                view="calendarView"
-                view-date="event.endsAt"
-                day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
-              </mwl-calendar>
-              <hr>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('')">
-      Fermer
-    </button>
-  </md-content>
+	<md-content id="scrollbar" md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
+		<div class="spectre-card" style="border: none">
+			<div ng-if="eventDeleted" class="text-center" style="height: 25px; line-height: 25px; font-size: 1.1em; width: 100%; position:fixed;z-index:100;background-color: #c0392b; color:white"> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Attention cette horaire n'existe plus ! </div>
+			<div class="spectre-card-header" style="background-color:white">
+				<h4 class="spectre-card-title">{{event.title}}
+					<figure class="avatar avatar-xl right">
+						<img style="border-radius: 0%!important" src="assets/images/bande{{event.personne.dep.img}}.jpg" />
+						<div style="background-color: {{event.color.primary}};" class="avatar-icon" />
+					</figure>
+				</h4>
+				<h6 class="spectre-card-subtitle">{{event.personne.dep.nom}}</h6>
+			</div>
+			<div class="spectre-card-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<span ng-if="event.absence.absence" style="color:#2c3e50;font-size: 2em"> Absent <br> </span>
+						<span ng-if="event.absence.absence" style="color:#2c3e50;font-size: 1.2em"> Raison : {{event.absence.objet.nom}} <br><hr> </span>
+						
+						
+						<div class="white-box" md-whiteframe="1" ng-if="!event.absence.absence">
+							<h4 class="box-title" style="display: inline">Début<span style="float: right;color:#3c763d"> <span style="color:#3c763d;font-weight: 500">{{event.startsAt | date:'HH:mm'}}</span></span></h4>
+						</div>
+						<div class="white-box" ng-if="event.absence.absence">
+							<h4 class="box-title" style="display: inline">À partir de<span style="float: right;color:#3c763d; font-weight: 500"><i class="fa fa-clock"></i> {{event.startsAt | date:'HH:mm'}}</span></h4>
+						</div>
+						<div class="white-box" ng-if="!event.absence.absence">
+							<h4 class="box-title" style="display: inline">Fin<span style="float: right;color:#c0392b; font-weight: 500"><i class="fa fa-clock"></i> {{event.endsAt | date:'HH:mm'}}</span></h4>
+						</div>
+						<div class="white-box" ng-if="event.absence.absence">
+							<h4 class="box-title" style="display: inline">Jusqu'à<span style="float: right;font-weight: 500"><i class="fa fa-clock"></i> {{event.endsAt | date:'HH:mm'}}</span></h4>
+						</div>
+						<div class="white-box" ng-hide="event.absence.absence">
+							<h4 class="box-title" style="display: inline">Pause<span style="float: right;font-weight: 500; text-transform: lowercase"><i class="fa fa-clock"></i> {{event.pause}} minutes</span></h4>
+						</div>
+						<div class="white-box" ng-if="event.absence.absence">
+							<h4 class="box-title" style="display: inline">Durée<span style="float: right;font-weight: 500"><i class="fa fa-clock"></i> {{event.endsAt - event.startsAt | date:'H'}} heures</span></h4>
+						</div>
+						<hr>
+						<h4 style="margin-top:-5px" class="text-center">Jour : {{event.startsAt | date:datetime}}</h4>
+						<div class="cal-day-info margin-bottom-xss">
+							<mwl-calendar style="background-color: white"
+							events="events"
+							view="calendarView"
+							view-date="event.startsAt"
+							day-view-time-position="side"
+							day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
+						</mwl-calendar>
+						<h4 style="margin-top:8px" class="text-center" ng-if="isTwoDays">Jour : {{event.endsAt | date:datetime}}</h4>
+						<mwl-calendar style="background-color: white" ng-if="isTwoDays"
+						events="events"
+						view="calendarView"
+						view-date="event.endsAt"
+						day-view-time-position="side"
+						day-view-split="60"> <!-- can be either 10, 15 or 30. Default 30 -->
+					</mwl-calendar>
+					<hr>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<button style="bottom: 0; position: fixed" class="uk-button uk-button-secondary uk-width-1-1"  aria-label="Back to Top" ng-click="answer('')">
+	Fermer
+</button>
+</md-content>
 </md-dialog>

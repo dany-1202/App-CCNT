@@ -8,7 +8,6 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 		//transclude : true, // Inclu la vue au template déjà existant
 
 		link: function(scope, element, attrs, $timeout) {
-			
 			scope.event = {};
 			scope.errorHoraire = false;
 			scope.errorJour = '';
@@ -52,22 +51,26 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 		 			switch(id) { 
 	 					case 1:
 					        scope.heureDebut1 = res;
+					        scope.hourToValidate = {id : 1, hour: date};
 					        break;
 					    case 2:
 					       	scope.heureFin1 = res;
+					       	scope.hourToValidate = {id : 2, hour: date};
 					        break;
 				        case 3:
 					        scope.heureDebut2 = res;
+					        scope.hourToValidate = {id : 3, hour: date};
 					        break;
 				        case 4:
 				        	scope.heureFin2 = res;
+				        	scope.hourToValidate = {id : 4, hour: date};
 				        	break;
 				    }
 		 		});
 			}
 			
 			scope.showHeureDebutSer1 = function(ev, index) {
-			 	$mdpTimePicker(scope.heureDebut1, {
+			 	$mdpTimePicker(scope.heureDebut1 == Const.HOUR_OPEN ? DateFactory.matinDebut : scope.heureDebut1, {
 			 		targetEvent: ev,
 			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
@@ -91,7 +94,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			};
 			
 			scope.showHeureFinSer1 = function(ev, index) {
-			 	$mdpTimePicker(scope.heureFin1, {
+			 	$mdpTimePicker(scope.heureFin1 == Const.HOUR_END ? DateFactory.matinFin : scope.heureFin1, {
 			 		targetEvent: ev,
 			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
@@ -120,7 +123,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			};
 			
 			scope.showHeureDebutSer2 = function(ev, index) {
-			 	$mdpTimePicker(scope.heureDebut2, {
+			 	$mdpTimePicker(scope.heureDebut2 == Const.HOUR_OPEN ? DateFactory.soirDebut : scope.heureDebut2, {
 			 		targetEvent: ev,
 			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
@@ -151,7 +154,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			 	});
 			};
 			scope.showHeureFinSer2 = function(ev, index) {
-			 	$mdpTimePicker(scope.heureFin2, {
+			 	$mdpTimePicker(scope.heureFin2 == Const.HOUR_END ? DateFactory.soirFin : scope.heureFin2, {
 			 		targetEvent: ev,
 			 		parent: angular.element(document.body.parentElement)
 			 	}).then(function(selectedDate) {
@@ -162,9 +165,11 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			 		if (scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
 			 			var dateFin = DateFactory.newDate(scope.event.startsAt, scope.heureDebut2);
 			 			if (date < dateFin) {
-			 				if ((date.getHours() == scope.heureDebut1.getHours() && date.getMinutes() >= scope.heureDebut1.getMinutes()) || date.getHours() > scope.heureDebut1.getHours()) {
-			 					NotifService.error(Const.TITLE_ERROR_CONFIG, "L'heure de fermeture est avant celle d'ouverture !");
-		   						return;
+			 				if (scope.heureDebut1 != Const.HOUR_OPEN) {
+				 				if ((date.getHours() == scope.heureDebut1.getHours() && date.getMinutes() >= scope.heureDebut1.getMinutes()) || date.getHours() > scope.heureDebut1.getHours()) {
+				 					NotifService.error(Const.TITLE_ERROR_CONFIG, "L'heure de fermeture est avant celle d'ouverture !");
+			   						return;
+				 				}
 			 				}
 		 					date = moment(date).add(1, 'days').toDate();
 			 			}

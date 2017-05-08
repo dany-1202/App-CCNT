@@ -26,13 +26,13 @@ ctrlCCNT.service('NotifService', function(Notification) {
 		},
 		/* Fonction qui reçoivent en paramètre les messages et titres à afficher selon le type de notification */
 		success : function (titre, message) {
-			Notification.success({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> ' + titre + '</h3>'});
+			Notification.success({message: '<p class="notifTexte">' + message + '</p>', delay: 5000, title: '<h3 class="notifTitre"><i class="fa fa-check"></i> ' + titre + '</h3>'});
 		},
 		error : function(titre, message) {
-			Notification.error({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
+			Notification.error({message: '<p class="notifTexte">' + message + '</p>', delay: 8000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
 		},
 		warning : function(titre, message) {
-			Notification.warning({message: '<p class="notifTexte">' + message + '</p>', delay: 3000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
+			Notification.warning({message: '<p class="notifTexte">' + message + '</p>', delay: 8000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
 		}
 	}
 });
