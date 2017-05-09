@@ -116,7 +116,6 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover, PromiseDAO, Session
 			  		console.log(length);
 			  		var posIns = length + 1;
 			  		$timeout(add, 1);
-			  		$timeout(focus, 10);
 			  	}
 
 			  	var decrementerSuivant = function(index) {
@@ -163,9 +162,11 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover, PromiseDAO, Session
 			  			if ($(el).hasClass("transparence")) {
 			  				$(el).toggleClass("transparence");
 			  			}
-			  			scope.$parent.depart.push({id:-1,name:'Votre département', carre:CARRE + posIns, error: false, state : 'new'});
+			  			scope.$parent.depart.push({id:posIns,name:'Votre département', carre:CARRE + posIns, error: false, state : 'new'});
+			  			$timeout(focus, 10);
 			  		};
 			  	}
+			  	
 			  	var focus = function () {
 			  		var length = scope.$parent.depart.length;
 			  		$('#' + length).focus().select();
