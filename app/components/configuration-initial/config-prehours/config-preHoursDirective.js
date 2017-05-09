@@ -441,10 +441,10 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 						NotifService.error(Const.TITLE_IMCOMPLETE_FIELDS, Const.MSG_FILL_HOURS);
 						return;
 					}
-
 					$mdDialog.hide({
 						dep: $scope.getDepWithId($scope.dep),
 						title: $scope.title,
+						hpr_id : $scope.modif ? self.prehour.hpr_id : -1,
 						prehours: $scope.prehours,
 						heureDebut1 : $scope.heureDebut1,
 						heureFin1 : $scope.heureFin1,
@@ -452,7 +452,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 						heureFin2 : $scope.heureFin2,
 						pauseService1 : $scope.pauseService1,
 						pauseService2 : $scope.pauseService2,
-						state: 'new'
+						state: $scope.modif ? 'modif' : 'new'
 					});
 				}
 

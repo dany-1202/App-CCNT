@@ -37,7 +37,6 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 			var getDemandesNotif = function() {
 				var $promise = $http.post('assets/php/getNouvelleDemandesAPI.php', data);
 		    		$promise.then(function (message) {
-		    			console.log(message);
 		    			if (message.data != 'false') {
 		    				scope.demandesNotif = message.data;
 		    			}
@@ -46,11 +45,8 @@ ctrlCCNT.directive('notifDemandes', function ($timeout, SessionService, $http) {
 			}
 			
 			getDemandesNotif();
-			console.log(scope.demandesNotif);
 
-			scope.affParametrageVue = function() {
-				console.log('ici');
-			}
+			scope.affParametrageVue = function() {}
 
 			scope.$on('$destroy', function () {
 			    	$timeout.cancel(timer);

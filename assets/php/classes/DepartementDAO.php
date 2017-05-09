@@ -46,8 +46,9 @@ class DepartementDAO {
 	  	if ($stmt = $db->prepare($query)) {
 	  		$stmt->bind_param('i', $data['id']);
 	  		$stmt->execute();
-	  		MySQLManager::close();
-	  		return $data['id'];
+	  		$stmt->close();
+  			MySQLManager::close();
+  			return $data['id'];
 	  	}
 	  	MySQLManager::close();
 	  	return false;
@@ -72,8 +73,25 @@ class DepartementDAO {
 				$deps[] = $dep;
 			}
 			$stmt1->close();
-			MySQLManager::close();
-			return $deps;
+			$query1 = "SELECT dep_id, dep_nom, dep_img_no, hpr_id, hpr_nom FROM ccn_departement JOIN ccn_horairepreconfig ON hpr_dep_id = dep_id WHERE dep_eta_id = ? AND dep_id = ?";
+			if ($stmt1 = $db->prepare($query1)) {
+				$stmt1->bind_param('ii', $data['noEta'], $data['noDep']);
+				$stmt1->execute();
+				$stmt1->bind_result($dep_id, $dep_nom, $dep_img_no, $per_nom, $per_prenom);
+				while($stmt1->fetch()) {
+					$dep = [];
+					$dep['id'] = $dep_id;
+					$dep['name'] = $dep_nom;
+					$dep['img'] = $dep_img_no;
+					$dep['per_nom'] = $per_nom;
+					$dep['per_prenom'] = $per_prenom;
+					$deps[] = $dep;
+				}
+				$stmt1->close();
+				MySQLManager::close();
+				return $deps;
+			}
+			
 		};
 		MySQLManager::close();
 		return false;
