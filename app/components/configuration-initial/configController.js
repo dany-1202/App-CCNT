@@ -205,16 +205,11 @@ ctrlCCNT.controller('configController', function ($route, PromiseDAO, $timeout, 
 		 	}
 
 		 	/* Insertion des jours fériés et vacances */
-		 	for (var i = 0; i < $scope.calEvents.length; i++) {
-		 		var dataFermetureInfo = {
-		 			'date': DateFactory.toDateTimeBDD(DateFactory.getDateStr($scope.calEvents[i].date)),
-		 			'etaId': idEstablishment, 
-		 			'user_id': SessionService.get('user_id'),
-		 			'user_token': SessionService.get('user_token')
-		 		};
-		 		var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
-		 		$res.then(function (message) { console.log(message); });
-		 	};
+		 	/* Insertion des jours fériés et vacances */
+		 	var tab = $scope.events.concat($scope.plagesEvents);
+			PromiseDAO.insertHolidays(tab, idEstablishment).then(function(message){
+				console.log(message);
+			});
 
 		 }).then(function(value) {});
 

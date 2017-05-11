@@ -1,7 +1,7 @@
 <!-- Choisir les jours fériés -->
 <div class="row">
  	<div class="col-lg-12 padding-bottom">
-		<h2 class="no-margin-left">Période de fermeture de l’établissement</h1>
+		<h2 class="no-margin-left">Période de fermeture de l’établissement <md-button id="saveHolidays" ng-if="state" ng-click="saveHolidays()" class="bouton bouton-l right"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button></h2>
 	</div>
 </div>
 
@@ -157,9 +157,4 @@
 <div class="centrer padding-top" ng-if="!state">
 	<md-button ng-click="ctrl.previous(4)" class="bouton-prec bouton-l">Précédent</md-button>
 	<md-button ng-click="ctrl.saveConfiguration()" class="bouton bouton-l"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Terminer</md-button>
-</div>
-<hr ng-if="state" class="uk-divider-icon">
-
-<div class="centrer" ng-if="state">
-	<md-button ng-click="saveHolidays()" class="bouton bouton-l"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button>
 </div>

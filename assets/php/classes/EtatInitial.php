@@ -61,7 +61,7 @@ require_once("MySQLManager.php");
 	*/
 	public static function insertFermetureInfo ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_fermetureInfo (fer_nom, fer_dateDebut, fer_dateFin, fer_eta_id) VALUES (?,?,?,?)";
+		$query = "INSERT INTO ccn_fermetureInfo (fer_nom, fer_dateDebut, fer_dateFin, fer_Eta_id) VALUES (?,?,?,?)";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sssi', $data['nom'], $data['dateDebut'], $data['dateFin'], $data['etaId']);
 			$stmt->execute();
@@ -74,6 +74,36 @@ require_once("MySQLManager.php");
 		MySQLManager::close();
 		return false;
 	} // insertFermetureInfo
+
+	public static function updateFermetureInfo ($data) {
+		$db = MySQLManager::get();
+		$query = "UPDATE `ccn_fermetureinfo` SET `fer_nom` = ? ,`fer_dateDebut` = ?,`fer_dateFin` = ? WHERE fer_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('sssi', $data['nom'], $data['dateDebut'], $data['dateFin'], $data['id']);
+			$stmt->execute();
+			$stmt->store_result();
+			$stmt->close();
+			MySQLManager::close();
+			return $data['id'];
+		}
+		MySQLManager::close();
+		return false;
+	} // insertFermetureInfo
+
+	public static function deleteFermetureInfo ($data) {
+		$db = MySQLManager::get();
+		$query = "DELETE FROM ccn_fermetureinfo WHERE fer_id = ? AND fer_Eta_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('ii', $data['id'], $data['idEta']);
+			$stmt->execute();
+			$stmt->close();
+			MySQLManager::close();
+			return $data['idEta'];
+		}
+		MySQLManager::close();
+		return false;
+	} // insertFermetureInfo
+
 
 	 public static function insertOuvertureInfo ($data) {
 	 	$db = MySQLManager::get();
@@ -111,19 +141,19 @@ require_once("MySQLManager.php");
 	/*
 		Permet de vérifier si un établissement a déjà été configuré pour celle qui est connectée
 	*/
-		public static function checkConfiguration ($data) {
-			$db = MySQLManager::get();
-			$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
-			if ($stmt = $db->prepare($query)) {
-				$stmt->bind_param('i', $data['user_id']);
-				$stmt->execute();
-				$stmt->store_result();
-				if ($stmt->num_rows == 1) {
-					MySQLManager::close();
-					return true;
-				}
+	public static function checkConfiguration ($data) {
+		$db = MySQLManager::get();
+		$query = "SELECT app_eta_id FROM ccn_appartient WHERE app_per_id = ?";
+		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('i', $data['user_id']);
+			$stmt->execute();
+			$stmt->store_result();
+			if ($stmt->num_rows == 1) {
+				MySQLManager::close();
+				return true;
 			}
-			MySQLManager::close();
+		}
+		MySQLManager::close();
 		return false; // Il ne trouve rien
 	} // checkConfiguration
 	
@@ -196,18 +226,19 @@ require_once("MySQLManager.php");
 			$stmt->bind_result($eta_id);
 			if ($stmt->fetch()) {
 				$stmt->close();
-				$query1 = "SELECT fer_nom, fer_dateDebut, fer_dateFin, fer_eta_id FROM ccn_fermetureInfo WHERE fer_eta_id = ?";
+				$query1 = "SELECT fer_id, fer_nom, fer_dateDebut, fer_dateFin, fer_eta_id FROM ccn_fermetureinfo WHERE fer_eta_id = ?";
 				if ($stmt1 = $db->prepare($query1)) {
 					$stmt1->bind_param('i', $eta_id);
 					$stmt1->execute();
-					$stmt1->bind_result($fer_nom, $fer_dateDebut, $fer_dateFin, $fer_eta_id);
+					$stmt1->bind_result($fer_id, $fer_nom, $fer_dateDebut, $fer_dateFin, $fer_eta_id);
 					$fers = array();
 					while($stmt1->fetch()) {
 						$fer = [];
+						$fer['id'] = $fer_id;
 						$fer['title'] = $fer_nom;
 						$fer['dateDebut'] = $fer_dateDebut;
 						$fer['dateFin'] = ($fer_dateFin == NULL ? 0 : $fer_dateFin);
-						$fer['id'] = $fer_eta_id;
+						$fer['etaId'] = $fer_eta_id;
 						$fers[] = $fer;
 					}
 					$stmt1->close();
