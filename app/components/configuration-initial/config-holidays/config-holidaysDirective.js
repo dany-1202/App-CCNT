@@ -49,7 +49,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 
 			var reInitJour = function () {
 				scope.dateDay.date = new Date();
-	    		scope.dateDay.title = "";
+	    			scope.dateDay.title = "";
 			}
 
 			/*****************************************************************************************\
@@ -77,6 +77,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			/* Ajouter un jour dans les deux tableaux : events et calEvents (calendrier) */
 			scope.addDay = function (dateDay) {
 				scope.$parent.events.push({
+					id : -1,
 					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
 					dateDebut: '',
 					dateFin: '',
@@ -84,6 +85,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 					color: '#5D4037',
 					content: '<img class="image" src="' + photo +'">',
 					class: '',
+					state: 'new'
 				});
 				scope.$parent.calEvents.push({
 					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
@@ -171,6 +173,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				if (nbJours.day != 0) {
 					if (!scope.modifPlage) {
 						scope.$parent.plagesEvents.push({
+							id : -1,
 							date : '',
 							dateDebut: DateFactory.getStrDate(dateDay.dateDebut),
 							dateFin: DateFactory.getStrDate(dateDay.dateFin),
@@ -178,6 +181,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 							color: '#5D4037',
 							content: '<img class="image" src="' + photo +'">',
 							class: '',
+							state: 'new'
 						});
 					}
 					
@@ -231,14 +235,14 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			var maj = function () {
 				$('#calendari_lateral1').empty();
 				$('#calendari_lateral1').bic_calendar({
-			        events: scope.$parent.calEvents,			          
-			        enableSelect: false,			
-			        multiSelect: false,			          
-			        dayNames: dayNames,
+				        	events: scope.$parent.calEvents,			          
+			       	 	enableSelect: false,			
+				        	multiSelect: false,			          
+				        	dayNames: dayNames,
 					monthNames: monthNames,
-			        showDays: true,
-		    	});
-	    		reInitJour();
+				        	showDays: true,
+		    		});
+	    			reInitJour();
 			}
 
 			var majCalEvents = function () {
@@ -247,13 +251,13 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			}
 
 			$('#calendari_lateral1').bic_calendar({
-		        events: scope.$parent.calEvents,			          
-		        enableSelect: false,			
-		        multiSelect: false,			          
-		        dayNames: dayNames,
+			        	events: scope.$parent.calEvents,			          
+			        	enableSelect: false,			
+			        	multiSelect: false,			          
+		       	 	dayNames: dayNames,
 				monthNames: monthNames,
-		        showDays: true,
-		    });
+			        	showDays: true,
+		    	});
 		},
 	}
 });

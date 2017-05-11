@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
+ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory) {
 
 	return {
 		insertEstablishment: function(dataEtablissement) {
@@ -157,6 +157,88 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService) {
 			}).then(function(error) {
 				deferred.resolve(error);
 			});
+			return deferred.promise;
+		},
+		insertHolidays : function(tab, idEstab) {
+			var deferred = $q.defer();
+			for (var i = tab.length - 1; i >= 0; i--) {
+				var hol = tab[i];
+				console.log(hol);
+				var dateDebut = hol.date != '' ? hol.date : hol.dateDebut;
+				var dateFin = hol.date != '' ? hol.date : hol.dateFin;
+				var dataFermetureInfo = {
+					'id' : hol.id,
+					'nom' : hol.title,
+		 			'dateDebut': DateFactory.toDateTimeBDD(DateFactory.getDateStr(dateDebut)),
+		 			'dateFin': DateFactory.toDateTimeBDD(DateFactory.getDateStr(dateFin)),
+		 			'etaId': idEstab, 
+		 			'user_id': SessionService.get('user_id'),
+		 			'user_token': SessionService.get('user_token'),
+		 			'fin' : (i == 0 ? 1: 0),
+	 			};
+				if (hol.state == 'modif') {
+					var $res = $http.post("assets/php/updateFermetureInfoAPI.php", dataFermetureInfo);
+			 		$res.then(function (message) {
+			 			if (message.config.data.fin == 1) {
+			 				deferred.resolve(true);
+			 			} else if (message.data == false) {
+			 				deferred.resolve(false);
+			 			}
+			 		});
+				} else if(hol.state == 'new') {
+			 		var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
+			 		$res.then(function (message) { 
+			 			if (message.config.data.fin == 1) {
+			 				deferred.resolve(true);
+			 			} else if (message.data == false) {
+			 				deferred.resolve(false);
+			 			}
+			 		});
+				}
+			}
+			return deferred.promise;
+		},
+		deleteHolidays : function(tab, tabBDD, idEsta) {
+			var deferred = $q.defer();
+			var elDelete = [];
+			var isHolidayToDelete = function(id) {
+				for (var i = tab.length - 1; i >= 0; i--) {
+					if (tab[i].id == id) {
+						return false;
+					}
+				}
+				return true;
+			};
+			for (var i = tabBDD.length - 1; i >= 0; i--) {
+				if (isHolidayToDelete(tabBDD[i].id)) {
+					elDelete.push(tabBDD[i]);
+				}
+			}
+			
+
+			for (var i = elDelete.length - 1; i >= 0; i--) {
+				var hol = elDelete[i];
+				var dateDebut = hol.date != '' ? hol.date : hol.dateDebut;
+				var dateFin = hol.date != '' ? hol.date : hol.dateFin;
+				var dataFermetureInfo = {
+					'id' : hol.id,
+		 			'user_id': SessionService.get('user_id'),
+		 			'user_token': SessionService.get('user_token'),
+		 			'idEta' : idEsta,
+		 			'fin' : (i == 0 ? 1: 0),
+	 			};
+	 			$promise = $http.post('assets/php/supFermetureInfoAPI.php', dataFermetureInfo);
+				$promise.then(function(message) {
+					console.log(message);
+					if (message.config.data.fin == 1) {
+		 				deferred.resolve(true);
+		 			} else if (message.data == false) {
+		 				deferred.resolve(false);
+		 			}
+				});
+			}
+			if (elDelete.length == 0) {deferred.resolve(true);}
+
 			return deferred.promise;
 		},
 		getPreHours: function(data) {

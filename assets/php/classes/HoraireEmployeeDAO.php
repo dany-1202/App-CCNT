@@ -187,7 +187,10 @@ class HoraireEmployeeDAO {
 							$infos = [];
 							$nbDays = cal_days_in_month(CAL_GREGORIAN, $mois, $annee);
 
-							$queryFerie = "SELECT COUNT(*) FROM ccn_fermetureinfo WHERE fer_Eta_id = ? AND MONTH(fer_date) = ? AND YEAR(fer_date) = ?";
+							$queryFerie = "SELECT COUNT(*) 
+							FROM ccn_fermetureinfo 
+							WHERE fer_Eta_id = ? 
+							AND (MONTH(fer_dateDebut) = ? AND YEAR(fer_dateDebut) = ?)";
 
 							if ($stmt=$db->prepare($queryFerie)) {
 								$stmt->bind_param('iis', $eta_id, $mois, $annee);
@@ -231,42 +234,42 @@ class HoraireEmployeeDAO {
 										} else if ($typeHeure == 3) {
 											$heuresSemaines = $particularite;
 										}
-						    	$infos['heures_semaine'] = $heuresSemaines; // Problème si je change les heures de contrat
-						    	$infos['total_semaine'] = ($infos['joureffectif_heures']/7);
-						    	$infos['heures_mois'] = $infos['heures_semaine'] * $infos['total_semaine'];
-						    	
-						    	
-						    	$query1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
+							    	$infos['heures_semaine'] = $heuresSemaines; // Problème si je change les heures de contrat
+							    	$infos['total_semaine'] = ($infos['joureffectif_heures']/7);
+							    	$infos['heures_mois'] = $infos['heures_semaine'] * $infos['total_semaine'];
+							    	
+							    	
+							    	$query1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureFin, hop_heureDebut)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut < hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
 
-						    	if ($stmt=$db->prepare($query1)) {
-						    		$stmt->bind_param('iis', $per_id, $mois, $annee);
-						    		$stmt->execute();
-						    		$stmt->bind_result($nbHeuresMin);
-						    		$stmt->fetch();
-						    		$stmt->close();
+							    	if ($stmt=$db->prepare($query1)) {
+							    		$stmt->bind_param('iis', $per_id, $mois, $annee);
+							    		$stmt->execute();
+							    		$stmt->bind_result($nbHeuresMin);
+							    		$stmt->fetch();
+							    		$stmt->close();
 
-						    		$query2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureDebut, hop_heureFin)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut >= hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
-						    		if ($stmt=$db->prepare($query2)) {
-						    			$stmt->bind_param('iis', $per_id, $mois, $annee);
-						    			$stmt->execute();
-						    			$stmt->bind_result($nbHeuresPos);
-						    			$stmt->fetch();
-						    			$stmt->close();
+							    		$query2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(TIMEDIFF(hop_heureDebut, hop_heureFin)))) FROM ccn_travail JOIN ccn_horairepersonne ON hop_id = tra_hop_id WHERE hop_heureDebut >= hop_heureFin AND tra_per_id = ? AND MONTH(hop_date) = ? AND YEAR(hop_date) = ?";
+							    		if ($stmt=$db->prepare($query2)) {
+							    			$stmt->bind_param('iis', $per_id, $mois, $annee);
+							    			$stmt->execute();
+							    			$stmt->bind_result($nbHeuresPos);
+							    			$stmt->fetch();
+							    			$stmt->close();
 
-						    			if ($nbHeuresMin == NULL) {$nbHeuresMin = '00:00:00';}
-						    			if ($nbHeuresPos == NULL) {$nbHeuresPos = '00:00:00';}
+							    			if ($nbHeuresMin == NULL) {$nbHeuresMin = '00:00:00';}
+							    			if ($nbHeuresPos == NULL) {$nbHeuresPos = '00:00:00';}
 
-						    			$infos['heureseffectives'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos)));
+						    				$infos['heureseffectives'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(HoraireEmployeeDAO::seconds($nbHeuresMin) + HoraireEmployeeDAO::seconds($nbHeuresPos)));
 
 									  	//$infos['solde'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds(($res - ($infos['heures_mois'] * 3600))));
 
 									  	//return HoraireEmployeeDAO::calculerSoldeEmployee($per_id, $mois, $annee);
 									  	//MySQLManager::close();
-						    			return (json_encode($infos));
-						    		}
-						    	}
-						    }
-						 }
+							    			return (json_encode($infos));
+							    		}
+							    	}
+							    }
+							 }
 						}
 					}
 				}
@@ -291,14 +294,13 @@ class HoraireEmployeeDAO {
 			return 0;
 		}
 
-
 		public static function calculerSoldeEmployee($per_id, $mois, $annee, $eta_id) {
 			$dateIn = HoraireEmployeeDAO::getDateEntreeEmp($per_id);
 			$dateFin = new DateTime('01'.'-'.($mois+1).'-'.$annee);
 			$dateDep = new DateTime($dateIn);
 			$db = MySQLManager::get();
 			$nbHeureEffectives = 0;
-			$soldeHeures = 0; 
+			$soldeHeures = 0;
 			$soldeConges = 0; 
 			$soldeVacances = 0; 
 			$soldeFeries = 0;
@@ -307,22 +309,22 @@ class HoraireEmployeeDAO {
 				$res = HoraireEmployeeDAO::getInfosHeuresMois($per_id, $dateDep->format('m'), $dateDep->format('Y'), $eta_id);
 				$resDec = json_decode($res);
 
-			/* Attention je dois décortiquer les heures effectives afin de déduire complétement 
-			les minutes et les secondes (bon secondes c'est factultatif mais au moins les secondes) */
-			$soldeHeures = (($resDec->heureseffectives->time + $soldeHeures) - $resDec->heures_mois);
-			$soldeConges += (($soldeConges + $resDec->droitconges) - 8);
-			$soldeVacances += (($soldeVacances + $resDec->droitvacances_mois->time) - $resDec->jourprisvacances);
-			$soldeFeries += (($soldeFeries + $resDec->droitjoursferies_mois) - $resDec->jourprisferies);
-			
-			$dateDep->add(new DateInterval('P1M'));
-			$dateDep = new DateTime('01'.'-'.$dateDep->format('m').'-'.$dateDep->format('Y'));
+				/* Attention je dois décortiquer les heures effectives afin de déduire complétement 
+				les minutes et les secondes (bon secondes c'est factultatif mais au moins les secondes) */
+				$soldeHeures = (($resDec->heureseffectives->time + $soldeHeures) - $resDec->heures_mois);
+				$soldeConges += (($soldeConges + $resDec->droitconges) - 8);
+				$soldeVacances += (($soldeVacances + $resDec->droitvacances_mois->time) - $resDec->jourprisvacances);
+				$soldeFeries += (($soldeFeries + $resDec->droitjoursferies_mois) - $resDec->jourprisferies);
+				
+				$dateDep->add(new DateInterval('P1M'));
+				$dateDep = new DateTime('01'.'-'.$dateDep->format('m').'-'.$dateDep->format('Y'));
+			}
+			$infos['solde_heures'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds($soldeHeures*3600));
+			$infos['solde_conges'] = $soldeConges;
+			$infos['solde_vacances'] = $soldeVacances;
+			$infos['solde_feries'] = $soldeFeries;
+			return (json_encode($infos));
 		}
-		$infos['solde_heures'] = HoraireEmployeeDAO::timeToObject(HoraireEmployeeDAO::toHoursMinutesSeconds($soldeHeures*3600));
-		$infos['solde_conges'] = $soldeConges;
-		$infos['solde_vacances'] = $soldeVacances;
-		$infos['solde_feries'] = $soldeFeries;
-		return (json_encode($infos));
-	}
 
 	public static function getHorairesEmployee ($per_id, $absences) {
 		$db = MySQLManager::get();
@@ -507,7 +509,7 @@ class HoraireEmployeeDAO {
 			  			return $erreur;
 			  		}
 			  	}
-			  	
+
 			  }
 			}
 			MySQLManager::close();
