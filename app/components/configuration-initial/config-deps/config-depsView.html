@@ -44,7 +44,7 @@
 </div>
 
 <!-- Gestion des départements de l'établissement sous forme de formulaire -->
-<div ng-repeat="item in depart">
+<div ng-repeat="item in depart track by item.id">
 	 <div class="row">
 		<div class="col-md-4"></div>
 		<div class="col-md-3">

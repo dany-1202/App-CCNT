@@ -10,7 +10,7 @@
 		echo("Vous n'avez pas le droit d'appeler cette requete ou requete invalide");
 	} else {
 		require_once("classes/HorairePreconfigureDAO.php");
-		$hpr_id = HorairePreconfigureDAO::insertHorairePreconfig($authData);
+		$hpr_id = HorairePreconfigureDAO::updateHorairePreconfig($authData);
 		if ($hpr_id != -1) {
 			foreach ($authData['prehours'] as $key => $val) {
 				if (($val['matin']['debut'] != 'Heure début') || ($val['soir']['debut'] != 'Heure début')) {

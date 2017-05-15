@@ -77,7 +77,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			/* Ajouter un jour dans les deux tableaux : events et calEvents (calendrier) */
 			scope.addDay = function (dateDay) {
 				scope.$parent.events.push({
-					id : -1,
+					id : -(scope.$parent.events.length + 1),
 					date: dateDay.date.getDate() + "/" + (dateDay.date.getMonth() + 1) + "/" + dateDay.date.getFullYear(),
 					dateDebut: '',
 					dateFin: '',
@@ -173,7 +173,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 				if (nbJours.day != 0) {
 					if (!scope.modifPlage) {
 						scope.$parent.plagesEvents.push({
-							id : -1,
+							id : -(scope.$parent.plagesEvents.length + 1),
 							date : '',
 							dateDebut: DateFactory.getStrDate(dateDay.dateDebut),
 							dateFin: DateFactory.getStrDate(dateDay.dateFin),

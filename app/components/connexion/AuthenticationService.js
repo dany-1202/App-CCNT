@@ -44,22 +44,22 @@ ctrlCCNT.service('AuthenticationService', function ($http, $location, NotifServi
 						    	/* Définit les éléments du user */
 						    	$rootScope.user = {};
 						    	$rootScope.user.id = authenData.user_id;
-					        	$rootScope.user.nom = authenData.user_nom;
-					        	$rootScope.user.prenom = authenData.user_prenom;
-					        	$rootScope.user.type = authenData.user_type;
-					        	$rootScope.user.token = authenData.user_token;
-					        	$rootScope.user.configuration = message.data;
-				        		var $res = $http.post("assets/php/checkConfigurationEmp.php", data);
+						        	$rootScope.user.nom = authenData.user_nom;
+						        	$rootScope.user.prenom = authenData.user_prenom;
+						        	$rootScope.user.type = authenData.user_type;
+						        	$rootScope.user.token = authenData.user_token;
+						        	$rootScope.user.configuration = message.data;
+					        		var $res = $http.post("assets/php/checkConfigurationEmp.php", data);
 								$res.then(function (message) {
 									console.log(message);
 									
 									SessionService.set('user_confEmp', message.data > 0 ? true : false);
 									$rootScope.user.configemp = SessionService.get('user_confEmp');
 							        	
-						        	/* Connexion réussi*/
-						        	NotifService.successCon();
-						        	$location.path('/home');
-						        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé*/
+								        	/* Connexion réussi*/
+								        	NotifService.successCon();
+								        	$location.path('/home');
+								        	$rootScope.$broadcast("connectionStateChanged"); // Evennement appelé état de la connexion a changé*/
 								});
 
 							});

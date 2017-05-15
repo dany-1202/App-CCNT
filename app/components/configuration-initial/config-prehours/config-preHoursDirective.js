@@ -31,7 +31,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 				self.prehour = hour;
 				self.nbPause = scope.nbPause;
 				self.deps = scope.$parent.depart;
-				
+				self.listePreHours = scope.$parent.prehours;
 				$mdDialog.show({
 					controller: DialogController,
 					templateUrl: 'app/components/configuration-initial/config-prehours/config-preModalInfoView.html',
@@ -56,25 +56,25 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 					for (var nb = 0; nb <= 60; nb+=5) {scope.nbPause.push({name: nb + ' minutes', value:nb});}
 				}
 
-			self.nbPause = scope.nbPause;
-			console.log(scope.nbPause);
-
-			$mdDialog.show({
-				controller: DialogController,
-				templateUrl: 'app/components/configuration-initial/config-prehours/config-preModalInfoView.html',
-				parent: angular.element(document.body),
-				targetEvent: event,
-				clickOutsideToClose:false,
-				fullscreen: true,
-				multiple: true
-			})
-			.then(function(objet) {
-				objet.horaire = {};
-				objet.horaire.prehours = State.getTabCalDefaultWithPause();
-				scope.prehours.push(objet);
-				scope.preHoursSelected = objet;
-			}, function() {}); 
-		}
+				self.nbPause = scope.nbPause;
+				console.log(scope.nbPause);
+				self.listePreHours = scope.$parent.prehours;
+				$mdDialog.show({
+					controller: DialogController,
+					templateUrl: 'app/components/configuration-initial/config-prehours/config-preModalInfoView.html',
+					parent: angular.element(document.body),
+					targetEvent: event,
+					clickOutsideToClose:false,
+					fullscreen: true,
+					multiple: true
+				})
+				.then(function(objet) {
+					objet.horaire = {};
+					objet.horaire.prehours = State.getTabCalDefaultWithPause();
+					scope.prehours.push(objet);
+					scope.preHoursSelected = objet;
+				}, function() {}); 
+			}
 
 		function DialogController ($scope) {	
 			$scope.modif = self.modif;	    	
@@ -441,17 +441,13 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 						NotifService.error(Const.TITLE_IMCOMPLETE_FIELDS, Const.MSG_FILL_HOURS);
 						return;
 					}
+					console.log(self.listePreHours);
+
 					$mdDialog.hide({
 						dep: $scope.getDepWithId($scope.dep),
 						title: $scope.title,
-						hpr_id : $scope.modif ? self.prehour.hpr_id : -1,
+						hpr_id : $scope.modif ? self.prehour.hpr_id : -(self.listePreHours.length +1),
 						prehours: $scope.prehours,
-						heureDebut1 : $scope.heureDebut1,
-						heureFin1 : $scope.heureFin1,
-						heureDebut2 : $scope.heureDebut2,
-						heureFin2 : $scope.heureFin2,
-						pauseService1 : $scope.pauseService1,
-						pauseService2 : $scope.pauseService2,
 						state: $scope.modif ? 'modif' : 'new'
 					});
 				}
