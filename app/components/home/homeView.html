@@ -36,8 +36,9 @@
 					<md-button ng-click="getHeuresBrut()" class="bouton centrer">Récupérer heures employé</md-button>
 				</div>
 			</div>-->
-			
-			<div id="configEmp" ng-hide="{{user.configemp}}"  class="row">
+
+			<div id="configEmp" ng-hide="{{user.configemp}} || !{{user.configuration}}"  class="row">
+
 				<div class="col-lg-12">
 					<div class="jumbotron centrer">
 						<div class="uk-card-badge uk-label">nouveau</div>
@@ -124,8 +125,9 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="row stat-emp-line">
+		<div ng-show="{{user.configemp}} && {{user.configuration}}">
+				
+			<div class="row stat-emp-line" >
 				<div class="col-lg-12">
 					<div class="panel-box col-xs-1">
 						<div md-whiteframe="2" class="panel-content bcgWhite uk-card-hover"><h3><i class="fa fa-clock-o" aria-hidden="true"></i> Qui travaille aujourd'hui ?</h3></div>
@@ -244,6 +246,7 @@
 						<div id="line-example"></div>
 					</div>
 				</div>
+			</div>
 
 
 			<!--
