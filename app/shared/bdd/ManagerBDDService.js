@@ -1,6 +1,6 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
-ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory) {
+ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory, Const) {
 
 	return {
 		insertEstablishment: function(dataEtablissement) {
@@ -71,6 +71,14 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory)
 		updateOrCreatePreHours: function(tab) {
 			var deferred = $q.defer();
 			if (tab.length == 0) {deferred.resolve(true);}
+			var isPreHourToUpdate = function(id, liste) {
+				for (var a= liste.length - 1; a >= 0; a--) {
+					if (liste[a].jour == id) {
+						return liste[a];
+					}
+				}
+				return null;
+			}
 			for (var i = tab.length - 1; i >= 0; i--) {
 				var prehour = tab[i];
 				var dataPreHours = {
@@ -93,11 +101,7 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory)
 						}
 					});
 				} else if (prehour.state == 'modif') {
-					if (i == 0) {
-						deferred.resolve(true);
-					}
-					/*
-					var $res = $http.post("assets/php/updateHorairePreconfigureAPI.php", dataPreHours);
+					/*var $res = $http.post("assets/php/updateHorairePreconfigureAPI.php", dataPreHours);
 					$res.then(function (message) {
 						if (message.config.data.fin == 1) {
 							deferred.resolve(true);
@@ -105,6 +109,66 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory)
 							deferred.resolve(false);
 						}
 					});*/
+					console.log(prehour);
+
+					for (var cpt = prehour.prehours.length - 1; cpt >= 0; cpt--) {
+						var day = prehour.prehours[cpt];
+						if (day.matin.debut !=  Const.HOUR_OPEN) {
+							console.log(DateFactory.getTimeOfDateForBDD(day.matin.debut));
+						}	
+						var update = isPreHourToUpdate(day.id, prehour.liste);
+						var dataPre  = {
+							'fin' : (i == 0 ? 1 : 0),
+							'id' : day.id, 
+							'matinDebut' : (day.matin.debut == Const.HOUR_OPEN ? '00:00:00' : DateFactory.getTimeOfDateForBDD(day.matin.debut)), 
+							'matinFin' : day.matin.fin, 
+							'soirDebut' : day.soir.debut, 
+							'soirFin' : day.soir.fin, 
+							'pauseMatin' : angular.isUndefined(day.datapauseMatin) ? 0 : day.datapauseMatin.value, 
+							'pauseSoir' : angular.isUndefined(day.datapauseSoir) ? 0 : day.datapauseSoir.value, 
+							'hpr_id' : prehour.hpr_id,
+							'user_id': SessionService.get('user_id'), 
+							'user_token': SessionService.get('user_token') 
+						};
+						if (update != null) {
+							// Modification ou Suppression
+							dataPre.jou_id = update.id;
+							if (day.matin.debut == Const.HOUR_OPEN && day.soir.debut == Const.HOUR_OPEN) {
+								var $res = $http.post("assets/php/supJourPreconfigureAPI.php", dataPre);
+								$res.then(function (message) {
+									console.log(message);
+									if (message.config.data.fin == 1) {
+										deferred.resolve(true);
+									} else if (message.data == false) {
+										deferred.resolve(false);
+									}
+								});
+							} else {
+								var $res = $http.post("assets/php/updateJourPreconfigureAPI.php", dataPre);
+								$res.then(function (message) {
+									console.log(message);
+									if (message.config.data.fin == 1) {
+										deferred.resolve(true);
+									} else if (message.data == false) {
+										deferred.resolve(false);
+									}
+								});
+							}
+						} else {
+							if (day.matin.debut != Const.HOUR_OPEN || day.soir.debut != Const.HOUR_OPEN) {
+								var $res = $http.post("assets/php/insertJourPreconfigureAPI.php", dataPre);
+								$res.then(function (message) {
+									console.log(message);
+									if (message.config.data.fin == 1) {
+										deferred.resolve(true);
+									} else if (message.data == false) {
+										deferred.resolve(false);
+									}
+								});
+							}
+						}
+					}					
+					
 				} else {
 					if (i == 0) {
 						deferred.resolve(true);

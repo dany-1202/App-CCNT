@@ -58,6 +58,12 @@ ctrlCCNT.factory('DateFactory', function (Const) {
 	date.getTimeDate = function (date) {
 		return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 	}
+
+	date.getTimeOfDateForBDD = function(time) {
+		var tabDate = time.split(':');
+		var date = moment().startOf('day').add(tabDate[0], 'hours').add(tabDate[1], 'minutes').toDate();
+		return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	}
 	
 	date.getJourById = function(id) {
 		var day = 'Dimanche';

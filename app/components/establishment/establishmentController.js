@@ -187,7 +187,10 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 
 	var getCalPreHours = function(liste) {
 		var tab = State.getTabCalDefaultWithPause();
-
+		for (var i = tab.length - 1; i >= 0; i--) {
+			tab[i].datapauseMatin = getPauseByMinutes(0);
+			tab[i].datapauseSoir = getPauseByMinutes(0);
+		}
 		for (var cpt = 0; cpt< liste.length; cpt++) {
 			for (var i = 0; i < tab.length; i++) {
 				if (liste[cpt].jour == tab[i].id) {

@@ -32,6 +32,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 				self.nbPause = scope.nbPause;
 				self.deps = scope.$parent.depart;
 				self.listePreHours = scope.$parent.prehours;
+				console.log(self.prehour);
 				$mdDialog.show({
 					controller: DialogController,
 					templateUrl: 'app/components/configuration-initial/config-prehours/config-preModalInfoView.html',
@@ -448,7 +449,8 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 						title: $scope.title,
 						hpr_id : $scope.modif ? self.prehour.hpr_id : -(self.listePreHours.length +1),
 						prehours: $scope.prehours,
-						state: $scope.modif ? 'modif' : 'new'
+						state: $scope.modif ? 'modif' : 'new',
+						liste : $scope.modif ? self.prehour.liste : [],
 					});
 				}
 
