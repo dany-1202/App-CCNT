@@ -14,6 +14,9 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 	$scope.hoursCCNTChosen = 45; // Valeur heures soumis CCNT
 	$scope.textStep = (window.innerWidth >= 700) ? "Étape: " : "";
 
+
+	$scope.cal; 
+
 	$scope.nbPause = [];
 	for (var nb = 0; nb <= 60; nb+=5) {$scope.nbPause.push({name: nb + ' minutes', value:nb});}
 
@@ -88,6 +91,12 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		return data;
 	}
 
+	$scope.addCalToTabCalendars = function() {
+    		var pos = $scope.tabCalendars.length;
+    		$scope.tabCalendars.push({id : -pos, name: Const.NEWHOR + pos, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true, choix: State.changeChoix(0), 'etat' : 'new'});
+ 		$scope.cal = $scope.tabCalendars[pos];
+    	}
+
 	$scope.getHours = function() {
 		$scope.tabCalendars.splice(0, $scope.tabCalendars.length);
 		$scope.tabCalendarsBDD.splice(0, $scope.tabCalendarsBDD.length);
@@ -104,7 +113,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 			console.log($scope.tabCalendars);
 			$scope.tabCalendarsBDD = angular.copy($scope.tabCalendars);
 			console.log($scope.tabCalendars);
-
+			$scope.cal = $scope.tabCalendars[0];
 		});
 	}
 
@@ -217,17 +226,14 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		for (var cpt = 0; cpt< liste.length; cpt++) {
 			for (var i = 0; i < tab.length; i++) {
 				if (liste[cpt].jour == tab[i].id) {
-
-					var dateMatinDebut = DateFactory.getDateByHours(liste[cpt].heureDebut);
-					var dateMatinFin = DateFactory.getDateByHours(liste[cpt].heureFin);
-					var dateSoirDebut = DateFactory.getDateByHours(liste[cpt].heureDebutS);
-					var dateSoirFin = DateFactory.getDateByHours(liste[cpt].heureFinS);
-
-				 	
-					tab[i].matin.debut = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateMatinDebut.getHours(), 'hours').add(dateMatinDebut.getMinutes(), 'minutes').toDate();
-					tab[i].matin.fin = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateMatinFin.getHours(), 'hours').add(dateMatinFin.getMinutes(), 'minutes').toDate();
-					tab[i].soir.debut = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateSoirDebut.getHours(), 'hours').add(dateSoirDebut.getMinutes(), 'minutes').toDate();
-					tab[i].soir.fin = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateSoirFin.getHours(), 'hours').add(dateSoirFin.getMinutes(), 'minutes').toDate();
+					var dateMatinD = moment(liste[cpt].heureDebut).toDate();
+					var dateMatinF = moment(liste[cpt].heureFin).toDate();
+					var dateSoirD = moment(liste[cpt].heureDebutS).toDate();
+					var dateSoirF = moment(liste[cpt].heureFinS).toDate();
+					tab[i].matin.debut = dateMatinD == "Invalid Date" ? Const.HOUR_OPEN : moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateMatinD.getHours(), 'hours').add(dateMatinD.getMinutes(), 'minutes').toDate();
+					tab[i].matin.fin = dateMatinF == "Invalid Date" ? Const.HOUR_END :moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateMatinF.getHours(), 'hours').add(dateMatinF.getMinutes(), 'minutes').toDate();
+					tab[i].soir.debut = dateSoirD == "Invalid Date" ? Const.HOUR_OPEN :moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateSoirD.getHours(), 'hours').add(dateSoirD.getMinutes(), 'minutes').toDate();
+					tab[i].soir.fin = dateSoirF == "Invalid Date" ? Const.HOUR_END : moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateSoirF.getHours(), 'hours').add(dateSoirF.getMinutes(), 'minutes').toDate();
 					
 					tab[i].datapauseMatin = getPauseByMinutes(liste[cpt].pause);
 					tab[i].datapauseSoir = getPauseByMinutes(liste[cpt].pauseS);
@@ -640,7 +646,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		$('#savePreHours').addClass("loading");
 		var tab = $scope.prehours;
 		var tabBDD = $scope.preHoursBDD;
-
+		console.log(tab);
 		updateOrCreatePreHours(tab).then(function(message) {
 			if (message) {
 				console.log(tab);

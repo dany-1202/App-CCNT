@@ -32,7 +32,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 						if (DateFactory.isHourStartValid(selectedDate, index, $scope.cal.hours)) {
 							selectedDate = moment(DateFactory.getToday()).add(index, 'days').add(selectedDate.getHours(), 'hours').add(selectedDate.getMinutes(), 'minutes').toDate();
 							objHour.matin.debut = selectedDate; // Changement de l'heure à jour
-			 				if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {$scope.showAdvanced(ev, objHour); if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
+			 				if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) { if ($scope.showAdvancedRepHours) {$scope.showAdvanced(ev, objHour);} if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
 						}  else {
 							var dayPrec = DateFactory.getDayPrec(index, $scope.cal.hours);
 							NotifService.error('Horaire invalide', "L'heure d'ouverture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(selectedDate) + "</span> choisi pour " + objHour.day + " doit être supérieur à l'heure de fermeture : <span class='uk-label uk-label-default'>" + DateFactory.getTimeStr(dayPrec.soir.fin) + "</span> du soir de " + dayPrec.day); 
@@ -85,7 +85,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 			 		} else {
 			 			// Date est valide
 			 			objHour.matin.fin = selectedDate;
-			 			if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {$scope.showAdvanced(ev, objHour); if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
+			 			if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {if ($scope.showAdvancedRepHours) {$scope.showAdvanced(ev, objHour);} if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
 			 		}
 			 		$scope.showDivOtherHours();
 			 			
@@ -162,7 +162,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 						} else {
 							/* Date valide */ 
 							objHour.soir.debut = selectedDate; // Changement de l'heure à jour
-			 				if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {$scope.showAdvanced(ev, objHour); if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
+			 				if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {if ($scope.showAdvancedRepHours) {$scope.showAdvanced(ev, objHour);} if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
 
 						}
 					}
@@ -292,7 +292,7 @@ ctrlCCNT.directive('calValidator', function (Const, $timeout, $mdpTimePicker, Da
 						objHour.soir.fin = selectedDate; // Changement de l'heure à jour
 						/* Lancement écran qui permet à l'utilisateur de choisir les jours de la semaine qui doivent reprendre les même configurations */
 					
-			 			if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {$scope.showAdvanced(ev, objHour); if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
+			 			if ((objHour.pause.existe ? !$scope.testWithCoupuresFin(objHour) : !$scope.testWithoutCoupuresFin(objHour)) && !$scope.allDaysCompleted()) {if ($scope.showAdvancedRepHours) {$scope.showAdvanced(ev, objHour);} if ($scope.cal.errorName || $scope.cal.errorPeriod) {$scope.cal.state = Const.INCOMP;} else {$scope.cal.state = Const.COMP;}} else {$scope.cal.state = Const.INCOMP;}
 			 		}
 			 		$scope.showDivOtherHours();
 			 	});

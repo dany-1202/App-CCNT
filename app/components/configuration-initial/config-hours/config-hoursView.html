@@ -2,7 +2,7 @@
 <div class="row no-margin-bottom-16" ng-if="!state">
 	<div class="col-lg-12">
 		<div class="right no-margin-top-16">
-
+			
 			<div class="hours-ccnt centrer">CCNT soumis:
 				<span class="border-ellipse-hours">{{hoursCCNTChosen}} H
 					<i class="espace-avant fa fa-clock-o"></i><br>
@@ -180,7 +180,7 @@
 
 <div class="row" ng-show="affCalendar || tabCalendars[0].state == 'Complet' || state">
 	<div class="col-lg-12">
-		<h3> Ouverture de l'établissement :
+		<h3 style="display: inline;"> Ouverture de l'établissement :
 			<span style="color: {{cal.choix.color}}">{{cal.choix.nom}}</span>
 			<!--ng-click="modifChoiceOpenning()"-->
 			<div class="uk-inline">
@@ -188,6 +188,7 @@
 					<i class="fa fa-pencil" aria-hidden="true"></i>
 				</button>
 			</div>
+			
 		</h3>
 	</div>
 </div>
@@ -200,7 +201,14 @@
 
  <div class="row" ng-show="affCalendar || state">
  	<div class="col-lg-12">
- 		<hr class="uk-divider-icon"><h3>Horaires: <strong>{{cal.name}}</strong></h3>
+ 		<hr class="uk-divider-icon">
+		<h3 style="display: inline-block;">Horaires: <strong>{{cal.name}}</strong>
+ 			<h6 class="right">
+ 				<md-switch  class="md-primary" ng-model="showAdvancedRepHours" ng-change="activateAdvancedRepHours()" aria-label="Switch 1">
+					<strong>{{msgActivated}} l'assistant de répétitions des heures</strong>
+		  		</md-switch>
+	  		</h6>
+	  	</h3>
  	</div>
  	<!-- Affichage En continue -->
  	<cal-continue ng-show="cal.choix.id == 0"></cal-continue>

@@ -80,6 +80,7 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 		function DialogController ($scope) {	
 			$scope.modif = self.modif;	    	
 			$scope.dep = $scope.modif ? self.prehour.dep.id : 0;
+			$scope.imageDep = $scope.modif ? self.prehour.dep.img :  0;
 			$scope.deps = self.deps;
 			$scope.nbPause = self.nbPause;
 			$scope.textButton = $scope.modif ? Const.SAVE : Const.ADD;
@@ -100,7 +101,6 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 			}
 
 
-
 			$scope.redefFirst = function () {
 				$scope.dep = 0;
 			}
@@ -112,6 +112,11 @@ ctrlCCNT.directive('configPreHours', function($mdDialog, $timeout, State, NotifS
 					}
 				}
 				return null;
+			}
+
+			$scope.choiceOfDep = function() {
+				var dep = $scope.getDepWithId();
+				$scope.imageDep = dep.img;
 			}
 
 			$scope.showTimeMatinDebut = function(ev, index) {

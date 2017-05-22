@@ -11,13 +11,6 @@
 	} else {
 		require_once("classes/HorairePreconfigureDAO.php");
 		$hpr_id = HorairePreconfigureDAO::updateHorairePreconfig($authData);
-		if ($hpr_id != -1) {
-			foreach ($authData['prehours'] as $key => $val) {
-				if (($val['matin']['debut'] != 'Heure début') || ($val['soir']['debut'] != 'Heure début')) {
-					HorairePreconfigureDAO::insertJourPreconfig($val['id'], $val['matin']['debut'], $val['matin']['fin'], $val['soir']['debut'], $val['soir']['fin'], $val['datapauseMatin']['value'], $val['datapauseSoir']['value'], $hpr_id);
-				}
-			}
-		}
 		echo(json_encode($hpr_id));
 	}
 	
