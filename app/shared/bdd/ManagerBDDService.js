@@ -392,34 +392,54 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory,
 			});
 			return deferred.promise;
 		},
-		updateOrCreateHours : function(tab) {
+		updateOrCreateHours : function(tab, idEsta) {
 			var deferred = $q.defer();
 			if (tab.length == 0) {deferred.resolve(true);}
+
+			var getHoursForBDD = function (tableau) {
+				var data = angular.copy(tableau);
+				for (var cpt = 0; cpt < data.length; cpt++) {
+	 				var obj = data[cpt];
+	 				obj.matin.debut = obj.matin.debut == Const.OPEN ? "" : DateFactory.getTimeDate(obj.matin.debut);
+	 				obj.matin.fin = obj.matin.fin == Const.END ? "" : DateFactory.getTimeDate(obj.matin.fin);
+	 				obj.soir.debut = obj.soir.debut == Const.OPEN ? "" : DateFactory.getTimeDate(obj.soir.debut);
+	 				obj.soir.fin = obj.soir.fin == Const.END ? "" : DateFactory.getTimeDate(obj.soir.fin);
+	 			}
+	 			return data;
+			}
+
 			for (var i = tab.length - 1; i >= 0; i--) {
-				var hour = tab[i];
-				/*
-				var dataFermetureInfo = {
-					'id' : hol.id,
-					'nom' : hol.title,
-					'dateDebut': DateFactory.toDateTimeBDD(DateFactory.getDateStr(dateDebut)),
-					'dateFin': DateFactory.toDateTimeBDD(DateFactory.getDateStr(dateFin)),
-					'etaId': idEstab, 
-					'user_id': SessionService.get('user_id'),
-					'user_token': SessionService.get('user_token'),
-					'fin' : (i == 0 ? 1: 0),
-				};
-				if (hol.state == 'modif') {
-					var $res = $http.post("assets/php/updateFermetureInfoAPI.php", dataFermetureInfo);
+				var cal = tab[i];
+		 		var type = (cal.period.debut == null && cal.period.fin == null) ? 1 : 0;
+
+		 		
+		 		var dataInsertOuvertureInfo = {
+		 			'id' : cal.id,
+		 			'nom': cal.name,
+		 			'base': type,
+		 			'hours': getHoursForBDD(cal.hours),
+		 			'dateDebut': cal.period.debut,
+		 			'dateFin': cal.period.fin,
+		 			'etaId': idEsta,
+		 			'user_id': SessionService.get('user_id'),
+		 			'user_token': SessionService.get('user_token'),
+		 			'fin' : i == 0 ? 1 : 0
+		 		};
+		 		//console.log(dataInsertOuvertureInfo);
+				if (cal.etat == 'modif') {
+					var $res = $http.post("assets/php/updateOuvertureInfoAPI.php", dataInsertOuvertureInfo);
 					$res.then(function (message) {
+						console.log(message);
 						if (message.config.data.fin == 1) {
 							deferred.resolve(true);
 						} else if (message.data == false) {
 							deferred.resolve(false);
 						}
 					});
-				} else if(hol.state == 'new') {
-					var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
-					$res.then(function (message) { 
+				} else if(cal.etat == 'new') {
+					var $res = $http.post("assets/php/insertOuvertureInfoAPI.php", dataInsertOuvertureInfo);
+					$res.then(function (message) {
+						console.log(message);
 						if (message.config.data.fin == 1) {
 							deferred.resolve(true);
 						} else if (message.data == false) {
@@ -427,11 +447,11 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory,
 						}
 					});
 				}
-				*/
+				
 			}
 			return deferred.promise;
 		},
-		deleteHours : function(tab, tabBDD) {
+		deleteHours : function(tab, tabBDD, idEta) {
 			var deferred = $q.defer();
 			var elDelete = [];
 
@@ -445,7 +465,7 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory,
 			}
 
 			for (var i = tabBDD.length - 1; i >= 0; i--) {
-				if (isHourToDelete(tabBDD[i].hpr_id)) {
+				if (isHourToDelete(tabBDD[i].id)) {
 					elDelete.push(tabBDD[i]);
 				}
 			}
@@ -454,8 +474,19 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory,
 			
 			for (var i = elDelete.length - 1; i >= 0; i--) {
 				var hour = elDelete[i];
-				var dataHours = {};
-				$promise = $http.post('assets/php/supHoraireTypePreConfigAPI.php', dataHours);
+				var data = {
+		 			'id' : hour.id,
+		 			'nom': hour.name,
+		 			'hours': hour.hours,
+		 			'dateDebut': hour.period.debut,
+		 			'dateFin': hour.period.fin,
+		 			'etaId': idEta,
+		 			'user_id': SessionService.get('user_id'),
+		 			'user_token': SessionService.get('user_token'),
+		 			'fin': i == 0 ? 1 : 0
+		 		};
+				
+				$promise = $http.post('assets/php/supOuvertureInfoAPI.php', data);
 				$promise.then(function(message) {
 					console.log(message);
 					if (message.config.data.fin == 1) {

@@ -31,7 +31,7 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover, PromiseDAO, Session
 				scope.popAdd = {position : 'top'};
 
 				/* Configuration de l'affichage de la position de l'affichage des popovers en fonction de la largeur de l'écran et de sa longeur */
-				if (larg >= 1012) {
+				if (larg >= 1012 && !scope.state) {
 					scope.popCarre = {position : 'right'};
 					scope.popSup = {position : 'right'};
 					scope.popAdd = {position : 'left'};
@@ -42,7 +42,9 @@ ctrlCCNT.directive('configDeps', function($timeout, Popover, PromiseDAO, Session
 				/*****************************************************************************************\
 				* Gestion des popovers *                        
 				\*****************************************************************************************/
-				Popover.showPop(1, ['#grand-carre', '#btnAjoutDep', '#supDep0']);
+				if (!scope.state) {
+					Popover.showPop(1, ['#grand-carre', '#btnAjoutDep', '#supDep0']);
+				}
 
 				/*///////////////////////////////////////////////////////////////////////////////////////*/
 

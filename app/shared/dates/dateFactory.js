@@ -59,10 +59,21 @@ ctrlCCNT.factory('DateFactory', function (Const) {
 		return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 	}
 
+	date.formatDateIntoTime = function(date) {
+		return moment(date).format('HH:mm:ss');
+	}
+
 	date.getTimeOfDateForBDD = function(time) {
 		var tabDate = time.split(':');
 		var date = moment().startOf('day').add(tabDate[0], 'hours').add(tabDate[1], 'minutes').toDate();
-		return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+		return date.getHours() + ":" + date.getMinutes();
+	}
+
+
+	date.getDateByHours = function(hourBDD) {
+		var tabDate = hourBDD.split(':');
+		var date = moment().startOf('day').add(tabDate[0], 'hours').add(tabDate[1], 'minutes').toDate();
+		return date;
 	}
 	
 	date.getJourById = function(id) {
@@ -89,6 +100,32 @@ ctrlCCNT.factory('DateFactory', function (Const) {
 		}
 		return day;
 	};
+
+
+	date.getIdByDay = function(idJour) {
+		var day = 6;
+		switch(idJour) {
+			case 1:
+			day = 0;
+			break;
+			case 2:
+			day = 1;
+			break;
+			case 3:
+			day = 2;
+			break;
+			case 4:
+			day = 3;
+			break;
+			case 5:
+			day = 4;
+			break;
+			case 6:
+			day = 5;
+			break;
+		}
+		return day;
+	}
 		
 		
 	date.getTimeStr = function (date) {
@@ -104,9 +141,9 @@ ctrlCCNT.factory('DateFactory', function (Const) {
 	date.calculateNbHours = function (timeDebut, timeFin) {
 		var tmp = timeFin - timeDebut; // Je fait la différence entre les deux dates
 		tmp = Math.floor(tmp/1000); // Nombre de secondes entre les 2 dates
-    	var diffsec = tmp % 60; // Extraction du nombre de secondes
-    	tmp = Math.floor((tmp-diffsec)/60); // Nombre de minutes (partie entière)
-    	var diffmin = tmp % 60; // Extraction du nombre de minutes
+	    	var diffsec = tmp % 60; // Extraction du nombre de secondes
+	    	tmp = Math.floor((tmp-diffsec)/60); // Nombre de minutes (partie entière)
+	    	var diffmin = tmp % 60; // Extraction du nombre de minutes
 		tmp = Math.floor((tmp-diffmin)/60) // Nombre d'heures (partie entière)
 		return tmp; // Renvoie le nombre d'heures qui sépare les dates
 	};

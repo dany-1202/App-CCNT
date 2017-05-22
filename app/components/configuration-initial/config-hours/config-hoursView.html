@@ -41,7 +41,7 @@
 
 <div class="row">
 	<div class="col-lg-12 padding-bottom">
-		<h2 class="no-margin-left">Horaires d'ouvertures de l'établissement</h2>
+		<h2 class="no-margin-left">Horaires d'ouvertures de l'établissement <md-button id="saveHours" ng-if="state" ng-click="saveHours()" class="bouton bouton-l right"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button></h2>
 		<div class="alert alert-success" role="alert">
 			<h4 class="alert-heading">Définir les horaires</h4>
 			<p>Définissez l'horaire de base d'une semaine ou de plusieurs semaines pour votre établissement.</p>
@@ -49,7 +49,7 @@
 	</div>
 </div>
 
-<div class="row" ng-show="affChoiceOpenning" type-ouverture>
+<div class="row" ng-show="affChoiceOpenning && !state" type-ouverture>
 	<div class="col-lg-12" >
 		<div class="card card-inverse text-center" ng-click="hidePopovers()" id="choiceOpenning" data-title="Question Type d'ouverture" data-container="body" data-toggle="popover" data-placement="top" data-content="Choisissez si votre établissement est ouvert en continue ou avec des coupures" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
 			<span class="uk-badge" uk-tooltip title="Vous devez répondre à cette question" style="right: 25px;position: absolute;margin-bottom: -20px!important">?</span>
@@ -66,7 +66,7 @@
 
 
 <!-- Afficher la question de la fin -->
-<div class="row" ng-show="affOtherHours && affDefinitif" gestion-horaires>
+<div class="row" ng-show="(affOtherHours && affDefinitif)" gestion-horaires>
 	<div class="col-lg-12">
 		<div class="card card-inverse text-center" md-whiteframe="1" style="background-color: #FFF; border: 1px solid #ecf0f1; padding: 10px;">
 			<h2 class="card-header light-grey">Gestion des horaires</h2><hr>
@@ -133,9 +133,9 @@
 	</div>
 </div>
 
-<div class="row" ng-show="tabCalendars[0].state == 'Complet'">
+<div class="row" ng-show="tabCalendars[0].state == 'Complet' || state">
 	<div class="col-lg-12">
-		<h2 class="card-header">Vos Horaires <i class="fa fa-calendar" style="margin-left:10px" aria-hidden="true"></i></h2><hr>
+		<h2 class="card-header">Vos Horaires <md-button ng-if="state" ng-click="addCalToTabCalendars()" class="bouton bouton-l right"><i class="fa fa-plus" aria-hidden="true" style="margin-right: 3px"></i> Ajouter horaire</md-button><i class="fa fa-calendar" style="margin-left:10px" aria-hidden="true"></i></h2><hr>
 
 		<h3 class="left"></h3>
 
@@ -160,10 +160,10 @@
 						<p ng-if="item.state == 'Incomplet'"><span style="margin-top: 10px!important" class="w3-tag incompleted w3-round">{{item.state}}</span></p>
 					</td>
 					<td style="line-height:55px!important">
-						<button ng-if="!item.errorPeriod && !item.errorName && !affDefinitif" md-whiteframe="1" class="btn btn-primary" ng-click="modifCal($event, $index)">
+						<button ng-if="(!item.errorPeriod && !item.errorName && !affDefinitif) || state" md-whiteframe="1" class="btn btn-primary" ng-click="modifCal($event, $index)">
 							<i class="fa fa-pencil" aria-hidden="true"></i>
 						</button>
-						<button ng-if="!item.errorPeriod && !item.errorName && !affDefinitif" ng-hide="$index == 0" md-whiteframe="1" class="btn btn-primary" ng-click="supCal(item, $index)">
+						<button ng-if="(!item.errorPeriod && !item.errorName && !affDefinitif) || state" ng-hide="$index == 0" md-whiteframe="1" class="btn btn-primary" ng-click="supCal(item, $index)">
 							<i class="fa fa-trash" aria-hidden="true"></i>
 						</button>
 						<button ng-if="$index == 0"  md-whiteframe="1" class="btn btn-primary" ng-click="supCalDefault(item, $index)">
@@ -178,7 +178,7 @@
 	</div>
 </div>
 
-<div class="row" ng-show="affCalendar || tabCalendars[0].state == 'Complet'">
+<div class="row" ng-show="affCalendar || tabCalendars[0].state == 'Complet' || state">
 	<div class="col-lg-12">
 		<h3> Ouverture de l'établissement :
 			<span style="color: {{cal.choix.color}}">{{cal.choix.nom}}</span>
@@ -198,7 +198,7 @@
     <p style="color:#e74c3c; font-weight: normal">Configurer votre horaire afin de permettre l'enregistrement de ce dernier.</p>
  </div>-->
 
- <div class="row" ng-show="affCalendar">
+ <div class="row" ng-show="affCalendar || state">
  	<div class="col-lg-12">
  		<hr class="uk-divider-icon"><h3>Horaires: <strong>{{cal.name}}</strong></h3>
  	</div>
@@ -209,7 +209,7 @@
  </div>
 
  <!-- Affichage de l'information * jours avec coupures -->
- <div class="right" ng-show="cal.choix.id == 1 && affCalendar"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
+ <div class="right" ng-show="(cal.choix.id == 1 && affCalendar) || state"><span style="color: {{choix.color}}; font-size: 20px">*</span> <span class="bold">Jours avec coupures</span></div>
  <hr ng-if="state" class="uk-divider-icon">
  <!-- Actions de l'étape -->
  <div class="row" ng-if="!state">
@@ -217,14 +217,6 @@
  		<div class="centrer">
  			<md-button ng-click="ctrl.previous(3)" class="bouton-prec bouton-l">Précédent</md-button>
  			<md-button ng-click="goNextStep($event)" class="bouton bouton-l">Suivant</md-button>
- 		</div>
- 	</div>
- </div>
-
- <div class="row" ng-if="state">
- 	<div class="col-lg-12">
- 		<div class="centrer">
- 			<md-button ng-click="saveHours()" class="bouton bouton-l"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-right: 3px"></i> Enregistrer</md-button>
  		</div>
  	</div>
  </div>

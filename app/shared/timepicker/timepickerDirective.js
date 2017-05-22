@@ -50,22 +50,22 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 		 			}
 		 			switch(id) { 
 	 					case 1:
-					        scope.heureDebut1 = res;
-					        scope.hourToValidate = {id : 1, hour: date};
-					        break;
-					    case 2:
-					       	scope.heureFin1 = res;
-					       	scope.hourToValidate = {id : 2, hour: date};
-					        break;
-				        case 3:
-					        scope.heureDebut2 = res;
-					        scope.hourToValidate = {id : 3, hour: date};
-					        break;
-				        case 4:
-				        	scope.heureFin2 = res;
-				        	scope.hourToValidate = {id : 4, hour: date};
-				        	break;
-				    }
+					        		scope.heureDebut1 = res;
+					        		scope.hourToValidate = {id : 1, hour: date};
+					        		break;
+				   	 	case 2:
+					       		scope.heureFin1 = res;
+					       		scope.hourToValidate = {id : 2, hour: date};
+					        		break;
+			       			 case 3:
+						        	scope.heureDebut2 = res;
+						        	scope.hourToValidate = {id : 3, hour: date};
+						        	break;
+				        		case 4:
+				        			scope.heureFin2 = res;
+				        			scope.hourToValidate = {id : 4, hour: date};
+				        			break;
+			   		}
 		 		});
 			}
 			

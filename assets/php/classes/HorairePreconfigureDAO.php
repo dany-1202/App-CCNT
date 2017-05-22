@@ -166,7 +166,7 @@ class HorairePreconfigureDAO {
 				  	$stmt->execute();
 				  	$stmt->close();
 				  	foreach ($tab as $key => $val) {
-				  		HorairePreconfigureDAO::deleteJourPreconfig($val);				  	
+				  		HorairePreconfigureDAO::deleteJourPreconfig($val, $data['hpr_id']);				  	
 				  	}
 				  	MySQLManager::close();
 					return 1;

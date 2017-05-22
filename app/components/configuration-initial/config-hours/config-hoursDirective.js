@@ -28,10 +28,9 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			$scope.affModifOtherHours1 = false;
 			$scope.affModifOtherHours2 = false;
 			$scope.fabModifType = false;
-			
-			$scope.tabCalendars = $scope.$parent.tabCalendars;
-			$scope.cal = $scope.tabCalendars[0]; // Par défaut je prend les valeurs du premier
-			
+
+			$scope.cal = $scope.$parent.tabCalendars[0]; // Par défaut je prend les valeurs du premier
+
 			$scope.affInfos = false;
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -98,8 +97,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			}
 
 	  		var res = $scope.isHoursCompleted();
-  			$scope.affChoiceOpenning = ($scope.tabCalendars[0].state !== Const.INCOMP ? false : true); // Afficher la question du type d'ouverture
-  			$scope.affCalendar = (res && $scope.tabCalendars[0].state !== Const.INCOMP? true : false); // Afficher le calendrier
+  			$scope.affChoiceOpenning = ($scope.$parent.tabCalendars[0].state !== Const.INCOMP ? false : true); // Afficher la question du type d'ouverture
+  			$scope.affCalendar = (res && $scope.$parent.tabCalendars[0].state !== Const.INCOMP? true : false); // Afficher le calendrier
 	  		
 			/*****************************************************************************************\
 			*                           Gestion de l'affichage des popovers                           *
@@ -112,10 +111,13 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			}
 			
 			$scope.showHourModif = function () {
-				Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.cal.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
+				if (!$scope.state) {
+					Popover.showPop(4 , ['#hourModif', '#choiceCCNT', ($scope.cal.choix.id == 0 ? '#1debut' : '#1debutMatin')]);
+				}
 			}
-			
-			Popover.showPop(2, ['#choiceOpenning']);
+			if (!$scope.state) {
+				Popover.showPop(2, ['#choiceOpenning']);
+			}
 			
 			/*///////////////////////////////////////////////////////////////////////////////////////*/
 			
@@ -167,7 +169,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  			
 	  			if (idChoix != 1) {
 	  				$scope.afficherCalendar();
-	  				if (Popover.affHourModif) {
+	  				if (Popover.affHourModif && !$scope.state) {
 						$timeout($scope.showHourModif, 400);
 						Popover.changeAffHourModif();
 					}
@@ -180,7 +182,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 	  			if (idFreq != 1) {
 	  				$scope.putAllDayPause();
 		  			$scope.afficherCalendar();
-		  			if (Popover.affHourModif) {
+		  			if (Popover.affHourModif && !$scope.state) {
 						$timeout($scope.showHourModif, 400);
 						Popover.changeAffHourModif();
 					}
@@ -334,8 +336,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		  	/* Controleur de la modale */
 			function modifCalController($scope, $mdDialog, State, NotifService) {
 				$scope.cal = State.cal;
-				$scope.tabCalendars = angular.copy(State.tabCalendars);
-				console.log($scope.tabCalendars);
+				$scope.$parent.tabCalendars = angular.copy(State.tabCalendars);
+				console.log($scope.$parent.tabCalendars);
 				$scope.affHoraire = State.affHoraire;
 				
 			    	$scope.hide = function() {
@@ -357,13 +359,13 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 			$scope.supCalDefault = function(item, index) {
 				$scope.affOtherHours = false;
-				$scope.tabCalendars[0].hours = State.getTabCalDefault();
-				$scope.tabCalendars[0].state = Const.INCOMP;
+				$scope.$parent.tabCalendars[0].hours = State.getTabCalDefault();
+				$scope.$parent.tabCalendars[0].state = Const.INCOMP;
 				//$scope.cal.hours = State.getTabCalDefault();
 			}
 			
 		  	$scope.modifCal = function (ev, index) {
-		  		$scope.cal = $scope.tabCalendars[index];
+		  		$scope.cal = $scope.$parent.tabCalendars[index];
 		  		State.changeCal($scope.cal, index);
 		  		$mdDialog.show({
 				      	controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
@@ -376,8 +378,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			    	.then(function(cal) {
 			    		$timeout(function () {
 						$scope.cal = angular.copy(cal);
-						$scope.tabCalendars[index] = angular.copy($scope.cal);
-						console.log($scope.tabCalendars);
+						$scope.$parent.tabCalendars[index] = angular.copy($scope.cal);
+						console.log($scope.$parent.tabCalendars);
 						State.changeCal($scope.cal, index);
 	    				}, 0);
 		   		}, function() {
@@ -392,8 +394,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 			$scope.isAllInfoCalCorrect = function () {
 				var nb = 0;
-				for (var i = 0; i < $scope.tabCalendars.length; i++) {
-					if ($scope.tabCalendars[i].state==Const.INCOMP || $scope.tabCalendars[i].errorName || $scope.tabCalendars[i].errorPeriod ) {nb++;}
+				for (var i = 0; i < $scope.$parent.tabCalendars.length; i++) {
+					if ($scope.$parent.tabCalendars[i].state==Const.INCOMP || $scope.$parent.tabCalendars[i].errorName || $scope.$parent.tabCalendars[i].errorPeriod ) {nb++;}
 				}
 				return nb;
 			}
@@ -412,7 +414,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    	$scope.dayConfigured = function () {}
 
 		    	$scope.isCurrentInfoCalCorrect = function () {
-		    		if ($scope.cal.errorName == true || $scope.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
+		    		if ($scope.cal.errorName == true || $scope.$parent.tabCalendars.length > 1 && $scope.cal.errorPeriod == true) {
 	    				return false
 		    		}
 		    		return true; // Vérification à faire des infos champs nom pas vide et période pas vide et celle fin doit être plus grande que celle de début
@@ -423,14 +425,21 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 		    	$scope.addHour = function () {
 		    		if ($scope.isCurrentInfoCalCorrect()) {
-		    			var pos = $scope.tabCalendars.length;
-		    			console.log($scope.tabCalendars[0].choix);
-		    			$scope.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: angular.copy($scope.tabCalendars[pos-1].choix)});
-		    			$scope.cal = $scope.tabCalendars[pos];
+		    			var pos = $scope.$parent.tabCalendars.length;
+		    			console.log($scope.$parent.tabCalendars[0].choix);
+		    			$scope.$parent.tabCalendars.push({id : pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalPrec(pos-1), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: angular.copy($scope.$parent.tabCalendars[pos-1].choix)});
+		    			$scope.cal = $scope.$parent.tabCalendars[pos];
 		    			$scope.affCalendar = true;
 		    		} else {
 		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 		    		}
+		    	}
+
+		    	$scope.addCalToTabCalendars = function() {
+		    		var pos = $scope.$parent.tabCalendars.length;
+		    		$scope.$parent.tabCalendars.push({id : -pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: State.changeChoix(0), 'etat' : 'new'});
+	    			$scope.cal = $scope.$parent.tabCalendars[pos];
+	    			$scope.affCalendar = true;
 		    	}
 
 		    	$scope.addHoursToTab = function () {
@@ -446,17 +455,17 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    	}
 		    	
 		    	$scope.supCal = function (item, index) {
-	    			UIkit.modal.confirm("Voulez-vous vraiment supprimer l'horaire nomée : <strong>"+ $scope.tabCalendars[index].name + "</strong> ?", {center: true}).then(function() {
+	    			UIkit.modal.confirm("Voulez-vous vraiment supprimer l'horaire nomée : <strong>"+ $scope.$parent.tabCalendars[index].name + "</strong> ?", {center: true}).then(function() {
 				    	$timeout(function () {
-				    		$scope.tabCalendars.splice(index, 1);
-		    				$scope.cal = $scope.tabCalendars[index-1];
+				    		$scope.$parent.tabCalendars.splice(index, 1);
+		    				$scope.cal = $scope.$parent.tabCalendars[index-1];
 		    				NotifService.success('Suppression Horaires', "L'horaire a été supprimé avec succès !");
 			    		}, 0);
 				});
 		    	}
 	
 		    	$scope.changeCal = function (item, index) {
-		    		$scope.cal = $scope.tabCalendars[index];
+		    		$scope.cal = $scope.$parent.tabCalendars[index];
 		    		$scope.affCalendar = true;
 		    	}
 
