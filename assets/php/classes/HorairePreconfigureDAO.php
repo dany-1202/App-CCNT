@@ -140,6 +140,21 @@ class HorairePreconfigureDAO {
 		return -1;
 	}
 
+	public static function updateHorairePreconfig($data) {
+		$db = MySQLManager::get();
+
+		$query = "UPDATE `ccn_horairepreconfig` SET `hpr_nom`= ?,`hpr_dep_id`= ? WHERE hpr_id = ?";
+  		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('sii', $data['hpr_nom'], $data['hpr_dep_id'], $data['hpr_id']);
+		  	$stmt->execute();
+		  	$stmt->close();
+		  	MySQLManager::close();
+			return 1;
+		}
+		MySQLManager::close();
+		return -1;
+	}
+
 
 	public static function deleteHorairePreconfig($data) {
 		$db = MySQLManager::get();

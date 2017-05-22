@@ -6,10 +6,10 @@
 				<h5 class="spectre-card-title text-center">Horaire pré-configurés</h5>
 				
 				<figure class="avatar avatar-l" ng-if="dep != 0" style="width: 80px;display: block;margin-left: auto;margin-right: auto;">
-            			<img style="border-radius: 0%!important" ng-style="imgDep" ng-src="assets/images/bande{{dep}}.jpg" />
+            			<img style="border-radius: 0%!important" ng-style="imgDep" ng-src="assets/images/bande{{imageDep}}.jpg" />
 	          	</figure>
 				
-				<md-select ng-click="redefFirst()" ng-class="{error : dep==0}" placeholder="Choisir un Département" ng-model="dep" style="min-width: 200px; max-width: 300px; margin:auto;">
+				<md-select ng-click="redefFirst()" ng-change="choiceOfDep()" ng-class="{error : dep==0}" placeholder="Choisir un Département" ng-model="dep" style="min-width: 200px; max-width: 300px; margin:auto;">
 					<md-option ng-repeat="dep in deps" ng-value="dep.id">
 						{{dep.name}}
 					</md-option>

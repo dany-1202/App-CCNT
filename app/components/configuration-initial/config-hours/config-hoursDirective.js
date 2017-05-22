@@ -28,9 +28,10 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			$scope.affModifOtherHours1 = false;
 			$scope.affModifOtherHours2 = false;
 			$scope.fabModifType = false;
-
-			$scope.cal = $scope.$parent.tabCalendars[0]; // Par défaut je prend les valeurs du premier
-
+			$scope.showAdvancedRepHours = true;
+			$scope.msgActivated = "Désactiver";
+			$scope.cal = $scope.state ? $scope.$parent.cal : $scope.$parent.tabCalendars[0]; // Par défaut je prend les valeurs du premier
+			
 			$scope.affInfos = false;
 	  		/*///////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -63,6 +64,10 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 					}
 				}
 				return nb != 0;
+			}
+
+			$scope.activateAdvancedRepHours = function() {
+				$scope.msgActivated = $scope.showAdvancedRepHours ? "Désactiver" : "Activer";
 			}
 
 			$scope.isHoursCompleted = function () { // Toutes les heures ont été configurées
@@ -433,13 +438,6 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    		} else {
 		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 		    		}
-		    	}
-
-		    	$scope.addCalToTabCalendars = function() {
-		    		var pos = $scope.$parent.tabCalendars.length;
-		    		$scope.$parent.tabCalendars.push({id : -pos, name: Const.NEWHOR, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: (pos > 1 ? true : false), errorPeriod: true, choix: State.changeChoix(0), 'etat' : 'new'});
-	    			$scope.cal = $scope.$parent.tabCalendars[pos];
-	    			$scope.affCalendar = true;
 		    	}
 
 		    	$scope.addHoursToTab = function () {
