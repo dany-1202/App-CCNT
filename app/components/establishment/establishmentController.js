@@ -39,10 +39,10 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		return false;
 	}
 
-	var allDateContinue = function(dates, nom) {
+	var allDateContinue = function(data) {
 		var count = 0;
-		for (var i = 0; i < dates.length; i++) {
-			if ((dates[i].nom == nom) && (dates[i].matinFin == null && dates[i].soirDebut == null)) {
+		for (var i = 0; i < data.length; i++) {
+			if (data[i].pause.existe) {
 				count++;
 			}
 		}
@@ -55,32 +55,53 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 			for (var cpt = 0; cpt < tableau.length; cpt++) {
 
 				if ((tableau[cpt].nom == nom) && (tableau[cpt].jour == data[i].id)) {
-					data[i].matin = {debut: tableau[cpt].matinDebut, fin: tableau[cpt].matinFin};
-					data[i].soir = {debut: tableau[cpt].soirDebut, fin: tableau[cpt].soirFin};
-					var choix = {};
-					if (allDateContinue(tableau, nom)) {
-						choix = State.changeChoix(0);
-					} else {
-						choix = State.changeChoix(1);
-					}
-					data[i].pause = {existe: (tableau[cpt].matinFin != null && tableau[cpt].soirDebut != null) };
-					data[i].choix = choix;
+
+					var dateMatinDebut = tableau[cpt].matinDebut != null ? DateFactory.getDateByHours(tableau[cpt].matinDebut) : tableau[cpt].matinDebut;
+					var dateMatinFin = tableau[cpt].matinFin != null ? DateFactory.getDateByHours(tableau[cpt].matinFin) : tableau[cpt].matinFin;
+					var dateSoirDebut = tableau[cpt].soirDebut != null ? DateFactory.getDateByHours(tableau[cpt].soirDebut) : tableau[cpt].soirDebut;
+					var dateSoirFin = tableau[cpt].soirFin != null ? DateFactory.getDateByHours(tableau[cpt].soirFin) : tableau[cpt].soirFin;
+
+					var matinDebut = dateMatinDebut != null ? moment(DateFactory.getToday()).add(DateFactory.getIdByDay(data[i].id), 'days').add(dateMatinDebut.getHours(), 'hours').add(dateMatinDebut.getMinutes(), 'minutes').toDate() : null;
+					var matinFin= dateMatinFin != null ? moment(DateFactory.getToday()).add(DateFactory.getIdByDay(data[i].id), 'days').add(dateMatinFin.getHours(), 'hours').add(dateMatinFin.getMinutes(), 'minutes').toDate() : null;
+					var soirDebut = dateSoirDebut != null ? moment(DateFactory.getToday()).add(DateFactory.getIdByDay(data[i].id), 'days').add(dateSoirDebut.getHours(), 'hours').add(dateSoirDebut.getMinutes(), 'minutes').toDate()  : null;
+					var soirFin = dateSoirFin != null ? moment(DateFactory.getToday()).add(DateFactory.getIdByDay(data[i].id), 'days').add(dateSoirFin.getHours(), 'hours').add(dateSoirFin.getMinutes(), 'minutes').toDate()  : null;
+
+					data[i].pause = {existe: (matinFin != null && soirDebut != null) };
+					data[i].matin = {debut: matinDebut == null ? Const.OPEN : matinDebut, fin: matinFin == null ? Const.END : matinFin};
+					data[i].soir = {debut: soirDebut == null ? Const.OPEN : soirDebut, fin: soirFin == null ? Const.END : soirFin};
+					data[i].oui_id = tableau[cpt].oui_id;
 				}
 			}
+		}
+		if (allDateContinue(data)) {
+			choix = State.changeChoix(0);
+		} else {
+			State.changeChoix(1);
+			idFreq = 0;
+			for (var i = data.length - 1; i >= 0; i--) {
+				if (!data[i].pause.existe) {
+					idFreq = 1;
+				}
+			}
+			
 		}
 		return data;
 	}
 
 	$scope.getHours = function() {
+		$scope.tabCalendars.splice(0, $scope.tabCalendars.length);
+		$scope.tabCalendarsBDD.splice(0, $scope.tabCalendarsBDD.length);
+
 		PromiseDAO.getHoursOpenning(data).then(function(res) {
 
 			var objet = res.data;
 			for (var i = 0; i < objet.length; i++) {
 				if (!tabContains(objet[i].nom, $scope.tabCalendars)) {
 					var liste = getOuvertures(objet, objet[i].nom);
-					$scope.tabCalendars.push({id: objet[i].id, name: objet[i].nom, period: {debut: objet[i].dateDebut, fin: objet[i].dateFin}, hours: liste, state: Const.COMP, errorName: false, errorPeriod:false, choix: {id: 0, nom:Const.CONTINUE, color: Const.COLORCONTINUE}});
+					$scope.tabCalendars.push({id: objet[i].id, name: objet[i].nom, period: {debut: objet[i].dateDebut, fin: objet[i].dateFin}, hours: liste, state: Const.COMP, errorName: false, errorPeriod:false, choix: State.choix, 'etat' : 'modif'});
 				}
 			}
+			console.log($scope.tabCalendars);
 			$scope.tabCalendarsBDD = angular.copy($scope.tabCalendars);
 			console.log($scope.tabCalendars);
 
@@ -156,6 +177,8 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 
 	var getListe = function(hour, tableau) {
 		var liste = [];
+		console.log(hour);
+		console.log(tableau);
 		for (var i = 0; i < tableau.length; i++) {
 			var tabdonnees = tableau[i];
 			for (var cpt = 0; cpt < tabdonnees.length; cpt++) {
@@ -187,14 +210,25 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 
 	var getCalPreHours = function(liste) {
 		var tab = State.getTabCalDefaultWithPause();
-
+		for (var i = tab.length - 1; i >= 0; i--) {
+			tab[i].datapauseMatin = getPauseByMinutes(0);
+			tab[i].datapauseSoir = getPauseByMinutes(0);
+		}
 		for (var cpt = 0; cpt< liste.length; cpt++) {
 			for (var i = 0; i < tab.length; i++) {
 				if (liste[cpt].jour == tab[i].id) {
-					tab[i].matin.debut = ((DateFactory.getTimeStr(liste[cpt].heureDebut) == 'Invalid date') ? Const.HOUR_OPEN : DateFactory.getTimeStr(liste[cpt].heureDebut));
-					tab[i].matin.fin = ((DateFactory.getTimeStr(liste[cpt].heureFin) == 'Invalid date') ? Const.HOUR_END : DateFactory.getTimeStr(liste[cpt].heureFin));
-					tab[i].soir.debut = ((DateFactory.getTimeStr(liste[cpt].heureDebutS) == 'Invalid date') ? Const.HOUR_OPEN : DateFactory.getTimeStr(liste[cpt].heureDebutS));
-					tab[i].soir.fin = ((DateFactory.getTimeStr(liste[cpt].heureFinS) == 'Invalid date') ? Const.HOUR_END : DateFactory.getTimeStr(liste[cpt].heureFinS));
+
+					var dateMatinDebut = DateFactory.getDateByHours(liste[cpt].heureDebut);
+					var dateMatinFin = DateFactory.getDateByHours(liste[cpt].heureFin);
+					var dateSoirDebut = DateFactory.getDateByHours(liste[cpt].heureDebutS);
+					var dateSoirFin = DateFactory.getDateByHours(liste[cpt].heureFinS);
+
+				 	
+					tab[i].matin.debut = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateMatinDebut.getHours(), 'hours').add(dateMatinDebut.getMinutes(), 'minutes').toDate();
+					tab[i].matin.fin = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateMatinFin.getHours(), 'hours').add(dateMatinFin.getMinutes(), 'minutes').toDate();
+					tab[i].soir.debut = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateSoirDebut.getHours(), 'hours').add(dateSoirDebut.getMinutes(), 'minutes').toDate();
+					tab[i].soir.fin = moment(DateFactory.getToday()).add(DateFactory.getIdByDay(tab[i].id), 'days').add(dateSoirFin.getHours(), 'hours').add(dateSoirFin.getMinutes(), 'minutes').toDate();
+					
 					tab[i].datapauseMatin = getPauseByMinutes(liste[cpt].pause);
 					tab[i].datapauseSoir = getPauseByMinutes(liste[cpt].pauseS);
 				}
@@ -627,9 +661,9 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		});
 	}
 
-	var deleteHoursBDD = function(tab, tabBDD) {
+	var deleteHours = function(tab, tabBDD) {
 		var deferred = $q.defer();
-		PromiseDAO.deleteHours(tab, tabBDD).then(function(message){
+		PromiseDAO.deleteHours(tab, tabBDD, $scope.idEsta).then(function(message){
 			deferred.resolve(message);
 		});
 		return deferred.promise;
@@ -637,7 +671,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 
 	var updateOrCreateHours = function(tab) {
 		var deferred = $q.defer();
-		PromiseDAO.updateOrCreateHours(tab).then(function(message){
+		PromiseDAO.updateOrCreateHours(tab, $scope.idEsta).then(function(message){
 			deferred.resolve(message);
 		});
 		return deferred.promise;
@@ -647,23 +681,24 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		$('#saveHours').text("");
 		$('#saveHours').addClass("loading");
 		var tab = $scope.tabCalendars;
-		var tab = $scope.tabCalendarsBDD;
+		var tabBDD = $scope.tabCalendarsBDD;
 		updateOrCreateHours(tab).then(function(message) {
+			console.log(message);
 			if (message) {
 				deleteHours(tab, tabBDD).then(function(messageDel) {
+					$scope.getHours();
 					$('#saveHours').append("<i class='fa fa-floppy-o' aria-hidden='true' style='margin-right: 3px'></i> Enregistrer");
 					$('#saveHours').removeClass("loading");
 					if (messageDel) {
-						$scope.getHolidays();
-						NotifService.success("Changements mis à jour", "Les fermetures de l'établissement ont été mises à jour");
+						NotifService.success("Changements mis à jour", "Les ouvertures de l'établissement ont été mises à jour");
 					} else {
-						NotifService.error('Problème mis à jour', 'Les fermetures de votre établissement n\'ont pas pu être mis à jour');
+						NotifService.error('Problème mis à jour', 'Les ouvertures de votre établissement n\'ont pas pu être mis à jour');
 					}
 				});
 			} else {
 				$('#saveHours').append("<i class='fa fa-floppy-o' aria-hidden='true' style='margin-right: 3px'></i> Enregistrer");
 				$('#saveHours').removeClass("loading");
-				NotifService.error('Problème mis à jour', 'Les fermetures de votre établissement n\'ont pas pu être mis à jour');
+				NotifService.error('Problème mis à jour', 'Les ouvertures de votre établissement n\'ont pas pu être mis à jour');
 			}
 		});
 	}

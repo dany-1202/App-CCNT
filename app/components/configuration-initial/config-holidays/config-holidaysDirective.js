@@ -40,10 +40,14 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			\*****************************************************************************************/
 
 			var showPopTableDays = function () {
-				Popover.showPop(5, ['#tableDays', '#calendari_lateral1']);
+				if (!scope.state) {
+					Popover.showPop(5, ['#tableDays', '#calendari_lateral1']);
+				}
 			}
 			
-			Popover.showPop(3, ['#addDay', '#addPlage']);
+			if (!scope.state) {
+				Popover.showPop(3, ['#addDay', '#addPlage']);
+			}
 
 			/*///////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -67,7 +71,7 @@ ctrlCCNT.directive('configHolidays', function($mdpDatePicker, $mdDialog, $timeou
 			scope.addDayClose = function () { // Quand j'ajoute un jour de fermeture
 				scope.addDay(scope.dateDay);
 				scope.afficherJour = false;
-				if (Popover.affTableDays) {
+				if (Popover.affTableDays && !scope.state) {
 					$timeout(showPopTableDays, 300);
 					$timeout(Popover.hide, 0);
 					Popover.changeAffTableDays();

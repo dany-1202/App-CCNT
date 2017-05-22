@@ -102,16 +102,40 @@ class HorairePreconfigureDAO {
 	}
 
 
-	public static function deleteJourPreconfig($id){
+	public static function deleteJourPreconfig($id, $hpr_id){
 		$db = MySQLManager::get();
-		$query = "DELETE FROM `ccn_jourpreconfig` WHERE jou_id = ?";
+
+		$query = "DELETE FROM `ccn_contient` WHERE con_jou_id = ? AND con_hpr_id = ? ";
   		if ($stmt = $db->prepare($query)) {
-			$stmt->bind_param('i', $id);
+			$stmt->bind_param('ii', $id, $hpr_id);
+		  	$stmt->execute();
+		  	$stmt->close();
+		  	$query = "DELETE FROM `ccn_jourpreconfig` WHERE jou_id = ?";
+	  		if ($stmt = $db->prepare($query)) {
+				$stmt->bind_param('i', $id);
+			  	$stmt->execute();
+			  	$stmt->close();
+			  	MySQLManager::close();
+				return 1;
+			}
+		}
+
+		MySQLManager::close();
+		return -1;
+	}
+
+	public static function updateJourPreconfig($data){
+		$db = MySQLManager::get();
+
+		$query = "UPDATE `ccn_jourpreconfig` SET `jou_heureDebut`=?,`jou_heureFin`=?,`jou_heureDebutS`=?,`jou_heureFinS`=?,`jou_pause`=?,`jou_pauseS`=? WHERE jou_id = ?";
+  		if ($stmt = $db->prepare($query)) {
+			$stmt->bind_param('ssssiii', $data['matinDebut'], $data['matinFin'],$data['soirDebut'],$data['soirFin'],$data['pauseMatin'],$data['pauseSoir'],$data['jou_id']);
 		  	$stmt->execute();
 		  	$stmt->close();
 		  	MySQLManager::close();
 			return 1;
 		}
+
 		MySQLManager::close();
 		return -1;
 	}
@@ -142,7 +166,7 @@ class HorairePreconfigureDAO {
 				  	$stmt->execute();
 				  	$stmt->close();
 				  	foreach ($tab as $key => $val) {
-				  		HorairePreconfigureDAO::deleteJourPreconfig($val);				  	
+				  		HorairePreconfigureDAO::deleteJourPreconfig($val, $data['hpr_id']);				  	
 				  	}
 				  	MySQLManager::close();
 					return 1;
