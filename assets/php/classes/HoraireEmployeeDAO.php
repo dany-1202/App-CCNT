@@ -558,11 +558,11 @@ class HoraireEmployeeDAO {
 		  		}
 		  		
 		  		if ($dateDebut >= $dateDebutComp) {
-		  			if ($dateDebut <= $dateFinComp) {
+		  			if ($dateDebut < $dateFinComp) {
 		  				return false;
 		  			}
 		  		} else {
-		  			if ($dateFin >= $dateDebutComp) {
+		  			if ($dateFin > $dateDebutComp) {
 		  				return false;
 		  			}
 		  		}

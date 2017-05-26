@@ -1276,11 +1276,11 @@ var insertionHoraireBDD = function(pos, dateDebut) {
 
 					var date = DateFactory.newDate($scope.event.startsAt, selectedDate);
 
-			 		if (scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
+			 		if ($scope.heureDebut2 != Const.HOUR_OPEN) { // Comparer la première heure
 			 			var dateFin = DateFactory.newDate($scope.event.startsAt, $scope.heureDebut2);
 			 			if (date < dateFin) {
-			 				if (scope.heureDebut1 != Const.HOUR_OPEN) {
-			 					if ((date.getHours() == scope.heureDebut1.getHours() && date.getMinutes() >= scope.heureDebut1.getMinutes()) || date.getHours() > scope.heureDebut1.getHours()) {
+			 				if ($scope.heureDebut1 != Const.HOUR_OPEN) {
+			 					if ((date.getHours() == $scope.heureDebut1.getHours() && date.getMinutes() >= $scope.heureDebut1.getMinutes()) || date.getHours() > $scope.heureDebut1.getHours()) {
 			 						NotifService.error(Const.TITLE_ERROR_CONFIG, "L'heure de fermeture est avant celle d'ouverture !");
 			 						return;
 			 					}
