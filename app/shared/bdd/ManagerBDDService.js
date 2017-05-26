@@ -285,6 +285,7 @@ ctrlCCNT.service('PromiseDAO', function ($http, $q, SessionService, DateFactory,
 						}
 					});
 				} else if(hol.state == 'new') {
+					console.log(dataFermetureInfo);
 					var $res = $http.post("assets/php/insertFermetureInfoAPI.php", dataFermetureInfo);
 					$res.then(function (message) { 
 						if (message.config.data.fin == 1) {

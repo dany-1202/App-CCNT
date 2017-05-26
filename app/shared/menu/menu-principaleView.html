@@ -86,10 +86,19 @@
 		
 		<li class="dropdown">
 			
-			<a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b>
+			<a href="" style="position: relative" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b>
 				<md-tooltip class="showTooltip-1">
 					Demandes
 				</md-tooltip>
+				<div ng-if="affMessage" class="ui info message" style="position: absolute; left: -100%; right: 50%;width: 250px;top:40px">
+					  <i class="close fa fa-close icon"></i>
+					  <div class="header">
+					    Vous avez de <span ng-if="notif.demandesNotif.length != 0 || notif.demandesNotif != 'null'" class="w3-badge w3-blue">{{notif.demandesNotif.length}}</span> nouvelles demandes
+					  </div>
+					  <ul class="list" ng-repeat="dem in notif.demandesNotif">
+					    <li>{{dem.per_nom}} {{dem.per_prenom}}</li>
+					  </ul>
+				</div>
 				<span ng-if="notif.demandesNotif.length != 0 || notif.demandesNotif != 'null'" class="w3-badge w3-green">{{notif.demandesNotif.length}}</span>
 			</a>
 			<ul class="dropdown-menu alert-dropdown">
@@ -104,10 +113,12 @@
 					</a>
 				</li>
 				<li>
-					<a href="#!/demandes">Voir toutes les demandes</a>
+					<a href="#!/demandes" class="demandes">Voir toutes les demandes<i class="fa fa-chevron-circle-right" style="margin-left: 45%" aria-hidden="true"></i></a>
 				</li>
 			</ul>
 		</li>
+
+		
 		
 		<li class="dropdown">
 			<a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hide-top-nav"> {{user.nom}} </span><b class="caret"></b>

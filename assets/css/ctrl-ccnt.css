@@ -4,6 +4,15 @@ Date : 13.11.2016;
 Description : Feuille de style pour l'ensemble de l'application
 */
 
+.demandes {
+     background-color: #333; 
+     color:white!important;
+}
+
+.demandes:hover {
+    color:black!important;
+}
+
 .off{
    pointer-events:none;
 }
