@@ -28,7 +28,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			$scope.affModifOtherHours1 = false;
 			$scope.affModifOtherHours2 = false;
 			$scope.fabModifType = false;
-			$scope.showAdvancedRepHours = true;
+			$scope.showAdvancedRepHours = State.advancedRepHours;
 			$scope.msgActivated = "Désactiver";
 			$scope.cal = $scope.state ? $scope.$parent.cal : $scope.$parent.tabCalendars[0]; // Par défaut je prend les valeurs du premier
 			
@@ -67,6 +67,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			}
 
 			$scope.activateAdvancedRepHours = function() {
+				State.changeAdvancedRepHours($scope.showAdvancedRepHours);
 				$scope.msgActivated = $scope.showAdvancedRepHours ? "Désactiver" : "Activer";
 			}
 
@@ -340,8 +341,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		  	
 		  	/* Controleur de la modale */
 			function modifCalController($scope, $mdDialog, State, NotifService) {
-				$scope.cal = State.cal;
-				$scope.$parent.tabCalendars = angular.copy(State.tabCalendars);
+				$scope.cal = angular.copy(self.cal);
+				$scope.$parent.tabCalendars = angular.copy(self.tabCalendars);
 				console.log($scope.$parent.tabCalendars);
 				$scope.affHoraire = State.affHoraire;
 				
@@ -369,9 +370,17 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				//$scope.cal.hours = State.getTabCalDefault();
 			}
 			
+			$scope.addCalToTabCalendars = function() {
+		    		var pos = $scope.$parent.tabCalendars.length;
+		    		$scope.$parent.tabCalendars.push({id : -pos, name: Const.NEWHOR + pos, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true, choix: State.changeChoix(0), 'etat' : 'new'});
+		 		$scope.cal = $scope.$parent.tabCalendars[pos];
+		    	}
+
+
 		  	$scope.modifCal = function (ev, index) {
-		  		$scope.cal = $scope.$parent.tabCalendars[index];
-		  		State.changeCal($scope.cal, index);
+		  		self.cal = $scope.$parent.tabCalendars[index];
+		  		self.tabCalendars = $scope.$parent.tabCalendars;
+		  		//State.changeCal($scope.cal, index);
 		  		$mdDialog.show({
 				      	controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
 				      	templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
@@ -381,11 +390,11 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				      	fullscreen: true // Only for -xs, -sm breakpoints.
 			   	})
 			    	.then(function(cal) {
+			    		console.log('ici');
 			    		$timeout(function () {
-						$scope.cal = angular.copy(cal);
-						$scope.$parent.tabCalendars[index] = angular.copy($scope.cal);
-						console.log($scope.$parent.tabCalendars);
-						State.changeCal($scope.cal, index);
+						$scope.$parent.tabCalendars[index] = angular.copy(cal);
+						$scope.cal = $scope.$parent.tabCalendars[index];
+						//State.changeCal($scope.cal, index);
 	    				}, 0);
 		   		}, function() {
 			    	// Ici il annule ça ne fait rien 
@@ -446,6 +455,8 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    			$scope.cal.state = Const.COMP;
 		    			$scope.affModifOtherHours = false;
 		    			$scope.affModifOtherHours1 = true;
+		    			State.changeAffDefinitif();
+
 		    		} else {
 		    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 		    		}
@@ -467,13 +478,35 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 		    		$scope.affCalendar = true;
 		    	}
 
+		    	var checkDaysFinished = function() {
+		    		var erreur = 0;
+		    		for (var i = $scope.$parent.tabCalendars.length - 1; i >= 0; i--) {
+		    			var cal = $scope.$parent.tabCalendars[i].hours;
+		    			for (var a = cal.length - 1; a >= 0; a--) {
+		    				if (cal[a].pause.existe && cal[a].matin.debut != Const.OPEN) {
+		    					erreur += (cal[a].matin.fin != Const.END && cal[a].soir.debut != Const.OPEN) ? 0 : 1;
+						}	
+		    			}
+		    		}
+		    		return erreur;
+		    	}
+
 		    	$scope.goNextStep = function (ev) {
 		    		$timeout(Popover.hide, 0);
 		    		var nb = $scope.isAllInfoCalCorrect();
 		    		if (nb == 0) {
-		    			ModalTuto.showModal(ev, 9);
-		    			$timeout($scope.ctrl.next(5), 2);
+		    			var erreur = checkDaysFinished();
+		    			if (erreur == 0) {
+		    				ModalTuto.showModal(ev, 9);
+		    				$timeout($scope.ctrl.next(5), 2);
+			    		} else {
+			    			NotifService.error('Configuration non Terminée', "Il vous reste encore " + erreur + " horaire" + (erreur > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span>. Veuillez les compléter pour continuer !");
+			    		}
 		    		} else {
+		    			if ($scope.affDefinitif && !$scope.state) {
+			    			NotifService.error('Configuration non Terminée', "Vous devez valider l'horaire de base pour pouvoir continuer !");
+			    			return;
+			    		}
 		    			NotifService.error('Configuration non Terminée', "Il vous reste encore " + nb + " horaire" + (nb > 1 ? "s" : "") + " dans l'état :<span class='w3-tag incompleted w3-round'>Incomplet</span>. Veuillez les compléter pour continuer !");
 		    		}
 		    	}

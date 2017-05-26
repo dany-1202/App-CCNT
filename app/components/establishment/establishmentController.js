@@ -91,12 +91,6 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		return data;
 	}
 
-	$scope.addCalToTabCalendars = function() {
-    		var pos = $scope.tabCalendars.length;
-    		$scope.tabCalendars.push({id : -pos, name: Const.NEWHOR + pos, period: {debut: "", fin: ""}, hours: State.getTabCalDefault(), state: Const.INCOMP, errorName: false, errorPeriod: true, choix: State.changeChoix(0), 'etat' : 'new'});
- 		$scope.cal = $scope.tabCalendars[pos];
-    	}
-
 	$scope.getHours = function() {
 		$scope.tabCalendars.splice(0, $scope.tabCalendars.length);
 		$scope.tabCalendarsBDD.splice(0, $scope.tabCalendarsBDD.length);
@@ -730,6 +724,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 		$('#saveHolidays').addClass("loading");
 		var tab = $scope.events.concat($scope.plagesEvents);
 		updateOrCreateHolidays(tab).then(function(message) {
+			console.log(message);
 			if (message) {
 				deleteHolidays(tab).then(function(messageDel) {
 					$('#saveHolidays').append("<i class='fa fa-floppy-o' aria-hidden='true' style='margin-right: 3px'></i> Enregistrer");

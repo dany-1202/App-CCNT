@@ -61,7 +61,7 @@ require_once("MySQLManager.php");
 	*/
 	public static function insertFermetureInfo ($data) {
 		$db = MySQLManager::get();
-		$query = "INSERT INTO ccn_fermetureInfo (fer_nom, fer_dateDebut, fer_dateFin, fer_Eta_id) VALUES (?,?,?,?)";
+		$query = "INSERT INTO ccn_fermetureinfo (fer_nom, fer_dateDebut, fer_dateFin, fer_Eta_id) VALUES (?,?,?,?)";
 		if ($stmt = $db->prepare($query)) {
 			$stmt->bind_param('sssi', $data['nom'], $data['dateDebut'], $data['dateFin'], $data['etaId']);
 			$stmt->execute();
@@ -107,7 +107,7 @@ require_once("MySQLManager.php");
 
 	 public static function insertOuvertureInfo ($data) {
 	 	$db = MySQLManager::get();
-	 	$query = "INSERT INTO ccn_ouvertureInfo (ouv_jour, ouv_matinDebut, ouv_matinFin, ouv_soirDebut, ouv_soirFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
+	 	$query = "INSERT INTO ccn_ouvertureinfo (ouv_jour, ouv_matinDebut, ouv_matinFin, ouv_soirDebut, ouv_soirFin, ouv_eta_id) VALUES (?, ?, ?, ?, ?, ?)";
 	 	if ($stmt = $db->prepare($query)) {
 	 		if ($data['matinFin'] == "" || $data['matinFin'] == "Heure fin") {$matinFin = NULL;} else {$matinFin = $data['matinFin'];}
 	 		if ($data['soirDebut'] == "" || $data['soirDebut'] == "Heure début") {$soirDebut = NULL;} else {$soirDebut = $data['soirDebut'];}

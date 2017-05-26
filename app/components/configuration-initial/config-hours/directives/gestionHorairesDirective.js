@@ -13,14 +13,26 @@
 				$scope.closeAddOtherHours = function () {
 					if ($scope.isCurrentInfoCalCorrect()) {
 		    				$scope.affOtherHours = false;
-		    				$scope.affDefinitif = false;
-		    				State.changeAffDefinitif();
 						$scope.affModifOtherHours1 = false;
 						$scope.affModifOtherHours2 = false;
+		    				$scope.affDefinitif = false;
 			    		} else {
 			    			NotifService.error('Informations incorrectes', "Veuillez insérer des données valides pour permettre d'enregistrer les informations");
 			    		}
 				}
+
+				var checkDaysFinished = function() {
+			    		var erreur = 0;
+			    		for (var i = $scope.$parent.tabCalendars.length - 1; i >= 0; i--) {
+			    			var cal = $scope.$parent.tabCalendars[i].hours;
+			    			for (var a = cal.length - 1; a >= 0; a--) {
+			    				if (cal[a].pause.existe && cal[a].matin.debut != Const.OPEN) {
+			    					erreur += (cal[a].matin.fin != Const.END && cal[a].soir.debut != Const.OPEN) ? 0 : 1;
+							}	
+			    			}
+			    		}
+			    		return erreur;
+			    	}
 
 				$scope.showAffModifOtherHours = function () {
 					$scope.affModifOtherHours = false;
@@ -34,9 +46,10 @@
 				}
 
 				$scope.showDivOtherHours = function () {
-					if ($scope.isHoursCompleted()) {
+					var erreur = checkDaysFinished();
+					if ($scope.isHoursCompleted() && erreur == 0) {
 						$scope.cal.state = Const.COMP;
-						$scope.affOtherHours = true; 
+						$scope.affOtherHours = true;
 						$scope.addOtherHours();
 					} else {
 						$scope.cal.state = Const.INCOMP;

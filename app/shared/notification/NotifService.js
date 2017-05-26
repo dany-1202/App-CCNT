@@ -33,6 +33,9 @@ ctrlCCNT.service('NotifService', function(Notification) {
 		},
 		warning : function(titre, message) {
 			Notification.warning({message: '<p class="notifTexte">' + message + '</p>', delay: 8000, title: '<h3 class="notifTitre"><i class="fa fa-exclamation-triangle"></i> ' + titre + '</h3>'});
+		},
+		info : function(titre, message) {
+			Notification.info({message: '<p class="notifTexte">' + message + '</p>', delay: 15000, title: '<h3 class="notifTitre"><i class="fa fa-info"></i> ' + titre + '</h3>'});
 		}
 	}
 });

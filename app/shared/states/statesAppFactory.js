@@ -13,6 +13,18 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
 	state.affDefinitif = true;
   	state.cal = null;
   	state.affHoraire = true;
+  	state.advancedRepHours = true;
+
+  	state.affMessageDemandes = false;
+
+
+
+  	state.changeAdvancedRepHours = function(boolean) {
+  		state.advancedRepHours = boolean;
+  	}
+  	state.changeAffMessage = function() {
+  		state.affMessageDemandes = true;
+  	}
   	
   	state.changeCal = function (cal, index) {
   		state.cal = angular.copy(cal);
