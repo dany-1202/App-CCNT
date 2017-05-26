@@ -45,7 +45,7 @@
 								<label class="right" style="font-size: 1.3em;font-weight: 500;margin-top: 6px;"><input class="uk-checkbox" type="checkbox" ng-model="absent1" ng-change="changeAb1();validationAbsence()"/> Absent</label>
 								<div class="clearfix"></div>
 							</div>
-							<div class="x_content text-center">
+							<div class="x_content">
 								<div class="text-center">
 									<md-button ng-model="heureDebut1" class="btnS md-raised" style="background-color: #222;color: white;width: 150px!important;" ng-click="showModifHeureDebutSer1($event, $index)" aria-label="show picker">
 										{{ heureDebut1 | date:'HH:mm' }}
@@ -56,15 +56,17 @@
 										<i class="espace-avant fa fa-clock-o"></i>
 									</md-button>
 								</div>
-								<div ng-show="scope.motifAfficher" class="uk-margin text-center" >
+								<div ng-show="scope.motifAfficher" class="uk-margin">
 									<label for="form-stacked-select">Motif absence</label>
-									<select id="selMotif" class="ui dropdown" ng-model="scope.motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
-										<option ng-repeat="abs in scope.absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
-									</select>
+									<div class="uk-form-controls text-center">
+										<select id="selMotif" class="ui dropdown" ng-model="scope.motif" ng-change="changeMotif()" style="width: 100%; margin-top:5px">
+											<option ng-repeat="abs in scope.absences1 track by $index" value="{{abs.id}}">{{abs.name}}</option>
+										</select>
+									</div>
 								</div>
-								<div ng-hide="scope.motifAfficher" class="uk-margin" style="text-align: center!important">
+								<div ng-hide="scope.motifAfficher" class="uk-margin">
 									<label for="form-stacked-select">Pause</label>
-									<div class="uk-form-controls">
+									<div class="uk-form-controls text-center">
 										<select style="font-size:1.2em" id="selPause1" class="ui dropdown" id="form-stacked-select" ng-change="changePause()" ng-model="scope.pauseService1" ng-options="p.name for p in nbPause"></select>
 									</div>
 								</div>
@@ -74,7 +76,7 @@
 				</div>
 
 				<hr>
-				
+
 			</div>
 		</div>
 		<button style="bottom: 0; position: fixed; width: 50%;background-color: #ECF0F1; color:#222" class="uk-button uk-button-secondary uk-width-1-1" aria-label="Back to Top" ng-click="cancel()">
