@@ -413,10 +413,10 @@
 					$('#addEmp').removeClass("loading");
 					var id = message.data;
 					if (id != -1) {
-						NotifService.success('Modification employé', "L'employé n° " + $scope.myEmp.id + " , " + $scope.myEmp.nom + " a été modifié avec succès.");
+						NotifService.success('Modification employé', "L'employé " + $scope.myEmp.nom + " a été modifié avec succès.");
 						$scope.retour();
 					} else {
-						NotifService.error('Modification employé', "L'employé n° " + $scope.myEmp.id + " , " + $scope.myEmp.nom + " n'a pas pu être modifié.");
+						NotifService.error('Modification employé', "L'employé " + $scope.myEmp.nom + " n'a pas pu être modifié.");
 					}
 				});
 			}

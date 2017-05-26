@@ -2,11 +2,11 @@
 <md-dialog aria-label="Gestion Horaire" style="width:80%">
 	<md-content id="scrollbar" md-scroll-y="" layout="column" flex="" class="_md layout-column flex">
 		<div class="spectre-card">
-
+				
 			<!-- Header de la carte -->
 			<div class="spectre-card-header">
 				<h5 class="spectre-card-title centrer">
-					Modification de l'horaire : <strong style="color:#3E2723!important">{{::cal.name}}</strong>
+					Modifications de l'horaire : <strong style="color:#3E2723!important">{{::cal.name}}</strong>
 				</h5>
 			</div>
 			
@@ -17,7 +17,8 @@
 						<input type="text" validator-name class="uk-input centrer" ng-blur="isNameValid(cal, tabCalendars, 0)" ng-class="{error: cal.errorName}" placeholder="Saisissez son nom, exemple: Horaire d'été" ng-model="cal.name">
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" ng-if="base != 1">
+
 					<div class="col-lg-12 centrer margin-bottom-xs" validator-period>
 						<div class="x_content text-center">
 						Début <md-datepicker ng-model="cal.period.debut" ng-class="{error: cal.errorPeriod}" ng-change="isPeriodValid(cal, tabCalendars)" md-placeholder="Date de début"></md-datepicker>

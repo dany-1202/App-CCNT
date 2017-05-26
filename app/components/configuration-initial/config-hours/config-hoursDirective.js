@@ -322,7 +322,7 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 			    	$mdDialog.show({
 				      controller: chooseDaysController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
 				      templateUrl: 'app/components/configuration-initial/config-hours/views/chooseDaysView.html',
-				      parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
+				      parent: angular.element(document.body), // Son parent (très important) - position, enfants, etc...
 				      targetEvent: ev,
 				      clickOutsideToClose:true,
 				      fullscreen: $scope.customFullscreen,
@@ -345,7 +345,9 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 				$scope.$parent.tabCalendars = angular.copy(self.tabCalendars);
 				console.log($scope.$parent.tabCalendars);
 				$scope.affHoraire = State.affHoraire;
-				
+				$scope.base = angular.copy(self.base);
+
+				console.log($scope.base);
 			    	$scope.hide = function() {
 			      		$mdDialog.hide();
 			    	};
@@ -378,13 +380,15 @@ ctrlCCNT.directive('configHours', function(NotifService, $mdDialog, $timeout, Po
 
 
 		  	$scope.modifCal = function (ev, index) {
+		  		console.log(ev);
 		  		self.cal = $scope.$parent.tabCalendars[index];
 		  		self.tabCalendars = $scope.$parent.tabCalendars;
+		  		self.base = $scope.state ? self.cal.base : index;
 		  		//State.changeCal($scope.cal, index);
 		  		$mdDialog.show({
 				      	controller: modifCalController, // Je lui passe le contrôleur afin de gérer les actions dans la modale
-				      	templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalView.html',
-				      	parent: angular.element(document.body.parentElement), // Son parent (très important) - position, enfants, etc...
+				      	templateUrl: 'app/components/configuration-initial/config-hours/views/modifCalViewFinal.html',
+				      	parent: angular.element(document.body), // Son parent (très important) - position, enfants, etc...
 				      	targetEvent: ev,
 				      	clickOutsideToClose:true,
 				      	fullscreen: true // Only for -xs, -sm breakpoints.
