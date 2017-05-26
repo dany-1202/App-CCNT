@@ -1,13 +1,13 @@
 var ctrlCCNT = angular.module('ctrlCCNT');
 
 
-ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, NotifService, $http, SessionService) {
+ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, NotifService, $http, SessionService, $timeout) {
 	 return {
 	 	restrict : 'A', // Ici se limite à la balise si on veut pour un attribut = A
 		//templateUrl : 'app/components/configuration-initial/config-prehours/config-preHoursView.html', // Template à utiliser lorsque la balise est utilisé
 		//transclude : true, // Inclu la vue au template déjà existant
 
-		link: function(scope, element, attrs, $timeout) {
+		link: function(scope, element, attrs) {
 			scope.event = {};
 			scope.errorHoraire = false;
 			scope.errorJour = '';
@@ -96,7 +96,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			scope.showHeureFinSer1 = function(ev, index) {
 			 	$mdpTimePicker(scope.heureFin1 == Const.HOUR_END ? DateFactory.matinFin : scope.heureFin1, {
 			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
+			 		parent: angular.element(document.body.parentElement),
 			 	}).then(function(selectedDate) {
 			 		if (selectedDate == Const.ANNULER) { scope.heureFin1 = Const.HOUR_END; return; }
 			 		
@@ -125,7 +125,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			scope.showHeureDebutSer2 = function(ev, index) {
 			 	$mdpTimePicker(scope.heureDebut2 == Const.HOUR_OPEN ? DateFactory.soirDebut : scope.heureDebut2, {
 			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
+			 		parent: angular.element(document.body.parentElement),
 			 	}).then(function(selectedDate) {
 			 		console.log(selectedDate);
 			 		
@@ -156,7 +156,7 @@ ctrlCCNT.directive('timePicker', function($mdpTimePicker, Const, DateFactory, No
 			scope.showHeureFinSer2 = function(ev, index) {
 			 	$mdpTimePicker(scope.heureFin2 == Const.HOUR_END ? DateFactory.soirFin : scope.heureFin2, {
 			 		targetEvent: ev,
-			 		parent: angular.element(document.body.parentElement)
+			 		parent: angular.element(document.body.parentElement),
 			 	}).then(function(selectedDate) {
 			 		if (selectedDate == Const.ANNULER) { scope.heureFin2 = Const.HOUR_END; return; }
 			 		

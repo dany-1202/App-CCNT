@@ -594,8 +594,6 @@ class HoraireEmployeeDAO {
 						MySQLManager::close();
 						return $horaire;
 					}
-					MySQLManager::close();
-					return 1;
 				}
 			}
 			MySQLManager::close();
@@ -605,7 +603,7 @@ class HoraireEmployeeDAO {
 
 		public static function insertHoraire ($horaire) {
 			$db = MySQLManager::get();
-		//return HoraireEmployeeDAO::validationPlageOuverture($db, $horaire, false);
+			//return HoraireEmployeeDAO::validationPlageOuverture($db, $horaire, false);
 			if (HoraireEmployeeDAO::validationPlage($db, $horaire, false)) {
 				/* Insertion dans la table ccn_personne */
 				$query = "INSERT INTO ccn_horairepersonne (hop_date, hop_heureDebut, hop_heureFin, hop_pause, hop_abs_id) VALUES (?, ?, ?, ?, ?)";

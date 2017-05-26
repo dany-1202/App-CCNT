@@ -16,8 +16,7 @@ ctrlCCNT.factory('State', function (Const, Postaux, $q){
   	state.advancedRepHours = true;
 
   	state.affMessageDemandes = false;
-
-
+  	state.nbReq = 0;
 
   	state.changeAdvancedRepHours = function(boolean) {
   		state.advancedRepHours = boolean;
