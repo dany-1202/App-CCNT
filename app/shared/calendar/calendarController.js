@@ -126,7 +126,7 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 	  		$mdDialog.show({
 	  			controller: CreatePlanningController,
 	  			templateUrl: 'app/shared/calendar/modalModifPlanning.html',
-	  			parent: angular.element(document.body.parentElement),
+	  			parent: angular.element(document.body),
 	  			targetEvent: event,
 	  			clickOutsideToClose:true,
 	  			fullscreen: true,
@@ -585,7 +585,7 @@ appCal.controller('calendarController', function($timeout,$rootScope, $mdDialog,
 		$scope.scope = $scope;
 		$scope.nbPause = [];
 		$scope.event = vm.event;
-
+		
 		$scope.event.endsAt = moment($scope.event.startsAt).add(6, 'days').toDate();
 
 		for (var nb = 0; nb <= 60; nb+=5) {$scope.nbPause.push({name: nb + ' minutes', value:nb});}

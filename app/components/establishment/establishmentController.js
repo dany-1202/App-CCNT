@@ -101,7 +101,7 @@ ctrlCCNT.controller('establishmentController', function ($route, $q, PromiseDAO,
 			for (var i = 0; i < objet.length; i++) {
 				if (!tabContains(objet[i].nom, $scope.tabCalendars)) {
 					var liste = getOuvertures(objet, objet[i].nom);
-					$scope.tabCalendars.push({id: objet[i].id, name: objet[i].nom, period: {debut: objet[i].dateDebut, fin: objet[i].dateFin}, hours: liste, state: Const.COMP, errorName: false, errorPeriod:false, choix: State.choix, 'etat' : 'modif'});
+					$scope.tabCalendars.push({id: objet[i].id, name: objet[i].nom, period: {debut: objet[i].dateDebut, fin: objet[i].dateFin}, hours: liste, state: Const.COMP, errorName: false, errorPeriod:false, choix: State.choix, 'etat' : 'modif', base : objet[i].base});
 				}
 			}
 			console.log($scope.tabCalendars);
